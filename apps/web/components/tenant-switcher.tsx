@@ -109,7 +109,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
         side={isCollapsed ? "right" : "bottom"}
         sideOffset={isCollapsed ? 14 : 6}
       >
-        <div className="flex items-center justify-between px-3.5 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+        <div className="flex items-center justify-between px-3.5 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
           <span>Çalışma Alanları</span>
           <span className="font-mono text-3xs text-muted-foreground">
             {tenants.length} Alan
@@ -161,7 +161,7 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
               />
               <div className="flex justify-end gap-1">
                 <button
-                  className="px-2 py-1 text-2xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
+                  className="px-2 py-1 text-2xs text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200 dark:hover:text-zinc-400"
                   onClick={() => setIsCreating(false)}
                   type="button"
                 >

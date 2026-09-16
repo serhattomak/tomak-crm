@@ -76,7 +76,7 @@ export function PipelineKanbanBoard({
                 Kazanma: %{stage.probability}
               </span>
               {stage.slaHours ? (
-                <span className="flex items-center gap-1 font-medium text-amber-600">
+                <span className="flex items-center gap-1 font-medium text-amber-700 dark:text-amber-400">
                   <Clock className="h-3 w-3" />
                   SLA: {stage.slaHours} saat
                 </span>

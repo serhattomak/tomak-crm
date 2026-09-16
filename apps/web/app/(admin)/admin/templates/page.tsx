@@ -185,13 +185,13 @@ export default function AdminTemplatesPage() {
           <h1 className="font-extrabold text-2xl text-zinc-900 tracking-tight">
             Sektör Şablonları
           </h1>
-          <p className="mt-0.5 text-zinc-500 text-xs">
+          <p className="mt-0.5 text-muted-foreground text-xs">
             Farklı sektörlerdeki müşteriler için hazır modül paketleri ve
             terminoloji sözlükleri oluşturun.
           </p>
         </div>
         <button
-          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-500 active:scale-95"
+          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-600 active:scale-95"
           onClick={handleOpenCreate}
           type="button"
         >
@@ -204,7 +204,7 @@ export default function AdminTemplatesPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {loading ? (
           <div className="col-span-full py-12 text-center text-muted-foreground">
-            <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600" />
+            <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
             Şablonlar yükleniyor...
           </div>
         ) : (
@@ -222,7 +222,7 @@ export default function AdminTemplatesPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-amber-200/60 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-amber-200/60 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400">
                         <Sparkles className="h-4 w-4" />
                       </div>
                       <div>
@@ -235,7 +235,7 @@ export default function AdminTemplatesPage() {
                       </div>
                     </div>
                     <button
-                      className="rounded-xl border border-border bg-muted p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600"
+                      className="rounded-xl border border-border bg-muted p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:hover:text-blue-400"
                       onClick={() => handleOpenEdit(tpl)}
                       title="Şablonu Düzenle"
                     >
@@ -243,7 +243,7 @@ export default function AdminTemplatesPage() {
                     </button>
                   </div>
 
-                  <p className="text-zinc-500 text-xs leading-relaxed">
+                  <p className="text-muted-foreground text-xs leading-relaxed">
                     {tpl.description || "Açıklama yok"}
                   </p>
 
@@ -277,7 +277,7 @@ export default function AdminTemplatesPage() {
                             key={k}
                           >
                             <span className="capitalize">{k}</span>
-                            <span className="font-semibold text-amber-700">
+                            <span className="font-semibold text-amber-700 dark:text-amber-400">
                               ➔ {v.displayName}
                             </span>
                           </div>
@@ -323,7 +323,7 @@ export default function AdminTemplatesPage() {
                       ? "Sektör Şablonunu Düzenle"
                       : "Yeni Sektör Şablonu Oluştur"}
                   </DialogTitle>
-                  <p className="text-zinc-500 text-xs">
+                  <p className="text-muted-foreground text-xs">
                     Modülleri ve alan terminolojisini tanımlayın
                   </p>
                 </div>
@@ -417,7 +417,7 @@ export default function AdminTemplatesPage() {
                         <span>{mod.name}</span>
                         <input
                           checked={checked}
-                          className="h-3 w-3 rounded text-blue-600 focus:ring-0"
+                          className="h-3 w-3 rounded text-blue-600 dark:text-blue-400 focus:ring-0"
                           onChange={() => {}}
                           type="checkbox"
                         />
@@ -460,7 +460,7 @@ export default function AdminTemplatesPage() {
                   İptal
                 </button>
                 <button
-                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-500 disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-600 disabled:opacity-50"
                   disabled={saving}
                   type="submit"
                 >

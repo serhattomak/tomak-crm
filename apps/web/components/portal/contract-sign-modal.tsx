@@ -191,7 +191,7 @@ export function ContractSignModal({
               <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 Sözleşmeyi Dijital Olarak İmzala
               </DialogTitle>
-              <p className="font-mono text-2xs text-zinc-500">
+              <p className="font-mono text-2xs text-muted-foreground">
                 {contract.contractNumber}
               </p>
             </div>
@@ -211,7 +211,7 @@ export function ContractSignModal({
           <div className="flex flex-col gap-4">
             <div className="rounded-2xl border border-blue-200/80 bg-blue-50/50 p-3.5 text-blue-900 text-xs dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-blue-300">
               <div className="flex items-center gap-1.5 font-semibold">
-                <ShieldCheck className="h-4 w-4 text-blue-600" />
+                <ShieldCheck className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 Yasal Denetim İzi (Audit Trail)
               </div>
               <p className="mt-1 text-2xs text-blue-800/80 dark:text-blue-400">
@@ -255,7 +255,7 @@ export function ContractSignModal({
                   Dokunmatik / Fare ile İmzanızı Çizin *
                 </label>
                 <button
-                  className="flex items-center gap-1 text-2xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                  className="flex items-center gap-1 text-2xs text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200"
                   onClick={clearCanvas}
                   type="button"
                 >

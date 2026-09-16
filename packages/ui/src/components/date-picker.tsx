@@ -213,7 +213,7 @@ export function DatePicker({
           <div className="flex items-center justify-between border-border border-b pb-2">
             <button
               aria-label="Önceki ay"
-              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:hover:text-zinc-400"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:hover:text-zinc-400"
               onClick={handlePrevMonth}
               type="button"
             >
@@ -226,7 +226,7 @@ export function DatePicker({
 
             <button
               aria-label="Sonraki ay"
-              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:hover:text-zinc-400"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:hover:text-zinc-400"
               onClick={handleNextMonth}
               type="button"
             >
@@ -383,7 +383,7 @@ export function DateRangePicker({
           className="z-50 w-64 overflow-hidden rounded-2xl border border-border bg-card p-3 text-zinc-900 shadow-xl backdrop-blur-md dark:text-zinc-100"
           sideOffset={4}
         >
-          <div className="mb-2 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+          <div className="mb-2 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
             Hızlı Tarih Filtreleri
           </div>
           <div className="space-y-1 font-semibold text-xs">

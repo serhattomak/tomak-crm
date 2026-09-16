@@ -169,7 +169,7 @@ export function TasksChecklistWidget() {
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
               <CheckSquare className="h-4 w-4" />
             </div>
             <div>
@@ -385,7 +385,7 @@ export function TasksChecklistWidget() {
             </strong>
           </span>
           <Button
-            className="h-6 p-0 text-emerald-600 text-xs hover:text-emerald-700 dark:text-emerald-400"
+            className="h-6 p-0 text-emerald-700 text-xs hover:text-emerald-700 dark:text-emerald-400"
             onClick={async () => {
               const completedTasks = tasks.filter((t) => t.isCompleted);
               for (const t of completedTasks) {

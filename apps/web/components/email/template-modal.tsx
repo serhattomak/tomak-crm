@@ -320,7 +320,7 @@ function TemplateLivePreview({
             {isDark ? (
               <Sun className="h-3 w-3 text-amber-500" />
             ) : (
-              <Moon className="h-3 w-3 text-zinc-500" />
+              <Moon className="h-3 w-3 text-muted-foreground" />
             )}
             <span>{isDark ? "Kağıt Görünümü" : "Koyu Görünüm"}</span>
           </button>
@@ -338,7 +338,7 @@ function TemplateLivePreview({
       </div>
 
       <div className="rounded-xl border border-border bg-card px-3 py-2 text-xs">
-        <span className="font-semibold text-zinc-500">Konu: </span>
+        <span className="font-semibold text-muted-foreground">Konu: </span>
         <span className="text-zinc-900 dark:text-zinc-100">
           {subject || "(Konu belirtilmedi)"}
         </span>
@@ -588,7 +588,7 @@ export function TemplateModal({
             <DialogTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
               {template ? "Şablonu Düzenle" : "Yeni E-posta Şablonu"}
             </DialogTitle>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-muted-foreground">
               Teklifler ve ortak gelen kutusu e-postalarında kullanılabilen
               Handlebars şablonu.
             </p>
@@ -651,7 +651,7 @@ export function TemplateModal({
 
               {/* Variable Chips */}
               <div className="space-y-1.5">
-                <span className="block font-medium text-2xs text-zinc-500">
+                <span className="block font-medium text-2xs text-muted-foreground">
                   Dinamik Değişkenler (Tıklayıp imlece ekleyin):
                 </span>
                 <div className="flex flex-wrap gap-1">

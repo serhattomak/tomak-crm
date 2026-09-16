@@ -72,7 +72,7 @@ export default function WorkspaceSettingsPage() {
           <Settings className="h-6 w-6 text-blue-500" />
           Sistem Ayarları
         </h1>
-        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="mt-1 text-xs text-muted-foreground">
           Bu çalışma alanının temel bilgilerini ve marka tercihlerini güncelleyin.
         </p>
       </div>
@@ -116,7 +116,7 @@ export default function WorkspaceSettingsPage() {
               Çalışma Alanı Kısa Adı
             </label>
             <input
-              className="w-full cursor-not-allowed rounded-xl border border-border bg-zinc-100 px-3 py-2.5 font-mono text-xs text-zinc-500 dark:bg-zinc-800/70 dark:text-zinc-400"
+              className="w-full cursor-not-allowed rounded-xl border border-border bg-zinc-100 px-3 py-2.5 font-mono text-xs text-muted-foreground dark:bg-zinc-800/70"
               disabled
               type="text"
               value={activeTenant?.slug || ""}
@@ -171,7 +171,7 @@ export default function WorkspaceSettingsPage() {
                 <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Entegrasyonlar & Webhooklar
                 </h2>
-                <p className="mt-1 max-w-md text-xs text-zinc-500 leading-relaxed dark:text-zinc-400">
+                <p className="mt-1 max-w-md text-xs text-muted-foreground leading-relaxed">
                   Tenant bazlı webhook endpointlerini yönetin, olay seçimi yapın
                   ve teslimat günlüğünü HMAC-SHA256 imzasıyla izleyin.
                 </p>

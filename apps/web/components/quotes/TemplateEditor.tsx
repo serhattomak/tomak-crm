@@ -99,7 +99,7 @@ export function TemplateEditor({
           required
           value={subject}
         />
-        <p className="text-2xs text-zinc-500 dark:text-zinc-500">
+        <p className="text-2xs text-muted-foreground">
           {subject.length}/200 karakter — Handlebars değişkenleri desteklenir.
         </p>
       </div>
@@ -134,7 +134,7 @@ export function TemplateEditor({
           <p className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
             Varsayılan şablon
           </p>
-          <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+          <p className="text-2xs text-muted-foreground">
             Yeni tekliflerde otomatik seçilir (tek bir varsayılan).
           </p>
         </div>
@@ -154,7 +154,7 @@ export function TemplateEditor({
           <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
             Ek Alanlar (ödeme / teslimat / banka / şartlar)
           </span>
-          <span className="text-2xs text-zinc-500 dark:text-zinc-400">
+          <span className="text-2xs text-muted-foreground">
             {showExtraFields ? "Gizle" : "Göster"}
           </span>
         </button>

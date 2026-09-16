@@ -293,14 +293,14 @@ export function DealDetailDrawer({
             {deal.source === "LiveChat" && (
               <div className="flex items-center justify-between gap-3 rounded-lg border border-purple-500/30 bg-purple-500/10 p-3.5 shadow-2xs">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-md bg-purple-500/20 text-purple-600">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-md bg-purple-500/20 text-purple-600 dark:text-purple-400">
                     <MessageSquare className="h-4 w-4" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-purple-700 text-xs">
                       Canlı Destek Oturumu Bağlantılı
                     </h4>
-                    <p className="text-2xs text-purple-600">
+                    <p className="text-2xs text-purple-600 dark:text-purple-400">
                       Bu kart canlı destek sohbetinden otomatik türetildi.
                     </p>
                   </div>
@@ -357,7 +357,7 @@ export function DealDetailDrawer({
                       <AlertTriangle className="h-3.5 w-3.5" /> Süre Aşıldı
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 font-medium text-3xs text-emerald-600">
+                    <span className="inline-flex items-center gap-1 font-medium text-3xs text-emerald-700 dark:text-emerald-300">
                       <Check className="h-3.5 w-3.5" /> Uygun
                     </span>
                   )}

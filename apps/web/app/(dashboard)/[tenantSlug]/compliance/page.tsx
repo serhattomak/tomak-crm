@@ -294,7 +294,7 @@ export default function CompliancePage() {
         );
       case "high":
         return (
-          <span className="flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-amber-700 text-xs dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+          <span className="flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-amber-700 dark:text-amber-400 text-xs dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
             <AlertTriangle className="h-3 w-3" /> Yüksek Risk
           </span>
         );
@@ -366,7 +366,7 @@ export default function CompliancePage() {
                   Uyumlu
                 </span>
               </h1>
-              <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 Vardiya, izin, bordro ve İSG işlemlerinde Türkiye Cumhuriyeti
                 çalışma mevzuatı kuralları ve cezai risk denetimi.
               </p>
@@ -397,7 +397,7 @@ export default function CompliancePage() {
         {/* Score Card */}
         <div className="flex items-center justify-between rounded-3xl border border-border bg-card p-5 shadow-xs">
           <div>
-            <span className="mb-1 block font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+            <span className="mb-1 block font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               UYUM SAĞLIK SKORU
             </span>
             <div className="flex items-baseline gap-1.5">
@@ -405,7 +405,7 @@ export default function CompliancePage() {
                 %{scoreData?.healthScore ?? 100}
               </span>
             </div>
-            <span className="mt-1 flex items-center gap-1 font-semibold text-emerald-600 text-xs">
+            <span className="mt-1 flex items-center gap-1 font-semibold text-emerald-700 dark:text-emerald-300 text-xs">
               <ShieldCheck className="h-3.5 w-3.5" /> Yasal Güvencede
             </span>
           </div>
@@ -435,14 +435,14 @@ export default function CompliancePage() {
                 strokeWidth="5"
               />
             </svg>
-            <Scale className="absolute h-5 w-5 text-emerald-600" />
+            <Scale className="absolute h-5 w-5 text-emerald-700 dark:text-emerald-300" />
           </div>
         </div>
 
         {/* Violations Count */}
         <div className="rounded-3xl border border-border bg-card p-5 shadow-xs">
-          <div className="mb-1 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
-            <span className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+          <div className="mb-1 flex items-center justify-between font-semibold text-xs text-muted-foreground">
+            <span className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               AKTİF İHLALLER
             </span>
             <AlertTriangle className="h-4 w-4 text-amber-500" />
@@ -451,18 +451,18 @@ export default function CompliancePage() {
             <span className="font-extrabold text-3xl text-zinc-900 dark:text-zinc-100">
               {scoreData?.activeViolationsCount ?? 0}
             </span>
-            <span className="font-bold text-red-600 text-xs">
+            <span className="font-bold text-red-600 dark:text-red-400 text-xs">
               ({scoreData?.hardBlockedAttemptsCount ?? 0} Kritik)
             </span>
           </div>
-          <span className="mt-1 block text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="mt-1 block text-xs text-muted-foreground">
             Denetime takılan kayıtlar
           </span>
         </div>
 
         {/* Financial Risk Exposure */}
         <div className="rounded-3xl border border-border bg-gradient-to-br bg-card from-red-50/40 via-white to-amber-50/40 p-5 shadow-xs dark:from-red-950/20 dark:via-zinc-900 dark:to-amber-950/20">
-          <div className="mb-1 flex items-center justify-between font-semibold text-red-600 text-xs">
+          <div className="mb-1 flex items-center justify-between font-semibold text-red-600 dark:text-red-400 text-xs">
             <span className="font-bold text-2xs text-red-500 uppercase tracking-wider">
               CEZA RİSK MARUZİYETİ
             </span>
@@ -474,30 +474,30 @@ export default function CompliancePage() {
                 "tr-TR"
               )}
             </span>
-            <span className="font-bold text-red-600 text-xs">TL</span>
+            <span className="font-bold text-red-600 dark:text-red-400 text-xs">TL</span>
           </div>
-          <span className="mt-1 block text-2xs text-zinc-500 dark:text-zinc-400">
+          <span className="mt-1 block text-2xs text-muted-foreground">
             Müfettiş denetimi olası ceza tutarı
           </span>
         </div>
 
         {/* Overridden Exceptions */}
         <div className="rounded-3xl border border-border bg-card p-5 shadow-xs">
-          <div className="mb-1 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
-            <span className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+          <div className="mb-1 flex items-center justify-between font-semibold text-xs text-muted-foreground">
+            <span className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               ONAYLANAN İSTİSNALAR
             </span>
             <FileCheck className="h-4 w-4 text-blue-500" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-extrabold text-3xl text-blue-600">
+            <span className="font-extrabold text-3xl text-blue-600 dark:text-blue-400">
               {scoreData?.overriddenViolationsCount ?? 0}
             </span>
             <span className="text-xs text-muted-foreground">
               kayıt
             </span>
           </div>
-          <span className="mt-1 block font-medium text-blue-600 text-xs">
+          <span className="mt-1 block font-medium text-blue-600 dark:text-blue-400 text-xs">
             Gerekçeli yönetici onayı
           </span>
         </div>
@@ -586,7 +586,7 @@ export default function CompliancePage() {
         <div className="space-y-3">
           {isLoading ? (
             <div className="rounded-3xl border border-border bg-card p-12 text-center">
-              <RefreshCw className="mx-auto mb-3 h-6 w-6 animate-spin text-amber-600" />
+              <RefreshCw className="mx-auto mb-3 h-6 w-6 animate-spin text-amber-700 dark:text-amber-400" />
               <p className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
                 Yasal mevzuat kuralları yükleniyor...
               </p>
@@ -623,7 +623,7 @@ export default function CompliancePage() {
                           <AlertTriangle className="h-3 w-3 text-amber-500" />
                           Yasal Yaptırım / Ceza Uyarısı:
                         </span>
-                        <p className="text-2xs text-zinc-500 leading-normal dark:text-zinc-400">
+                        <p className="text-2xs text-muted-foreground leading-normal">
                           {rule.penaltyDescription}
                         </p>
                       </div>
@@ -662,7 +662,7 @@ export default function CompliancePage() {
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Mevzuat İhlal & İstisna Denetim Kütüğü (Audit Trail)
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Sistem genelinde tespit edilen mevzuat aykırılıkları ve
                 onaylanan yönetici istisnaları.
               </p>
@@ -678,7 +678,7 @@ export default function CompliancePage() {
 
           <div className="overflow-x-auto">
             <Table className="text-zinc-600 dark:text-zinc-400">
-              <TableHeader className="border-border bg-zinc-50 font-bold text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50 font-bold text-muted-foreground dark:bg-zinc-800/50">
                 <TableRow>
                   <TableHead className="px-4 py-3 h-auto">Tarih</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Personel</TableHead>
@@ -706,7 +706,7 @@ export default function CompliancePage() {
                       className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                       key={v.id}
                     >
-                      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-muted-foreground">
                         {new Date(v.createdAt).toLocaleDateString("tr-TR")}{" "}
                         {new Date(v.createdAt).toLocaleTimeString("tr-TR", {
                           hour: "2-digit",
@@ -786,7 +786,7 @@ export default function CompliancePage() {
                 <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Canlı Mevzuat Testi
                 </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-muted-foreground">
                   Simülasyon tipini ve verilerini girin
                 </p>
               </div>
@@ -884,7 +884,7 @@ export default function CompliancePage() {
                   <div className="flex items-center gap-2 pt-1">
                     <input
                       checked={simIsPregnant}
-                      className="rounded border-border text-amber-600"
+                      className="rounded border-border text-amber-700 dark:text-amber-400"
                       id="simPregnant"
                       onChange={(e) => setSimIsPregnant(e.target.checked)}
                       type="checkbox"
@@ -1029,9 +1029,9 @@ export default function CompliancePage() {
                     >
                       <div className="mb-1 flex items-center gap-2 font-bold text-sm">
                         {simResult.hasHardBlock ? (
-                          <AlertOctagon className="h-5 w-5 text-red-600" />
+                          <AlertOctagon className="h-5 w-5 text-red-600 dark:text-red-400" />
                         ) : (
-                          <AlertTriangle className="h-5 w-5 text-amber-600" />
+                          <AlertTriangle className="h-5 w-5 text-amber-700 dark:text-amber-400" />
                         )}
                         <span>
                           {simResult.hasHardBlock
@@ -1064,7 +1064,7 @@ export default function CompliancePage() {
                             {v.details}
                           </p>
                           {v.penaltyRisk && (
-                            <div className="rounded-lg border border-red-100 dark:border-red-900/40 bg-card p-2 font-semibold text-2xs text-red-600">
+                            <div className="rounded-lg border border-red-100 dark:border-red-900/40 bg-card p-2 font-semibold text-2xs text-red-600 dark:text-red-400">
                               🚨 Ceza Riski: {v.penaltyRisk}
                             </div>
                           )}
@@ -1120,7 +1120,7 @@ export default function CompliancePage() {
                 <SheetClose asChild>
                   <button
                     aria-label="Kapat"
-                    className="rounded-full p-1.5 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                    className="rounded-full p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                     type="button"
                   >
                     <X className="h-5 w-5" />
@@ -1144,7 +1144,7 @@ export default function CompliancePage() {
                   >
                     <input
                       checked={editEnforcement === "HardBlock"}
-                      className="mt-0.5 text-red-600"
+                      className="mt-0.5 text-red-600 dark:text-red-400"
                       name="enforcement"
                       onChange={() => setEditEnforcement("HardBlock")}
                       type="radio"
@@ -1153,7 +1153,7 @@ export default function CompliancePage() {
                       <span className="block font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         Engelle (Hard Block - Kesin Yasak)
                       </span>
-                      <span className="text-2xs text-zinc-500 dark:text-zinc-400">
+                      <span className="text-2xs text-muted-foreground">
                         Kural ihlal edildiğinde işlemin kaydedilmesini
                         kesinlikle engeller.
                       </span>
@@ -1166,7 +1166,7 @@ export default function CompliancePage() {
                   >
                     <input
                       checked={editEnforcement === "SoftWarning"}
-                      className="mt-0.5 text-amber-600"
+                      className="mt-0.5 text-amber-700 dark:text-amber-400"
                       name="enforcement"
                       onChange={() => setEditEnforcement("SoftWarning")}
                       type="radio"
@@ -1175,7 +1175,7 @@ export default function CompliancePage() {
                       <span className="block font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         Uyar (Soft Warning - Yönetici İstisnasıyla Geçilebilir)
                       </span>
-                      <span className="text-2xs text-zinc-500 dark:text-zinc-400">
+                      <span className="text-2xs text-muted-foreground">
                         Uyarı verir, ihlal loguna kaydeder ancak yönetici
                         onayına izin verir.
                       </span>
@@ -1197,7 +1197,7 @@ export default function CompliancePage() {
                       <span className="block font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         Devre Dışı (Disabled)
                       </span>
-                      <span className="text-2xs text-zinc-500 dark:text-zinc-400">
+                      <span className="text-2xs text-muted-foreground">
                         Bu kural için denetim yapılmaz.
                       </span>
                     </div>
@@ -1258,14 +1258,14 @@ export default function CompliancePage() {
           >
             <div className="flex items-center justify-between border-border border-b pb-3">
               <div className="flex items-center gap-2">
-                <div className="rounded-xl bg-amber-50 p-2 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+                <div className="rounded-xl bg-amber-50 p-2 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
                   <FileCheck className="h-4 w-4" />
                 </div>
                 <div>
                   <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     Yönetici İstisnası & Onay
                   </DialogTitle>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     {overridingViolation.lawReference}
                   </p>
                 </div>

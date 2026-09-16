@@ -107,7 +107,7 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="font-medium text-xs text-muted-foreground">
             Gelen Kutusu
           </span>
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-sky-50 text-sky-600 dark:bg-sky-950/50 dark:text-sky-400">
@@ -124,10 +124,10 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
 
       <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="font-medium text-xs text-muted-foreground">
             Okunmamış İletiler
           </span>
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
             <Mail className="h-4 w-4" />
           </div>
         </div>
@@ -145,10 +145,10 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
 
       <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="font-medium text-xs text-muted-foreground">
             Bugün Gönderilen
           </span>
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
             <Send className="h-4 w-4" />
           </div>
         </div>
@@ -236,12 +236,12 @@ function MessageRow({
             <Paperclip className="h-3 w-3 shrink-0 text-muted-foreground" />
           ) : null}
         </div>
-        <p className="line-clamp-1 font-normal text-2xs text-zinc-500 dark:text-zinc-400">
+        <p className="line-clamp-1 font-normal text-2xs text-muted-foreground">
           {msg.textBody || msg.htmlBody?.replace(/<[^>]+>/g, " ") || "-"}
         </p>
       </TableCell>
 
-      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-2xs text-zinc-500 dark:text-zinc-400">
+      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-2xs text-muted-foreground">
         {boundAccount}
       </TableCell>
 
@@ -269,7 +269,7 @@ function MessageRow({
         <div className="flex items-center justify-end gap-1">
           {activeTab === "drafts" && onEditDraft ? (
             <button
-              className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={handleEditDraftClick}
               title="Düzenle"
               type="button"
@@ -278,7 +278,7 @@ function MessageRow({
             </button>
           ) : null}
           <button
-            className="rounded-lg p-1 text-muted-foreground hover:text-rose-600"
+            className="rounded-lg p-1 text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400"
             onClick={handleDeleteClick}
             title="Sil"
             type="button"
@@ -332,7 +332,7 @@ function AccountRow({
           {account.email}
         </div>
         {account.description ? (
-          <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="text-2xs text-muted-foreground">
             {account.description}
           </div>
         ) : null}
@@ -390,7 +390,7 @@ function AccountRow({
           </button>
 
           <button
-            className="rounded-lg p-1 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="rounded-lg p-1 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
             onClick={handleEdit}
             title="Düzenle"
             type="button"
@@ -399,7 +399,7 @@ function AccountRow({
           </button>
 
           <button
-            className="rounded-lg p-1 text-muted-foreground hover:text-rose-600"
+            className="rounded-lg p-1 text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400"
             onClick={handleDelete}
             title="Sil"
             type="button"
@@ -437,7 +437,7 @@ function DeleteActionButton({
           Sil
         </button>
         <button
-          className="rounded px-1 py-0.5 text-3xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          className="rounded px-1 py-0.5 text-3xs text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
           onClick={onCancel}
           type="button"
         >
@@ -449,7 +449,7 @@ function DeleteActionButton({
 
   return (
     <button
-      className="p-1 text-muted-foreground hover:text-rose-600"
+      className="p-1 text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400"
       onClick={onConfirm}
       title="Şablonu Sil"
       type="button"
@@ -518,7 +518,7 @@ function TemplateCard({
           ) : null}
         </div>
         {template.subject ? (
-          <p className="mt-1 line-clamp-1 font-mono text-xs text-zinc-500">
+          <p className="mt-1 line-clamp-1 font-mono text-xs text-muted-foreground">
             Konu: {template.subject}
           </p>
         ) : null}
@@ -537,7 +537,7 @@ function TemplateCard({
 
           {onEdit ? (
             <button
-              className="inline-flex items-center gap-1 font-medium text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+              className="inline-flex items-center gap-1 font-medium text-xs text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100"
               onClick={handleEdit}
               title="Şablonu Düzenle"
               type="button"
@@ -594,7 +594,7 @@ function MessagesTableView({
 }: MessagesTableViewProps) {
   if (isLoading) {
     return (
-      <div className="flex h-64 flex-col items-center justify-center gap-2 text-zinc-500">
+      <div className="flex h-64 flex-col items-center justify-center gap-2 text-muted-foreground">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <span className="text-sm">İletiler yükleniyor...</span>
       </div>
@@ -615,7 +615,7 @@ function MessagesTableView({
         <p className="font-medium text-sm text-zinc-900 dark:text-zinc-100">
           İleti bulunamadı
         </p>
-        <p className="mt-1 max-w-sm text-xs text-zinc-500">{emptyMessage}</p>
+        <p className="mt-1 max-w-sm text-xs text-muted-foreground">{emptyMessage}</p>
         {accounts.length === 0 ? (
           <button
             className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
@@ -633,7 +633,7 @@ function MessagesTableView({
   return (
     <div className="overflow-x-auto">
       <Table>
-        <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+        <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
           <TableRow>
             <TableHead className="px-4 py-3 font-medium h-auto">
               {activeTab === "inbox" ? "Gönderen" : "Alıcı"}
@@ -689,7 +689,7 @@ function AccountsTableView({
 }: AccountsTableViewProps) {
   if (isLoading) {
     return (
-      <div className="flex h-48 flex-col items-center justify-center gap-2 text-zinc-500">
+      <div className="flex h-48 flex-col items-center justify-center gap-2 text-muted-foreground">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <span className="text-sm">Hesaplar yükleniyor...</span>
       </div>
@@ -703,7 +703,7 @@ function AccountsTableView({
         <p className="font-medium text-sm text-zinc-900 dark:text-zinc-100">
           Henüz bağlı e-posta hesabı yok
         </p>
-        <p className="mt-1 max-w-sm text-xs text-zinc-500">
+        <p className="mt-1 max-w-sm text-xs text-muted-foreground">
           Ortak gelen kutusunu kullanmak için kurumsal e-posta hesabınızı
           bağlayın.
         </p>
@@ -722,7 +722,7 @@ function AccountsTableView({
   return (
     <div className="overflow-x-auto">
       <Table>
-        <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+        <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
           <TableRow>
             <TableHead className="px-4 py-3 font-medium h-auto">E-posta & Açıklama</TableHead>
             <TableHead className="px-4 py-3 font-medium h-auto">Sağlayıcı</TableHead>
@@ -770,7 +770,7 @@ function TemplatesGridView({
 }: TemplatesGridViewProps) {
   if (isLoading) {
     return (
-      <div className="flex h-48 flex-col items-center justify-center gap-2 text-zinc-500">
+      <div className="flex h-48 flex-col items-center justify-center gap-2 text-muted-foreground">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <span className="text-sm">Şablonlar yükleniyor...</span>
       </div>
@@ -784,7 +784,7 @@ function TemplatesGridView({
         <p className="font-medium text-sm text-zinc-900 dark:text-zinc-100">
           Henüz kayıtlı şablon bulunmuyor
         </p>
-        <p className="mt-1 text-xs text-zinc-500">
+        <p className="mt-1 text-xs text-muted-foreground">
           Yeni bir e-posta veya teklif şablonu oluşturarak başlayabilirsiniz.
         </p>
       </div>
@@ -838,7 +838,7 @@ function EmailNavHeader({
           className={`flex items-center gap-2 border-b-2 pb-3 font-medium text-sm transition ${
             activeTab === "inbox"
               ? "border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100"
-              : "border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={onTabInbox}
           type="button"
@@ -856,7 +856,7 @@ function EmailNavHeader({
           className={`flex items-center gap-2 border-b-2 pb-3 font-medium text-sm transition ${
             activeTab === "sent"
               ? "border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100"
-              : "border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={onTabSent}
           type="button"
@@ -869,7 +869,7 @@ function EmailNavHeader({
           className={`flex items-center gap-2 border-b-2 pb-3 font-medium text-sm transition ${
             activeTab === "drafts"
               ? "border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100"
-              : "border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={onTabDrafts}
           type="button"
@@ -882,7 +882,7 @@ function EmailNavHeader({
           className={`flex items-center gap-2 border-b-2 pb-3 font-medium text-sm transition ${
             activeTab === "accounts"
               ? "border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100"
-              : "border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={onTabAccounts}
           type="button"
@@ -898,7 +898,7 @@ function EmailNavHeader({
           className={`flex items-center gap-2 border-b-2 pb-3 font-medium text-sm transition ${
             activeTab === "templates"
               ? "border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100"
-              : "border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={onTabTemplates}
           type="button"
@@ -1065,7 +1065,7 @@ function TemplatePreviewModal({
               {isDark ? (
                 <Sun className="h-3 w-3 text-amber-500" />
               ) : (
-                <Moon className="h-3 w-3 text-zinc-500" />
+                <Moon className="h-3 w-3 text-muted-foreground" />
               )}
               <span>{isDark ? "Kağıt Görünümü" : "Koyu Görünüm"}</span>
             </button>
@@ -1558,7 +1558,7 @@ export default function EmailWorkbenchPage() {
           <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             E-posta Yönetimi
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             Ortak gelen kutusu, hesap bağlama, şablonlu gönderim ve ileti
             dizileri.
           </p>
@@ -1635,7 +1635,7 @@ export default function EmailWorkbenchPage() {
           {/* Pagination */}
           {totalPages > 1 ? (
             <div className="flex items-center justify-between border-border border-t px-4 py-3">
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-muted-foreground">
                 Sayfa {page} / {totalPages}
               </span>
               <div className="flex items-center gap-1">
@@ -1671,7 +1671,7 @@ export default function EmailWorkbenchPage() {
               <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 Bağlı E-posta Hesapları
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Gelen kutusu ve SMTP gönderimi için yapılandırılmış posta
                 kutuları.
               </p>
@@ -1711,7 +1711,7 @@ export default function EmailWorkbenchPage() {
               <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 E-posta ve Teklif Şablonları
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Müşterilere gönderilen teklif ve bilgi maillerinde kullanılan
                 dinamik Handlebars şablonları.
               </p>

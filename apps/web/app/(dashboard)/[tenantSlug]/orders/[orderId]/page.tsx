@@ -208,7 +208,7 @@ export default function OrderDetailPage() {
       <div className="flex h-96 items-center justify-center rounded-3xl border border-border bg-card shadow-xs">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-          <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="font-medium text-xs text-muted-foreground">
             Sipariş detayları yükleniyor...
           </span>
         </div>
@@ -266,7 +266,7 @@ export default function OrderDetailPage() {
                   {getPaymentLabel(order.paymentStatus)}
                 </span>
               </div>
-              <div className="mt-0.5 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
                 <span className="font-bold text-zinc-800 dark:text-zinc-200">
                   {order.customerName}
                 </span>
@@ -293,7 +293,7 @@ export default function OrderDetailPage() {
             title="Siparişi Yazdır / PDF"
             type="button"
           >
-            <Printer className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+            <Printer className="h-3.5 w-3.5 text-muted-foreground" />
             <span>Yazdır / Proforma</span>
           </button>
 
@@ -347,7 +347,7 @@ export default function OrderDetailPage() {
 
             <div className="space-y-2 border-border border-b pb-3">
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500 dark:text-zinc-400">
+                <span className="text-muted-foreground">
                   Ara Toplam:
                 </span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -359,7 +359,7 @@ export default function OrderDetailPage() {
               </div>
 
               {order.discountAmount > 0 && (
-                <div className="flex items-center justify-between font-medium text-rose-600">
+                <div className="flex items-center justify-between font-medium text-rose-600 dark:text-rose-400">
                   <span>Toplam İndirim / İskonto:</span>
                   <span>
                     -₺
@@ -371,7 +371,7 @@ export default function OrderDetailPage() {
               )}
 
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500 dark:text-zinc-400">
+                <span className="text-muted-foreground">
                   Hesaplanan KDV:
                 </span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -384,7 +384,7 @@ export default function OrderDetailPage() {
 
               {order.shippingFee > 0 && (
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500 dark:text-zinc-400">
+                  <span className="text-muted-foreground">
                     Kargo & Sevkiyat:
                   </span>
                   <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -402,7 +402,7 @@ export default function OrderDetailPage() {
               <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 GENEL TOPLAM:
               </span>
-              <span className="font-extrabold text-base text-blue-600">
+              <span className="font-extrabold text-base text-blue-600 dark:text-blue-400">
                 ₺
                 {order.totalAmount.toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
@@ -413,10 +413,10 @@ export default function OrderDetailPage() {
             {/* Paid & Remaining */}
             <div className="grid grid-cols-2 gap-2 rounded-2xl bg-zinc-50 p-3 pt-2 dark:bg-zinc-800/50">
               <div>
-                <span className="font-medium text-3xs text-muted-foreground uppercase dark:text-zinc-500">
+                <span className="font-medium text-3xs text-muted-foreground uppercase">
                   Tahsil Edilen
                 </span>
-                <div className="font-bold text-emerald-600 text-sm">
+                <div className="font-bold text-emerald-700 dark:text-emerald-300 text-sm">
                   ₺
                   {order.paidAmount.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -424,13 +424,13 @@ export default function OrderDetailPage() {
                 </div>
               </div>
               <div>
-                <span className="font-medium text-3xs text-muted-foreground uppercase dark:text-zinc-500">
+                <span className="font-medium text-3xs text-muted-foreground uppercase">
                   Kalan Bakiye
                 </span>
                 <div
                   className={`font-bold text-sm ${
                     order.remainingAmount > 0
-                      ? "text-rose-600"
+                      ? "text-rose-600 dark:text-rose-400"
                       : "text-zinc-700 dark:text-zinc-300"
                   }`}
                 >
@@ -442,7 +442,7 @@ export default function OrderDetailPage() {
               </div>
             </div>
 
-            <div className="flex justify-between pt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+            <div className="flex justify-between pt-1 text-2xs text-muted-foreground">
               <span>Ödeme Yöntemi:</span>
               <span className="font-semibold text-zinc-800 dark:text-zinc-200">
                 {getPaymentMethodLabel(order.paymentMethod)}
@@ -526,21 +526,21 @@ export default function OrderDetailPage() {
           {/* Pill Tabs */}
           <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "items" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "items" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() => setActiveTab("items")}
               type="button"
             >
               Sipariş Kalemleri ({order.items.length})
             </button>
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "payments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "payments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() => setActiveTab("payments")}
               type="button"
             >
               Tahsilat & Ödemeler ({order.payments.length})
             </button>
             <button
-              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "timeline" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "timeline" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() => setActiveTab("timeline")}
               type="button"
             >
@@ -557,7 +557,7 @@ export default function OrderDetailPage() {
 
               <div className="overflow-x-auto rounded-2xl border border-border">
                 <Table>
-                  <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                     <TableRow>
                       <TableHead className="px-3.5 py-3 h-auto">Kalem / Ürün</TableHead>
                       <TableHead className="px-3 py-3 text-center h-auto">Miktar</TableHead>
@@ -585,7 +585,7 @@ export default function OrderDetailPage() {
                             </div>
                           )}
                           {item.optionsOrNotes && (
-                            <div className="mt-0.5 text-3xs text-zinc-500 italic dark:text-zinc-400">
+                            <div className="mt-0.5 text-3xs text-muted-foreground italic">
                               {item.optionsOrNotes}
                             </div>
                           )}
@@ -602,7 +602,7 @@ export default function OrderDetailPage() {
                         <TableCell className="px-3 py-3.5 text-center text-zinc-600 dark:text-zinc-400">
                           %{item.taxRate}
                         </TableCell>
-                        <TableCell className="px-3 py-3.5 text-center font-medium text-rose-600">
+                        <TableCell className="px-3 py-3.5 text-center font-medium text-rose-600 dark:text-rose-400">
                           {item.discountRate > 0
                             ? `-%${item.discountRate}`
                             : "—"}
@@ -669,7 +669,7 @@ export default function OrderDetailPage() {
                       </div>
 
                       <div className="text-right">
-                        <div className="font-extrabold text-emerald-600 text-sm">
+                        <div className="font-extrabold text-emerald-700 dark:text-emerald-300 text-sm">
                           ₺
                           {p.amount.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
@@ -706,9 +706,9 @@ export default function OrderDetailPage() {
                     >
                       <div className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-white bg-card shadow-2xs ring-2 ring-zinc-100 dark:ring-zinc-800">
                         {act.activityType === "StatusChange" ? (
-                          <RotateCcw className="h-3.5 w-3.5 text-blue-600" />
+                          <RotateCcw className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                         ) : act.activityType === "PaymentAdded" ? (
-                          <Banknote className="h-3.5 w-3.5 text-emerald-600" />
+                          <Banknote className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                         ) : (
                           <CheckCircle2 className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />
                         )}
@@ -1023,7 +1023,7 @@ function AddPaymentModal({
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Tahsilat Kaydet
             </DialogTitle>
-            <p className="max-w-xs truncate text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="max-w-xs truncate text-xs text-muted-foreground">
               {order.orderNumber} - {order.customerName}
             </p>
           </div>

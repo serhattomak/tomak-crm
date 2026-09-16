@@ -340,7 +340,7 @@ export function ConvertToTicketModal({
               <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 E-postadan Destek Talebi Aç
               </DialogTitle>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Gelen e-postayı müşteri yardım biletine dönüştürün
               </p>
             </div>
@@ -359,7 +359,7 @@ export function ConvertToTicketModal({
         {/* Content */}
         <div className="custom-scrollbar max-h-[72vh] space-y-3.5 p-5">
           {isLoadingMeta ? (
-            <div className="flex items-center gap-2 text-xs text-zinc-500">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
               Müşteri ve departman bilgileri kontrol ediliyor...
             </div>
@@ -367,7 +367,7 @@ export function ConvertToTicketModal({
 
           {createdTicket ? (
             <div className="space-y-4 rounded-xl border border-emerald-200 bg-emerald-50/80 p-5 text-center dark:border-emerald-900 dark:bg-emerald-950/40">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/60 dark:text-emerald-400">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-400">
                 <CheckCircle2 className="h-6 w-6" />
               </div>
               <div>
@@ -407,7 +407,7 @@ export function ConvertToTicketModal({
                     value={customerName}
                   />
                   <Input
-                    className="h-8 text-xs text-zinc-500"
+                    className="h-8 text-xs text-muted-foreground"
                     disabled
                     value={customerEmail}
                   />

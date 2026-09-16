@@ -97,7 +97,7 @@ export function QuickAddSalesRepModal({
               <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Hızlı Satış Temsilcisi Ekle
               </DialogTitle>
-              <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-2xs text-muted-foreground">
                 Ekibe yeni bir temsilci kaydedin ve anında atayın
               </p>
             </div>

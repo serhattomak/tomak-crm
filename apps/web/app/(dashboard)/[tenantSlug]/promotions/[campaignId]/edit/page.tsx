@@ -240,7 +240,7 @@ export default function EditCampaignPage() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
       </div>
     );
   }
@@ -251,7 +251,7 @@ export default function EditCampaignPage() {
       <div className="flex items-center justify-between border-border border-b pb-4">
         <div className="flex items-center gap-3">
           <Link
-            className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            className="rounded-xl border border-border p-2 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
             href={`/${tenantSlug}/promotions`}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -260,7 +260,7 @@ export default function EditCampaignPage() {
             <h1 className="font-bold text-xl text-zinc-900 dark:text-zinc-50">
               Kampanyayı Düzenle
             </h1>
-            <p className="text-xs text-zinc-500">{name}</p>
+            <p className="text-xs text-muted-foreground">{name}</p>
           </div>
         </div>
       </div>
@@ -276,7 +276,7 @@ export default function EditCampaignPage() {
         {/* Basic Section */}
         <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Tag className="h-4 w-4 text-blue-600" />
+            <Tag className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             Genel Bilgiler & Zamanlama
           </h2>
 
@@ -385,7 +385,7 @@ export default function EditCampaignPage() {
         {/* Discount & Targets */}
         <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Coins className="h-4 w-4 text-blue-600" />
+            <Coins className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             İndirim Değeri & Kapsam
           </h2>
 
@@ -469,7 +469,7 @@ export default function EditCampaignPage() {
                   </span>
                   <button
                     aria-label="Hedefi kaldır"
-                    className="rounded p-1 text-muted-foreground hover:text-red-600"
+                    className="rounded p-1 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
                     onClick={() => removeTarget(idx)}
                     type="button"
                   >

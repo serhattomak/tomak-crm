@@ -211,7 +211,7 @@ export function Combobox({
                 <X className="h-3.5 w-3.5" />
               </button>
             ) : null}
-            <ChevronDown className="h-4 w-4 text-muted-foreground opacity-80 dark:text-zinc-500" />
+            <ChevronDown className="h-4 w-4 text-muted-foreground opacity-80" />
           </span>
         </button>
       </PopoverPrimitive.Trigger>

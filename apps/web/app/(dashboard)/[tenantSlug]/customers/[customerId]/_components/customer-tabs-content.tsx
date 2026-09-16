@@ -836,13 +836,13 @@ export function CustomerTabsContent({
                       {/* Timeline Node Icon */}
                       <div className="relative -left-6 z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-xs ring-4 ring-background">
                         {isCall ? (
-                          <PhoneCall className="h-3.5 w-3.5 text-emerald-600" />
+                          <PhoneCall className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                         ) : isMeeting ? (
-                          <Video className="h-3.5 w-3.5 text-purple-600" />
+                          <Video className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
                         ) : isEmail ? (
-                          <Mail className="h-3.5 w-3.5 text-blue-600" />
+                          <Mail className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                         ) : isNote ? (
-                          <FileText className="h-3.5 w-3.5 text-amber-600" />
+                          <FileText className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" />
                         ) : (
                           <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
                         )}
@@ -989,7 +989,7 @@ export function CustomerTabsContent({
                           variant="ghost"
                         >
                           {note.isPinned ? (
-                            <PinOff className="h-3.5 w-3.5 text-amber-600" />
+                            <PinOff className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" />
                           ) : (
                             <Pin className="h-3.5 w-3.5" />
                           )}
@@ -1080,7 +1080,7 @@ export function CustomerTabsContent({
                   <span className="font-medium text-2xs text-muted-foreground">
                     Tahsil Edilen (Ödenen)
                   </span>
-                  <div className="mt-1 font-bold text-base text-emerald-600 tracking-tight sm:text-lg">
+                  <div className="mt-1 font-bold text-base text-emerald-700 dark:text-emerald-300 tracking-tight sm:text-lg">
                     ₺
                     {totalPaidAmount.toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
@@ -1095,7 +1095,7 @@ export function CustomerTabsContent({
                   <div
                     className={`mt-1 font-bold text-base tracking-tight sm:text-lg ${
                       totalPendingAmount > 0
-                        ? "text-amber-600"
+                        ? "text-amber-700 dark:text-amber-400"
                         : "text-foreground"
                     }`}
                   >

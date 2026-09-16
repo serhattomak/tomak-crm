@@ -206,7 +206,7 @@ export function ActivityTimelineWidget() {
     switch (type) {
       case "deal":
         return (
-          <DollarSign className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+          <DollarSign className="h-3 w-3 text-emerald-700 dark:text-emerald-400" />
         );
       case "call":
         return (
@@ -218,7 +218,7 @@ export function ActivityTimelineWidget() {
         );
       case "task":
         return (
-          <FileSpreadsheet className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+          <FileSpreadsheet className="h-3 w-3 text-amber-700 dark:text-amber-400" />
         );
       default:
         return <Clock className="h-3 w-3 text-muted-foreground" />;

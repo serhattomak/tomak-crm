@@ -421,7 +421,7 @@ export default function LeavesPage() {
               {stats?.totalApprovedRequests ?? 0} Onaylı İzin
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-0.5 text-xs text-muted-foreground">
             Çalışan izin talepleri, onay süreçleri, yıllık izin bakiye takibi ve
             interaktif şirket izin takvimi.
           </p>
@@ -448,18 +448,18 @@ export default function LeavesPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Onay Bekleyen Talepler
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-amber-700 dark:text-amber-400 tracking-tight sm:text-3xl">
                 {stats?.pendingRequestsCount ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
               <Clock className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>Yönetici onayı bekleyen izinler</span>
           </div>
         </div>
@@ -468,10 +468,10 @@ export default function LeavesPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Bugün İzinli Olanlar
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-blue-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-blue-600 dark:text-blue-400 tracking-tight sm:text-3xl">
                 {stats?.todayOnLeaveCount ?? 0} Kişi
               </div>
             </div>
@@ -479,7 +479,7 @@ export default function LeavesPage() {
               <Sun className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>Bugün aktif izin kullanan personel</span>
           </div>
         </div>
@@ -488,10 +488,10 @@ export default function LeavesPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Bu Ay Kullanılan İzin
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-purple-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-purple-600 dark:text-purple-400 tracking-tight sm:text-3xl">
                 {stats?.thisMonthUsedDays ?? 0} Gün
               </div>
             </div>
@@ -499,7 +499,7 @@ export default function LeavesPage() {
               <CalendarIcon className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>Bu ay içinde onaylanan toplam iş günü</span>
           </div>
         </div>
@@ -508,18 +508,18 @@ export default function LeavesPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Yıllık İzin Bakiyem
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-emerald-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-emerald-700 dark:text-emerald-300 tracking-tight sm:text-3xl">
                 {myBalance?.remainingDays ?? 14} Gün
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Palmtree className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center justify-between border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center justify-between border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>Kullanılan: {myBalance?.usedDays ?? 0} Gün</span>
             <span>Hakediş: {myBalance?.totalDays ?? 14} Gün</span>
           </div>
@@ -529,7 +529,7 @@ export default function LeavesPage() {
       {/* 3. Navigation Tabs Bar */}
       <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "calendar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "calendar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
           onClick={() => setActiveTab("calendar")}
           type="button"
         >
@@ -538,7 +538,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "pending" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "pending" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
           onClick={() => setActiveTab("pending")}
           type="button"
         >
@@ -552,7 +552,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "all" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "all" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
           onClick={() => setActiveTab("all")}
           type="button"
         >
@@ -561,7 +561,7 @@ export default function LeavesPage() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "my" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "my" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
           onClick={() => setActiveTab("my")}
           type="button"
         >
@@ -606,7 +606,7 @@ export default function LeavesPage() {
 
             {/* Department Filter */}
             <div className="flex items-center gap-2">
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Departman:
               </span>
               <Combobox
@@ -627,7 +627,7 @@ export default function LeavesPage() {
           <div className="overflow-x-auto">
             <div className="min-w-[700px]">
               {/* Day Names Header */}
-              <div className="mb-2 grid grid-cols-7 gap-2 text-center font-bold text-2xs text-zinc-500 dark:text-zinc-400">
+              <div className="mb-2 grid grid-cols-7 gap-2 text-center font-bold text-2xs text-muted-foreground">
                 <div className="rounded-lg bg-zinc-50 py-1 dark:bg-zinc-800/50">
                   Pazartesi
                 </div>
@@ -643,10 +643,10 @@ export default function LeavesPage() {
                 <div className="rounded-lg bg-zinc-50 py-1 dark:bg-zinc-800/50">
                   Cuma
                 </div>
-                <div className="rounded-lg bg-amber-50/60 py-1 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+                <div className="rounded-lg bg-amber-50/60 py-1 text-amber-700 dark:text-amber-400 dark:bg-amber-950/40 dark:text-amber-300">
                   Cumartesi
                 </div>
-                <div className="rounded-lg bg-amber-50/60 py-1 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
+                <div className="rounded-lg bg-amber-50/60 py-1 text-amber-700 dark:text-amber-400 dark:bg-amber-950/40 dark:text-amber-300">
                   Pazar
                 </div>
               </div>
@@ -727,11 +727,11 @@ export default function LeavesPage() {
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Yönetici Onay Masası
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Onay veya ret işlemi bekleyen personel izin talepleri
               </p>
             </div>
-            <span className="rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 font-bold text-amber-700 dark:text-amber-300 text-xs">
+            <span className="rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 font-bold text-amber-700 dark:text-amber-400 dark:text-amber-300 text-xs">
               {pendingLeaves.length} Bekleyen Talep
             </span>
           </div>
@@ -814,7 +814,7 @@ export default function LeavesPage() {
                         Reddet
                       </button>
                       <button
-                        className="rounded-xl bg-emerald-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-emerald-700 disabled:opacity-50"
+                        className="rounded-xl bg-emerald-700 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-emerald-800 disabled:opacity-50"
                         disabled={actionLoading}
                         onClick={() => handleApprove(leave.id)}
                         type="button"
@@ -882,7 +882,7 @@ export default function LeavesPage() {
           <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs">
             <div className="overflow-x-auto">
               <Table>
-                <TableHeader className="border-border bg-zinc-50/50 text-zinc-500 dark:bg-zinc-800/30 dark:text-zinc-400">
+                <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
                   <TableRow>
                     <TableHead className="py-3.5 pr-4 pl-6 h-auto">Çalışan</TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">İzin Türü</TableHead>
@@ -988,7 +988,7 @@ export default function LeavesPage() {
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Kendi İzin Taleplerim
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Oluşturduğunuz izin talepleri ve onay durumları
               </p>
             </div>
@@ -1004,7 +1004,7 @@ export default function LeavesPage() {
 
           <div className="overflow-x-auto rounded-2xl border border-border">
             <Table>
-              <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                 <TableRow>
                   <TableHead className="px-4 py-3 h-auto">İzin Türü</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Tarih Aralığı</TableHead>
@@ -1054,7 +1054,7 @@ export default function LeavesPage() {
                       <TableCell className="px-4 py-3.5 text-zinc-600 italic dark:text-zinc-400">
                         {l.reason || "—"}
                         {l.rejectionReason && (
-                          <div className="mt-0.5 font-bold text-3xs text-rose-600 not-italic">
+                          <div className="mt-0.5 font-bold text-3xs text-rose-600 dark:text-rose-400 not-italic">
                             Ret Nedeni: {l.rejectionReason}
                           </div>
                         )}
@@ -1377,14 +1377,14 @@ function CreateLeaveModal({
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni İzin Talebi Oluştur
             </DialogTitle>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-muted-foreground">
               İzin türünü, gün aralığını ve gerekçenizi girin
             </p>
           </div>
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1458,7 +1458,7 @@ function CreateLeaveModal({
                   <input
                     aria-label="Yarım Gün İzin"
                     checked={isHalfDay}
-                    className="rounded text-blue-600 focus:ring-0"
+                    className="rounded text-blue-600 dark:text-blue-400 focus:ring-0"
                     onChange={(e) => setIsHalfDay(e.target.checked)}
                     type="checkbox"
                   />
@@ -1526,12 +1526,12 @@ function CreateLeaveModal({
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
                   Hesaplanan İş Günü:
                 </span>
-                <span className="block text-2xs text-zinc-500 dark:text-zinc-400">
+                <span className="block text-2xs text-muted-foreground">
                   Hafta sonları otomatik atlandı
                 </span>
               </div>
             </div>
-            <span className="font-extrabold text-base text-blue-600">
+            <span className="font-extrabold text-base text-blue-600 dark:text-blue-400">
               {calculatedDays} Gün
             </span>
           </div>

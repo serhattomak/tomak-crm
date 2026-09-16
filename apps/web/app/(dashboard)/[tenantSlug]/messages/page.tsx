@@ -658,7 +658,7 @@ export default function MessagesPage() {
             )}
           </div>
 
-          <p className="mt-0.5 truncate text-2xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-0.5 truncate text-2xs text-muted-foreground">
             {channel.lastMessagePreview ||
               (isDirect ? displayInfo.subtitle : channel.description) ||
               "Henüz mesaj yok."}
@@ -686,7 +686,7 @@ export default function MessagesPage() {
               <h1 className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground">
                 Ekip İçi Sohbet
               </h1>
-              <p className="hidden text-2xs text-zinc-500 sm:block sm:text-xs dark:text-muted-foreground dark:text-zinc-400">
+              <p className="hidden text-2xs text-muted-foreground sm:block sm:text-xs dark:text-muted-foreground">
                 Kanallar ve çalışma arkadaşlarınızla birebir direkt mesajlaşma
               </p>
             </div>
@@ -701,7 +701,7 @@ export default function MessagesPage() {
             size="sm"
             variant="outline"
           >
-            <MessageCircle className="mr-1 h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+            <MessageCircle className="mr-1 h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" />
             <span>WhatsApp Sohbet</span>
           </Button>
           <Button
@@ -710,7 +710,7 @@ export default function MessagesPage() {
             size="sm"
             variant="outline"
           >
-            <Hash className="mr-1 h-3.5 w-3.5 text-zinc-500" />
+            <Hash className="mr-1 h-3.5 w-3.5 text-muted-foreground" />
             <span>Yeni Kanal</span>
           </Button>
           <Button
@@ -756,7 +756,7 @@ export default function MessagesPage() {
               <div className="space-y-4">
                 {/* 1. KANALLAR SECTION */}
                 <div className="space-y-1">
-                  <div className="flex items-center justify-between px-2 py-1 font-bold text-2xs text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                  <div className="flex items-center justify-between px-2 py-1 font-bold text-2xs text-muted-foreground uppercase tracking-wider">
                     <button
                       className="flex items-center gap-1 transition-colors hover:text-zinc-800 dark:hover:text-zinc-200"
                       onClick={() => setIsChannelsCollapsed((prev) => !prev)}
@@ -799,7 +799,7 @@ export default function MessagesPage() {
 
                 {/* 2. DİREKT MESAJLAR SECTION */}
                 <div className="space-y-1">
-                  <div className="flex items-center justify-between px-2 py-1 font-bold text-2xs text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+                  <div className="flex items-center justify-between px-2 py-1 font-bold text-2xs text-muted-foreground uppercase tracking-wider">
                     <button
                       className="flex items-center gap-1 transition-colors hover:text-zinc-800 dark:hover:text-zinc-200"
                       onClick={() => setIsDmsCollapsed((prev) => !prev)}
@@ -829,7 +829,7 @@ export default function MessagesPage() {
                     <div className="space-y-0.5">
                       {directChannels.length === 0 ? (
                         <div className="my-1 rounded-xl border border-border border-dashed p-3 text-center">
-                          <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+                          <p className="text-2xs text-muted-foreground">
                             Henüz bir direkt mesaj yok.
                           </p>
                           <button
@@ -916,7 +916,7 @@ export default function MessagesPage() {
                       <Lock className="h-3 w-3 shrink-0 text-muted-foreground" />
                     ) : null}
                   </div>
-                  <p className="max-w-[140px] truncate text-3xs text-zinc-500 sm:max-w-xs sm:text-xs dark:text-zinc-400">
+                  <p className="max-w-[140px] truncate text-3xs text-muted-foreground sm:max-w-xs sm:text-xs">
                     {selectedChannel.type === "Direct"
                       ? getChannelDisplayInfo(selectedChannel).subtitle
                       : selectedChannel.description ||
@@ -940,7 +940,7 @@ export default function MessagesPage() {
                   <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-foreground dark:text-zinc-200">
                     Sohbet Başlatın
                   </h3>
-                  <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+                  <p className="mt-1 max-w-sm text-xs text-muted-foreground dark:text-muted-foreground">
                     Bu konuşmada henüz bir mesaj bulunmuyor. Aşağıdan bir mesaj
                     yazabilir veya CRM kartı ekleyebilirsiniz.
                   </p>
@@ -982,7 +982,7 @@ export default function MessagesPage() {
                             </div>
                             <div className="flex items-center gap-2">
                               {msg.isEdited && (
-                                <span className="font-normal text-3xs text-amber-600 italic dark:text-amber-400">
+                                <span className="font-normal text-3xs text-amber-700 italic dark:text-amber-400">
                                   (düzenlendi)
                                 </span>
                               )}
@@ -1048,7 +1048,7 @@ export default function MessagesPage() {
                                 type="button"
                               >
                                 {copiedMessageId === msg.id ? (
-                                  <Check className="h-3 w-3 text-emerald-600" />
+                                  <Check className="h-3 w-3 text-emerald-700 dark:text-emerald-300" />
                                 ) : (
                                   <Copy className="h-3 w-3" />
                                 )}
@@ -1064,7 +1064,7 @@ export default function MessagesPage() {
                                 </button>
                               )}
                               <button
-                                className="rounded p-1 text-red-600 hover:bg-amber-100 dark:hover:bg-amber-900"
+                                className="rounded p-1 text-red-600 dark:text-red-400 hover:bg-amber-100 dark:hover:bg-amber-900"
                                 onClick={() => handleDeleteMessage(msg)}
                                 title="Sil"
                                 type="button"
@@ -1103,7 +1103,7 @@ export default function MessagesPage() {
                             })}
                           </span>
                           {msg.isEdited && (
-                            <span className="text-3xs text-muted-foreground italic dark:text-zinc-500">
+                            <span className="text-3xs text-muted-foreground italic">
                               (düzenlendi)
                             </span>
                           )}
@@ -1117,13 +1117,13 @@ export default function MessagesPage() {
                               className={`absolute -top-7 z-10 hidden items-center gap-0.5 rounded-lg border border-border bg-card p-0.5 shadow-md group-hover/bubble:flex dark:border-border dark:bg-card ${ isMe ? "right-0" : "left-0" }`}
                             >
                               <button
-                                className="rounded-md p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                                className="rounded-md p-1 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
                                 onClick={() => handleCopyMessage(msg)}
                                 title="Mesajı Kopyala"
                                 type="button"
                               >
                                 {copiedMessageId === msg.id ? (
-                                  <Check className="h-3.5 w-3.5 text-emerald-600" />
+                                  <Check className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                                 ) : (
                                   <Copy className="h-3.5 w-3.5" />
                                 )}
@@ -1131,7 +1131,7 @@ export default function MessagesPage() {
 
                               {isMe && msg.senderType !== "Customer" && (
                                 <button
-                                  className="rounded-md p-1 text-zinc-500 hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                                  className="rounded-md p-1 text-muted-foreground hover:bg-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
                                   onClick={() => handleStartEdit(msg)}
                                   title="Mesajı Düzenle"
                                   type="button"
@@ -1142,7 +1142,7 @@ export default function MessagesPage() {
 
                               {msg.senderType !== "Customer" && (
                                 <button
-                                  className="rounded-md p-1 text-zinc-500 hover:bg-red-50 hover:text-red-600 dark:text-zinc-400 dark:hover:bg-red-950/40"
+                                  className="rounded-md p-1 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:hover:text-red-400 dark:text-zinc-400 dark:hover:bg-red-950/40"
                                   onClick={() => handleDeleteMessage(msg)}
                                   title="Mesajı Sil"
                                   type="button"
@@ -1306,7 +1306,7 @@ export default function MessagesPage() {
                   </div>
                   <button
                     aria-label="Dahili not modunu kapat"
-                    className="text-amber-700 hover:text-amber-900 dark:hover:text-amber-100"
+                    className="text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-100"
                     onClick={() => setIsInternalNote(false)}
                     type="button"
                   >
@@ -1320,25 +1320,25 @@ export default function MessagesPage() {
                 <div className="flex shrink-0 items-center gap-1">
                   {/* Entity Embed Button */}
                   <Button
-                    className="h-7 gap-1.5 px-2 text-2xs text-zinc-600 hover:text-blue-600 sm:h-8 sm:px-3 sm:text-xs dark:text-zinc-400 dark:text-zinc-400 dark:hover:text-foreground"
+                    className="h-7 gap-1.5 px-2 text-2xs text-zinc-600 hover:text-blue-600 dark:hover:text-blue-400 sm:h-8 sm:px-3 sm:text-xs dark:text-zinc-400 dark:text-zinc-400 dark:hover:text-foreground"
                     onClick={() => setIsEntityPickerOpen(true)}
                     size="sm"
                     type="button"
                     variant="ghost"
                   >
-                    <Plus className="h-3.5 w-3.5 text-blue-600" />
+                    <Plus className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                     <span>CRM Kartı</span>
                   </Button>
 
                   {/* Canned Responses Trigger */}
                   <Button
-                    className="h-7 gap-1.5 px-2 text-2xs text-zinc-600 hover:text-emerald-600 sm:h-8 sm:px-3 sm:text-xs dark:text-zinc-400 dark:text-zinc-400 dark:hover:text-foreground"
+                    className="h-7 gap-1.5 px-2 text-2xs text-zinc-600 hover:text-emerald-700 dark:hover:text-emerald-300 sm:h-8 sm:px-3 sm:text-xs dark:text-zinc-400 dark:text-zinc-400 dark:hover:text-foreground"
                     onClick={() => setIsCannedResponsesOpen(true)}
                     size="sm"
                     type="button"
                     variant="ghost"
                   >
-                    <Zap className="h-3.5 w-3.5 text-emerald-600" />
+                    <Zap className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                     <span>Hazır Yanıt</span>
                   </Button>
 
@@ -1348,7 +1348,7 @@ export default function MessagesPage() {
                       className={`h-7 gap-1.5 px-2 font-medium text-2xs sm:h-8 sm:px-3 sm:text-xs ${
                         isInternalNote
                           ? "bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200"
-                          : "text-zinc-600 hover:text-amber-600 dark:text-zinc-400 dark:hover:text-zinc-400"
+                          : "text-zinc-600 hover:text-amber-700 dark:hover:text-amber-400 dark:text-zinc-400 dark:hover:text-zinc-400"
                       }`}
                       onClick={() => setIsInternalNote(!isInternalNote)}
                       size="sm"
@@ -1412,7 +1412,7 @@ export default function MessagesPage() {
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-foreground dark:text-zinc-200">
                 Bir Sohbet Seçin
               </h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted-foreground dark:text-muted-foreground">
                 Görüntülemek için sol listeden bir kanal veya direkt mesaj
                 seçin.
               </p>
@@ -1441,7 +1441,7 @@ export default function MessagesPage() {
                 <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground">
                   Sohbete CRM Kartı Ekle
                 </DialogTitle>
-                <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="truncate text-xs text-muted-foreground">
                   Paylaşmak istediğiniz varlığı seçin ve konuşmaya interaktif
                   canlı kart olarak ekleyin.
                 </p>
@@ -1460,21 +1460,21 @@ export default function MessagesPage() {
             {/* Type Selector Tabs */}
             <div className="my-3 flex shrink-0 rounded-xl bg-muted p-1">
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Customer" ? "bg-card text-blue-600 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Customer" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
                 onClick={() => setEntityType("Customer")}
                 type="button"
               >
                 Müşteriler
               </button>
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Order" ? "bg-card text-blue-600 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Order" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
                 onClick={() => setEntityType("Order")}
                 type="button"
               >
                 Siparişler
               </button>
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Product" ? "bg-card text-blue-600 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${ entityType === "Product" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400" }`}
                 onClick={() => setEntityType("Product")}
                 type="button"
               >
@@ -1518,12 +1518,12 @@ export default function MessagesPage() {
                     }}
                   >
                     <div className="flex min-w-0 items-center gap-2.5 pr-2">
-                      <Users2 className="h-4 w-4 shrink-0 text-blue-600" />
+                      <Users2 className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
                       <div className="min-w-0">
                         <div className="truncate font-bold text-xs text-zinc-900 dark:text-foreground">
                           {cust.name}
                         </div>
-                        <div className="truncate text-2xs text-zinc-500 dark:text-zinc-400">
+                        <div className="truncate text-2xs text-muted-foreground">
                           {cust.email || "E-posta yok"}
                         </div>
                       </div>
@@ -1553,12 +1553,12 @@ export default function MessagesPage() {
                     }}
                   >
                     <div className="flex min-w-0 items-center gap-2.5 pr-2">
-                      <ShoppingCart className="h-4 w-4 shrink-0 text-emerald-600" />
+                      <ShoppingCart className="h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-300" />
                       <div className="min-w-0">
                         <div className="truncate font-bold text-xs text-zinc-900 dark:text-foreground">
                           {ord.orderNumber} - {ord.customerName}
                         </div>
-                        <div className="truncate text-2xs text-zinc-500 dark:text-zinc-400">
+                        <div className="truncate text-2xs text-muted-foreground">
                           {ord.totalAmount} {ord.currency} • {ord.status}
                         </div>
                       </div>
@@ -1588,12 +1588,12 @@ export default function MessagesPage() {
                     }}
                   >
                     <div className="flex min-w-0 items-center gap-2.5 pr-2">
-                      <Package className="h-4 w-4 shrink-0 text-blue-600" />
+                      <Package className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
                       <div className="min-w-0">
                         <div className="truncate font-bold text-xs text-zinc-900 dark:text-foreground">
                           {prod.name}
                         </div>
-                        <div className="truncate text-2xs text-zinc-500 dark:text-zinc-400">
+                        <div className="truncate text-2xs text-muted-foreground">
                           SKU: {prod.sku} • {prod.sellingPrice} ₺
                         </div>
                       </div>
@@ -1632,7 +1632,7 @@ export default function MessagesPage() {
                 <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground">
                   Hazır Yanıt Şablonları
                 </DialogTitle>
-                <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="truncate text-xs text-muted-foreground">
                   Sık kullanılan yanıtı seçin, mesaj kutunuza otomatik eklensin.
                 </p>
               </div>
@@ -1668,7 +1668,7 @@ export default function MessagesPage() {
                         /{item.shortcut}
                       </span>
                     </div>
-                    <p className="mt-1 line-clamp-2 text-2xs text-zinc-500 dark:text-zinc-400">
+                    <p className="mt-1 line-clamp-2 text-2xs text-muted-foreground">
                       {item.content}
                     </p>
                   </div>
@@ -1762,7 +1762,7 @@ export default function MessagesPage() {
                 <div className="flex items-center gap-2 pt-2">
                   <input
                     checked={newChannelIsPrivate}
-                    className="rounded border-border text-blue-600"
+                    className="rounded border-border text-blue-600 dark:text-blue-400"
                     id="is-private"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setNewChannelIsPrivate(e.target.checked)
@@ -1821,7 +1821,7 @@ export default function MessagesPage() {
                 <DialogTitle className="truncate font-bold text-sm text-zinc-900 sm:text-base dark:text-foreground">
                   Yeni Direkt Mesaj
                 </DialogTitle>
-                <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="truncate text-xs text-muted-foreground">
                   Çalışma arkadaşınızı seçerek doğrudan mesajlaşmaya başlayın.
                 </p>
               </div>
@@ -1856,8 +1856,8 @@ export default function MessagesPage() {
             <div className="max-h-72 space-y-1 overflow-y-auto pr-1">
               {loadingTeamUsers ? (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-                  <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
+                  <Loader2 className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+                  <p className="mt-2 text-xs text-muted-foreground">
                     Ekip üyeleri yükleniyor...
                   </p>
                 </div>
@@ -1915,7 +1915,7 @@ export default function MessagesPage() {
                               {roleName}
                             </span>
                           </div>
-                          <p className="truncate text-2xs text-zinc-500 dark:text-zinc-400">
+                          <p className="truncate text-2xs text-muted-foreground">
                             {u.email}
                           </p>
                         </div>

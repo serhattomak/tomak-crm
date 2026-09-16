@@ -61,10 +61,10 @@ function getCategoryIcon(category: RealtimeNotification["category"]) {
       );
     case "order":
       return (
-        <ShoppingCart className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+        <ShoppingCart className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
       );
     case "shipment":
-      return <Truck className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
+      return <Truck className="h-4 w-4 text-amber-700 dark:text-amber-400" />;
     case "support":
       return (
         <Headphones className="h-4 w-4 text-blue-600 dark:text-blue-400" />
@@ -236,7 +236,7 @@ function NotificationEmptyState({
 }) {
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800">
         <Bell className="h-6 w-6" />
       </div>
       <h4 className="mt-3 font-semibold text-xs text-zinc-800 dark:text-zinc-200">
@@ -282,8 +282,8 @@ function NotificationHeader({
             <span
               className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.2 font-bold text-3xs ${
                 isConnected
-                  ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400"
-                  : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                  ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
+                  : "bg-zinc-100 text-muted-foreground dark:bg-zinc-800"
               }`}
               title={isConnected ? "SignalR Canlı Bağlı" : "Yeniden Bağlanıyor"}
             >
@@ -368,14 +368,14 @@ function NotificationTabs({
   return (
     <div className="flex items-center gap-1 border-border border-b bg-zinc-50/70 px-3 py-1.5 dark:bg-zinc-800/40">
       <button
-        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${ activeFilter === "all" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${ activeFilter === "all" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
         onClick={onSelectAll}
         type="button"
       >
         Tümü ({totalCount})
       </button>
       <button
-        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${ activeFilter === "unread" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+        className={`rounded-lg px-2.5 py-1 font-semibold text-2xs transition-all ${ activeFilter === "unread" ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
         onClick={onSelectUnread}
         type="button"
       >
@@ -524,7 +524,7 @@ export function NotificationCenter({
           {notifications.length > 0 ? (
             <div className="flex items-center justify-between border-border border-t bg-zinc-50/50 p-2.5 dark:bg-zinc-800/30">
               <button
-                className="font-semibold text-2xs text-zinc-500 transition-colors hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400"
+                className="font-semibold text-2xs text-muted-foreground transition-colors hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400"
                 onClick={clearAll}
                 type="button"
               >

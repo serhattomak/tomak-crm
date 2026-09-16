@@ -201,7 +201,7 @@ export default function RolesManagementPage() {
             <Shield className="h-6 w-6 text-blue-500" />
             Roller & Yetkiler
           </h1>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             Rollerin yetki politikalarını ayrıntılı biçimde yapılandırın.
             Değişiklikler kaydedildiğinde anında geçerli olur.
           </p>
@@ -234,7 +234,7 @@ export default function RolesManagementPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
         {/* Roles List */}
         <div className="space-y-2 rounded-2xl border border-border bg-card p-4 shadow-xs md:col-span-4">
-          <div className="mb-2 px-2 font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+          <div className="mb-2 px-2 font-bold text-2xs text-muted-foreground uppercase tracking-wider">
             Available Roles ({roles.length})
           </div>
 
@@ -267,7 +267,7 @@ export default function RolesManagementPage() {
                       </span>
                     </div>
                     {role.description && (
-                      <p className="mt-1 line-clamp-2 text-2xs text-zinc-500 dark:text-zinc-400">
+                      <p className="mt-1 line-clamp-2 text-2xs text-muted-foreground">
                         {role.description}
                       </p>
                     )}
@@ -287,12 +287,12 @@ export default function RolesManagementPage() {
                   <h2 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
                     {selectedRole.name}
                     {selectedRole.isDefault && (
-                      <span className="rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-semibold text-3xs text-amber-700 dark:text-amber-300">
+                      <span className="rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-semibold text-3xs text-amber-700 dark:text-amber-400 dark:text-amber-300">
                         Sistem Varsayılanı
                       </span>
                     )}
                   </h2>
-                  <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="mt-0.5 text-xs text-muted-foreground">
                     {selectedRole.description || "No description provided."}
                   </p>
                 </div>
@@ -300,7 +300,7 @@ export default function RolesManagementPage() {
                 {!selectedRole.isDefault && (
                   <PermissionGate permission="Roles.Delete">
                     <button
-                      className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                      className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                       onClick={() => handleDeleteRole(selectedRole.id)}
                       title="Rolü Sil"
                     >
@@ -329,7 +329,7 @@ export default function RolesManagementPage() {
                           >
                             <input
                               checked={isChecked}
-                              className="mt-0.5 rounded border-border text-blue-600 focus:ring-blue-500"
+                              className="mt-0.5 rounded border-border text-blue-600 dark:text-blue-400 focus:ring-blue-500"
                               onChange={() => togglePermission(perm.id)}
                               type="checkbox"
                             />
@@ -341,7 +341,7 @@ export default function RolesManagementPage() {
                                 {perm.code}
                               </div>
                               {perm.description && (
-                                <div className="mt-0.5 text-2xs text-zinc-500 dark:text-zinc-400">
+                                <div className="mt-0.5 text-2xs text-muted-foreground">
                                   {perm.description}
                                 </div>
                               )}
@@ -356,7 +356,7 @@ export default function RolesManagementPage() {
 
               {/* Action Bar */}
               <div className="mt-6 flex items-center justify-between border-border border-t pt-4">
-                <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="font-medium text-xs text-muted-foreground">
                   {selectedPermIds.size} permission
                   {selectedPermIds.size === 1 ? "" : "s"} selected
                 </span>

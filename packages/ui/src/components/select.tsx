@@ -26,7 +26,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground opacity-80 dark:text-zinc-500" />
+        <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground opacity-80" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -109,7 +109,7 @@ function SelectLabel({
   return (
     <SelectPrimitive.Label
       className={cn(
-        "px-2.5 py-1.5 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500",
+        "px-2.5 py-1.5 font-bold text-3xs text-muted-foreground uppercase tracking-wider",
         className
       )}
       {...props}

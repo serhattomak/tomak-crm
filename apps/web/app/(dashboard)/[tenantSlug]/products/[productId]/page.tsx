@@ -370,7 +370,7 @@ export default function ProductDetailPage() {
       <div className="flex h-96 items-center justify-center rounded-3xl border border-border bg-card shadow-xs">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-          <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="font-medium text-xs text-muted-foreground">
             Ürün detayları yükleniyor...
           </span>
         </div>
@@ -415,11 +415,11 @@ export default function ProductDetailPage() {
     switch (type) {
       case "In":
       case "Return":
-        return <ArrowDownRight className="h-3.5 w-3.5 text-emerald-600" />;
+        return <ArrowDownRight className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />;
       case "Out":
-        return <ArrowUpRight className="h-3.5 w-3.5 text-rose-600" />;
+        return <ArrowUpRight className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />;
       case "Adjustment":
-        return <RotateCcw className="h-3.5 w-3.5 text-blue-600" />;
+        return <RotateCcw className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />;
       default:
         return (
           <History className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />
@@ -471,7 +471,7 @@ export default function ProductDetailPage() {
               {product.type === "Physical" ? (
                 <Package className="h-6 w-6" />
               ) : (
-                <Zap className="h-6 w-6 text-purple-600" />
+                <Zap className="h-6 w-6 text-purple-600 dark:text-purple-400" />
               )}
             </div>
 
@@ -488,12 +488,12 @@ export default function ProductDetailPage() {
                   {product.type}
                 </span>
                 {product.trackInventory && product.isLowStock && (
-                  <span className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-3xs text-amber-700 dark:text-amber-300">
+                  <span className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-3xs text-amber-700 dark:text-amber-400 dark:text-amber-300">
                     Kritik Stok
                   </span>
                 )}
               </div>
-              <div className="mt-0.5 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
                 <span>{product.categoryName || "Kategorisiz"}</span>
                 {product.brand && (
                   <>
@@ -521,7 +521,7 @@ export default function ProductDetailPage() {
                 onClick={() => setIsStockAdjustModalOpen(true)}
                 type="button"
               >
-                <History className="h-3.5 w-3.5 text-blue-600" />
+                <History className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 <span>Stok Hareketi İşle</span>
               </button>
             </PermissionGate>
@@ -550,7 +550,7 @@ export default function ProductDetailPage() {
               <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                 Ürün Görselleri
               </h3>
-              <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold text-3xs text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+              <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold text-3xs text-muted-foreground dark:bg-zinc-800">
                 {(product.images ?? []).length}/{MAX_PRODUCT_IMAGES}
               </span>
             </div>
@@ -585,12 +585,12 @@ export default function ProductDetailPage() {
               >
                 {uploadingImages ? (
                   <>
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-600" />
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-600 dark:text-blue-400" />
                     <span>Yükleniyor...</span>
                   </>
                 ) : (
                   <>
-                    <ImagePlus className="h-3.5 w-3.5 text-blue-600" />
+                    <ImagePlus className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                     <span>Görsel Yükle (JPG/PNG/WebP, 5MB)</span>
                   </>
                 )}
@@ -619,7 +619,7 @@ export default function ProductDetailPage() {
 
             <div className="space-y-2 text-xs">
               <div className="flex items-center justify-between border-border border-b py-1.5">
-                <span className="text-zinc-500 dark:text-zinc-400">
+                <span className="text-muted-foreground">
                   Satış Fiyatı (KDV Hariç)
                 </span>
                 <span className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
@@ -631,7 +631,7 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="flex items-center justify-between border-border border-b py-1.5">
-                <span className="text-zinc-500 dark:text-zinc-400">
+                <span className="text-muted-foreground">
                   KDV Oranı & Dahil Fiyat
                 </span>
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -644,7 +644,7 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="flex items-center justify-between border-border border-b py-1.5">
-                <span className="text-zinc-500 dark:text-zinc-400">
+                <span className="text-muted-foreground">
                   Alış / Maliyet Fiyatı
                 </span>
                 <span className="font-semibold text-zinc-600 dark:text-zinc-400">
@@ -659,7 +659,7 @@ export default function ProductDetailPage() {
                 <span className="font-bold text-zinc-700 dark:text-zinc-300">
                   Birim Başına Brüt Kar
                 </span>
-                <span className="font-extrabold text-emerald-600 text-sm">
+                <span className="font-extrabold text-emerald-700 dark:text-emerald-300 text-sm">
                   ₺
                   {grossProfit.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -678,7 +678,7 @@ export default function ProductDetailPage() {
 
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="rounded-2xl bg-blue-50/60 dark:bg-blue-950/60 p-3">
-                  <span className="font-semibold text-3xs text-blue-600 uppercase">
+                  <span className="font-semibold text-3xs text-blue-600 dark:text-blue-400 uppercase">
                     Mevcut Stok
                   </span>
                   <div className="mt-1 font-extrabold text-blue-950 text-lg">
@@ -687,7 +687,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
+                  <span className="font-semibold text-3xs text-muted-foreground uppercase">
                     Kullanılabilir
                   </span>
                   <div className="mt-1 font-extrabold text-lg text-zinc-900 dark:text-zinc-100">
@@ -696,7 +696,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
+                  <span className="font-semibold text-3xs text-muted-foreground uppercase">
                     Rezerve
                   </span>
                   <div className="mt-1 font-bold text-sm text-zinc-700 dark:text-zinc-300">
@@ -705,7 +705,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
+                  <span className="font-semibold text-3xs text-muted-foreground uppercase">
                     Kritik Eşik
                   </span>
                   <div className="mt-1 font-bold text-sm text-zinc-700 dark:text-zinc-300">
@@ -770,7 +770,7 @@ export default function ProductDetailPage() {
           <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
             {tabs.map((tab) => (
               <button
-                className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === tab.id ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+                className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === tab.id ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 type="button"
@@ -789,7 +789,7 @@ export default function ProductDetailPage() {
                   <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                     SEO & Vitrin
                   </h4>
-                  <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold font-mono text-3xs text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+                  <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-bold font-mono text-3xs text-muted-foreground dark:bg-zinc-800">
                     /{product.slug ?? slugifyTr(product.name)}
                   </span>
                 </div>
@@ -801,7 +801,7 @@ export default function ProductDetailPage() {
                       </p>
                     )}
                     {product.seoDescription && (
-                      <p className="text-zinc-500 dark:text-zinc-400">
+                      <p className="text-muted-foreground">
                         {product.seoDescription}
                       </p>
                     )}
@@ -885,7 +885,7 @@ export default function ProductDetailPage() {
                     Son Stok Hareketleri
                   </h4>
                   <button
-                    className="font-semibold text-blue-600 text-xs hover:underline"
+                    className="font-semibold text-blue-600 dark:text-blue-400 text-xs hover:underline"
                     onClick={() => setActiveTab("movements")}
                     type="button"
                   >
@@ -962,7 +962,7 @@ export default function ProductDetailPage() {
               ) : (
                 <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs">
                   <Table>
-                    <TableHeader className="border-border bg-zinc-50/50 text-zinc-500 dark:bg-zinc-800/30 dark:text-zinc-400">
+                    <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
                       <TableRow>
                         <TableHead className="w-12 px-3 py-3 h-auto">Görsel</TableHead>
                         <TableHead className="px-4 py-3 h-auto">Varyant Adı</TableHead>
@@ -993,7 +993,7 @@ export default function ProductDetailPage() {
                                   src={variantCover}
                                 />
                               ) : (
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-muted-foreground dark:bg-zinc-800">
                                   <Package className="h-4 w-4" />
                                 </div>
                               )}
@@ -1001,7 +1001,7 @@ export default function ProductDetailPage() {
                             <TableCell className="px-4 py-3.5 font-bold text-zinc-900 dark:text-zinc-100">
                               {v.name}
                             </TableCell>
-                            <TableCell className="px-4 py-3.5 font-mono text-2xs text-zinc-500 dark:text-zinc-400">
+                            <TableCell className="px-4 py-3.5 font-mono text-2xs text-muted-foreground">
                               {v.sku || v.barcode || "—"}
                             </TableCell>
                             <TableCell className="px-4 py-3.5 text-right font-semibold text-zinc-800 dark:text-zinc-200">
@@ -1016,7 +1016,7 @@ export default function ProductDetailPage() {
                             <TableCell className="py-3.5 pr-4 pl-2 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
-                                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-500 dark:hover:bg-zinc-800"
                                   onClick={() => setEditingVariant(v)}
                                   title="Varyantı Düzenle"
                                   type="button"
@@ -1024,7 +1024,7 @@ export default function ProductDetailPage() {
                                   <Edit className="h-3.5 w-3.5" />
                                 </button>
                                 <button
-                                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/50"
+                                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500 dark:hover:bg-rose-950/50"
                                   onClick={() => handleDeleteVariant(v.id)}
                                   title="Varyantı Sil"
                                   type="button"
@@ -1091,7 +1091,7 @@ export default function ProductDetailPage() {
                           </span>
                         </div>
 
-                        <div className="mt-1 flex flex-wrap items-center gap-3 text-2xs text-zinc-500 dark:text-zinc-400">
+                        <div className="mt-1 flex flex-wrap items-center gap-3 text-2xs text-muted-foreground">
                           <span>
                             Önceki: <strong>{mov.previousStock}</strong> → Yeni:{" "}
                             <strong>
@@ -1132,7 +1132,7 @@ export default function ProductDetailPage() {
                 </h4>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
-                    <span className="font-medium text-2xs text-zinc-500 dark:text-zinc-400">
+                    <span className="font-medium text-2xs text-muted-foreground">
                       Maliyet (Alış)
                     </span>
                     <div className="mt-1 font-extrabold text-lg text-zinc-900 dark:text-zinc-100">
@@ -1144,10 +1144,10 @@ export default function ProductDetailPage() {
                   </div>
 
                   <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
-                    <span className="font-medium text-2xs text-zinc-500 dark:text-zinc-400">
+                    <span className="font-medium text-2xs text-muted-foreground">
                       Satış Fiyatı
                     </span>
-                    <div className="mt-1 font-extrabold text-blue-600 text-lg">
+                    <div className="mt-1 font-extrabold text-blue-600 dark:text-blue-400 text-lg">
                       ₺
                       {product.sellingPrice.toLocaleString("tr-TR", {
                         minimumFractionDigits: 2,
@@ -1180,7 +1180,7 @@ export default function ProductDetailPage() {
                   <h4 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                     Fiyat Değişiklik Geçmişi
                   </h4>
-                  <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-2xs text-muted-foreground">
                     Ürünün alış ve satış fiyatlarında yapılan tüm güncellemeler
                     otomatik kaydedilir.
                   </p>
@@ -1230,14 +1230,14 @@ export default function ProductDetailPage() {
                                 : "bg-zinc-50/50 opacity-60 dark:bg-zinc-800/30"
                             }`}
                           >
-                            <div className="flex items-center justify-between text-2xs text-zinc-500 dark:text-zinc-400">
+                            <div className="flex items-center justify-between text-2xs text-muted-foreground">
                               <span>Satış Fiyatı</span>
                               {sellingChanged && (
                                 <span
                                   className={`flex items-center font-bold text-3xs ${
                                     sellingDiff >= 0
-                                      ? "text-emerald-600"
-                                      : "text-rose-600"
+                                      ? "text-emerald-700 dark:text-emerald-300"
+                                      : "text-rose-600 dark:text-rose-400"
                                   }`}
                                 >
                                   {sellingDiff >= 0 ? (
@@ -1254,7 +1254,7 @@ export default function ProductDetailPage() {
                             <div className="mt-1 flex items-center gap-2 font-bold">
                               {hist.oldSellingPrice == null ? null : (
                                 <>
-                                  <span className="text-muted-foreground line-through dark:text-zinc-500">
+                                  <span className="text-muted-foreground line-through">
                                     ₺
                                     {hist.oldSellingPrice.toLocaleString(
                                       "tr-TR",
@@ -1282,14 +1282,14 @@ export default function ProductDetailPage() {
                                 : "bg-zinc-50/50 opacity-60 dark:bg-zinc-800/30"
                             }`}
                           >
-                            <div className="flex items-center justify-between text-2xs text-zinc-500 dark:text-zinc-400">
+                            <div className="flex items-center justify-between text-2xs text-muted-foreground">
                               <span>Maliyet (Alış)</span>
                               {costChanged && (
                                 <span
                                   className={`flex items-center font-bold text-3xs ${
                                     costDiff <= 0
-                                      ? "text-emerald-600"
-                                      : "text-amber-600"
+                                      ? "text-emerald-700 dark:text-emerald-300"
+                                      : "text-amber-700 dark:text-amber-400"
                                   }`}
                                 >
                                   {costDiff <= 0 ? (
@@ -1306,7 +1306,7 @@ export default function ProductDetailPage() {
                             <div className="mt-1 flex items-center gap-2 font-bold">
                               {hist.oldCostPrice == null ? null : (
                                 <>
-                                  <span className="text-muted-foreground line-through dark:text-zinc-500">
+                                  <span className="text-muted-foreground line-through">
                                     ₺
                                     {hist.oldCostPrice.toLocaleString("tr-TR", {
                                       minimumFractionDigits: 2,
@@ -2169,7 +2169,7 @@ function EditProductModal({
                 </div>
                 <button
                   aria-label="SKU oto-üret"
-                  className="rounded-xl border border-border p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, sku: generateSku() })
                   }
@@ -2194,7 +2194,7 @@ function EditProductModal({
                 </div>
                 <button
                   aria-label="Barkod oto-üret"
-                  className="rounded-xl border border-border p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, barcode: generateBarcode() })
                   }

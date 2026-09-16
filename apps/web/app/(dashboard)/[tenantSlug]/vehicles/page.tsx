@@ -510,7 +510,7 @@ export default function VehiclesPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 border-border border-b pb-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Link
               className="flex items-center gap-1 hover:text-zinc-800 dark:hover:text-zinc-200"
               href={`/${tenantSlug}`}
@@ -532,7 +532,7 @@ export default function VehiclesPage() {
               ULTRAND Engine
             </span>
           </div>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             Araç teknik kataloğu, çoklu kıyaslama masası, patlatılmış şemalı EPC
             parça kataloğu ve servis bültenleri
           </p>
@@ -583,7 +583,7 @@ export default function VehiclesPage() {
       {/* Top Metric Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-semibold text-xs">Toplam Araç Modeli</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Car className="h-4 w-4" />
@@ -599,7 +599,7 @@ export default function VehiclesPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-semibold text-xs">Marka Portföyü</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
               <Tag className="h-4 w-4" />
@@ -614,9 +614,9 @@ export default function VehiclesPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-semibold text-xs">EPC Yedek Parça</span>
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Wrench className="h-4 w-4" />
             </div>
           </div>
@@ -629,9 +629,9 @@ export default function VehiclesPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex items-center justify-between text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-semibold text-xs">Teknik Doküman & TSB</span>
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
               <FileText className="h-4 w-4" />
             </div>
           </div>
@@ -650,7 +650,7 @@ export default function VehiclesPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "catalog"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("catalog")}
           type="button"
@@ -666,7 +666,7 @@ export default function VehiclesPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "compare"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("compare")}
           type="button"
@@ -684,7 +684,7 @@ export default function VehiclesPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "epc"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("epc")}
           type="button"
@@ -700,7 +700,7 @@ export default function VehiclesPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "docs"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("docs")}
           type="button"
@@ -793,7 +793,7 @@ export default function VehiclesPage() {
 
             <div className="flex items-center gap-1 self-end sm:self-auto">
               <button
-                className={`rounded-xl p-2 transition ${ catalogViewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-zinc-500 hover:bg-zinc-50" }`}
+                className={`rounded-xl p-2 transition ${ catalogViewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-muted-foreground hover:bg-zinc-50" }`}
                 onClick={() => setCatalogViewMode("grid")}
                 title="Kart Görünümü"
                 type="button"
@@ -801,7 +801,7 @@ export default function VehiclesPage() {
                 <LayoutGrid className="h-4 w-4" />
               </button>
               <button
-                className={`rounded-xl p-2 transition ${ catalogViewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-zinc-500 hover:bg-zinc-50" }`}
+                className={`rounded-xl p-2 transition ${ catalogViewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border border-border bg-card text-muted-foreground hover:bg-zinc-50" }`}
                 onClick={() => setCatalogViewMode("table")}
                 title="Tablo Görünümü"
                 type="button"
@@ -841,7 +841,7 @@ export default function VehiclesPage() {
                             <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                               {v.brand} {v.model}
                             </h3>
-                            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                            <p className="text-xs text-muted-foreground">
                               {[v.trim, v.modelYear]
                                 .filter(Boolean)
                                 .join(" · ") || "Model"}
@@ -910,7 +910,7 @@ export default function VehiclesPage() {
                           <div className="text-3xs text-muted-foreground">
                             Ref. Fiyat
                           </div>
-                          <div className="font-bold text-emerald-600 text-xs dark:text-emerald-400">
+                          <div className="font-bold text-emerald-700 text-xs dark:text-emerald-400">
                             {v.priceUsd
                               ? `$${v.priceUsd.toLocaleString()}`
                               : "—"}
@@ -947,7 +947,7 @@ export default function VehiclesPage() {
                           <Eye className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
+                          className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:text-blue-400 dark:hover:bg-blue-950/50"
                           onClick={() => {
                             setEditingVehicleId(v.id);
                             setIsCreateVehicleOpen(true);
@@ -958,7 +958,7 @@ export default function VehiclesPage() {
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
-                          className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50"
+                          className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:hover:bg-rose-950/50"
                           onClick={() =>
                             handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)
                           }
@@ -979,7 +979,7 @@ export default function VehiclesPage() {
                   <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                     Arama Kriterlerine Uygun Araç Bulunamadı
                   </h3>
-                  <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Filtreleri sıfırlayabilir veya sağ üstteki "+ Yeni Araç
                     Ekle" butonuyla yeni bir model oluşturabilirsiniz.
                   </p>
@@ -1050,7 +1050,7 @@ export default function VehiclesPage() {
                       <TableCell className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
                         {v.market || "—"}
                       </TableCell>
-                      <TableCell className="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-400">
+                      <TableCell className="px-4 py-3 font-bold text-emerald-700 dark:text-emerald-400">
                         {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
                       </TableCell>
                       <TableCell className="px-4 py-3">
@@ -1077,7 +1077,7 @@ export default function VehiclesPage() {
                             <Eye className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
+                            className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:text-blue-400 dark:hover:bg-blue-950/50"
                             onClick={() => {
                               setEditingVehicleId(v.id);
                               setIsCreateVehicleOpen(true);
@@ -1088,7 +1088,7 @@ export default function VehiclesPage() {
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
-                            className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/50"
+                            className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:hover:bg-rose-950/50"
                             onClick={() =>
                               handleDeleteVehicle(v.id, `${v.brand} ${v.model}`)
                             }
@@ -1119,7 +1119,7 @@ export default function VehiclesPage() {
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Karşılaştırma Masası ({comparedVehicles.length} Araç)
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Kendi modellerinizi ve rakipleri tüm teknik ve ticari boyutlarda
                 yan yana kıyaslayın
               </p>
@@ -1137,7 +1137,7 @@ export default function VehiclesPage() {
                     </span>
                     <button
                       aria-label="Karşılaştırmadan çıkar"
-                      className="text-muted-foreground hover:text-rose-600"
+                      className="text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400"
                       onClick={() => toggleCompare(v.id)}
                       type="button"
                     >
@@ -1175,7 +1175,7 @@ export default function VehiclesPage() {
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Karşılaştırma için en az 2 araç seçin
               </h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 "Araç Kataloğu" sekmesine giderek dilediğiniz araçların
                 altındaki "Kıyasla" butonuna tıklayabilirsiniz.
               </p>
@@ -1221,7 +1221,7 @@ export default function VehiclesPage() {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Segment
                     </TableCell>
                     {comparedVehicles.map((v) => (
@@ -1234,7 +1234,7 @@ export default function VehiclesPage() {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Model Yılı
                     </TableCell>
                     {comparedVehicles.map((v) => (
@@ -1247,7 +1247,7 @@ export default function VehiclesPage() {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Kasa Tipi / Kapı
                     </TableCell>
                     {comparedVehicles.map((v) => (
@@ -1263,7 +1263,7 @@ export default function VehiclesPage() {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Pazar & Ülke
                     </TableCell>
                     {comparedVehicles.map((v) => (
@@ -1287,7 +1287,7 @@ export default function VehiclesPage() {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Motor & Yakıt
                     </TableCell>
                     {comparedVehicles.map((v) => (
@@ -1302,7 +1302,7 @@ export default function VehiclesPage() {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Şanzıman & Çekiş
                     </TableCell>
                     {comparedVehicles.map((v) => (
@@ -1317,7 +1317,7 @@ export default function VehiclesPage() {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Maksimum Güç
                     </TableCell>
                     {comparedVehicles.map((v) => {
@@ -1336,7 +1336,7 @@ export default function VehiclesPage() {
                     })}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       0-100 km/s Hızlanma
                     </TableCell>
                     {comparedVehicles.map((v) => {
@@ -1365,12 +1365,12 @@ export default function VehiclesPage() {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Referans Fiyat (USD)
                     </TableCell>
                     {comparedVehicles.map((v) => (
                       <TableCell
-                        className="px-4 py-2.5 font-bold text-emerald-600 dark:text-emerald-400"
+                        className="px-4 py-2.5 font-bold text-emerald-700 dark:text-emerald-400"
                         key={v.id}
                       >
                         {v.priceUsd ? `$${v.priceUsd.toLocaleString()}` : "—"}
@@ -1378,7 +1378,7 @@ export default function VehiclesPage() {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-zinc-500">
+                    <TableCell className="py-2.5 pr-4 pl-5 font-medium text-muted-foreground">
                       Araç Garantisi
                     </TableCell>
                     {comparedVehicles.map((v) => {
@@ -1449,7 +1449,7 @@ export default function VehiclesPage() {
                             className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 font-medium text-2xs transition ${
                               selectedSubsystemId === sub.id
                                 ? "bg-blue-100/80 font-bold text-blue-900 dark:bg-blue-900/50 dark:text-blue-200"
-                                : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                                : "text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                             }`}
                             key={sub.id}
                             onClick={() => setSelectedSubsystemId(sub.id)}
@@ -1575,7 +1575,7 @@ export default function VehiclesPage() {
                     value={epcSearch}
                   />
                 </div>
-                <span className="font-bold text-2xs text-zinc-500">
+                <span className="font-bold text-2xs text-muted-foreground">
                   {filteredParts.length} Parça
                 </span>
               </div>
@@ -1609,14 +1609,14 @@ export default function VehiclesPage() {
                       </div>
 
                       <div className="flex items-center gap-2 text-xs">
-                        <span className="text-zinc-500 dark:text-zinc-400">
+                        <span className="text-muted-foreground">
                           ×{p.qtyPerAssembly}
                         </span>
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                        <span className="font-bold text-emerald-700 dark:text-emerald-400">
                           ${p.unitPrice}
                         </span>
                         <button
-                          className="rounded-lg p-1 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/50"
+                          className="rounded-lg p-1 text-muted-foreground transition hover:bg-blue-50 hover:text-blue-600 dark:hover:text-blue-400 dark:hover:bg-blue-950/50"
                           onClick={(e) => {
                             e.stopPropagation();
                             setEditingPartId(p.id);
@@ -1655,7 +1655,7 @@ export default function VehiclesPage() {
                     </h3>
                   </div>
                   <button
-                    className="flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                    className="flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-200 dark:hover:bg-zinc-700"
                     onClick={() => {
                       setEditingPartId(selectedPart.id);
                       setIsCreatePartOpen(true);
@@ -1703,7 +1703,7 @@ export default function VehiclesPage() {
                   </div>
                   <div className="flex justify-between border-border border-b pb-1.5">
                     <span className="text-muted-foreground">Birim Fiyat:</span>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                    <span className="font-bold text-emerald-700 dark:text-emerald-400">
                       ${selectedPart.unitPrice}
                     </span>
                   </div>
@@ -1823,7 +1823,7 @@ export default function VehiclesPage() {
             </div>
 
             <div className="flex items-center gap-3 self-end lg:self-auto">
-              <span className="font-bold text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-bold text-xs text-muted-foreground">
                 {filteredDocuments.length} Doküman
               </span>
               <button
@@ -1855,7 +1855,7 @@ export default function VehiclesPage() {
                       </div>
                       <div className="flex items-center gap-1">
                         <button
-                          className="rounded-lg p-1.5 text-muted-foreground opacity-0 transition hover:bg-rose-50 hover:text-rose-600 group-hover:opacity-100 dark:hover:bg-rose-950/40"
+                          className="rounded-lg p-1.5 text-muted-foreground opacity-0 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 group-hover:opacity-100 dark:hover:bg-rose-950/40"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDeleteDocument(doc.id, doc.name);
@@ -1916,7 +1916,7 @@ export default function VehiclesPage() {
                     >
                       {doc.fileUrl && (
                         <a
-                          className="rounded-lg p-1 text-muted-foreground transition hover:bg-zinc-100 hover:text-blue-600 dark:hover:bg-zinc-800"
+                          className="rounded-lg p-1 text-muted-foreground transition hover:bg-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 dark:hover:bg-zinc-800"
                           download={doc.name}
                           href={doc.fileUrl}
                           rel="noreferrer"
@@ -1948,7 +1948,7 @@ export default function VehiclesPage() {
                     ? "Aramanıza uygun doküman bulunamadı"
                     : "Henüz Doküman Yüklenmemiş"}
                 </h3>
-                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="mt-1 text-xs text-muted-foreground">
                   {docSearch || docCategoryFilter || docTypeFilter
                     ? "Filtreleri temizleyebilir veya yeni bir doküman yükleyebilirsiniz."
                     : "Kullanım kılavuzları, servis bültenleri (TSB) veya CAD şemalarını sisteme yükleyin."}
@@ -1992,7 +1992,7 @@ export default function VehiclesPage() {
                   <SheetTitle className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                     {selectedVehicle.brand} {selectedVehicle.model}
                   </SheetTitle>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     {[
                       selectedVehicle.trim,
                       selectedVehicle.modelYear,
@@ -2006,7 +2006,7 @@ export default function VehiclesPage() {
 
               <div className="flex items-center gap-2">
                 <button
-                  className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                  className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 font-semibold text-xs text-zinc-700 transition hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-200 dark:hover:bg-zinc-700"
                   onClick={() => {
                     setEditingVehicleId(selectedVehicle.id);
                     setIsCreateVehicleOpen(true);
@@ -2082,7 +2082,7 @@ export default function VehiclesPage() {
                   className={`whitespace-nowrap rounded-lg px-3 py-1.5 font-semibold transition ${
                     vehicleDetailTab === tab.id
                       ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
-                      : "text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                      : "text-muted-foreground hover:bg-zinc-50 dark:hover:bg-zinc-800"
                   }`}
                   key={tab.id}
                   onClick={() =>
@@ -2796,7 +2796,7 @@ function CreateEditVehicleModal({
                     isCurrent
                       ? "bg-blue-600 text-white shadow-xs"
                       : isDone
-                        ? "bg-emerald-600 text-white"
+                        ? "bg-emerald-700 text-white"
                         : "bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300"
                   }`}
                 >
@@ -3624,7 +3624,7 @@ function CreateEditVehicleModal({
                           <div className="font-black text-base text-zinc-900 dark:text-zinc-100">
                             {brand || "Marka"} {model || "Model"}
                           </div>
-                          <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                          <div className="text-xs text-muted-foreground">
                             {trim || "Donanım"} • {modelYear || "2025"} •{" "}
                             {segment || "Segment"}
                           </div>
@@ -3669,7 +3669,7 @@ function CreateEditVehicleModal({
                         </div>
                         <div className="flex justify-between">
                           <span>Fiyat (USD):</span>
-                          <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                          <span className="font-bold text-emerald-700 dark:text-emerald-400">
                             {priceUsd
                               ? `$${Number(priceUsd).toLocaleString("en-US")}`
                               : "—"}
@@ -3721,7 +3721,7 @@ function CreateEditVehicleModal({
 
               {step === 4 && (
                 <button
-                  className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2 font-bold text-white shadow-md hover:bg-emerald-700 disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-xl bg-emerald-700 px-6 py-2 font-bold text-white shadow-md hover:bg-emerald-800 disabled:opacity-50"
                   disabled={submitting || !isStep1Valid}
                   key="btn-step-save"
                   onClick={handleSaveVehicle}
@@ -4446,7 +4446,7 @@ function CreateDocumentModal({
                   >
                     {isUploading ? (
                       <div className="flex flex-col items-center py-2">
-                        <Loader2 className="mb-2 h-8 w-8 animate-spin text-blue-600" />
+                        <Loader2 className="mb-2 h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
                         <span className="font-bold text-zinc-800 dark:text-zinc-200">
                           Dosya Yükleniyor...
                         </span>
@@ -4816,7 +4816,7 @@ function DocumentPreviewModal({
               </>
             )}
             <button
-              className="rounded-xl p-2 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/40"
+              className="rounded-xl p-2 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:hover:bg-rose-950/40"
               onClick={() => onDelete(document.id, document.name)}
               title="Dokümanı Sil"
               type="button"
@@ -4861,7 +4861,7 @@ function DocumentPreviewModal({
               <h4 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 {document.name}
               </h4>
-              <p className="mt-1 max-w-md text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 max-w-md text-xs text-muted-foreground">
                 Bu doküman ({document.documentType}) tarayıcı içi doğrudan
                 önizlemeyi desteklemeyen bir formatta (CAD / Excel / STEP /
                 Arşiv) olabilir. Dosyayı indirerek ilgili CAD veya ofis
@@ -5003,14 +5003,14 @@ function DeleteConfirmationModal({
             {title}
           </div>
           {subtitle && (
-            <p className="mt-1 text-2xs text-zinc-500 leading-relaxed dark:text-zinc-400">
+            <p className="mt-1 text-2xs text-muted-foreground leading-relaxed">
               {subtitle}
             </p>
           )}
         </div>
 
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 p-2.5 text-amber-700 text-xs dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-300">
-          <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 p-2.5 text-amber-700 dark:text-amber-400 text-xs dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-300">
+          <AlertTriangle className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
           <span>
             Bu işlem geri alınamaz. İlgili kayıt kalıcı olarak kaldırılacaktır.
           </span>

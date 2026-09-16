@@ -223,7 +223,7 @@ export default function ProjectsPage() {
           <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             Projeler & Agile Backlog
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Sprint planlamaları, epikler, iş maddeleri ve CRM entegre görev
             yönetimi
           </p>
@@ -257,7 +257,7 @@ export default function ProjectsPage() {
             <Briefcase className="h-5 w-5" />
           </div>
           <div>
-            <div className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="font-medium text-xs text-muted-foreground">
               Toplam Proje
             </div>
             <div className="font-bold text-xl text-zinc-900 dark:text-zinc-100">
@@ -271,7 +271,7 @@ export default function ProjectsPage() {
             <Layers className="h-5 w-5" />
           </div>
           <div>
-            <div className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="font-medium text-xs text-muted-foreground">
               Aktif Sprintler
             </div>
             <div className="font-bold text-xl text-zinc-900 dark:text-zinc-100">
@@ -281,11 +281,11 @@ export default function ProjectsPage() {
         </div>
 
         <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 shadow-2xs dark:bg-amber-950/60 dark:text-amber-400">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 shadow-2xs dark:bg-amber-950/60 dark:text-amber-400">
             <Clock className="h-5 w-5" />
           </div>
           <div>
-            <div className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="font-medium text-xs text-muted-foreground">
               Açık İş Maddeleri
             </div>
             <div className="font-bold text-xl text-zinc-900 dark:text-zinc-100">
@@ -295,11 +295,11 @@ export default function ProjectsPage() {
         </div>
 
         <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 shadow-2xs dark:bg-emerald-950/60 dark:text-emerald-400">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 shadow-2xs dark:bg-emerald-950/60 dark:text-emerald-400">
             <CheckCircle2 className="h-5 w-5" />
           </div>
           <div>
-            <div className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="font-medium text-xs text-muted-foreground">
               Tamamlanan Görevler
             </div>
             <div className="font-bold text-xl text-zinc-900 dark:text-zinc-100">
@@ -378,13 +378,13 @@ export default function ProjectsPage() {
         </div>
       ) : projects.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card py-16 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground shadow-2xs dark:bg-zinc-800 dark:text-zinc-500">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground shadow-2xs dark:bg-zinc-800">
             <Briefcase className="h-7 w-7" />
           </div>
           <h3 className="mt-4 font-bold text-base text-zinc-900 dark:text-zinc-100">
             Henüz proje bulunmuyor
           </h3>
-          <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 max-w-sm text-xs text-muted-foreground">
             Yeni bir proje oluşturarak sprintler, epikler ve iş maddeleri
             tanımlayabilirsiniz.
           </p>
@@ -423,7 +423,7 @@ export default function ProjectsPage() {
                           {proj.name}
                         </h3>
                         {proj.customerName && (
-                          <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+                          <div className="text-2xs text-muted-foreground">
                             {proj.customerName}
                           </div>
                         )}
@@ -440,7 +440,7 @@ export default function ProjectsPage() {
                   </div>
 
                   {proj.description && (
-                    <p className="mt-3 line-clamp-2 text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="mt-3 line-clamp-2 text-xs text-muted-foreground">
                       {proj.description}
                     </p>
                   )}
@@ -448,7 +448,7 @@ export default function ProjectsPage() {
                   {/* Progress Bar */}
                   <div className="mt-4">
                     <div className="flex items-center justify-between text-2xs">
-                      <span className="font-medium text-zinc-500 dark:text-zinc-400">
+                      <span className="font-medium text-muted-foreground">
                         İlerleme
                       </span>
                       <span className="font-bold text-zinc-800 dark:text-zinc-200">

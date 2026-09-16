@@ -473,7 +473,7 @@ export function EmailAccountModal({
                   ? "E-posta Hesabını Düzenle"
                   : "Yeni E-posta Hesabı Bağla"}
               </DialogTitle>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 {isEdit
                   ? "Bağlı hesap bilgilerini ve sunucu ayarlarını güncelleyin."
                   : "IMAP/SMTP veya Resend ile ortak gelen kutusu oluşturun."}
@@ -593,7 +593,7 @@ export function EmailAccountModal({
                 )}
               </button>
             </div>
-            <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-2xs text-muted-foreground">
               Şifreler AES-256 ile veritabanında şifrelenerek saklanır; hiçbir
               zaman açık gösterilmez.
             </p>

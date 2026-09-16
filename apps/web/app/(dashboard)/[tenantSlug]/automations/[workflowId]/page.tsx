@@ -415,7 +415,7 @@ export default function WorkflowBuilderPage() {
     return (
       <div className="flex min-h-[60vh] flex-1 items-center justify-center">
         <div className="space-y-3 text-center">
-          <RefreshCw className="mx-auto h-8 w-8 animate-spin text-blue-600" />
+          <RefreshCw className="mx-auto h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
           <p className="font-medium text-sm text-zinc-600 dark:text-zinc-400">
             Akış tasarımcısı hazırlanıyor...
           </p>
@@ -450,7 +450,7 @@ export default function WorkflowBuilderPage() {
               </span>
             </div>
             <input
-              className="mt-0.5 w-full border-transparent border-b bg-transparent px-1 py-0.5 text-xs text-zinc-500 hover:border-zinc-200 focus:border-blue-500 focus:outline-none dark:border-zinc-800 dark:text-zinc-400"
+              className="mt-0.5 w-full border-transparent border-b bg-transparent px-1 py-0.5 text-xs text-muted-foreground hover:border-zinc-200 focus:border-blue-500 focus:outline-none dark:border-zinc-800"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Kısa açıklama ekleyin (isteğe bağlı)..."
               type="text"
@@ -517,7 +517,7 @@ export default function WorkflowBuilderPage() {
                 1
               </div>
               <div>
-                <span className="font-bold text-2xs text-blue-600 uppercase tracking-wider">
+                <span className="font-bold text-2xs text-blue-600 dark:text-blue-400 uppercase tracking-wider">
                   TETİKLEYİCİ OLAY (WHEN)
                 </span>
                 <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -639,7 +639,7 @@ export default function WorkflowBuilderPage() {
                 2
               </div>
               <div>
-                <span className="font-bold text-2xs text-amber-600 uppercase tracking-wider">
+                <span className="font-bold text-2xs text-amber-700 dark:text-amber-400 uppercase tracking-wider">
                   KOŞULLAR & KURALLAR (IF / ONLY IF)
                 </span>
                 <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -700,7 +700,7 @@ export default function WorkflowBuilderPage() {
                     </div>
 
                     <button
-                      className="p-1 text-muted-foreground hover:text-red-600 dark:text-zinc-500"
+                      className="p-1 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 dark:text-zinc-500"
                       onClick={() => removeConditionGroup(gIdx)}
                       title="Grubu Kaldır"
                     >
@@ -776,7 +776,7 @@ export default function WorkflowBuilderPage() {
                             value={rule.value}
                           />
                           <button
-                            className="p-1 text-muted-foreground hover:text-red-600 dark:text-zinc-500"
+                            className="p-1 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 dark:text-zinc-500"
                             onClick={() => removeRuleFromGroup(gIdx, rIdx)}
                             title="Kuralı Sil"
                           >
@@ -788,7 +788,7 @@ export default function WorkflowBuilderPage() {
                   </div>
 
                   <button
-                    className="flex items-center gap-1 pt-1 font-semibold text-blue-600 text-xs hover:text-blue-800"
+                    className="flex items-center gap-1 pt-1 font-semibold text-blue-600 dark:text-blue-400 text-xs hover:text-blue-800"
                     onClick={() => addRuleToGroup(gIdx)}
                   >
                     <Plus className="h-3 w-3" />
@@ -811,11 +811,11 @@ export default function WorkflowBuilderPage() {
         <div className="rounded-3xl border-2 border-emerald-200 dark:border-emerald-800 bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-600 font-bold text-white shadow-emerald-500/20 shadow-md">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-700 font-bold text-white shadow-emerald-500/20 shadow-md">
                 3
               </div>
               <div>
-                <span className="font-bold text-2xs text-emerald-600 uppercase tracking-wider">
+                <span className="font-bold text-2xs text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">
                   OTOMATİK AKSİYONLAR (THEN / DO THIS)
                 </span>
                 <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -826,7 +826,7 @@ export default function WorkflowBuilderPage() {
 
             {/* Add Action Step dropdown */}
             <div className="group relative">
-              <button className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-sm transition-all hover:bg-emerald-700">
+              <button className="flex items-center gap-1.5 rounded-xl bg-emerald-700 px-3.5 py-1.5 font-semibold text-white text-xs shadow-sm transition-all hover:bg-emerald-800">
                 <Plus className="h-3.5 w-3.5" />
                 <span>Aksiyon Adımı Ekle</span>
                 <ChevronDown className="h-3 w-3" />
@@ -855,7 +855,7 @@ export default function WorkflowBuilderPage() {
                   <span>CRM Kaydını Güncelle</span>
                 </button>
                 <button
-                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left font-medium text-xs text-zinc-700 hover:bg-amber-50 hover:text-amber-700 dark:text-zinc-300"
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left font-medium text-xs text-zinc-700 hover:bg-amber-50 hover:text-amber-700 dark:hover:text-amber-400 dark:text-zinc-300"
                   onClick={() => addAction("webhook")}
                 >
                   <Globe className="h-3.5 w-3.5 text-amber-500" />
@@ -865,7 +865,7 @@ export default function WorkflowBuilderPage() {
                   className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left font-medium text-xs text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   onClick={() => addAction("delay")}
                 >
-                  <Clock className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+                  <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                   <span>Gecikme / Beklet (Delay)</span>
                 </button>
               </div>
@@ -905,7 +905,7 @@ export default function WorkflowBuilderPage() {
                     </div>
 
                     <button
-                      className="p-1 text-muted-foreground hover:text-red-600 dark:text-zinc-500"
+                      className="p-1 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 dark:text-zinc-500"
                       onClick={() => removeAction(act.id)}
                       title="Adımı Sil"
                     >
@@ -1096,7 +1096,7 @@ export default function WorkflowBuilderPage() {
                   <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     Akış Simülatörü (Canlı Kural Testi)
                   </DialogTitle>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     Örnek veriyle akışın nasıl tepki vereceğini test edin.
                   </p>
                 </div>
@@ -1114,12 +1114,12 @@ export default function WorkflowBuilderPage() {
 
             {/* Mock input editor */}
             <div className="space-y-2 rounded-2xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-              <span className="font-bold text-2xs text-zinc-500 uppercase dark:text-zinc-400">
+              <span className="font-bold text-2xs text-muted-foreground uppercase">
                 Test Parametreleri
               </span>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <label className="font-semibold text-3xs text-zinc-500 dark:text-zinc-400">
+                  <label className="font-semibold text-3xs text-muted-foreground">
                     customerName
                   </label>
                   <input
@@ -1135,7 +1135,7 @@ export default function WorkflowBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-3xs text-zinc-500 dark:text-zinc-400">
+                  <label className="font-semibold text-3xs text-muted-foreground">
                     tier
                   </label>
                   <input
@@ -1148,7 +1148,7 @@ export default function WorkflowBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-3xs text-zinc-500 dark:text-zinc-400">
+                  <label className="font-semibold text-3xs text-muted-foreground">
                     totalAmount
                   </label>
                   <NumberInput
@@ -1167,7 +1167,7 @@ export default function WorkflowBuilderPage() {
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-3xs text-zinc-500 dark:text-zinc-400">
+                  <label className="font-semibold text-3xs text-muted-foreground">
                     status
                   </label>
                   <input
@@ -1208,11 +1208,11 @@ export default function WorkflowBuilderPage() {
                 >
                   <div className="mb-1 flex items-center gap-2 font-bold">
                     {simulationResult.status === "Success" ? (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                      <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
                     ) : simulationResult.status === "Skipped" ? (
-                      <AlertCircle className="h-4 w-4 text-amber-600" />
+                      <AlertCircle className="h-4 w-4 text-amber-700 dark:text-amber-400" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-600" />
+                      <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
                     )}
                     <span>Simülasyon Durumu: {simulationResult.status}</span>
                   </div>
@@ -1222,7 +1222,7 @@ export default function WorkflowBuilderPage() {
                 </div>
 
                 <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
+                  <span className="font-semibold text-2xs text-muted-foreground uppercase">
                     Adım Logları ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (
@@ -1234,7 +1234,7 @@ export default function WorkflowBuilderPage() {
                         <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                           {log.stepTitle}
                         </div>
-                        <div className="mt-0.5 text-2xs text-zinc-500 dark:text-zinc-400">
+                        <div className="mt-0.5 text-2xs text-muted-foreground">
                           {log.message}
                         </div>
                       </div>

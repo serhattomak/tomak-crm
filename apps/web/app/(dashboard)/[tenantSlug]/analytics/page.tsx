@@ -251,7 +251,7 @@ export default function AnalyticsPage() {
               Raporlar &amp; İş Analitiği
             </h1>
           </div>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             Ciro, müşteri dönüşüm oranları, satış hunisi ve envanter performansı
           </p>
         </div>
@@ -268,7 +268,7 @@ export default function AnalyticsPage() {
               ] as const
             ).map((t) => (
               <button
-                className={`rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${ timeRange === t.key ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
+                className={`rounded-lg px-2.5 py-1 font-semibold text-xs transition-all ${ timeRange === t.key ? "bg-card text-zinc-900 shadow-2xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200" }`}
                 key={t.key}
                 onClick={() => setTimeRange(t.key)}
                 type="button"
@@ -284,7 +284,7 @@ export default function AnalyticsPage() {
             onClick={handleExportCsv}
             type="button"
           >
-            <Download className="h-3.5 w-3.5 text-zinc-500" />
+            <Download className="h-3.5 w-3.5 text-muted-foreground" />
             <span>CSV İndir</span>
           </button>
 
@@ -294,19 +294,19 @@ export default function AnalyticsPage() {
             onClick={() => window.print()}
             type="button"
           >
-            <Printer className="h-3.5 w-3.5 text-zinc-500" />
+            <Printer className="h-3.5 w-3.5 text-muted-foreground" />
             <span>Yazdır / PDF</span>
           </button>
 
           {/* Refresh */}
           <button
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-card text-zinc-500 shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground shadow-2xs transition hover:bg-zinc-50 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
             onClick={loadAnalyticsData}
             title="Yenile"
             type="button"
           >
             <RefreshCw
-              className={`h-3.5 w-3.5 ${loading ? "animate-spin text-blue-600" : ""}`}
+              className={`h-3.5 w-3.5 ${loading ? "animate-spin text-blue-600 dark:text-blue-400" : ""}`}
             />
           </button>
         </div>
@@ -318,18 +318,18 @@ export default function AnalyticsPage() {
         <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-semibold text-xs text-muted-foreground">
                 Toplam Satış Hacmi
               </span>
               <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
                 ₺{totalRevenue.toLocaleString("tr-TR")}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-emerald-600 dark:text-emerald-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-emerald-700 dark:text-emerald-400">
             <ArrowUpRight className="h-3.5 w-3.5" />
             <span>Geçen döneme göre +%18.4 artış</span>
           </div>
@@ -339,7 +339,7 @@ export default function AnalyticsPage() {
         <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-semibold text-xs text-muted-foreground">
                 Ortalama Sipariş Tutarı
               </span>
               <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -359,7 +359,7 @@ export default function AnalyticsPage() {
         <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-semibold text-xs text-muted-foreground">
                 Teklif Kazanma Oranı
               </span>
               <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -382,10 +382,10 @@ export default function AnalyticsPage() {
         <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-semibold text-xs text-muted-foreground">
                 Açık Bakiye (Alacak)
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-rose-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-rose-600 dark:text-rose-400 tracking-tight sm:text-3xl">
                 ₺{unpaidRevenue.toLocaleString("tr-TR")}
               </div>
             </div>
@@ -393,7 +393,7 @@ export default function AnalyticsPage() {
               <AlertCircle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-muted-foreground">
             <span>Ödeme bekleyen vadeli siparişler</span>
           </div>
         </div>
@@ -414,7 +414,7 @@ export default function AnalyticsPage() {
               className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                 isSelected
                   ? "bg-zinc-900 text-white shadow-xs dark:bg-zinc-100 dark:text-zinc-900"
-                  : "bg-transparent text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                  : "bg-transparent text-muted-foreground hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               }`}
               key={tab.key}
               onClick={() => setActiveTab(tab.key as AnalyticsTab)}
@@ -437,7 +437,7 @@ export default function AnalyticsPage() {
                 <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Dönemsel Gelir &amp; Satış Trendi
                 </h3>
-                <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   Aylık faturalandırılan ve tahsil edilen sipariş hacimleri
                 </p>
               </div>
@@ -453,7 +453,7 @@ export default function AnalyticsPage() {
                   className="flex flex-1 flex-col items-center gap-2"
                   key={m.name}
                 >
-                  <span className="font-bold text-3xs text-zinc-500 dark:text-zinc-400">
+                  <span className="font-bold text-3xs text-muted-foreground">
                     ₺{(m.amount / 1000).toFixed(0)}k
                   </span>
                   <div className="relative flex h-36 w-full items-end justify-center rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/60">
@@ -476,7 +476,7 @@ export default function AnalyticsPage() {
             <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Satış Hunisi (Pipeline Funnel)
             </h3>
-            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               Teklif hazırlığından sipariş kapanışına dönüşüm oranları
             </p>
 
@@ -524,7 +524,7 @@ export default function AnalyticsPage() {
             <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Müşteri Segment Dağılımı
             </h3>
-            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               Kurumsal portföyün hacim ve değer segmentasyonu
             </p>
 
@@ -570,7 +570,7 @@ export default function AnalyticsPage() {
                   <div className="mt-2 font-extrabold text-xl text-zinc-900 dark:text-zinc-100">
                     {tier.count}
                   </div>
-                  <span className="text-3xs text-zinc-500 dark:text-zinc-400">
+                  <span className="text-3xs text-muted-foreground">
                     {tier.share}
                   </span>
                 </div>
@@ -578,7 +578,7 @@ export default function AnalyticsPage() {
             </div>
 
             <div className="mt-6 flex items-center justify-between border-border border-t pt-4 text-xs">
-              <span className="text-zinc-500 dark:text-zinc-400">
+              <span className="text-muted-foreground">
                 Toplam Müşteri Portföyü:
               </span>
               <span className="font-bold text-zinc-900 dark:text-zinc-100">
@@ -668,7 +668,7 @@ export default function AnalyticsPage() {
                             className={`inline-block rounded-md px-1.5 py-0.2 font-bold ${
                               order.paymentStatus === "Paid"
                                 ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
-                                : "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
+                                : "bg-amber-50 text-amber-700 dark:text-amber-400 dark:bg-amber-950/60 dark:text-amber-300"
                             }`}
                           >
                             {order.paymentStatus === "Paid"
@@ -694,7 +694,7 @@ export default function AnalyticsPage() {
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Ürün Kataloğu &amp; Kar Marjı Sıralaması
               </h3>
-              <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-0.5 text-xs text-muted-foreground">
                 Maliyet, satış fiyatı ve brüt karlılık analizi
               </p>
             </div>
@@ -708,7 +708,7 @@ export default function AnalyticsPage() {
 
           <div className="mt-5 overflow-x-auto">
             <Table>
-              <TableHeader className="border-border bg-zinc-50/50 text-zinc-500 dark:bg-zinc-800/30 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
                 <TableRow>
                   <TableHead className="py-3 pr-4 pl-4 h-auto">Ürün Adı</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Tip / Kategori</TableHead>
@@ -737,10 +737,10 @@ export default function AnalyticsPage() {
                       <TableCell className="py-3.5 pr-4 pl-4 font-bold text-zinc-900 dark:text-zinc-100">
                         {product.name}
                       </TableCell>
-                      <TableCell className="px-4 py-3.5 text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="px-4 py-3.5 text-muted-foreground">
                         {product.categoryName || product.type || "Fiziksel"}
                       </TableCell>
-                      <TableCell className="px-4 py-3.5 text-right font-medium text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="px-4 py-3.5 text-right font-medium text-muted-foreground">
                         ₺{product.costPrice.toLocaleString("tr-TR")}
                       </TableCell>
                       <TableCell className="px-4 py-3.5 text-right font-extrabold text-zinc-900 dark:text-zinc-100">
@@ -750,10 +750,10 @@ export default function AnalyticsPage() {
                         <span
                           className={`font-extrabold ${
                             margin >= 30
-                              ? "text-emerald-600 dark:text-emerald-400"
+                              ? "text-emerald-700 dark:text-emerald-400"
                               : margin > 10
                                 ? "text-blue-600 dark:text-blue-400"
-                                : "text-amber-600 dark:text-amber-400"
+                                : "text-amber-700 dark:text-amber-400"
                           }`}
                         >
                           %{margin}
@@ -765,7 +765,7 @@ export default function AnalyticsPage() {
                             product.currentStock > 10
                               ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
                               : product.currentStock > 0
-                                ? "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
+                                ? "bg-amber-50 text-amber-700 dark:text-amber-400 dark:bg-amber-950/60 dark:text-amber-300"
                                 : "bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300"
                           }`}
                         >

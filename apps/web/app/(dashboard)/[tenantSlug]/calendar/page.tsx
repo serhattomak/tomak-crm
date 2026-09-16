@@ -782,7 +782,7 @@ export default function CalendarHubPage() {
                 {activities.length} Aktivite
               </span>
             </h1>
-            <p className="text-xs text-zinc-500 md:text-sm dark:text-zinc-400">
+            <p className="text-xs text-muted-foreground md:text-sm">
               Müşteri randevuları, satış aramaları, Google/Outlook
               senkronizasyonu
             </p>
@@ -825,21 +825,21 @@ export default function CalendarHubPage() {
           {/* View Mode Switcher */}
           <div className="flex items-center rounded-xl border border-border bg-zinc-100 p-1 dark:bg-zinc-800/80">
             <button
-              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "month" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100" }`}
+              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "month" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100" }`}
               onClick={() => setViewMode("month")}
               type="button"
             >
               Ay
             </button>
             <button
-              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "week" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100" }`}
+              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "week" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100" }`}
               onClick={() => setViewMode("week")}
               type="button"
             >
               Hafta
             </button>
             <button
-              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "agenda" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100" }`}
+              className={`rounded-lg px-3 py-1 font-semibold text-xs transition-colors ${ viewMode === "agenda" ? "bg-card text-zinc-900 shadow-sm dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:hover:text-zinc-100" }`}
               onClick={() => setViewMode("agenda")}
               type="button"
             >
@@ -855,11 +855,11 @@ export default function CalendarHubPage() {
               size="sm"
               variant="outline"
             >
-              <LinkIcon className="h-3.5 w-3.5 text-blue-600" />
+              <LinkIcon className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
               Senkronizasyon
             </Button>
             <Button
-              className="h-9 gap-1.5 bg-emerald-600 font-medium text-white text-xs hover:bg-emerald-700"
+              className="h-9 gap-1.5 bg-emerald-700 font-medium text-white text-xs hover:bg-emerald-800"
               onClick={() => {
                 setCallForm({
                   customerId: "",
@@ -919,7 +919,7 @@ export default function CalendarHubPage() {
       {/* Filter Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card p-3 px-4 shadow-sm">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="mr-2 flex items-center gap-1.5 font-medium text-xs text-zinc-500">
+          <div className="mr-2 flex items-center gap-1.5 font-medium text-xs text-muted-foreground">
             <Filter className="h-3.5 w-3.5" />
             Filtreler:
           </div>
@@ -974,8 +974,8 @@ export default function CalendarHubPage() {
       {/* Loading */}
       {loading && (
         <div className="flex items-center justify-center rounded-2xl border border-border bg-card p-12">
-          <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
-          <span className="ml-2 text-sm text-zinc-500">
+          <RefreshCw className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+          <span className="ml-2 text-sm text-muted-foreground">
             Takvim etkinlikleri yükleniyor...
           </span>
         </div>
@@ -1022,7 +1022,7 @@ export default function CalendarHubPage() {
                     </span>
 
                     <button
-                      className="rounded p-0.5 text-zinc-500 opacity-0 transition-opacity hover:bg-zinc-200 hover:text-zinc-900 group-hover:opacity-100 dark:hover:bg-zinc-800 dark:hover:text-white"
+                      className="rounded p-0.5 text-muted-foreground opacity-0 transition-opacity hover:bg-zinc-200 hover:text-zinc-900 group-hover:opacity-100 dark:hover:bg-zinc-800 dark:hover:text-white"
                       onClick={() => {
                         setActivityForm({
                           assignedUserId: "",
@@ -1078,7 +1078,7 @@ export default function CalendarHubPage() {
                     })}
 
                     {dayActivities.length > 3 && (
-                      <span className="pl-1 font-bold text-3xs text-zinc-500 dark:text-zinc-400">
+                      <span className="pl-1 font-bold text-3xs text-muted-foreground">
                         +{dayActivities.length - 3} daha fazla
                       </span>
                     )}
@@ -1096,7 +1096,7 @@ export default function CalendarHubPage() {
           <div className="grid grid-cols-7 border-border border-b bg-zinc-50/70 py-3 text-center dark:bg-zinc-900/70">
             {weekDays.map((w) => (
               <div className="flex flex-col items-center" key={w.dateStr}>
-                <span className="font-semibold text-xs text-zinc-500 uppercase tracking-wider">
+                <span className="font-semibold text-xs text-muted-foreground uppercase tracking-wider">
                   {w.dayName}
                 </span>
                 <span
@@ -1191,10 +1191,10 @@ export default function CalendarHubPage() {
         <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm md:p-6">
           <div className="flex items-center justify-between border-border border-b pb-3">
             <h3 className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-              <Clock className="h-4 w-4 text-blue-600" />
+              <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               Aktivite ve Görüşme Ajandası
             </h3>
-            <span className="text-xs text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               Toplam {filteredActivities.length} kayıt listeleniyor
             </span>
           </div>
@@ -1231,7 +1231,7 @@ export default function CalendarHubPage() {
                         <h4
                           className={`font-bold text-sm ${
                             isDone
-                              ? "text-zinc-500 line-through"
+                              ? "text-muted-foreground line-through"
                               : "text-zinc-900 dark:text-zinc-100"
                           }`}
                         >
@@ -1249,7 +1249,7 @@ export default function CalendarHubPage() {
                         )}
                       </div>
 
-                      <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+                      <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                           {dateFormatted}
@@ -1309,7 +1309,7 @@ export default function CalendarHubPage() {
                     )}
 
                     <Button
-                      className="h-8 w-8 rounded-lg p-0 text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
+                      className="h-8 w-8 rounded-lg p-0 text-muted-foreground hover:text-zinc-900 dark:hover:text-white"
                       onClick={() => setSelectedActivity(act)}
                       size="sm"
                       variant="ghost"
@@ -1327,7 +1327,7 @@ export default function CalendarHubPage() {
                 <p className="font-semibold text-sm">
                   Bu filtreye uygun aktivite bulunamadı.
                 </p>
-                <p className="mt-0.5 text-xs text-zinc-500">
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   Yeni bir randevu veya çağrı kaydı eklemek için yukarıdaki
                   butonları kullanabilirsiniz.
                 </p>
@@ -1354,7 +1354,7 @@ export default function CalendarHubPage() {
           >
             <div className="mb-4 flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                <CalendarDays className="h-5 w-5 text-blue-600" />
+                <CalendarDays className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 {activityForm.id
                   ? "Randevuyu Düzenle"
                   : "Yeni Randevu & Toplantı"}
@@ -1493,7 +1493,7 @@ export default function CalendarHubPage() {
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <Label className="mb-1 block text-2xs text-zinc-500">
+                    <Label className="mb-1 block text-2xs text-muted-foreground">
                       Başlangıç Tarihi
                     </Label>
                     <DatePicker
@@ -1509,7 +1509,7 @@ export default function CalendarHubPage() {
                   </div>
                   {!activityForm.isAllDay && (
                     <div>
-                      <Label className="mb-1 block text-2xs text-zinc-500">
+                      <Label className="mb-1 block text-2xs text-muted-foreground">
                         Başlangıç Saati
                       </Label>
                       <TimePicker
@@ -1529,7 +1529,7 @@ export default function CalendarHubPage() {
                 {!activityForm.isAllDay && (
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <Label className="mb-1 block text-2xs text-zinc-500">
+                      <Label className="mb-1 block text-2xs text-muted-foreground">
                         Bitiş Tarihi
                       </Label>
                       <DatePicker
@@ -1544,7 +1544,7 @@ export default function CalendarHubPage() {
                       />
                     </div>
                     <div>
-                      <Label className="mb-1 block text-2xs text-zinc-500">
+                      <Label className="mb-1 block text-2xs text-muted-foreground">
                         Bitiş Saati
                       </Label>
                       <TimePicker
@@ -1654,7 +1654,7 @@ export default function CalendarHubPage() {
           >
             <div className="mb-4 flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                <PhoneCall className="h-5 w-5 text-emerald-600" />
+                <PhoneCall className="h-5 w-5 text-emerald-700 dark:text-emerald-300" />
                 Hızlı Satış Çağrı / Görüşme Kaydedici
               </DialogTitle>
               <DialogClose asChild>
@@ -1681,7 +1681,7 @@ export default function CalendarHubPage() {
                     }
                     type="button"
                   >
-                    <PhoneOutgoing className="h-4 w-4 text-emerald-600" />
+                    <PhoneOutgoing className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
                     Giden Arama (Biz Aradık)
                   </button>
                   <button
@@ -1691,7 +1691,7 @@ export default function CalendarHubPage() {
                     }
                     type="button"
                   >
-                    <PhoneIncoming className="h-4 w-4 text-blue-600" />
+                    <PhoneIncoming className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                     Gelen Arama (Müşteri Aradı)
                   </button>
                 </div>
@@ -1842,7 +1842,7 @@ export default function CalendarHubPage() {
                   Vazgeç
                 </Button>
                 <Button
-                  className="bg-emerald-600 text-white hover:bg-emerald-700"
+                  className="bg-emerald-700 text-white hover:bg-emerald-800"
                   type="submit"
                 >
                   Çağrı Kaydını Tamamla
@@ -1885,7 +1885,7 @@ export default function CalendarHubPage() {
                   <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                     {selectedActivity.title}
                   </DialogTitle>
-                  <span className="text-xs text-zinc-500">
+                  <span className="text-xs text-muted-foreground">
                     {selectedActivity.type} • {selectedActivity.status}
                   </span>
                 </div>
@@ -1904,7 +1904,7 @@ export default function CalendarHubPage() {
             <div className="flex flex-col gap-4 text-xs">
               <div className="flex items-center justify-between rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
                 <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
-                  <Clock className="h-4 w-4 text-blue-600" />
+                  <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                   <span className="font-semibold">
                     {selectedActivity.startTime
                       ? new Date(selectedActivity.startTime).toLocaleString(
@@ -1925,7 +1925,7 @@ export default function CalendarHubPage() {
                   </span>
                 ) : (
                   <Button
-                    className="h-7 bg-emerald-600 text-white text-xs hover:bg-emerald-700"
+                    className="h-7 bg-emerald-700 text-white text-xs hover:bg-emerald-800"
                     onClick={() => handleCompleteActivity(selectedActivity)}
                     size="sm"
                   >
@@ -1997,7 +1997,7 @@ export default function CalendarHubPage() {
                   <Sparkles className="h-4 w-4 text-amber-500" />
                   Dış Takvim Entegrasyonu
                 </span>
-                <p className="text-2xs text-zinc-500">
+                <p className="text-2xs text-muted-foreground">
                   Bu randevuyu tek tıkla kendi takviminize ekleyin veya indirin:
                 </p>
 
@@ -2034,7 +2034,7 @@ export default function CalendarHubPage() {
               {/* Bottom Actions */}
               <div className="mt-2 flex items-center justify-between border-border border-t pt-3">
                 <Button
-                  className="text-red-600 text-xs hover:bg-red-50 dark:hover:bg-red-950/40"
+                  className="text-red-600 dark:text-red-400 text-xs hover:bg-red-50 dark:hover:bg-red-950/40"
                   onClick={() => handleDeleteActivity(selectedActivity.id)}
                   size="sm"
                   variant="ghost"
@@ -2112,7 +2112,7 @@ export default function CalendarHubPage() {
           >
             <div className="mb-4 flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-                <LinkIcon className="h-5 w-5 text-blue-600" />
+                <LinkIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 Dış Takvim Canlı Senkronizasyonu
               </DialogTitle>
               <DialogClose asChild>

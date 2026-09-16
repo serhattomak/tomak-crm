@@ -77,7 +77,7 @@ export default function RootPage() {
               <h1 className="font-bold text-lg text-zinc-900 tracking-tight dark:text-zinc-100">
                 Çalışma Alanı Oluştur
               </h1>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Henüz aktif bir çalışma alanınız yok.
               </p>
             </div>

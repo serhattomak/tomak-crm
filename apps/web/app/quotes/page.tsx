@@ -26,7 +26,7 @@ export default function QuotesRootRedirect() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-muted text-zinc-600">
-      <Loader2 className="mb-2 h-8 w-8 animate-spin text-blue-600" />
+      <Loader2 className="mb-2 h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
       <span className="font-semibold text-xs">Teklifler açılıyor...</span>
     </div>
   );

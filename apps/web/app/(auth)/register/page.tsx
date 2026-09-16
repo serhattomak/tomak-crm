@@ -138,7 +138,7 @@ export default function RegisterPage() {
               <h1 className="font-normal font-serif text-3xl text-zinc-900 tracking-tight sm:text-4xl">
                 Hesap Oluştur
               </h1>
-              <p className="font-normal text-zinc-500 text-xs">
+              <p className="font-normal text-muted-foreground text-xs">
                 Çalışma alanınızı oluşturmak için bilgilerinizi girin
               </p>
             </div>
@@ -252,7 +252,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-zinc-500 text-xs">
+          <div className="mt-8 text-center text-muted-foreground text-xs">
             Already have an account?{" "}
             <Link
               className="font-semibold text-zinc-900 hover:underline"

@@ -71,7 +71,7 @@ function AttachmentItem({ att, index, onRemove }: AttachmentItemProps) {
       <span className="max-w-[140px] truncate">{att.filename}</span>
       <button
         aria-label="Eki kaldır"
-        className="text-muted-foreground hover:text-rose-600"
+        className="text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400"
         onClick={handleRemove}
         type="button"
       >
@@ -479,7 +479,7 @@ export function ComposeModal({
               <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 Yeni E-posta İletisi
               </DialogTitle>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Bağlı posta kutunuz üzerinden kurumsal e-posta gönderin veya
                 taslak saklayın.
               </p>

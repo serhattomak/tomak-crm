@@ -178,7 +178,7 @@ export function BulkCouponModal({
               <DialogTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
                 Kupon Kodu Üretici
               </DialogTitle>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-muted-foreground">
                 Tekil veya binlerce benzersiz tek kullanımlık kupon oluşturun
               </p>
             </div>
@@ -218,7 +218,7 @@ export function BulkCouponModal({
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-zinc-500">
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
                 <span>
                   Örnek Kodlar (İlk {Math.min(50, generatedResult.codes.length)}{" "}
                   adet):
@@ -276,14 +276,14 @@ export function BulkCouponModal({
             {/* Mode Switcher */}
             <div className="grid grid-cols-2 gap-2 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
               <button
-                className={`rounded-lg py-1.5 font-medium text-xs transition-all ${ mode === "bulk" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200" }`}
+                className={`rounded-lg py-1.5 font-medium text-xs transition-all ${ mode === "bulk" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200" }`}
                 onClick={() => setMode("bulk")}
                 type="button"
               >
                 Toplu Üretim (Bulk Batch)
               </button>
               <button
-                className={`rounded-lg py-1.5 font-medium text-xs transition-all ${ mode === "single" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200" }`}
+                className={`rounded-lg py-1.5 font-medium text-xs transition-all ${ mode === "single" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200" }`}
                 onClick={() => setMode("single")}
                 type="button"
               >

@@ -252,7 +252,7 @@ export function TeamMembersStack({
                   <h3 className="font-bold text-zinc-900 text-xs dark:text-foreground">
                     Ekip Üyeleri
                   </h3>
-                  <p className="text-3xs text-zinc-500 dark:text-muted-foreground">
+                  <p className="text-3xs text-muted-foreground dark:text-muted-foreground">
                     Toplam {users.length} aktif kullanıcı
                   </p>
                 </div>
@@ -304,7 +304,7 @@ export function TeamMembersStack({
             <div className="max-h-[340px] divide-y divide-zinc-100 overflow-y-auto dark:divide-border/50">
               {loading ? (
                 <div className="py-8 text-center text-muted-foreground text-xs">
-                  <Loader2 className="mx-auto mb-2 h-5 w-5 animate-spin text-blue-600" />
+                  <Loader2 className="mx-auto mb-2 h-5 w-5 animate-spin text-blue-600 dark:text-blue-400" />
                   Üyeler yükleniyor...
                 </div>
               ) : filteredUsers.length === 0 ? (
@@ -354,7 +354,7 @@ export function TeamMembersStack({
                               {user.fullName || user.email.split("@")[0]}
                             </span>
                           </div>
-                          <div className="truncate text-2xs text-zinc-500 dark:text-muted-foreground">
+                          <div className="truncate text-2xs text-muted-foreground dark:text-muted-foreground">
                             {user.email}
                           </div>
 
@@ -374,7 +374,7 @@ export function TeamMembersStack({
                             </div>
                           ) : (
                             <div className="mt-1 flex flex-wrap gap-1">
-                              <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-1.5 py-0.2 font-semibold text-3xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
+                              <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-1.5 py-0.2 font-semibold text-3xs text-amber-700 dark:text-amber-400 dark:bg-amber-950/50 dark:text-amber-300">
                                 Rolsüz
                               </span>
                             </div>
@@ -391,7 +391,7 @@ export function TeamMembersStack({
                           type="button"
                         >
                           {copiedEmail === user.email ? (
-                            <Check className="h-3.5 w-3.5 text-emerald-600" />
+                            <Check className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                           ) : (
                             <Copy className="h-3.5 w-3.5" />
                           )}
@@ -661,7 +661,7 @@ export function InviteMemberModal({
               <DialogTitle className="font-bold text-zinc-900 text-sm sm:text-base dark:text-foreground">
                 Ekip Arkadaşı Davet Et
               </DialogTitle>
-              <p className="text-2xs text-zinc-500 dark:text-muted-foreground">
+              <p className="text-2xs text-muted-foreground dark:text-muted-foreground">
                 Çalışma alanınıza yeni bir kullanıcı ekleyin
               </p>
             </div>
@@ -730,7 +730,7 @@ export function InviteMemberModal({
           </div>
 
           <div className="flex items-start gap-2 rounded-xl bg-blue-50/70 p-3 text-2xs text-blue-800 dark:bg-blue-950/40 dark:text-blue-300">
-            <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-blue-600" />
+            <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
             <p>
               Davet edilen kullanıcıya e-posta ile davet bağlantısı gönderilecek
               ve şifresini belirleyerek anında giriş yapabilecektir.

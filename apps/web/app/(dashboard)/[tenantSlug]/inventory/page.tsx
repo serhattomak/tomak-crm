@@ -483,7 +483,7 @@ export default function InventoryPage() {
             <span className="font-semibold text-muted-foreground text-xs uppercase tracking-wider">
               Toplam Stok Miktarı
             </span>
-            <div className="rounded-lg bg-emerald-500/10 p-2 text-emerald-600 dark:text-emerald-400">
+            <div className="rounded-lg bg-emerald-500/10 p-2 text-emerald-700 dark:text-emerald-400">
               <Boxes className="h-4 w-4" />
             </div>
           </div>
@@ -503,7 +503,7 @@ export default function InventoryPage() {
             <span className="font-semibold text-muted-foreground text-xs uppercase tracking-wider">
               Yoldaki Transferler
             </span>
-            <div className="rounded-lg bg-amber-500/10 p-2 text-amber-600 dark:text-amber-400">
+            <div className="rounded-lg bg-amber-500/10 p-2 text-amber-700 dark:text-amber-400">
               <Truck className="h-4 w-4" />
             </div>
           </div>
@@ -747,7 +747,7 @@ function WarehouseTabContent({
         </div>
         <div className="overflow-hidden rounded-xl border border-border">
           <Table>
-            <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+            <TableHeader className="border-border bg-zinc-50/80 text-muted-foreground dark:bg-zinc-800/50">
               <TableRow>
                 <TableHead className="p-3 h-auto">Ürün / Varyant</TableHead>
                 <TableHead className="p-3 h-auto">SKU / Barkod</TableHead>
@@ -818,7 +818,7 @@ function TransferTabContent({
       </div>
       <div className="overflow-hidden rounded-xl border border-border">
         <Table>
-          <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <TableHeader className="border-border bg-zinc-50/80 text-muted-foreground dark:bg-zinc-800/50">
             <TableRow>
               <TableHead className="p-3 h-auto">Transfer No</TableHead>
               <TableHead className="p-3 h-auto">Güzergah (Kaynak → Hedef)</TableHead>
@@ -879,7 +879,7 @@ function CountTabContent({
       </div>
       <div className="overflow-hidden rounded-xl border border-border">
         <Table>
-          <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+          <TableHeader className="border-border bg-zinc-50/80 text-muted-foreground dark:bg-zinc-800/50">
             <TableRow>
               <TableHead className="p-3 h-auto">Sayım Fişi</TableHead>
               <TableHead className="p-3 h-auto">Depo</TableHead>
@@ -1063,7 +1063,7 @@ function WarehouseStockRow({
           className={
             isLow
               ? "flex items-center justify-end gap-1 text-rose-600 dark:text-rose-400"
-              : "text-emerald-600 dark:text-emerald-400"
+              : "text-emerald-700 dark:text-emerald-400"
           }
         >
           {isLow ? <AlertTriangle className="h-3.5 w-3.5" /> : null}
@@ -1166,7 +1166,7 @@ function StockTransferRow({
         ) : null}
         {transfer.status === "Dispatched" ? (
           <button
-            className="rounded bg-emerald-600 px-2.5 py-1 font-medium text-white text-xs transition hover:bg-emerald-700"
+            className="rounded bg-emerald-700 px-2.5 py-1 font-medium text-white text-xs transition hover:bg-emerald-800"
             disabled={actionLoading}
             onClick={handleReceiveClick}
             type="button"
@@ -1225,7 +1225,7 @@ function StockCountRow({
           className={`font-semibold ${
             hasDiscrepancy
               ? "text-rose-600 dark:text-rose-400"
-              : "text-emerald-600 dark:text-emerald-400"
+              : "text-emerald-700 dark:text-emerald-400"
           }`}
         >
           {Number(count.totalDiscrepancy || 0).toLocaleString("tr-TR")} Adet
@@ -1252,14 +1252,14 @@ function StockCountRow({
 function TransferStatusBadge({ status }: { status: string }) {
   if (status === "Received") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-3xs text-emerald-600 dark:text-emerald-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-3xs text-emerald-700 dark:text-emerald-400">
         <CheckCircle2 className="h-3 w-3" /> Teslim Alındı
       </span>
     );
   }
   if (status === "Dispatched") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 font-semibold text-3xs text-amber-600 dark:text-amber-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 font-semibold text-3xs text-amber-700 dark:text-amber-400">
         <Truck className="h-3 w-3" /> Yolda / Sevk Edildi
       </span>
     );
@@ -1281,7 +1281,7 @@ function TransferStatusBadge({ status }: { status: string }) {
 function CountStatusBadge({ status }: { status: string }) {
   if (status === "Completed") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-3xs text-emerald-600 dark:text-emerald-400">
+      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 font-semibold text-3xs text-emerald-700 dark:text-emerald-400">
         <CheckCircle2 className="h-3 w-3" /> Mutabakat Tamamlandı
       </span>
     );
@@ -1912,7 +1912,7 @@ function TransferItemFormRow({
       {showRemove ? (
         <button
           aria-label="Kaldır"
-          className="rounded p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-rose-600 dark:hover:bg-zinc-800"
+          className="rounded p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-rose-600 dark:hover:text-rose-400 dark:hover:bg-zinc-800"
           onClick={handleRemove}
           type="button"
         >
@@ -2176,7 +2176,7 @@ function TransferDetailDrawer({
             </h3>
             <div className="overflow-hidden rounded-xl border border-border text-xs">
               <Table>
-                <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <TableHeader className="border-border bg-zinc-50/80 text-muted-foreground dark:bg-zinc-800/50">
                   <TableRow>
                     <TableHead className="p-2.5 h-auto">Ürün</TableHead>
                     <TableHead className="p-2.5 h-auto">SKU</TableHead>
@@ -2206,7 +2206,7 @@ function TransferDetailDrawer({
           </div>
 
           {transfer.notes ? (
-            <div className="rounded-lg border border-border bg-zinc-50 p-3 text-xs text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+            <div className="rounded-lg border border-border bg-zinc-50 p-3 text-xs text-muted-foreground dark:bg-zinc-800/50">
               <span className="mb-0.5 block font-semibold text-foreground">
                 Not:
               </span>
@@ -2229,7 +2229,7 @@ function TransferDetailDrawer({
 
           {transfer.status === "Dispatched" ? (
             <button
-              className="rounded-lg bg-emerald-600 px-4 py-2 font-semibold text-white text-xs hover:bg-emerald-700"
+              className="rounded-lg bg-emerald-700 px-4 py-2 font-semibold text-white text-xs hover:bg-emerald-800"
               disabled={actionLoading}
               onClick={handleReceive}
               type="button"
@@ -2427,7 +2427,7 @@ function StockCountAuditDrawer({
 
           <div className="overflow-hidden rounded-xl border border-border text-xs">
             <Table>
-              <TableHeader className="border-border bg-zinc-50/80 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50/80 text-muted-foreground dark:bg-zinc-800/50">
                 <TableRow>
                   <TableHead className="p-2.5 h-auto">Ürün Adı</TableHead>
                   <TableHead className="p-2.5 text-right h-auto">Sistem Stoğu</TableHead>
@@ -2463,13 +2463,13 @@ function StockCountAuditDrawer({
 
         <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
           {isCompleted ? (
-            <div className="flex items-center gap-1.5 font-medium text-emerald-600 text-xs dark:text-emerald-400">
+            <div className="flex items-center gap-1.5 font-medium text-emerald-700 text-xs dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
               Bu sayımın mutabakatı yapılmış ve stoklara işlenmiştir.
             </div>
           ) : (
             <button
-              className="rounded-xl bg-emerald-600 px-5 py-2.5 font-semibold text-white text-xs shadow-md transition hover:bg-emerald-700"
+              className="rounded-xl bg-emerald-700 px-5 py-2.5 font-semibold text-white text-xs shadow-md transition hover:bg-emerald-800"
               disabled={actionLoading || saving}
               onClick={handleReconcileClick}
               type="button"

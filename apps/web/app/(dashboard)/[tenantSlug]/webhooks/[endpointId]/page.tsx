@@ -69,22 +69,22 @@ function getStatusBadge(status: string) {
   if (status === "Success") {
     return (
       <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-semibold text-2xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
-        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+        <CheckCircle2 className="h-3 w-3 text-emerald-700 dark:text-emerald-300" />
         Başarılı
       </span>
     );
   }
   if (status === "Retrying") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-2xs text-amber-700 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
-        <RefreshCw className="h-3 w-3 text-amber-600" />
+      <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-2xs text-amber-700 dark:text-amber-400 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+        <RefreshCw className="h-3 w-3 text-amber-700 dark:text-amber-400" />
         Yeniden Deneniyor
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 font-semibold text-2xs text-red-700 dark:border-red-800 dark:bg-red-950/60 dark:text-red-300">
-      <XCircle className="h-3 w-3 text-red-600" />
+      <XCircle className="h-3 w-3 text-red-600 dark:text-red-400" />
       Başarısız
     </span>
   );
@@ -483,7 +483,7 @@ export default function WebhookBuilderPage() {
               </span>
             </div>
             <input
-              className="mt-0.5 w-full border-transparent border-b bg-transparent px-1 py-0.5 text-xs text-zinc-500 hover:border-zinc-200 focus:border-zinc-900 focus:outline-none dark:border-zinc-800 dark:text-zinc-400 dark:focus:border-zinc-100"
+              className="mt-0.5 w-full border-transparent border-b bg-transparent px-1 py-0.5 text-xs text-muted-foreground hover:border-zinc-200 focus:border-zinc-900 focus:outline-none dark:border-zinc-800 dark:focus:border-zinc-100"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Kısa açıklama ekleyin (isteğe bağlı)..."
               type="text"
@@ -545,7 +545,7 @@ export default function WebhookBuilderPage() {
       {isNew && secretOnce && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800/60 dark:bg-amber-950/30">
           <div className="flex items-start gap-2.5">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
             <div className="flex-1">
               <p className="font-semibold text-amber-900 text-xs dark:text-amber-200">
                 Gizli anahtar bir kez gösterilir, kaydedin
@@ -573,7 +573,7 @@ export default function WebhookBuilderPage() {
                 <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Uç Nokta Bilgileri
                 </h2>
-                <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-2xs text-muted-foreground">
                   Temel bağlantı ve tanımlayıcı ayarlar
                 </p>
               </div>
@@ -585,7 +585,7 @@ export default function WebhookBuilderPage() {
                   className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300"
                   htmlFor="webhook-name"
                 >
-                  İsim <span className="text-red-600">*</span>
+                  İsim <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <input
                   className={`w-full rounded-xl border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !nameIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
@@ -617,7 +617,7 @@ export default function WebhookBuilderPage() {
                   className="mb-1.5 block font-semibold text-xs text-zinc-700 dark:text-zinc-300"
                   htmlFor="webhook-url"
                 >
-                  Hedef URL <span className="text-red-600">*</span>
+                  Hedef URL <span className="text-red-600 dark:text-red-400">*</span>
                 </label>
                 <input
                   className={`w-full rounded-xl border bg-card px-3 py-2 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 dark:text-zinc-100 ${ hasAttemptedSave && !urlIsValid ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-800" : "border-border focus:border-zinc-900 focus:ring-zinc-900 dark:focus:border-zinc-100" }`}
@@ -627,7 +627,7 @@ export default function WebhookBuilderPage() {
                   type="url"
                   value={url}
                 />
-                <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+                <p className="mt-1 text-2xs text-muted-foreground">
                   Sadece https:// şeması kabul edilir.
                 </p>
                 {hasAttemptedSave && !urlIsValid && (
@@ -678,9 +678,9 @@ export default function WebhookBuilderPage() {
                 </div>
                 <div>
                   <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                    Olaylar <span className="text-red-600">*</span>
+                    Olaylar <span className="text-red-600 dark:text-red-400">*</span>
                   </h2>
-                  <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-2xs text-muted-foreground">
                     En az bir olay seçin
                   </p>
                 </div>
@@ -729,7 +729,7 @@ export default function WebhookBuilderPage() {
                 En az bir olay seçmelisiniz.
               </p>
             )}
-            <p className="mt-3 text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-3 text-2xs text-muted-foreground">
               Seçili: {events.length} / {WEBHOOK_EVENTS.length} — Webhook sadece
               seçili olaylarda tetiklenir.
             </p>
@@ -743,7 +743,7 @@ export default function WebhookBuilderPage() {
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               Gizli Anahtar
             </h3>
-            <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-2xs text-muted-foreground">
               HMAC imzalama için kullanılır. Sadece oluşturma anında tam değeri
               gösterilir.
             </p>
@@ -795,7 +795,7 @@ export default function WebhookBuilderPage() {
                       </button>
                     </div>
                   </div>
-                  <p className="font-medium text-2xs text-amber-700 dark:text-amber-300">
+                  <p className="font-medium text-2xs text-amber-700 dark:text-amber-400 dark:text-amber-300">
                     Bir kez gösterilir, kaydedin
                   </p>
                 </div>
@@ -828,14 +828,14 @@ export default function WebhookBuilderPage() {
                   >
                     Yeniden Oluştur
                   </button>
-                  <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-2xs text-muted-foreground">
                     Güvenlik gereği tam secret tekrar gösterilmez. Yeniden
                     oluşturursanız eski secret geçersiz olur.
                   </p>
                 </div>
               ) : (
                 <div className="rounded-xl border border-border border-dashed bg-zinc-50 p-4 text-center dark:bg-zinc-800/30">
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     {isNew
                       ? "Oluşturduğunuzda secret burada görünecek."
                       : "Bu uç nokta için secret ayarlı değil veya maskelenmiş."}
@@ -861,13 +861,13 @@ export default function WebhookBuilderPage() {
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               HMAC İmzası Önizleme
             </h3>
-            <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-2xs text-muted-foreground">
               Her istekte bu başlıklar gönderilir. Payload = timestamp +
               &quot;.&quot; + JSON.
             </p>
             <div className="mt-3 space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
               <div>
-                <span className="font-mono font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+                <span className="font-mono font-semibold text-2xs text-muted-foreground">
                   X-Webhook-Signature
                 </span>
                 <code className="mt-1 block break-all rounded-lg bg-card px-2.5 py-1.5 font-mono text-2xs text-zinc-800 dark:text-zinc-200">
@@ -875,7 +875,7 @@ export default function WebhookBuilderPage() {
                 </code>
               </div>
               <div>
-                <span className="font-mono font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+                <span className="font-mono font-semibold text-2xs text-muted-foreground">
                   X-Webhook-Timestamp
                 </span>
                 <code className="mt-1 block rounded-lg bg-card px-2.5 py-1.5 font-mono text-2xs text-zinc-800 dark:text-zinc-200">
@@ -883,7 +883,7 @@ export default function WebhookBuilderPage() {
                 </code>
               </div>
               <div>
-                <span className="font-mono font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+                <span className="font-mono font-semibold text-2xs text-muted-foreground">
                   X-Tenant-Id
                 </span>
                 <code className="mt-1 block rounded-lg bg-card px-2.5 py-1.5 font-mono text-2xs text-zinc-800 dark:text-zinc-200">
@@ -891,7 +891,7 @@ export default function WebhookBuilderPage() {
                 </code>
               </div>
               <div>
-                <span className="font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+                <span className="font-semibold text-2xs text-muted-foreground">
                   Örnek Payload
                 </span>
                 <pre className="mt-1 max-h-32 overflow-auto rounded-lg bg-card px-2.5 py-2 font-mono text-2xs text-zinc-700 dark:text-zinc-300">
@@ -899,7 +899,7 @@ export default function WebhookBuilderPage() {
                 </pre>
               </div>
             </div>
-            <p className="mt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-2xs text-muted-foreground">
               İmzayı doğrulamak için: HMAC-SHA256(secret, timestamp +
               &quot;.&quot; + body)
             </p>
@@ -910,7 +910,7 @@ export default function WebhookBuilderPage() {
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               Test Gönderimi
             </h3>
-            <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-2xs text-muted-foreground">
               Dry-run modunda gerçek teslimat oluşturmadan simüle eder.
             </p>
             <button
@@ -939,13 +939,13 @@ export default function WebhookBuilderPage() {
               <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                 Teslimat Geçmişi
               </h3>
-              <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-2xs text-muted-foreground">
                 Son 10 teslimat — durum, deneme sayısı ve yanıt kodu
               </p>
             </div>
             <button
               aria-label="Yenile"
-              className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400"
+              className="rounded-xl border border-border p-2 text-muted-foreground hover:bg-zinc-50"
               onClick={() => {
                 void loadDeliveries();
               }}
@@ -960,7 +960,7 @@ export default function WebhookBuilderPage() {
           {isLoadingDeliveries ? (
             <div className="flex items-center justify-center p-8">
               <RefreshCw className="h-5 w-5 animate-spin text-muted-foreground" />
-              <span className="ml-2 text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="ml-2 text-xs text-muted-foreground">
                 Teslimatlar yükleniyor...
               </span>
             </div>
@@ -972,7 +972,7 @@ export default function WebhookBuilderPage() {
               <p className="font-medium text-sm text-zinc-700 dark:text-zinc-300">
                 Henüz teslimat yok
               </p>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Bu uç nokta için henüz bir webhook tetiklenmedi. Test
                 gönderimiyle ilk teslimatı oluşturabilirsiniz.
               </p>
@@ -980,7 +980,7 @@ export default function WebhookBuilderPage() {
           ) : (
             <div className="overflow-x-auto">
               <Table>
-                <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-800/40 dark:text-zinc-400">
+                <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/40">
                   <TableRow>
                     <TableHead className="px-4 py-2.5 font-semibold h-auto">Olay</TableHead>
                     <TableHead className="px-4 py-2.5 font-semibold h-auto">Durum</TableHead>
@@ -1002,7 +1002,7 @@ export default function WebhookBuilderPage() {
                       <TableCell className="px-4 py-3 font-mono text-zinc-600 dark:text-zinc-400">
                         {d.attemptCount}
                       </TableCell>
-                      <TableCell className="px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="px-4 py-3 font-mono text-muted-foreground">
                         {formatDate(d.createdAt)}
                       </TableCell>
                       <TableCell className="px-4 py-3">
@@ -1055,7 +1055,7 @@ export default function WebhookBuilderPage() {
                   <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     Test Gönder (Dry-Run)
                   </DialogTitle>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     Gerçek Failed teslimatı oluşturmaz, sadece simüle eder
                   </p>
                 </div>
@@ -1085,7 +1085,7 @@ export default function WebhookBuilderPage() {
                 rows={6}
                 value={testPayloadText}
               />
-              <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-2xs text-muted-foreground">
                 Varsayılan: {"{ event: selected, test: true }"} — dilediğiniz
                 JSON ile test edebilirsiniz.
               </p>
@@ -1101,7 +1101,7 @@ export default function WebhookBuilderPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-xs">
                   <div>
-                    <span className="block font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+                    <span className="block font-semibold text-2xs text-muted-foreground">
                       Süre
                     </span>
                     <span className="font-mono text-zinc-800 dark:text-zinc-200">
@@ -1109,7 +1109,7 @@ export default function WebhookBuilderPage() {
                     </span>
                   </div>
                   <div>
-                    <span className="block font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+                    <span className="block font-semibold text-2xs text-muted-foreground">
                       Yanıt Kodu
                     </span>
                     <span className="font-mono text-zinc-800 dark:text-zinc-200">
@@ -1117,7 +1117,7 @@ export default function WebhookBuilderPage() {
                     </span>
                   </div>
                   <div className="col-span-2">
-                    <span className="block font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+                    <span className="block font-semibold text-2xs text-muted-foreground">
                       HMAC
                     </span>
                     <code className="mt-1 block break-all rounded-lg bg-card px-2 py-1 font-mono text-2xs text-zinc-700 dark:text-zinc-300">
@@ -1126,7 +1126,7 @@ export default function WebhookBuilderPage() {
                   </div>
                   {testResult.responseBody && (
                     <div className="col-span-2">
-                      <span className="block font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+                      <span className="block font-semibold text-2xs text-muted-foreground">
                         Response Body
                       </span>
                       <pre className="mt-1 max-h-24 overflow-auto rounded-lg bg-card px-2 py-1.5 font-mono text-2xs text-zinc-700 dark:text-zinc-300">

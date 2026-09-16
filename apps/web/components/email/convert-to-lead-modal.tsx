@@ -124,7 +124,7 @@ function DealSuccessCard({
 }: DealSuccessCardProps): React.ReactElement {
   return (
     <div className="space-y-4 rounded-xl border border-emerald-200 bg-emerald-50/80 p-5 text-center dark:border-emerald-900 dark:bg-emerald-950/40">
-      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/60 dark:text-emerald-400">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-400">
         <CheckCircle2 className="h-6 w-6" />
       </div>
       <div>
@@ -137,7 +137,7 @@ function DealSuccessCard({
       </div>
       <div className="flex items-center justify-center gap-3 pt-2">
         <Link
-          className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-emerald-700"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-emerald-800"
           href={`/${tenantSlug}/pipelines`}
           onClick={onClose}
         >
@@ -588,7 +588,7 @@ export function ConvertToLeadModal({
               <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 E-postadan Fırsat & Müşteri Oluştur
               </DialogTitle>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 İleti içeriğini tek tıkla CRM satış boru hattına dönüştürün
               </p>
             </div>
@@ -607,7 +607,7 @@ export function ConvertToLeadModal({
         {/* Content */}
         <div className="custom-scrollbar max-h-[72vh] space-y-4 overflow-y-auto p-5">
           {isLoadingMeta ? (
-            <div className="flex items-center gap-2 text-xs text-zinc-500">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
               Müşteri ve satış hattı verileri taranıyor...
             </div>

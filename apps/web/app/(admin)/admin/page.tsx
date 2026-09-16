@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
               Super Admin
             </span>
           </div>
-          <p className="mt-1 text-zinc-500 text-sm">
+          <p className="mt-1 text-muted-foreground text-sm">
             Tüm firmaların lisans, sektör şablonu ve aktif modül durumlarını tek
             merkezden denetleyin.
           </p>
@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
 
         <div className="flex items-center gap-2.5">
           <Link
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-500 active:scale-95"
+            className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-600 active:scale-95"
             href="/admin/tenants?create=true"
           >
             <Plus className="h-4 w-4" />
@@ -105,7 +105,7 @@ export default function AdminDashboardPage() {
         {/* Total Tenants */}
         <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
+            <span className="font-bold text-muted-foreground text-xs uppercase tracking-wider">
               Kayıtlı Firma
             </span>
             <div className="rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50 dark:bg-blue-950/60 p-2 text-blue-600 dark:text-blue-400">
@@ -116,25 +116,25 @@ export default function AdminDashboardPage() {
             <span className="font-extrabold text-3xl text-zinc-900">
               {loading ? "-" : (stats?.totalTenants ?? 0)}
             </span>
-            <span className="font-medium text-blue-600 text-xs">Tenant</span>
+            <span className="font-medium text-blue-600 dark:text-blue-400 text-xs">Tenant</span>
           </div>
         </div>
 
         {/* Active Companies */}
         <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
+            <span className="font-bold text-muted-foreground text-xs uppercase tracking-wider">
               Aktif Abonelik
             </span>
-            <div className="rounded-xl border border-emerald-100 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-950/60 p-2 text-emerald-600 dark:text-emerald-400">
+            <div className="rounded-xl border border-emerald-100 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-950/60 p-2 text-emerald-700 dark:text-emerald-400">
               <CheckCircle2 className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-extrabold text-3xl text-emerald-600">
+            <span className="font-extrabold text-3xl text-emerald-700 dark:text-emerald-300">
               {loading ? "-" : (stats?.activeTenants ?? 0)}
             </span>
-            <span className="text-zinc-500 text-xs">
+            <span className="text-muted-foreground text-xs">
               / {stats?.suspendedTenants ?? 0} askıda
             </span>
           </div>
@@ -143,7 +143,7 @@ export default function AdminDashboardPage() {
         {/* Total Members */}
         <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
+            <span className="font-bold text-muted-foreground text-xs uppercase tracking-wider">
               Kullanıcı Havuzu
             </span>
             <div className="rounded-xl border border-purple-100 dark:border-purple-900/40 bg-purple-50 dark:bg-purple-950/60 p-2 text-purple-600 dark:text-purple-400">
@@ -154,7 +154,7 @@ export default function AdminDashboardPage() {
             <span className="font-extrabold text-3xl text-zinc-900">
               {loading ? "-" : (stats?.totalMembers ?? 0)}
             </span>
-            <span className="font-medium text-purple-600 text-xs">
+            <span className="font-medium text-purple-600 dark:text-purple-400 text-xs">
               Toplam Üye
             </span>
           </div>
@@ -163,18 +163,18 @@ export default function AdminDashboardPage() {
         {/* Sektör Şablonları */}
         <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-zinc-500 text-xs uppercase tracking-wider">
+            <span className="font-bold text-muted-foreground text-xs uppercase tracking-wider">
               Sektör Şablonu
             </span>
-            <div className="rounded-xl border border-amber-100 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/60 p-2 text-amber-600 dark:text-amber-400">
+            <div className="rounded-xl border border-amber-100 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/60 p-2 text-amber-700 dark:text-amber-400">
               <Sparkles className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-extrabold text-3xl text-amber-600">
+            <span className="font-extrabold text-3xl text-amber-700 dark:text-amber-400">
               {loading ? "-" : (stats?.totalTemplates ?? 0)}
             </span>
-            <span className="text-zinc-500 text-xs">Hazır Dikey</span>
+            <span className="text-muted-foreground text-xs">Hazır Dikey</span>
           </div>
         </div>
       </div>
@@ -188,12 +188,12 @@ export default function AdminDashboardPage() {
               <h2 className="font-bold text-base text-zinc-900">
                 Son Eklenen Firmalar
               </h2>
-              <p className="mt-0.5 text-zinc-500 text-xs">
+              <p className="mt-0.5 text-muted-foreground text-xs">
                 Sisteme kayıtlı işletmeler ve modül durumları
               </p>
             </div>
             <Link
-              className="flex items-center gap-1 font-semibold text-blue-600 text-xs hover:text-blue-700"
+              className="flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400 text-xs hover:text-blue-700"
               href="/admin/tenants"
             >
               <span>Tümünü Gör</span>
@@ -219,7 +219,7 @@ export default function AdminDashboardPage() {
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <Link
-                          className="truncate font-semibold text-zinc-900 text-sm hover:text-blue-600"
+                          className="truncate font-semibold text-zinc-900 text-sm hover:text-blue-600 dark:hover:text-blue-400"
                           href={`/admin/tenants/${tenant.id}`}
                         >
                           {tenant.name}
@@ -234,10 +234,10 @@ export default function AdminDashboardPage() {
                           </span>
                         )}
                       </div>
-                      <p className="mt-0.5 flex items-center gap-2 text-zinc-500 text-xs">
+                      <p className="mt-0.5 flex items-center gap-2 text-muted-foreground text-xs">
                         <span>slug: {tenant.slug}</span>
                         <span>•</span>
-                        <span className="font-medium text-amber-600">
+                        <span className="font-medium text-amber-700 dark:text-amber-400">
                           {tenant.industryTemplateName ??
                             tenant.industry ??
                             "Genel"}
@@ -274,7 +274,7 @@ export default function AdminDashboardPage() {
           <h2 className="font-bold text-base text-zinc-900">
             Sektör Dağılımı
           </h2>
-          <p className="mt-0.5 text-zinc-500 text-xs">
+          <p className="mt-0.5 text-muted-foreground text-xs">
             Firmaların sektörel şablon dağılımı
           </p>
 
@@ -292,7 +292,7 @@ export default function AdminDashboardPage() {
                       <span className="font-medium text-zinc-700 capitalize">
                         {item.industry}
                       </span>
-                      <span className="text-zinc-500">
+                      <span className="text-muted-foreground">
                         {item.count} firma ({percentage}%)
                       </span>
                     </div>

@@ -301,7 +301,7 @@ export default function AutomationsPage() {
         );
       case "support":
         return (
-          <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-amber-700 text-xs dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+          <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-amber-700 dark:text-amber-400 text-xs dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
             Destek Masası
           </span>
         );
@@ -359,7 +359,7 @@ export default function AutomationsPage() {
                   v2.0 Canlı
                 </span>
               </h1>
-              <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 CRM olaylarına dayalı tetikleyiciler, koşul kuralları ve çok
                 kanallı otomatik aksiyon motoru.
               </p>
@@ -389,7 +389,7 @@ export default function AutomationsPage() {
       {/* 2. Executive KPI Cards */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
-          <div className="mb-2 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-semibold text-xs text-muted-foreground">
             <span>AKTİF AKIŞLAR</span>
             <div className="h-2 w-2 animate-ping rounded-full bg-emerald-500" />
           </div>
@@ -401,32 +401,32 @@ export default function AutomationsPage() {
               / {stats?.totalWorkflows ?? 0} Akış
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-1 font-medium text-emerald-600 text-xs">
+          <div className="mt-2 flex items-center gap-1 font-medium text-emerald-700 dark:text-emerald-300 text-xs">
             <CheckCircle2 className="h-3.5 w-3.5" />
             <span>Çalışır durumda</span>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
-          <div className="mb-2 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-semibold text-xs text-muted-foreground">
             <span>BUGÜNKÜ ÇALIŞMA</span>
             <Activity className="h-4 w-4 text-blue-500" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-blue-600">
+            <span className="font-bold text-2xl text-blue-600 dark:text-blue-400">
               {stats?.executionsToday ?? 0}
             </span>
             <span className="text-xs text-muted-foreground">
               tetikleme
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
             <span>Toplam {stats?.totalExecutionsAllTime ?? 0} işlem</span>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
-          <div className="mb-2 flex items-center justify-between font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-semibold text-xs text-muted-foreground">
             <span>BAŞARI ORANI</span>
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
           </div>
@@ -435,7 +435,7 @@ export default function AutomationsPage() {
               %{stats?.successRate ?? 100}
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-1 font-medium text-emerald-600 text-xs">
+          <div className="mt-2 flex items-center gap-1 font-medium text-emerald-700 dark:text-emerald-300 text-xs">
             <TrendingUp className="h-3.5 w-3.5" />
             <span>Sıfır kritik hata</span>
           </div>
@@ -531,7 +531,7 @@ export default function AutomationsPage() {
             </form>
 
             <button
-              className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+              className="rounded-xl border border-border p-2 text-muted-foreground hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               onClick={loadData}
               title="Yenile"
             >
@@ -546,7 +546,7 @@ export default function AutomationsPage() {
         <div className="space-y-3">
           {isLoading ? (
             <div className="rounded-2xl border border-border bg-card p-12 text-center">
-              <RefreshCw className="mx-auto mb-3 h-6 w-6 animate-spin text-blue-600" />
+              <RefreshCw className="mx-auto mb-3 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
               <p className="font-medium text-sm text-zinc-600 dark:text-zinc-400">
                 Otomasyon akışları yükleniyor...
               </p>
@@ -559,7 +559,7 @@ export default function AutomationsPage() {
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 Henüz bir otomasyon akışı yok
               </h3>
-              <p className="mt-1 mb-5 text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 mb-5 text-sm text-muted-foreground">
                 Müşteri ekleme, sipariş tamamlama veya destek bileti açıldığında
                 otomatik aksiyonlar çalıştırın.
               </p>
@@ -609,12 +609,12 @@ export default function AutomationsPage() {
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-base text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100">
+                            <h3 className="font-bold text-base text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100">
                               {wf.name}
                             </h3>
                             {getCategoryBadge(wf.category)}
                           </div>
-                          <p className="mt-0.5 line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400">
+                          <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
                             {wf.description || "Açıklama belirtilmemiş."}
                           </p>
                         </div>
@@ -638,7 +638,7 @@ export default function AutomationsPage() {
                     {/* Trigger & Step Summary */}
                     <div className="mb-4 space-y-2 rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium text-zinc-500 dark:text-zinc-400">
+                        <span className="font-medium text-muted-foreground">
                           Tetikleyici:
                         </span>
                         <span className="rounded-md border border-border bg-card px-2 py-0.5 font-semibold text-zinc-800 shadow-2xs dark:text-zinc-200">
@@ -652,7 +652,7 @@ export default function AutomationsPage() {
                             <SlidersHorizontal className="h-3 w-3 text-muted-foreground" />
                             {wf.conditionsCount} Koşul
                           </span>
-                          <span className="flex items-center gap-1 font-medium text-blue-600">
+                          <span className="flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400">
                             <Layers className="h-3 w-3" />
                             {wf.actionsCount} Aksiyon Adımı
                           </span>
@@ -694,14 +694,14 @@ export default function AutomationsPage() {
                       </button>
 
                       <button
-                        className="rounded-lg p-1 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:text-zinc-500"
+                        className="rounded-lg p-1 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:hover:text-red-400 dark:text-zinc-500"
                         onClick={(e) => handleDelete(wf.id, wf.name, e)}
                         title="Sil"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
 
-                      <div className="p-1 text-muted-foreground transition-colors group-hover:text-blue-600 dark:text-zinc-500">
+                      <div className="p-1 text-muted-foreground transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-500">
                         <ChevronRight className="h-4 w-4" />
                       </div>
                     </div>
@@ -721,7 +721,7 @@ export default function AutomationsPage() {
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Son Çalışma Günlüğü (Audit Trail)
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 Olay tetiklemeleri, koşul doğrulama sonuçları ve aksiyon yürütme
                 süreleri.
               </p>
@@ -737,7 +737,7 @@ export default function AutomationsPage() {
 
           <div className="overflow-x-auto">
             <Table className="text-zinc-600 dark:text-zinc-400">
-              <TableHeader className="border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                 <TableRow>
                   <TableHead className="px-4 py-3 h-auto">Tarih / Saat</TableHead>
                   <TableHead className="px-4 py-3 h-auto">Akış Adı</TableHead>
@@ -764,7 +764,7 @@ export default function AutomationsPage() {
                       className="transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-800/50"
                       key={exec.id}
                     >
-                      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="whitespace-nowrap px-4 py-3 font-mono text-muted-foreground">
                         {new Date(exec.createdAt).toLocaleDateString("tr-TR")}{" "}
                         {new Date(exec.createdAt).toLocaleTimeString("tr-TR")}
                       </TableCell>
@@ -790,17 +790,17 @@ export default function AutomationsPage() {
                       <TableCell className="px-4 py-3">
                         {exec.status === "Success" ? (
                           <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-medium text-2xs text-emerald-700 dark:text-emerald-300">
-                            <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                            <CheckCircle2 className="h-3 w-3 text-emerald-700 dark:text-emerald-300" />
                             Başarılı
                           </span>
                         ) : exec.status === "Skipped" ? (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-medium text-2xs text-amber-700 dark:text-amber-300">
-                            <AlertCircle className="h-3 w-3 text-amber-600" />
+                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-medium text-2xs text-amber-700 dark:text-amber-400 dark:text-amber-300">
+                            <AlertCircle className="h-3 w-3 text-amber-700 dark:text-amber-400" />
                             Koşul Sağlanmadı
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 rounded-full border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 px-2 py-0.5 font-medium text-2xs text-red-700 dark:text-red-300">
-                            <XCircle className="h-3 w-3 text-red-600" />
+                            <XCircle className="h-3 w-3 text-red-600 dark:text-red-400" />
                             Hata
                           </span>
                         )}
@@ -810,7 +810,7 @@ export default function AutomationsPage() {
                           {exec.actionsExecutedCount} adım
                         </span>
                       </TableCell>
-                      <TableCell className="px-4 py-3 font-mono text-zinc-500 dark:text-zinc-400">
+                      <TableCell className="px-4 py-3 font-mono text-muted-foreground">
                         {exec.executionDurationMs} ms
                       </TableCell>
                     </TableRow>
@@ -850,10 +850,10 @@ export default function AutomationsPage() {
                   {getCategoryBadge(tmpl.category)}
                 </div>
 
-                <h3 className="font-bold text-base text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100">
+                <h3 className="font-bold text-base text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100">
                   {tmpl.name}
                 </h3>
-                <p className="mt-1 mb-4 text-xs text-zinc-500 leading-relaxed dark:text-zinc-400">
+                <p className="mt-1 mb-4 text-xs text-muted-foreground leading-relaxed">
                   {tmpl.description}
                 </p>
 
@@ -870,7 +870,7 @@ export default function AutomationsPage() {
                     <span className="text-muted-foreground">
                       Aksiyonlar:
                     </span>
-                    <span className="font-semibold text-blue-600">
+                    <span className="font-semibold text-blue-600 dark:text-blue-400">
                       {tmpl.actions.length} Adım
                     </span>
                   </div>
@@ -913,7 +913,7 @@ export default function AutomationsPage() {
                     <SheetTitle className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
                       Tarif Kütüphanesi
                     </SheetTitle>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="text-xs text-muted-foreground">
                       Önceden optimize edilmiş hazır otomasyon tarifleri
                     </p>
                   </div>
@@ -940,7 +940,7 @@ export default function AutomationsPage() {
                         <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                           {tmpl.name}
                         </h4>
-                        <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                        <p className="mt-0.5 text-xs text-muted-foreground">
                           {tmpl.description}
                         </p>
                       </div>
@@ -948,7 +948,7 @@ export default function AutomationsPage() {
                     </div>
 
                     <div className="mt-3 flex items-center justify-between border-border border-t pt-3 text-xs">
-                      <span className="font-mono text-zinc-500 dark:text-zinc-400">
+                      <span className="font-mono text-muted-foreground">
                         {tmpl.actions.length} Otomatik Adım
                       </span>
                       <button
@@ -966,7 +966,7 @@ export default function AutomationsPage() {
 
             <div className="border-border border-t pt-4">
               <button
-                className="w-full py-2 text-center font-medium text-xs text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+                className="w-full py-2 text-center font-medium text-xs text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
                 onClick={() => setIsRecipeDrawerOpen(false)}
               >
                 Kapat
@@ -1000,7 +1000,7 @@ export default function AutomationsPage() {
                   <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     Akış Simülasyonu (Dry-Run)
                   </DialogTitle>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     {simulatingWorkflow.name}
                   </p>
                 </div>
@@ -1018,7 +1018,7 @@ export default function AutomationsPage() {
 
             {isSimulating ? (
               <div className="space-y-3 py-12 text-center">
-                <RefreshCw className="mx-auto h-6 w-6 animate-spin text-blue-600" />
+                <RefreshCw className="mx-auto h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
                 <p className="font-medium text-xs text-zinc-600 dark:text-zinc-400">
                   Koşullar ve aksiyon zinciri simüle ediliyor...
                 </p>
@@ -1036,11 +1036,11 @@ export default function AutomationsPage() {
                 >
                   <div className="mb-1 flex items-center gap-2 font-bold">
                     {simulationResult.status === "Success" ? (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                      <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
                     ) : simulationResult.status === "Skipped" ? (
-                      <AlertCircle className="h-4 w-4 text-amber-600" />
+                      <AlertCircle className="h-4 w-4 text-amber-700 dark:text-amber-400" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-600" />
+                      <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
                     )}
                     <span>Simülasyon Sonucu: {simulationResult.status}</span>
                   </div>
@@ -1050,7 +1050,7 @@ export default function AutomationsPage() {
                 </div>
 
                 <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                  <span className="font-semibold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
+                  <span className="font-semibold text-2xs text-muted-foreground uppercase">
                     Yürütülen Adımlar ({simulationResult.stepLogs.length})
                   </span>
                   {simulationResult.stepLogs.map((log, idx) => (
@@ -1062,7 +1062,7 @@ export default function AutomationsPage() {
                         <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                           {log.stepTitle}
                         </div>
-                        <div className="mt-0.5 text-2xs text-zinc-500 dark:text-zinc-400">
+                        <div className="mt-0.5 text-2xs text-muted-foreground">
                           {log.message}
                         </div>
                       </div>

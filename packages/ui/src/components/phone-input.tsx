@@ -128,7 +128,7 @@ export function PhoneInput({
       required={required}
       rightIcon={
         isValid ? (
-          <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+          <Check className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" />
         ) : showError ? (
           <AlertCircle className="h-3.5 w-3.5 text-red-500 dark:text-red-400" />
         ) : undefined

@@ -222,8 +222,8 @@ export default function AdminTenantDetailPage() {
 
   if (loading && !tenant) {
     return (
-      <div className="flex h-64 items-center justify-center text-zinc-500 dark:text-zinc-400">
-        <Loader2 className="mr-2 h-6 w-6 animate-spin text-blue-600" />
+      <div className="flex h-64 items-center justify-center text-muted-foreground">
+        <Loader2 className="mr-2 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
         Firma bilgileri yükleniyor...
       </div>
     );
@@ -267,7 +267,7 @@ export default function AdminTenantDetailPage() {
             href={`/${tenant?.slug}`}
             target="_blank"
           >
-            <ExternalLink className="h-3.5 w-3.5 text-blue-600" />
+            <ExternalLink className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
             <span>Canlı Çalışma Alanını Aç</span>
           </Link>
         </div>
@@ -279,7 +279,7 @@ export default function AdminTenantDetailPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "modules"
               ? "border-blue-600 text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("modules")}
         >
@@ -291,7 +291,7 @@ export default function AdminTenantDetailPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "labels"
               ? "border-blue-600 text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("labels")}
         >
@@ -309,7 +309,7 @@ export default function AdminTenantDetailPage() {
               aktif/pasif yapabilir veya menüde görünecek özel ismi
               özelleştirebilirsiniz.
             </p>
-            <span className="font-bold text-blue-600">
+            <span className="font-bold text-blue-600 dark:text-blue-400">
               {modules.filter((m) => m.isEnabled).length} / {modules.length}{" "}
               Aktif Modül
             </span>
@@ -353,7 +353,7 @@ export default function AdminTenantDetailPage() {
 
                 {/* Custom Display Name Input */}
                 <div className="mt-3 space-y-1 border-border border-t pt-3">
-                  <label className="font-bold text-3xs text-zinc-500 dark:text-zinc-400">
+                  <label className="font-bold text-3xs text-muted-foreground">
                     Menüde Görünecek Özel İsim:
                   </label>
                   <input
@@ -379,7 +379,7 @@ export default function AdminTenantDetailPage() {
           <div className="flex flex-col justify-between gap-4 rounded-2xl border border-amber-200/80 bg-amber-50/40 p-5 shadow-2xs sm:flex-row sm:items-center dark:border-amber-800 dark:bg-amber-950/30">
             <div>
               <div className="flex items-center gap-2 font-bold text-amber-900 text-sm dark:text-amber-300">
-                <Sparkles className="h-4 w-4 text-amber-600" />
+                <Sparkles className="h-4 w-4 text-amber-700 dark:text-amber-400" />
                 <span>
                   Tanımlı Sektör Şablonu:{" "}
                   {labels?.industryName ?? labels?.industryKey ?? "Genel"}
@@ -391,7 +391,7 @@ export default function AdminTenantDetailPage() {
               </p>
             </div>
             <button
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 font-semibold text-white text-xs shadow-sm hover:bg-blue-500 disabled:opacity-50"
+              className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 font-semibold text-white text-xs shadow-sm hover:bg-blue-600 disabled:opacity-50"
               disabled={saving}
               onClick={handleSaveLabels}
             >
@@ -434,21 +434,21 @@ export default function AdminTenantDetailPage() {
                   onClick={handleAddOverride}
                   type="button"
                 >
-                  <Plus className="h-4 w-4 text-blue-600" />
+                  <Plus className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                   <span>Listeye Ekle</span>
                 </button>
               </div>
             </div>
             <p className="text-2xs text-muted-foreground">
               Örnekler:{" "}
-              <code className="font-semibold text-blue-600">products.name</code>
+              <code className="font-semibold text-blue-600 dark:text-blue-400">products.name</code>
               ,{" "}
-              <code className="font-semibold text-blue-600">products.sku</code>,{" "}
-              <code className="font-semibold text-blue-600">
+              <code className="font-semibold text-blue-600 dark:text-blue-400">products.sku</code>,{" "}
+              <code className="font-semibold text-blue-600 dark:text-blue-400">
                 products.brand
               </code>
               ,{" "}
-              <code className="font-semibold text-blue-600">
+              <code className="font-semibold text-blue-600 dark:text-blue-400">
                 customers.name
               </code>
             </p>
@@ -496,7 +496,7 @@ export default function AdminTenantDetailPage() {
                       />
                     </div>
                     <button
-                      className="rounded-xl p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500 dark:hover:bg-rose-950/40"
+                      className="rounded-xl p-1.5 text-muted-foreground transition hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500 dark:hover:bg-rose-950/40"
                       onClick={() => handleRemoveOverride(item.key)}
                       title="Etiketi Kaldır"
                       type="button"

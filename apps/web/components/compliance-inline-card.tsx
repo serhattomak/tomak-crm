@@ -87,9 +87,9 @@ export function ComplianceInlineCard({
           {hasHardBlock ? (
             <AlertOctagon className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />
           ) : isCompliant ? (
-            <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+            <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-400" />
           ) : (
-            <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+            <AlertTriangle className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
           )}
           <span className="text-2xs uppercase tracking-wider">
             {hasHardBlock
@@ -121,7 +121,7 @@ export function ComplianceInlineCard({
               <span
                 className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1 font-semibold text-2xs shadow-2xs ${ metrics.requiredBreakMinutes && metrics.providedBreakMinutes < metrics.requiredBreakMinutes ? "border-amber-300 bg-amber-100 text-amber-900 dark:border-amber-800 dark:bg-amber-950/60 dark:text-amber-300" : "border-border bg-white/90 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200" }`}
               >
-                <Coffee className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+                <Coffee className="h-3 w-3 text-amber-700 dark:text-amber-400" />
                 Mola: <strong>{metrics.providedBreakMinutes} dk</strong>
                 {metrics.requiredBreakMinutes && (
                   <span className="text-3xs opacity-75">
@@ -213,12 +213,12 @@ export function ComplianceInlineCard({
             <label className="flex cursor-pointer select-none items-center gap-2">
               <input
                 checked={localChecked}
-                className="h-4 w-4 rounded border-amber-300 dark:border-amber-700 text-amber-600 focus:ring-amber-500"
+                className="h-4 w-4 rounded border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 focus:ring-amber-500"
                 onChange={(e) => handleToggle(e.target.checked)}
                 type="checkbox"
               />
               <span className="flex items-center gap-1 font-bold text-2xs text-zinc-800 dark:text-zinc-200">
-                <FileCheck className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                <FileCheck className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" />
                 Yönetici İstisnası / Fazla Mesai Onayı ile Devam Et
               </span>
             </label>
@@ -232,7 +232,7 @@ export function ComplianceInlineCard({
                   type="text"
                   value={localReason}
                 />
-                <span className="block text-3xs text-zinc-500 dark:text-zinc-400">
+                <span className="block text-3xs text-muted-foreground">
                   * Bu gerekçe denetim kütüğüne yönetici onaylı istisna olarak
                   kaydedilecektir.
                 </span>

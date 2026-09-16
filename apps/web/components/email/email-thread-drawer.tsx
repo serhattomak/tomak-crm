@@ -104,7 +104,7 @@ function MessageCardBody({
     <div className="space-y-4 border-border border-t px-5 py-4">
       {/* Meta details */}
       {message.ccAddresses && message.ccAddresses.length > 0 ? (
-        <div className="text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="text-xs text-muted-foreground">
           <span className="font-medium">Bilgi (Cc):</span>{" "}
           {message.ccAddresses.join(", ")}
         </div>
@@ -197,7 +197,7 @@ function MessageCardBody({
         </div>
 
         <button
-          className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+          className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           onClick={onRead}
           type="button"
         >
@@ -302,7 +302,7 @@ function MessageCard({
                 </span>
               ) : null}
             </div>
-            <p className="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="line-clamp-1 text-xs text-muted-foreground">
               Kime: {message.toAddresses.join(", ")}
             </p>
           </div>
@@ -513,7 +513,7 @@ export function EmailThreadDrawer({
           <div className="flex items-center gap-3">
             <button
               aria-label="Geri"
-              className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               onClick={onClose}
               type="button"
             >
@@ -523,7 +523,7 @@ export function EmailThreadDrawer({
               <SheetTitle className="line-clamp-1 font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 {thread?.subject || "E-posta Dizisi"}
               </SheetTitle>
-              <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span>{thread?.messages.length || 0} ileti</span>
                 {thread?.messages && thread.messages.length > 0 ? (
                   <>
@@ -572,7 +572,7 @@ export function EmailThreadDrawer({
         {/* Content */}
         <div className="flex-1 space-y-4 overflow-y-auto p-6">
           {isLoading ? (
-            <div className="flex h-64 flex-col items-center justify-center gap-2 text-zinc-500">
+            <div className="flex h-64 flex-col items-center justify-center gap-2 text-muted-foreground">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
               <span className="text-sm">İletiler yükleniyor...</span>
             </div>
@@ -590,7 +590,7 @@ export function EmailThreadDrawer({
           {!(isLoading || error) &&
           thread?.messages &&
           thread.messages.length === 0 ? (
-            <div className="flex h-64 flex-col items-center justify-center text-zinc-500">
+            <div className="flex h-64 flex-col items-center justify-center text-muted-foreground">
               <Mail className="mb-2 h-8 w-8 text-zinc-300" />
               <p className="text-sm">Bu dizide henüz ileti bulunmuyor.</p>
             </div>

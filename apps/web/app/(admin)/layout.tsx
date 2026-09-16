@@ -68,7 +68,7 @@ export default function AdminLayout({
             <h1 className="font-bold text-sm text-zinc-900 leading-none dark:text-zinc-100">
               Super Admin
             </h1>
-            <p className="mt-0.5 text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-0.5 text-2xs text-muted-foreground">
               Yönetim Konsolu
             </p>
           </div>
@@ -147,7 +147,7 @@ export default function AdminLayout({
 
           {/* Navigation Links */}
           <nav className="space-y-1">
-            <div className="px-3 pb-2 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+            <div className="px-3 pb-2 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
               Yönetim Menüsü
             </div>
             {navItems.map((item) => {
@@ -193,7 +193,7 @@ export default function AdminLayout({
               <p className="truncate font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                 {userEmail}
               </p>
-              <p className="flex items-center gap-1 font-semibold text-3xs text-emerald-600 dark:text-emerald-400">
+              <p className="flex items-center gap-1 font-semibold text-3xs text-emerald-700 dark:text-emerald-400">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 Root Yetkisi
               </p>

@@ -227,14 +227,14 @@ export default function TicketsDashboardPage() {
       case "Urgent":
         return (
           <span className="inline-flex items-center gap-1 rounded-full border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 px-2 py-0.5 font-bold text-2xs text-red-700 dark:text-red-300 shadow-2xs">
-            <Flame className="h-3 w-3 animate-pulse text-red-600" />
+            <Flame className="h-3 w-3 animate-pulse text-red-600 dark:text-red-400" />
             Acil / Kritik
           </span>
         );
       case "High":
         return (
           <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-2xs text-amber-800 dark:text-amber-300 shadow-2xs">
-            <AlertCircle className="h-3 w-3 text-amber-600" />
+            <AlertCircle className="h-3 w-3 text-amber-700 dark:text-amber-400" />
             Yüksek
           </span>
         );
@@ -272,7 +272,7 @@ export default function TicketsDashboardPage() {
       case "PendingCustomer":
         return (
           <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 font-semibold text-2xs text-amber-800 dark:text-amber-300">
-            <Clock className="h-3 w-3 text-amber-600" />
+            <Clock className="h-3 w-3 text-amber-700 dark:text-amber-400" />
             Müşteri Bekleniyor
           </span>
         );
@@ -348,7 +348,7 @@ export default function TicketsDashboardPage() {
               <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 Destek Masası & Talepler
               </h1>
-              <p className="text-xs text-zinc-500 sm:text-sm dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground sm:text-sm">
                 Müşteri yardım biletleri, SLA süreleri ve çok kanallı iletişim
                 yönetimi
               </p>
@@ -402,7 +402,7 @@ export default function TicketsDashboardPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="font-semibold text-xs text-muted-foreground">
               Toplam Açık Talep
             </span>
             <div className="rounded-xl bg-blue-50 dark:bg-blue-950/60 p-2 text-blue-600 dark:text-blue-400">
@@ -421,24 +421,24 @@ export default function TicketsDashboardPage() {
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="font-semibold text-xs text-muted-foreground">
               Yanıt Bekleyenler
             </span>
-            <div className="rounded-xl bg-amber-50 dark:bg-amber-950/60 p-2 text-amber-600 dark:text-amber-400">
+            <div className="rounded-xl bg-amber-50 dark:bg-amber-950/60 p-2 text-amber-700 dark:text-amber-400">
               <Clock className="h-4 w-4" />
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-amber-700 tracking-tight">
+            <span className="font-bold text-2xl text-amber-700 dark:text-amber-400 tracking-tight">
               {stats?.pendingCustomerTickets ?? 0}
             </span>
-            <span className="text-amber-600/80 text-xs">müşteri aksiyonu</span>
+            <span className="text-amber-700 dark:text-amber-400 text-xs">müşteri aksiyonu</span>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="font-semibold text-xs text-muted-foreground">
               SLA Aşımı / Risk
             </span>
             <div className="rounded-xl bg-red-50 dark:bg-red-950/60 p-2 text-red-600 dark:text-red-400">
@@ -446,10 +446,10 @@ export default function TicketsDashboardPage() {
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-red-600 tracking-tight">
+            <span className="font-bold text-2xl text-red-600 dark:text-red-400 tracking-tight">
               {stats?.slaBreachedTickets ?? 0}
             </span>
-            <span className="text-red-600/80 text-xs">
+            <span className="text-red-600 dark:text-red-400 text-xs">
               ({stats?.urgentTickets ?? 0} acil)
             </span>
           </div>
@@ -457,18 +457,18 @@ export default function TicketsDashboardPage() {
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="font-semibold text-xs text-muted-foreground">
               SLA Başarı Oranı
             </span>
-            <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/60 p-2 text-emerald-600 dark:text-emerald-400">
+            <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/60 p-2 text-emerald-700 dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-emerald-600 tracking-tight">
+            <span className="font-bold text-2xl text-emerald-700 dark:text-emerald-300 tracking-tight">
               %{stats?.slaComplianceRate ?? 98.5}
             </span>
-            <span className="text-emerald-700/80 text-xs">
+            <span className="text-emerald-700 dark:text-emerald-400 text-xs">
               ({stats?.resolvedTodayCount ?? 0} bugün)
             </span>
           </div>
@@ -590,8 +590,8 @@ export default function TicketsDashboardPage() {
       {/* 4. Main View (Table vs. Kanban) */}
       {isLoading ? (
         <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-8">
-          <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-          <span className="font-medium text-sm text-zinc-500 dark:text-zinc-400">
+          <RefreshCw className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+          <span className="font-medium text-sm text-muted-foreground">
             Destek biletleri yükleniyor...
           </span>
         </div>
@@ -603,7 +603,7 @@ export default function TicketsDashboardPage() {
           <h3 className="mt-4 font-semibold text-base text-zinc-900 dark:text-zinc-100">
             Destek Talebi Bulunamadı
           </h3>
-          <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 max-w-sm text-xs text-muted-foreground">
             Seçili filtrelere uygun destek talebi bulunmuyor. Yeni bir bilet
             oluşturabilir veya filtreleri temizleyebilirsiniz.
           </p>
@@ -644,7 +644,7 @@ export default function TicketsDashboardPage() {
                     <TableCell className="px-4 py-3.5">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-blue-600 text-xs group-hover:underline">
+                          <span className="font-bold text-blue-600 dark:text-blue-400 text-xs group-hover:underline">
                             #{t.ticketNumber}
                           </span>
                           <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-medium text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
@@ -700,7 +700,7 @@ export default function TicketsDashboardPage() {
                           SLA Aşıldı
                         </span>
                       ) : t.slaResolutionDueAt ? (
-                        <span className="inline-flex items-center gap-1 text-2xs text-zinc-500 dark:text-zinc-400">
+                        <span className="inline-flex items-center gap-1 text-2xs text-muted-foreground">
                           <Timer className="h-3 w-3 text-muted-foreground" />
                           {new Date(t.slaResolutionDueAt).toLocaleTimeString(
                             "tr-TR",
@@ -718,7 +718,7 @@ export default function TicketsDashboardPage() {
                     </TableCell>
 
                     <TableCell className="px-4 py-3.5">
-                      <div className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
+                      <div className="flex items-center gap-1 text-muted-foreground">
                         <MessageSquare className="h-3.5 w-3.5" />
                         <span>{t.messageCount}</span>
                       </div>
@@ -726,7 +726,7 @@ export default function TicketsDashboardPage() {
 
                     <TableCell className="px-4 py-3.5 text-right">
                       <Link
-                        className="inline-flex items-center gap-1 rounded-lg border border-border px-2.5 py-1 text-zinc-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:text-zinc-400"
+                        className="inline-flex items-center gap-1 rounded-lg border border-border px-2.5 py-1 text-zinc-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400"
                         href={`/${tenantSlug}/tickets/${t.id}`}
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -793,17 +793,17 @@ export default function TicketsDashboardPage() {
                         }
                       >
                         <div className="flex items-start justify-between gap-2">
-                          <span className="font-bold text-blue-600 text-xs">
+                          <span className="font-bold text-blue-600 dark:text-blue-400 text-xs">
                             #{ticket.ticketNumber}
                           </span>
                           {getPriorityBadge(ticket.priority)}
                         </div>
 
-                        <h4 className="mt-1.5 line-clamp-2 font-semibold text-xs text-zinc-900 group-hover:text-blue-600 dark:text-zinc-100">
+                        <h4 className="mt-1.5 line-clamp-2 font-semibold text-xs text-zinc-900 group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100">
                           {ticket.subject}
                         </h4>
 
-                        <div className="mt-2.5 flex items-center justify-between border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+                        <div className="mt-2.5 flex items-center justify-between border-border border-t pt-2 text-2xs text-muted-foreground">
                           <span className="max-w-[120px] truncate font-medium text-zinc-700 dark:text-zinc-300">
                             {ticket.customerName}
                           </span>
@@ -851,7 +851,7 @@ export default function TicketsDashboardPage() {
                   <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                     Yeni Destek Talebi Aç
                   </DialogTitle>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     Müşteri adına yeni bir yardım bileti oluşturun
                   </p>
                 </div>

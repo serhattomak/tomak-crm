@@ -65,7 +65,7 @@ export function VariableChips({
           </button>
         ))}
       </div>
-      <p className="text-2xs text-zinc-500 dark:text-zinc-500">
+      <p className="text-2xs text-muted-foreground">
         <span className="font-mono">{"{{itemsTable}}"}</span> HTML tablo olarak
         render edilir — diğerleri otomatik escape edilir.
       </p>

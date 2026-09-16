@@ -239,7 +239,7 @@ export default function ContractsPage() {
               B2B Dijital Onay
             </span>
           </div>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Müşteri sözleşmelerini oluşturun, tekliflerle ilişkilendirin ve
             çevrimiçi e-imza ile yürürlüğe alın.
           </p>
@@ -273,7 +273,7 @@ export default function ContractsPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
+            <span className="text-xs text-muted-foreground uppercase">
               Toplam Sözleşme
             </span>
             <FileText className="h-4 w-4 text-muted-foreground" />
@@ -285,31 +285,31 @@ export default function ContractsPage() {
 
         <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
+            <span className="text-xs text-muted-foreground uppercase">
               İmzalanan / Aktif
             </span>
             <FileCheck2 className="h-4 w-4 text-emerald-500" />
           </div>
-          <p className="mt-2 font-semibold text-2xl text-emerald-600 tabular-nums dark:text-emerald-400">
+          <p className="mt-2 font-semibold text-2xl text-emerald-700 tabular-nums dark:text-emerald-400">
             {signedCount}
           </p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
+            <span className="text-xs text-muted-foreground uppercase">
               Onay Bekleyenler
             </span>
             <Clock className="h-4 w-4 text-amber-500" />
           </div>
-          <p className="mt-2 font-semibold text-2xl text-amber-600 tabular-nums dark:text-amber-400">
+          <p className="mt-2 font-semibold text-2xl text-amber-700 tabular-nums dark:text-amber-400">
             {draftCount}
           </p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-zinc-500 uppercase dark:text-zinc-400">
+            <span className="text-xs text-muted-foreground uppercase">
               Toplam Portföy Değeri
             </span>
             <ShieldCheck className="h-4 w-4 text-blue-500" />
@@ -364,7 +364,7 @@ export default function ContractsPage() {
       {/* 4. Contracts Table (Workbench Table Invariant) */}
       <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
         <Table>
-          <TableHeader className="border-border bg-zinc-50/75 text-zinc-500 dark:bg-zinc-900/80 dark:text-zinc-400">
+          <TableHeader className="border-border bg-zinc-50/75 text-muted-foreground dark:bg-zinc-900/80">
             <TableRow>
               <TableHead className="py-3 pr-4 pl-5 font-semibold h-auto">Sözleşme No</TableHead>
               <TableHead className="px-4 py-3 font-semibold h-auto">Başlık & Müşteri</TableHead>
@@ -379,14 +379,14 @@ export default function ContractsPage() {
           <TableBody className="divide-y divide-zinc-200/60 dark:divide-zinc-800/60">
             {isLoading ? (
               <TableRow>
-                <TableCell className="py-12 text-center text-zinc-500" colSpan={6}>
+                <TableCell className="py-12 text-center text-muted-foreground" colSpan={6}>
                   <Loader2 className="mx-auto h-6 w-6 animate-spin text-blue-500" />
                   <span className="mt-2 block">Yükleniyor...</span>
                 </TableCell>
               </TableRow>
             ) : contracts.length === 0 ? (
               <TableRow>
-                <TableCell className="py-12 text-center text-zinc-500" colSpan={6}>
+                <TableCell className="py-12 text-center text-muted-foreground" colSpan={6}>
                   Kayıtlı sözleşme bulunamadı.
                 </TableCell>
               </TableRow>
@@ -403,7 +403,7 @@ export default function ContractsPage() {
                     <div className="font-semibold text-zinc-900 dark:text-zinc-100">
                       {c.title}
                     </div>
-                    <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+                    <div className="text-2xs text-muted-foreground">
                       {c.customerName || "—"}
                     </div>
                   </TableCell>
@@ -429,7 +429,7 @@ export default function ContractsPage() {
                   </TableCell>
                   <TableCell className="px-4 py-3">
                     {c.signedAt ? (
-                      <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                      <div className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400">
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         <span>
                           {new Date(c.signedAt).toLocaleDateString("tr-TR")} (
@@ -444,7 +444,7 @@ export default function ContractsPage() {
                     <div className="flex items-center justify-end gap-1.5">
                       {c.publicToken && (
                         <button
-                          className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                          className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                           onClick={() => {
                             const url = `${window.location.origin}/portal/${c.publicToken}`;
                             navigator.clipboard.writeText(url);
@@ -458,7 +458,7 @@ export default function ContractsPage() {
                       )}
 
                       <button
-                        className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                         onClick={() => handleOpenDetail(c.id)}
                         title="İncele & Önizle"
                         type="button"
@@ -630,7 +630,7 @@ export default function ContractsPage() {
                 <SheetTitle className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
                   {selectedContract.title}
                 </SheetTitle>
-                <p className="font-mono text-xs text-zinc-500">
+                <p className="font-mono text-xs text-muted-foreground">
                   {selectedContract.contractNumber}
                 </p>
               </div>

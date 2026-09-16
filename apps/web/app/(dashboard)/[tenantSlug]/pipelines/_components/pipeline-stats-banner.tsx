@@ -57,11 +57,11 @@ export function PipelineStatsBanner({
               %{winRate}
             </div>
           </div>
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-300">
             <Award className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-emerald-600">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-emerald-700 dark:text-emerald-300">
           <span>Başarıyla tamamlanan fırsatlar</span>
         </div>
       </Card>
@@ -77,11 +77,11 @@ export function PipelineStatsBanner({
               {unassignedCount}
             </div>
           </div>
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400">
             <Users className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-amber-600">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-amber-700 dark:text-amber-400">
           <span>Temsilci ataması bekleyen kartlar</span>
         </div>
       </Card>
@@ -97,11 +97,11 @@ export function PipelineStatsBanner({
               {slaCount}
             </div>
           </div>
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-500/10 text-rose-600">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400">
             <Flame className="h-4 w-4" />
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-rose-600">
+        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 font-medium text-2xs text-rose-600 dark:text-rose-400">
           <span>Aşama yanıt süresi gecikenler</span>
         </div>
       </Card>

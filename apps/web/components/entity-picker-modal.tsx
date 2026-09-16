@@ -145,7 +145,7 @@ export function EntityPickerModal<T = unknown>({
               {title}
             </DialogTitle>
             {description && (
-              <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-2xs text-muted-foreground">
                 {description}
               </p>
             )}
@@ -205,7 +205,7 @@ export function EntityPickerModal<T = unknown>({
         <div className="custom-scrollbar max-h-80 space-y-1 overflow-y-auto p-2">
           {filteredItems.length === 0 ? (
             <div className="py-8 text-center">
-              <p className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="font-medium text-xs text-muted-foreground">
                 {emptyMessage}
               </p>
               {onAddNew && (
@@ -276,7 +276,7 @@ export function EntityPickerModal<T = unknown>({
                         )}
                       </div>
                       {item.subLabel && (
-                        <p className="truncate text-2xs text-zinc-500 dark:text-zinc-400">
+                        <p className="truncate text-2xs text-muted-foreground">
                           {item.subLabel}
                         </p>
                       )}
@@ -290,7 +290,7 @@ export function EntityPickerModal<T = unknown>({
                         <Check className="h-3 w-3" />
                       </div>
                     ) : (
-                      <span className="text-3xs text-muted-foreground opacity-0 group-hover:opacity-100 dark:text-zinc-500">
+                      <span className="text-3xs text-muted-foreground opacity-0 group-hover:opacity-100">
                         Seç
                       </span>
                     )}
@@ -302,7 +302,7 @@ export function EntityPickerModal<T = unknown>({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-border border-t bg-zinc-50/50 p-2.5 px-3 text-2xs text-zinc-500 dark:bg-zinc-900/50 dark:text-zinc-400">
+        <div className="flex items-center justify-between border-border border-t bg-zinc-50/50 p-2.5 px-3 text-2xs text-muted-foreground dark:bg-zinc-900/50">
           <span>{filteredItems.length} kayıt listelendi</span>
           {selectedId && (
             <button
@@ -402,7 +402,7 @@ export function SalesRepPicker({
                   {selectedEmployee.fullName || selectedEmployee.email}
                 </span>
                 {selectedEmployee.title && (
-                  <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block dark:text-zinc-500">
+                  <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block">
                     ({selectedEmployee.title})
                   </span>
                 )}
@@ -531,7 +531,7 @@ export function CustomerPicker({
                   {selectedCustomer.name}
                 </span>
                 {selectedCustomer.city && (
-                  <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block dark:text-zinc-500">
+                  <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block">
                     ({selectedCustomer.city})
                   </span>
                 )}
@@ -651,13 +651,13 @@ export function ProductPicker({
           <div className="flex min-w-0 items-center gap-2 truncate">
             {selectedProduct ? (
               <>
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-emerald-600 font-bold text-3xs text-white">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-emerald-700 font-bold text-3xs text-white">
                   {(selectedProduct.name?.[0] || "Ü").toUpperCase()}
                 </div>
                 <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
                   {selectedProduct.name}
                 </span>
-                <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block dark:text-zinc-500">
+                <span className="hidden truncate text-2xs text-muted-foreground sm:inline-block">
                   ({selectedProduct.sellingPrice?.toLocaleString("tr-TR")} ₺)
                 </span>
               </>

@@ -373,7 +373,7 @@ export default function OrdersPage() {
               {totalCount} Sipariş
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-0.5 text-xs text-muted-foreground">
             Müşterilerinizin siparişlerini oluşturun, onaylayın, teslimat ve
             parçalı tahsilatlarını takip edin.
           </p>
@@ -388,7 +388,7 @@ export default function OrdersPage() {
             }
             type="button"
           >
-            <Download className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+            <Download className="h-3.5 w-3.5 text-muted-foreground" />
             <span>Dışa Aktar</span>
           </button>
 
@@ -411,7 +411,7 @@ export default function OrdersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Toplam Satış Cirosu
               </span>
               <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -425,7 +425,7 @@ export default function OrdersPage() {
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>{stats?.totalOrders ?? 0} Toplam Sipariş Kaydı</span>
           </div>
         </div>
@@ -434,21 +434,21 @@ export default function OrdersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Tahsil Edilen Tutar
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-emerald-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-emerald-700 dark:text-emerald-300 tracking-tight sm:text-3xl">
                 ₺
                 {(stats?.paidRevenue ?? 0).toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
                 })}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
               <CheckCircle2 className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>
               Tahsilat Oranı: %
               {stats && stats.totalRevenue > 0
@@ -462,18 +462,18 @@ export default function OrdersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Bekleyen & Hazırlanan
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-amber-700 dark:text-amber-400 tracking-tight sm:text-3xl">
                 {(stats?.pendingOrders ?? 0) + (stats?.processingOrders ?? 0)}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
               <Clock className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>
               {stats?.confirmedOrders ?? 0} Onaylandı •{" "}
               {stats?.shippedOrders ?? 0} Yolda
@@ -485,10 +485,10 @@ export default function OrdersPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Bekleyen Tahsilat (Açık Bakiye)
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-rose-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-rose-600 dark:text-rose-400 tracking-tight sm:text-3xl">
                 ₺
                 {(stats?.unpaidRevenue ?? 0).toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
@@ -499,7 +499,7 @@ export default function OrdersPage() {
               <AlertCircle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>Ödenmesi gereken açık alacaklar</span>
           </div>
         </div>
@@ -598,20 +598,20 @@ export default function OrdersPage() {
         <div className="flex h-64 items-center justify-center rounded-3xl border border-border bg-card shadow-xs">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="font-medium text-xs text-muted-foreground">
               Siparişler yükleniyor...
             </span>
           </div>
         </div>
       ) : orders.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card p-12 text-center shadow-xs">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800">
             <ShoppingCart className="h-6 w-6" />
           </div>
           <h3 className="mt-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
             Sipariş Bulunamadı
           </h3>
-          <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 max-w-sm text-xs text-muted-foreground">
             Arama kriterlerinize uygun sipariş bulunamadı veya henüz bir sipariş
             oluşturulmadı.
           </p>
@@ -631,7 +631,7 @@ export default function OrdersPage() {
         <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs">
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="border-border bg-zinc-50/50 text-zinc-500 dark:bg-zinc-800/30 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
                 <TableRow>
                   <TableHead className="w-10 py-3.5 pr-2 pl-4 h-auto">
                     <Checkbox
@@ -671,7 +671,7 @@ export default function OrdersPage() {
                     </TableCell>
                     <TableCell className="py-4 pr-4 pl-2">
                       <Link
-                        className="block font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100"
+                        className="block font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100"
                         href={`/${tenantSlug}/orders/${o.id}`}
                       >
                         {o.orderNumber}
@@ -729,7 +729,7 @@ export default function OrdersPage() {
                     </TableCell>
 
                     <TableCell className="px-4 py-4 text-right">
-                      <div className="font-bold text-emerald-600 text-xs">
+                      <div className="font-bold text-emerald-700 dark:text-emerald-300 text-xs">
                         ₺
                         {o.paidAmount.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
@@ -748,7 +748,7 @@ export default function OrdersPage() {
                     <TableCell className="py-4 pr-6 pl-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                           href={`/${tenantSlug}/orders/${o.id}`}
                           title="Sipariş Detayı"
                         >
@@ -756,7 +756,7 @@ export default function OrdersPage() {
                         </Link>
                         <PermissionGate permission="Orders.Delete">
                           <button
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                             onClick={() => setDeletingOrder(o)}
                             title="Siparişi Sil"
                             type="button"
@@ -820,7 +820,7 @@ export default function OrdersPage() {
                       >
                         <div>
                           <div className="flex items-start justify-between gap-1">
-                            <span className="font-bold text-xs text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100">
+                            <span className="font-bold text-xs text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100">
                               {o.orderNumber}
                             </span>
                             <span
@@ -1190,7 +1190,7 @@ function CreateOrderWizardModal({
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni Sipariş Oluştur
             </DialogTitle>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-muted-foreground">
               Müşteri seçin, ürün/hizmet kalemlerini ekleyin ve otomatik
               KDV/İndirim hesaplamasını yapın
             </p>
@@ -1198,7 +1198,7 @@ function CreateOrderWizardModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1324,7 +1324,7 @@ function CreateOrderWizardModal({
             ) : (
               <div className="overflow-x-auto rounded-xl border border-border">
                 <Table>
-                  <TableHeader className="bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableHeader className="bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                     <TableRow>
                       <TableHead className="px-3 py-2.5 h-auto">Kalem Adı</TableHead>
                       <TableHead className="px-3 py-2.5 text-center h-auto">Miktar</TableHead>
@@ -1415,7 +1415,7 @@ function CreateOrderWizardModal({
                           <TableCell className="px-3 py-2.5 text-center">
                             <button
                               aria-label="Satırı kaldır"
-                              className="p-1 text-muted-foreground hover:text-rose-600 dark:text-zinc-500"
+                              className="p-1 text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                               onClick={() => handleRemoveItem(idx)}
                               type="button"
                             >
@@ -1548,7 +1548,7 @@ function CreateOrderWizardModal({
                           <Tag className="h-3 w-3 text-blue-500" />
                           {p.name} ({p.desc})
                         </span>
-                        <span className="font-bold text-emerald-600">
+                        <span className="font-bold text-emerald-700 dark:text-emerald-300">
                           -₺
                           {p.discount.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
@@ -1609,7 +1609,7 @@ function CreateOrderWizardModal({
                 </div>
 
                 {generalDiscount > 0 && (
-                  <div className="flex items-center justify-between font-medium text-rose-600">
+                  <div className="flex items-center justify-between font-medium text-rose-600 dark:text-rose-400">
                     <span>Genel İskonto:</span>
                     <span>
                       -₺
@@ -1655,7 +1655,7 @@ function CreateOrderWizardModal({
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="font-extrabold text-blue-600 text-xl tracking-tight">
+                    <span className="font-extrabold text-blue-600 dark:text-blue-400 text-xl tracking-tight">
                       ₺
                       {grandTotal.toLocaleString("tr-TR", {
                         minimumFractionDigits: 2,

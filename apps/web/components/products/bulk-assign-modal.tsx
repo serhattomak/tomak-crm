@@ -179,7 +179,7 @@ export function BulkAssignModal({
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Toplu Bilgi Ata / Güncelle
             </DialogTitle>
-            <p className="mt-0.5 text-zinc-500 dark:text-zinc-400">
+            <p className="mt-0.5 text-muted-foreground">
               Seçilen{" "}
               <strong className="text-zinc-800 dark:text-zinc-200">
                 {selectedIds.length}
@@ -395,7 +395,7 @@ export function BulkAssignModal({
                 </Label>
               </div>
               {assignTags && (
-                <div className="flex items-center gap-2 text-2xs text-zinc-500">
+                <div className="flex items-center gap-2 text-2xs text-muted-foreground">
                   <Checkbox
                     checked={appendTags}
                     id="append-tags"
@@ -432,7 +432,7 @@ export function BulkAssignModal({
                 </Label>
               </div>
               {assignImage && (
-                <div className="flex items-center gap-2 text-2xs text-zinc-500">
+                <div className="flex items-center gap-2 text-2xs text-muted-foreground">
                   <Checkbox
                     checked={appendImages}
                     id="append-images"

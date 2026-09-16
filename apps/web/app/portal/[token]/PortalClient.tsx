@@ -168,7 +168,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
   if (isLoading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 text-zinc-500">
-        <RefreshCw className="mb-3 h-8 w-8 animate-spin text-blue-600" />
+        <RefreshCw className="mb-3 h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
         <span className="font-semibold text-xs">Teklif hazırlanıyor...</span>
       </div>
     );
@@ -310,7 +310,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 p-4">
         <div className="w-full max-w-md space-y-4 rounded-3xl border border-border bg-card p-8 text-center shadow-xl">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 dark:text-rose-400">
             <AlertCircle className="h-6 w-6" />
           </div>
           <h2 className="font-bold text-base text-zinc-900">
@@ -318,7 +318,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           </h2>
           <p className="text-zinc-500 text-xs">{displayMessage}</p>
           {isExpired && expiredDate && (
-            <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-2xs text-amber-700">
+            <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-2xs text-amber-700 dark:text-amber-400">
               <Clock className="h-3 w-3" />
               Son Geçerlilik: {expiredDate}
             </span>
@@ -497,7 +497,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
         {/* Top Floating Action Bar */}
         <div className="sticky top-4 z-40 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-white/95 p-4 shadow-md backdrop-blur-md">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-600">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-600 dark:text-blue-400">
               <FileSpreadsheet className="h-5 w-5" />
             </div>
             <div>
@@ -587,7 +587,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 Tarih: {new Date().toLocaleDateString("tr-TR")}
               </span>
               {quote.validUntil && (
-                <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-2xs text-amber-700">
+                <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-semibold text-2xs text-amber-700 dark:text-amber-400">
                   <Clock className="h-3 w-3" />
                   Son Geçerlilik:{" "}
                   {new Date(quote.validUntil).toLocaleDateString("tr-TR")}
@@ -672,7 +672,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                       <TableCell className="px-3 py-3 text-right font-medium">
                         {formatCurrency(item.unitPrice, quote.currency)}
                       </TableCell>
-                      <TableCell className="px-3 py-3 text-center font-bold text-rose-600">
+                      <TableCell className="px-3 py-3 text-center font-bold text-rose-600 dark:text-rose-400">
                         {item.discountRate > 0 ? `%${item.discountRate}` : "-"}
                       </TableCell>
                       <TableCell className="px-3 py-3 text-center text-zinc-500">
@@ -698,7 +698,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 </span>
               </div>
               {quote.discountAmount > 0 && (
-                <div className="flex justify-between font-medium text-rose-600">
+                <div className="flex justify-between font-medium text-rose-600 dark:text-rose-400">
                   <span>Uygulanan İskonto:</span>
                   <span className="font-bold">
                     -{formatCurrency(quote.discountAmount, quote.currency)}
@@ -782,7 +782,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             </div>
 
             {isSuccessAccepted || quote.status === "Accepted" ? (
-              <span className="inline-flex items-center gap-2 rounded-2xl bg-emerald-600 px-6 py-2.5 font-bold text-white text-xs shadow-md">
+              <span className="inline-flex items-center gap-2 rounded-2xl bg-emerald-700 px-6 py-2.5 font-bold text-white text-xs shadow-md">
                 <CheckCircle2 className="h-4 w-4" />
                 <span>Teklif Onaylandı</span>
               </span>
@@ -817,7 +817,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:text-blue-400">
                   <Check className="h-4 w-4" />
                 </div>
                 <DialogTitle className="font-bold text-zinc-900 text-sm">
@@ -914,7 +914,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:text-purple-400">
                   <MessageSquare className="h-4 w-4" />
                 </div>
                 <DialogTitle className="font-bold text-zinc-900 text-sm">

@@ -730,7 +730,7 @@ export default function ProjectDetailPage() {
           Proje Bulunamadı
         </h2>
         <Link
-          className="mt-4 font-semibold text-sm text-blue-600 hover:underline"
+          className="mt-4 font-semibold text-sm text-blue-600 dark:text-blue-400 hover:underline"
           href={`/${tenantSlug}/projects`}
         >
           ← Projeler Listesine Dön
@@ -752,7 +752,7 @@ export default function ProjectDetailPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 border-border border-b pb-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Link
               className="flex items-center gap-1 hover:text-zinc-800 dark:hover:text-zinc-200"
               href={`/${tenantSlug}/projects`}
@@ -817,7 +817,7 @@ export default function ProjectDetailPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "backlog"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("backlog")}
           type="button"
@@ -833,7 +833,7 @@ export default function ProjectDetailPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "board"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("board")}
           type="button"
@@ -851,7 +851,7 @@ export default function ProjectDetailPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "epics"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("epics")}
           type="button"
@@ -896,7 +896,7 @@ export default function ProjectDetailPage() {
             >
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
                     <Flame className="h-5 w-5" />
                   </div>
                   <div>
@@ -909,7 +909,7 @@ export default function ProjectDetailPage() {
                       </span>
                     </div>
                     {activeSprint.goal && (
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      <p className="text-xs text-muted-foreground">
                         Hedef: {activeSprint.goal}
                       </p>
                     )}
@@ -917,7 +917,7 @@ export default function ProjectDetailPage() {
                 </div>
 
                 <div className="flex items-center gap-3 text-xs">
-                  <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
                     <Calendar className="h-3.5 w-3.5" />
                     <span>
                       {activeSprint.startDate
@@ -978,13 +978,13 @@ export default function ProjectDetailPage() {
                       }}
                     >
                       <div className="flex items-center gap-3 truncate">
-                        <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
+                        <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-muted-foreground dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                         <span
                           className={`rounded-md border px-1.5 py-0.5 font-bold text-3xs ${getTypeBadge(item.type)}`}
                         >
                           {item.type}
                         </span>
-                        <span className="font-bold text-xs text-zinc-500 dark:text-zinc-400">
+                        <span className="font-bold text-xs text-muted-foreground">
                           {item.itemKey}
                         </span>
                         <span className="truncate font-semibold text-xs text-zinc-800 dark:text-zinc-200">
@@ -1148,7 +1148,7 @@ export default function ProjectDetailPage() {
                       </span>
                     </div>
                     {sprint.goal && (
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      <p className="text-xs text-muted-foreground">
                         Hedef: {sprint.goal}
                       </p>
                     )}
@@ -1193,13 +1193,13 @@ export default function ProjectDetailPage() {
                       }}
                     >
                       <div className="flex items-center gap-3 truncate">
-                        <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
+                        <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-muted-foreground dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                         <span
                           className={`rounded-md border px-1.5 py-0.5 font-bold text-3xs ${getTypeBadge(item.type)}`}
                         >
                           {item.type}
                         </span>
-                        <span className="font-bold text-xs text-zinc-500 dark:text-zinc-400">
+                        <span className="font-bold text-xs text-muted-foreground">
                           {item.itemKey}
                         </span>
                         <span className="truncate font-semibold text-xs text-zinc-800 dark:text-zinc-200">
@@ -1256,7 +1256,7 @@ export default function ProjectDetailPage() {
                         />
 
                         <button
-                          className="rounded-lg border border-border px-2 py-1 text-3xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                          className="rounded-lg border border-border px-2 py-1 text-3xs text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-700"
                           onClick={() => handleAssignToSprint(item.id, null)}
                           title="Backlog'a Taşı"
                           type="button"
@@ -1316,7 +1316,7 @@ export default function ProjectDetailPage() {
                 <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Backlog Havuzu (Atanmamış İşler)
                 </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-muted-foreground">
                   Sprintlere henüz dahil edilmemiş tüm gereksinimler ve görevler
                   (Buraya sürükleyip bırakabilirsiniz)
                 </p>
@@ -1349,13 +1349,13 @@ export default function ProjectDetailPage() {
                   }}
                 >
                   <div className="flex items-center gap-3 truncate">
-                    <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
+                    <GripVertical className="h-4 w-4 text-zinc-300 group-hover:text-muted-foreground dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                     <span
                       className={`rounded-md border px-1.5 py-0.5 font-bold text-3xs ${getTypeBadge(item.type)}`}
                     >
                       {item.type}
                     </span>
-                    <span className="font-bold text-xs text-zinc-500 dark:text-zinc-400">
+                    <span className="font-bold text-xs text-muted-foreground">
                       {item.itemKey}
                     </span>
                     <span className="truncate font-semibold text-xs text-zinc-800 dark:text-zinc-200">
@@ -1566,7 +1566,7 @@ export default function ProjectDetailPage() {
                             >
                               <div className="flex items-center justify-between gap-1">
                                 <div className="flex items-center gap-1.5">
-                                  <GripVertical className="h-3.5 w-3.5 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:group-hover:text-zinc-400" />
+                                  <GripVertical className="h-3.5 w-3.5 text-zinc-300 group-hover:text-muted-foreground dark:text-zinc-600 dark:group-hover:text-zinc-400" />
                                   <span
                                     className={`rounded-md border px-1.5 py-0.5 font-bold text-3xs ${getTypeBadge(item.type)}`}
                                   >
@@ -1714,7 +1714,7 @@ export default function ProjectDetailPage() {
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Aktif Sprint Bulunmuyor
               </h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Backlog planlama sekmesine giderek bir sprinti "Başlat" butonuna
                 tıklayarak aktifleştirebilirsiniz.
               </p>
@@ -1748,7 +1748,7 @@ export default function ProjectDetailPage() {
                       <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                         {epic.name}
                       </h3>
-                      <span className="text-2xs text-zinc-500 dark:text-zinc-400">
+                      <span className="text-2xs text-muted-foreground">
                         {epic.status}
                       </span>
                     </div>
@@ -1756,14 +1756,14 @@ export default function ProjectDetailPage() {
                 </div>
 
                 {epic.description && (
-                  <p className="mt-3 line-clamp-2 text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="mt-3 line-clamp-2 text-xs text-muted-foreground">
                     {epic.description}
                   </p>
                 )}
 
                 <div className="mt-4">
                   <div className="flex items-center justify-between text-2xs">
-                    <span className="font-medium text-zinc-500 dark:text-zinc-400">
+                    <span className="font-medium text-muted-foreground">
                       Tamamlanma Oranı
                     </span>
                     <span className="font-bold text-zinc-800 dark:text-zinc-200">
@@ -1787,7 +1787,7 @@ export default function ProjectDetailPage() {
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Henüz Epik Oluşturulmamış
               </h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Büyük hedefleri epik olarak tanımlayıp iş maddelerini
                 gruplayabilirsiniz.
               </p>
@@ -1826,7 +1826,7 @@ export default function ProjectDetailPage() {
                 >
                   {drawerType}
                 </span>
-                <span className="font-bold text-sm text-zinc-500 dark:text-zinc-400">
+                <span className="font-bold text-sm text-muted-foreground">
                   {selectedItem.itemKey}
                 </span>
               </div>
@@ -2137,7 +2137,7 @@ export default function ProjectDetailPage() {
                       )}
                     </button>
                     <span
-                      className={`flex-1 ${subtask.isCompleted ? "text-muted-foreground line-through dark:text-zinc-500" : "text-zinc-700 dark:text-zinc-300"}`}
+                      className={`flex-1 ${subtask.isCompleted ? "text-muted-foreground line-through" : "text-zinc-700 dark:text-zinc-300"}`}
                     >
                       {subtask.title}
                     </span>

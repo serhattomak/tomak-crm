@@ -83,11 +83,11 @@ export default function OrderPrintPage() {
   if (error || !order) {
     return (
       <div className="mx-auto max-w-3xl p-8 text-center">
-        <p className="text-rose-600 text-sm">
+        <p className="text-rose-600 dark:text-rose-400 text-sm">
           {error || "Sipariş bulunamadı."}
         </p>
         <Link
-          className="mt-4 inline-flex text-blue-600 text-xs underline"
+          className="mt-4 inline-flex text-blue-600 dark:text-blue-400 text-xs underline"
           href={`/${tenantSlug}/orders`}
         >
           Siparişlere Dön
@@ -303,7 +303,7 @@ export default function OrderPrintPage() {
               </span>
             </div>
             {order.discountAmount > 0 && (
-              <div className="flex justify-between text-rose-600">
+              <div className="flex justify-between text-rose-600 dark:text-rose-400">
                 <span>İndirim</span>
                 <span className="font-bold">
                   -₺
@@ -354,7 +354,7 @@ export default function OrderPrintPage() {
             <div className="flex justify-between">
               <span>Kalan</span>
               <span
-                className={`font-bold ${order.remainingAmount > 0 ? "text-rose-600" : "text-zinc-700"}`}
+                className={`font-bold ${order.remainingAmount > 0 ? "text-rose-600 dark:text-rose-400" : "text-zinc-700"}`}
               >
                 ₺
                 {order.remainingAmount.toLocaleString("tr-TR", {

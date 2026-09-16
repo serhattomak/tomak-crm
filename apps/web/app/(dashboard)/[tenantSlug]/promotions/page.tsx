@@ -349,7 +349,7 @@ export default function PromotionsPage() {
         );
       case "CartThreshold":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 font-semibold text-amber-700 text-xs dark:bg-amber-950/60 dark:text-amber-300">
+          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 font-semibold text-amber-700 dark:text-amber-400 text-xs dark:bg-amber-950/60 dark:text-amber-300">
             <TrendingUp className="h-3 w-3" /> Sepet Barajı
           </span>
         );
@@ -379,7 +379,7 @@ export default function PromotionsPage() {
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 border-border border-b pb-5 sm:flex-row sm:items-center">
         <div>
-          <div className="flex items-center gap-2 font-medium text-xs text-zinc-500">
+          <div className="flex items-center gap-2 font-medium text-xs text-muted-foreground">
             <span>Satış CRM</span>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-zinc-900 dark:text-zinc-100">
@@ -390,7 +390,7 @@ export default function PromotionsPage() {
             <Tag className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             Kampanya & Promosyon Yönetimi
           </h1>
-          <p className="mt-0.5 text-xs text-zinc-500">
+          <p className="mt-0.5 text-xs text-muted-foreground">
             Seçili ürünlerde indirimler, kupon kodları, sepet barajları ve çoklu
             alım fırsatlarını yönetin
           </p>
@@ -427,7 +427,7 @@ export default function PromotionsPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
-          <div className="flex items-center justify-between text-zinc-500">
+          <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-medium text-xs">Aktif Kampanyalar</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <Flame className="h-4 w-4" />
@@ -442,7 +442,7 @@ export default function PromotionsPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
-          <div className="flex items-center justify-between text-zinc-500">
+          <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-medium text-xs">Toplam Kupon Sayısı</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <Ticket className="h-4 w-4" />
@@ -454,15 +454,15 @@ export default function PromotionsPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
-          <div className="flex items-center justify-between text-zinc-500">
+          <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-medium text-xs">
               Toplam Dağıtılan İndirim
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
               <Coins className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-emerald-600 tracking-tight dark:text-emerald-400">
+          <div className="mt-2 font-bold text-2xl text-emerald-700 tracking-tight dark:text-emerald-400">
             ₺
             {(stats?.totalDiscountDistributed ?? 0).toLocaleString("tr-TR", {
               minimumFractionDigits: 2,
@@ -471,9 +471,9 @@ export default function PromotionsPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
-          <div className="flex items-center justify-between text-zinc-500">
+          <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-medium text-xs">Kampanyalı Ciro</span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
@@ -492,7 +492,7 @@ export default function PromotionsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "campaigns"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("campaigns")}
           type="button"
@@ -504,7 +504,7 @@ export default function PromotionsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "coupons"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("coupons")}
           type="button"
@@ -516,7 +516,7 @@ export default function PromotionsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "simulator"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("simulator")}
           type="button"
@@ -585,7 +585,7 @@ export default function PromotionsPage() {
 
             <button
               aria-label="Yenile"
-              className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-50 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              className="rounded-xl border border-border p-2 text-muted-foreground hover:bg-zinc-50 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
               onClick={loadData}
               type="button"
             >
@@ -599,7 +599,7 @@ export default function PromotionsPage() {
           <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             {loading ? (
               <div className="flex h-64 items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+                <Loader2 className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
               </div>
             ) : campaigns.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
@@ -609,7 +609,7 @@ export default function PromotionsPage() {
                 <h3 className="mt-3 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Henüz Kampanya Bulunamadı
                 </h3>
-                <p className="mt-1 max-w-sm text-xs text-zinc-500">
+                <p className="mt-1 max-w-sm text-xs text-muted-foreground">
                   Yeni bir indirim veya promosyon oluşturarak müşterilerinize
                   cazip teklifler sunmaya başlayın.
                 </p>
@@ -627,7 +627,7 @@ export default function PromotionsPage() {
               </div>
             ) : (
               <Table>
-                <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-950/50">
+                <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-950/50">
                   <TableRow>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">Kampanya Adı</TableHead>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">Tür & Değer</TableHead>
@@ -828,7 +828,7 @@ export default function PromotionsPage() {
           <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             {loading ? (
               <div className="flex h-64 items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+                <Loader2 className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
               </div>
             ) : coupons.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
@@ -838,7 +838,7 @@ export default function PromotionsPage() {
                 <h3 className="mt-3 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Kayıtlı Kupon Kodu Bulunamadı
                 </h3>
-                <p className="mt-1 max-w-sm text-xs text-zinc-500">
+                <p className="mt-1 max-w-sm text-xs text-muted-foreground">
                   Kampanyalarınıza özel tekil veya toplu kupon kodları üreterek
                   pazarlama faaliyetlerinizi hızlandırın.
                 </p>
@@ -853,7 +853,7 @@ export default function PromotionsPage() {
               </div>
             ) : (
               <Table>
-                <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-950/50">
+                <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-950/50">
                   <TableRow>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">Kupon Kodu</TableHead>
                     <TableHead className="px-4 py-3.5 font-semibold h-auto">Kampanya</TableHead>
@@ -886,7 +886,7 @@ export default function PromotionsPage() {
                             type="button"
                           >
                             {copiedCode === coup.code ? (
-                              <Check className="h-3.5 w-3.5 text-emerald-600" />
+                              <Check className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                             ) : (
                               <Copy className="h-3.5 w-3.5" />
                             )}
@@ -918,7 +918,7 @@ export default function PromotionsPage() {
                           </span>
                         </div>
                       </TableCell>
-                      <TableCell className="px-4 py-3.5 text-zinc-500">
+                      <TableCell className="px-4 py-3.5 text-muted-foreground">
                         {coup.expiresAt
                           ? new Date(coup.expiresAt).toLocaleDateString("tr-TR")
                           : "Süresiz"}
@@ -952,10 +952,10 @@ export default function PromotionsPage() {
           <div className="space-y-4 lg:col-span-7">
             <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
               <h3 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                <ShoppingCart className="h-4 w-4 text-blue-600" />
+                <ShoppingCart className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 Örnek Sepet Oluştur
               </h3>
-              <p className="mt-1 text-xs text-zinc-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Kataloğunuzdaki ürünlerden sepete ekleyin ve kampanyaların
                 indirim sonuçlarını test edin.
               </p>
@@ -973,9 +973,9 @@ export default function PromotionsPage() {
                       onClick={() => addSimItem(p)}
                       type="button"
                     >
-                      <Plus className="h-3 w-3 text-blue-600" />
+                      <Plus className="h-3 w-3 text-blue-600 dark:text-blue-400" />
                       <span>{p.name}</span>
-                      <span className="font-semibold text-zinc-500">
+                      <span className="font-semibold text-muted-foreground">
                         ₺{p.sellingPrice}
                       </span>
                     </button>
@@ -1082,7 +1082,7 @@ export default function PromotionsPage() {
           <div className="space-y-4 lg:col-span-5">
             <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
               <h3 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                <BarChart3 className="h-4 w-4 text-emerald-600" />
+                <BarChart3 className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
                 İndirim Motoru Sonuç Özeti
               </h3>
 
@@ -1129,7 +1129,7 @@ export default function PromotionsPage() {
                                 {p.description}
                               </div>
                             </div>
-                            <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                            <span className="font-bold text-emerald-700 dark:text-emerald-400">
                               -₺
                               {p.discountAmount.toLocaleString("tr-TR", {
                                 minimumFractionDigits: 2,
@@ -1152,7 +1152,7 @@ export default function PromotionsPage() {
                         })}
                       </span>
                     </div>
-                    <div className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                    <div className="flex justify-between text-emerald-700 dark:text-emerald-400">
                       <span>Toplam İndirim:</span>
                       <span className="font-bold">
                         -₺
@@ -1165,7 +1165,7 @@ export default function PromotionsPage() {
                       <span>Kargo Ücreti:</span>
                       <span>
                         {simResult.isFreeShipping ? (
-                          <span className="font-semibold text-emerald-600">
+                          <span className="font-semibold text-emerald-700 dark:text-emerald-300">
                             Ücretsiz (0,00 ₺)
                           </span>
                         ) : (

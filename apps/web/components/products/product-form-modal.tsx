@@ -353,7 +353,7 @@ export function AttributesEditor({
           </div>
           <button
             aria-label={`${index + 1}. özelliği sil`}
-            className="rounded-lg border border-border p-2 text-muted-foreground transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+            className="rounded-lg border border-border p-2 text-muted-foreground transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
             onClick={() => removeRow(index)}
             type="button"
           >
@@ -540,7 +540,7 @@ export function ProductImagesField({
           onClick={() => fileInputRef.current?.click()}
           type="button"
         >
-          <Upload aria-hidden="true" className="h-3.5 w-3.5 text-blue-600" />
+          <Upload aria-hidden="true" className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
           <span>Dosya Yükle</span>
         </button>
         <input

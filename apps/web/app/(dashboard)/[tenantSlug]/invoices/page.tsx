@@ -63,7 +63,7 @@ function KpiCard({
   return (
     <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
       <div className="flex items-center justify-between">
-        <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+        <span className="font-medium text-xs text-muted-foreground">
           {label}
         </span>
         <div className={`rounded-xl p-2 ${colorClass}`}>
@@ -99,7 +99,7 @@ function InvoiceStatusBadge({ status }: { status: string }) {
   }
   if (status === "PartiallyPaid") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 font-semibold text-amber-700 text-xs dark:bg-amber-950/50 dark:text-amber-300">
+      <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 font-semibold text-amber-700 dark:text-amber-400 text-xs dark:bg-amber-950/50 dark:text-amber-300">
         <Clock className="h-3 w-3" /> Kısmi Ödendi
       </span>
     );
@@ -167,7 +167,7 @@ function InvoiceRow({ invoice, onSelect, onIssue, onCancel }: InvoiceRowProps) {
           className={`inline-flex rounded-md px-2 py-0.5 font-semibold text-xs ${
             isSales
               ? "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300"
-              : "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300"
+              : "bg-amber-50 text-amber-700 dark:text-amber-400 dark:bg-amber-950/50 dark:text-amber-300"
           }`}
         >
           {isSales ? "Satış" : "Alış"}
@@ -482,10 +482,10 @@ function InvoiceDetailDrawer({
                   <div className="mt-1 font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     {invoice.cariTitle}
                   </div>
-                  <div className="text-zinc-500 dark:text-zinc-400">
+                  <div className="text-muted-foreground">
                     {invoice.cariAddress || "Adres belirtilmemiş"}
                   </div>
-                  <div className="text-zinc-500 dark:text-zinc-400">
+                  <div className="text-muted-foreground">
                     {invoice.cariCity} / {invoice.cariDistrict}
                   </div>
                   <div className="mt-1 font-mono text-2xs text-zinc-600 dark:text-zinc-400">
@@ -533,7 +533,7 @@ function InvoiceDetailDrawer({
                             </div>
                           ) : null}
                           {item.withholdingRate ? (
-                            <div className="text-3xs text-amber-600 dark:text-amber-400">
+                            <div className="text-3xs text-amber-700 dark:text-amber-400">
                               Tevkifat: {item.withholdingRate}
                             </div>
                           ) : null}
@@ -564,7 +564,7 @@ function InvoiceDetailDrawer({
 
               <div className="flex justify-end border-border border-t pt-4">
                 <div className="w-64 space-y-1.5 text-right text-xs">
-                  <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
+                  <div className="flex justify-between text-muted-foreground">
                     <span>Ara Toplam:</span>
                     <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                       {invoice.subtotal.toLocaleString("tr-TR", {
@@ -574,7 +574,7 @@ function InvoiceDetailDrawer({
                     </span>
                   </div>
                   {invoice.discountTotal > 0 ? (
-                    <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
+                    <div className="flex justify-between text-muted-foreground">
                       <span>İndirim:</span>
                       <span className="font-medium font-mono text-rose-600 dark:text-rose-400">
                         -
@@ -585,7 +585,7 @@ function InvoiceDetailDrawer({
                       </span>
                     </div>
                   ) : null}
-                  <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
+                  <div className="flex justify-between text-muted-foreground">
                     <span>Hesaplanan KDV:</span>
                     <span className="font-medium font-mono text-zinc-800 dark:text-zinc-200">
                       {invoice.taxTotal.toLocaleString("tr-TR", {
@@ -595,9 +595,9 @@ function InvoiceDetailDrawer({
                     </span>
                   </div>
                   {invoice.withholdingTotal > 0 ? (
-                    <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
+                    <div className="flex justify-between text-muted-foreground">
                       <span>KDV Tevkifatı:</span>
-                      <span className="font-medium font-mono text-amber-600 dark:text-amber-400">
+                      <span className="font-medium font-mono text-amber-700 dark:text-amber-400">
                         -
                         {invoice.withholdingTotal.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
@@ -795,7 +795,7 @@ export default function InvoicesPage() {
               {totalCount} Adet
             </span>
           </div>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Satış ve alış faturaları, KDV tevkifatı dökümü ve cari hesap
             entegrasyonu.
           </p>
@@ -856,7 +856,7 @@ export default function InvoicesPage() {
         <div className="overflow-x-auto">
           <Table className="font-sans">
             <TableHeader>
-              <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
+              <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-muted-foreground uppercase tracking-wider dark:bg-zinc-800/50">
                 <TableHead className="py-3 pr-3 pl-4 h-auto">Fatura No & Tarih</TableHead>
                 <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
                 <TableHead className="px-3 py-3 h-auto">Cari Hesap (Ünvan)</TableHead>

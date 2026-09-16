@@ -81,7 +81,7 @@ export default function RecruitmentPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-zinc-500 shadow-xs dark:text-zinc-400">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-muted-foreground shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">İşe alım yükleniyor...</p>
         </div>
@@ -650,14 +650,14 @@ function RecruitmentPageContent() {
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <div className="flex items-center gap-2 font-semibold text-blue-600 text-xs uppercase tracking-wider">
+          <div className="flex items-center gap-2 font-semibold text-blue-600 dark:text-blue-400 text-xs uppercase tracking-wider">
             <Megaphone className="h-4 w-4" />
             <span>İşe Alım & Aday Takibi</span>
           </div>
           <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
             İşe Alım
           </h1>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             İş ilanları, aday havuzu, başvurular ve işe alım aşamalarını tek
             ekrandan yönetin.
           </p>
@@ -688,7 +688,7 @@ function RecruitmentPageContent() {
         <div className="flex items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
             aria-current={activeTab === "ilanlar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "ilanlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "ilanlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("ilanlar")}
             type="button"
           >
@@ -698,7 +698,7 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "adaylar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "adaylar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "adaylar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("adaylar")}
             type="button"
           >
@@ -708,7 +708,7 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "basvurular" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "basvurular" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "basvurular" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("basvurular")}
             type="button"
           >
@@ -718,11 +718,11 @@ function RecruitmentPageContent() {
 
           <button
             aria-current={activeTab === "ayarlar" ? "page" : undefined}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "ayarlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "ayarlar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("ayarlar")}
             type="button"
           >
-            <Settings2 className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+            <Settings2 className="h-4 w-4 text-muted-foreground" />
             <span>Ayarlar</span>
           </button>
         </div>
@@ -734,7 +734,7 @@ function RecruitmentPageContent() {
           type="button"
         >
           <RotateCcw
-            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-blue-500" : "text-zinc-500 dark:text-zinc-400"}`}
+            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-blue-500" : "text-muted-foreground"}`}
           />
           <span>Yenile</span>
         </button>
@@ -742,7 +742,7 @@ function RecruitmentPageContent() {
 
       {/* Content */}
       {isLoading ? (
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-zinc-500 shadow-xs dark:text-zinc-400">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-muted-foreground shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">Veriler yükleniyor...</p>
         </div>
@@ -809,7 +809,7 @@ function RecruitmentPageContent() {
                     <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                       İlan bulunamadı
                     </h3>
-                    <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="mt-1 max-w-sm text-xs text-muted-foreground">
                       Filtrelerinizi değiştirin veya yeni bir iş ilanı
                       oluşturun. İlanlar burada listelenir.
                     </p>
@@ -847,7 +847,7 @@ function RecruitmentPageContent() {
                                 <div className="font-bold text-zinc-900 dark:text-zinc-100">
                                   {req.title}
                                 </div>
-                                <div className="flex items-center gap-1.5 text-2xs text-zinc-500 dark:text-zinc-400">
+                                <div className="flex items-center gap-1.5 text-2xs text-muted-foreground">
                                   {req.location && <span>{req.location}</span>}
                                   {req.workModel && (
                                     <>
@@ -864,7 +864,7 @@ function RecruitmentPageContent() {
                                   )}
                                 </div>
                                 {req.headcountWarning && (
-                                  <p className="mt-1 text-2xs text-amber-600">
+                                  <p className="mt-1 text-2xs text-amber-700 dark:text-amber-400">
                                     {req.headcountWarning}
                                   </p>
                                 )}
@@ -873,14 +873,14 @@ function RecruitmentPageContent() {
                                 <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                                   {req.departmentName || "—"}
                                 </div>
-                                <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+                                <div className="text-2xs text-muted-foreground">
                                   {req.jobPositionTitle ||
                                     "Pozisyon belirtilmedi"}
                                 </div>
                               </TableCell>
                               <TableCell className="px-6 py-4 text-center">
                                 <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2.5 py-1 font-bold text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                                  <Users className="h-3 w-3 text-zinc-500 dark:text-zinc-400" />
+                                  <Users className="h-3 w-3 text-muted-foreground" />
                                   {req.hiredCount}/{req.headcount}
                                 </span>
                                 <div className="mt-1 text-3xs text-muted-foreground">
@@ -893,9 +893,9 @@ function RecruitmentPageContent() {
                                 >
                                   {getStatusLabel(req.status)}
                                 </span>
-                                <div className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+                                <div className="mt-1 text-2xs text-muted-foreground">
                                   {req.isPublished ? (
-                                    <span className="text-emerald-600">
+                                    <span className="text-emerald-700 dark:text-emerald-300">
                                       Yayında
                                       {req.publishedAt
                                         ? ` • ${formatDate(req.publishedAt)}`
@@ -925,7 +925,7 @@ function RecruitmentPageContent() {
                                   {req.status === "Draft" &&
                                     !req.isPublished && (
                                       <button
-                                        className="rounded-lg bg-emerald-600 px-2.5 py-1 font-semibold text-2xs text-white hover:bg-emerald-700"
+                                        className="rounded-lg bg-emerald-700 px-2.5 py-1 font-semibold text-2xs text-white hover:bg-emerald-800"
                                         onClick={() =>
                                           handlePublishRequisition(req.id)
                                         }
@@ -947,7 +947,7 @@ function RecruitmentPageContent() {
                                   )}
                                   <button
                                     aria-label="İlanı sil"
-                                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                                     onClick={() =>
                                       handleDeleteRequisition(req.id)
                                     }
@@ -1021,7 +1021,7 @@ function RecruitmentPageContent() {
                     <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                       Aday bulunamadı
                     </h3>
-                    <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="mt-1 max-w-sm text-xs text-muted-foreground">
                       Filtreleri değiştirin veya yeni aday ekleyin. KVKK onayı
                       zorunludur.
                     </p>
@@ -1061,7 +1061,7 @@ function RecruitmentPageContent() {
                                     <div className="font-bold text-zinc-900 dark:text-zinc-100">
                                       {c.fullName}
                                     </div>
-                                    <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+                                    <div className="text-2xs text-muted-foreground">
                                       {c.applicationCount} başvuru •{" "}
                                       {formatDate(c.createdAt)}
                                     </div>
@@ -1072,7 +1072,7 @@ function RecruitmentPageContent() {
                                 <div className="font-medium font-mono text-2xs text-zinc-800 dark:text-zinc-200">
                                   {c.email}
                                 </div>
-                                <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+                                <div className="text-2xs text-muted-foreground">
                                   {c.phone || "Telefon yok"}
                                 </div>
                               </TableCell>
@@ -1119,7 +1119,7 @@ function RecruitmentPageContent() {
                                   </button>
                                   <button
                                     aria-label="Adayı düzenle"
-                                    className="rounded-lg border border-border bg-card p-1.5 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                    className="rounded-lg border border-border bg-card p-1.5 text-muted-foreground hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                                     onClick={() => openCandModalForEdit(c)}
                                     type="button"
                                   >
@@ -1127,7 +1127,7 @@ function RecruitmentPageContent() {
                                   </button>
                                   <button
                                     aria-label="Adayı sil"
-                                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                                     onClick={() => handleDeleteCandidate(c.id)}
                                     type="button"
                                   >
@@ -1170,7 +1170,7 @@ function RecruitmentPageContent() {
                   <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800">
                     <button
                       aria-label="Tablo görünümü"
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold text-xs ${viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold text-xs ${viewMode === "table" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground"}`}
                       onClick={() => setViewMode("table")}
                       type="button"
                     >
@@ -1179,7 +1179,7 @@ function RecruitmentPageContent() {
                     </button>
                     <button
                       aria-label="Kanban görünümü"
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold text-xs ${viewMode === "kanban" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold text-xs ${viewMode === "kanban" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground"}`}
                       onClick={() => setViewMode("kanban")}
                       type="button"
                     >
@@ -1277,9 +1277,9 @@ function RecruitmentPageContent() {
                                       <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                                         {app.candidateName}
                                       </div>
-                                      <GripVertical className="h-3.5 w-3.5 shrink-0 text-zinc-300 group-hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-400" />
+                                      <GripVertical className="h-3.5 w-3.5 shrink-0 text-zinc-300 group-hover:text-muted-foreground dark:text-zinc-600 dark:hover:text-zinc-400" />
                                     </div>
-                                    <div className="font-mono text-2xs text-zinc-500 dark:text-zinc-400">
+                                    <div className="font-mono text-2xs text-muted-foreground">
                                       {app.candidateEmail}
                                     </div>
                                     <div className="mt-1 font-semibold text-2xs text-zinc-600 dark:text-zinc-400">
@@ -1327,7 +1327,7 @@ function RecruitmentPageContent() {
                                       </Select>
                                     </div>
                                     {app.headcountWarning && (
-                                      <p className="mt-1 text-2xs text-amber-600">
+                                      <p className="mt-1 text-2xs text-amber-700 dark:text-amber-400">
                                         {app.headcountWarning}
                                       </p>
                                     )}
@@ -1344,7 +1344,7 @@ function RecruitmentPageContent() {
                           <span className="font-bold text-amber-800 text-xs">
                             Atanmamış
                           </span>
-                          <span className="rounded-full bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-2xs text-amber-700 dark:text-amber-300">
+                          <span className="rounded-full bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 font-bold text-2xs text-amber-700 dark:text-amber-400 dark:text-amber-300">
                             {applicationsByStage.unassigned.length}
                           </span>
                         </div>
@@ -1357,7 +1357,7 @@ function RecruitmentPageContent() {
                               <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                                 {app.candidateName}
                               </div>
-                              <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+                              <div className="text-2xs text-muted-foreground">
                                 {app.requisitionTitle}
                               </div>
                               <button
@@ -1382,7 +1382,7 @@ function RecruitmentPageContent() {
                       <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                         Başvuru bulunamadı
                       </h3>
-                      <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+                      <p className="mt-1 max-w-sm text-xs text-muted-foreground">
                         Adayları ilanlara bağlayarak başvuru oluşturun.
                       </p>
                       <button
@@ -1418,7 +1418,7 @@ function RecruitmentPageContent() {
                                   <div className="font-bold text-zinc-900 dark:text-zinc-100">
                                     {app.candidateName}
                                   </div>
-                                  <div className="font-mono text-2xs text-zinc-500 dark:text-zinc-400">
+                                  <div className="font-mono text-2xs text-muted-foreground">
                                     {app.candidateEmail}
                                   </div>
                                 </TableCell>
@@ -1426,11 +1426,11 @@ function RecruitmentPageContent() {
                                   <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                                     {app.requisitionTitle}
                                   </div>
-                                  <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+                                  <div className="text-2xs text-muted-foreground">
                                     {formatDate(app.createdAt)}
                                   </div>
                                   {app.headcountWarning && (
-                                    <p className="text-2xs text-amber-600">
+                                    <p className="text-2xs text-amber-700 dark:text-amber-400">
                                       {app.headcountWarning}
                                     </p>
                                   )}
@@ -1540,7 +1540,7 @@ function RecruitmentPageContent() {
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                       İşe Alım Aşamaları
                     </h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="text-xs text-muted-foreground">
                       Hibrit aşama yönetimi — tenant bazlı, sıralama ve renk
                       destekli. Varsayılan aşamalar silinemez.
                     </p>
@@ -1561,14 +1561,14 @@ function RecruitmentPageContent() {
                     <p className="mt-2 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                       Henüz aşama yok
                     </p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="text-xs text-muted-foreground">
                       Varsayılan 7 aşama seed ile gelir; yoksa ekleyin.
                     </p>
                   </div>
                 ) : (
                   <div className="mt-4 overflow-hidden rounded-2xl border border-border">
                     <Table>
-                      <TableHeader className="bg-zinc-50 font-bold text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                      <TableHeader className="bg-zinc-50 font-bold text-muted-foreground dark:bg-zinc-800/50">
                         <TableRow>
                           <TableHead className="px-3 py-3 h-auto">#</TableHead>
                           <TableHead className="px-3 py-3 h-auto">Aşama</TableHead>
@@ -1587,7 +1587,7 @@ function RecruitmentPageContent() {
                           >
                             <TableCell className="px-3 py-3">
                               <div className="flex items-center gap-1">
-                                <span className="font-mono text-zinc-500 dark:text-zinc-400">
+                                <span className="font-mono text-muted-foreground">
                                   {s.sortOrder}
                                 </span>
                                 <div className="flex flex-col">
@@ -1632,7 +1632,7 @@ function RecruitmentPageContent() {
                                 )}
                               </div>
                             </TableCell>
-                            <TableCell className="px-3 py-3 font-mono text-2xs text-zinc-500 dark:text-zinc-400">
+                            <TableCell className="px-3 py-3 font-mono text-2xs text-muted-foreground">
                               {s.slug}
                             </TableCell>
                             <TableCell className="px-3 py-3">
@@ -1664,14 +1664,14 @@ function RecruitmentPageContent() {
                               <div className="flex items-center justify-end gap-1">
                                 <button
                                   aria-label="Aşamayı düzenle"
-                                  className="rounded-lg border border-border bg-card p-1.5 text-zinc-500 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                                  className="rounded-lg border border-border bg-card p-1.5 text-muted-foreground hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                                   onClick={() => openStageModalForEdit(s)}
                                   type="button"
                                 >
                                   <Edit2 className="h-3.5 w-3.5" />
                                 </button>
                                 <button
-                                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30 dark:text-zinc-500"
+                                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 disabled:opacity-30 dark:text-zinc-500"
                                   disabled={s.isDefault}
                                   onClick={() => handleDeleteStage(s)}
                                   title={
@@ -1711,7 +1711,7 @@ function RecruitmentPageContent() {
                 <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   Kanal & KVKK Ayarları (Bilgi)
                 </h3>
-                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Public başvuru linki / embed iframe, CSV içe aktarım (500
                   satır, duplicate skip), CV storage 5MB PDF/DOC/DOCX — kurallar
                   API’de uygulanır. Faz 2’de raporlama & işe alım → çalışan
@@ -1837,7 +1837,7 @@ function Pagination({
   }
   return (
     <div className="flex items-center justify-between border-border border-t px-4 py-3 text-xs">
-      <span className="text-zinc-500 dark:text-zinc-400">
+      <span className="text-muted-foreground">
         Toplam {totalCount} kayıt • Sayfa {currentPage}/{totalPages}
       </span>
       <div className="flex items-center gap-1.5">
@@ -1963,7 +1963,7 @@ function RequisitionModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-            <Briefcase className="h-5 w-5 text-blue-600" />
+            <Briefcase className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             {requisition?.id ? "İlanı Düzenle" : "Yeni İş İlanı"}
           </DialogTitle>
           <DialogClose asChild>
@@ -2293,7 +2293,7 @@ function CandidateModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-            <Users className="h-5 w-5 text-blue-600" />
+            <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             {candidate?.id ? "Adayı Düzenle" : "Yeni Aday Ekle"}
           </DialogTitle>
           <DialogClose asChild>
@@ -2342,7 +2342,7 @@ function CandidateModal({
               value={email}
             />
             {duplicateWarning && (
-              <p className="mt-1 text-2xs text-amber-600">
+              <p className="mt-1 text-2xs text-amber-700 dark:text-amber-400">
                 {duplicateWarning}
               </p>
             )}
@@ -2432,7 +2432,7 @@ function CandidateModal({
                   type="file"
                 />
               </label>
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="text-xs text-muted-foreground">
                 {selectedFile
                   ? selectedFile.name
                   : candidate?.cvFileName || "Henüz dosya yok"}
@@ -2445,10 +2445,10 @@ function CandidateModal({
                   data={previewUrl}
                   type="application/pdf"
                 >
-                  <p className="p-3 text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="p-3 text-xs text-muted-foreground">
                     PDF önizleme desteklenmiyor,{" "}
                     <a
-                      className="text-blue-600 underline"
+                      className="text-blue-600 dark:text-blue-400 underline"
                       href={previewUrl}
                       rel="noopener noreferrer"
                       target="_blank"
@@ -2462,7 +2462,7 @@ function CandidateModal({
             )}
             {candidate?.cvFileUrl && !previewUrl && (
               <a
-                className="mt-2 inline-flex items-center gap-1 text-blue-600 text-xs underline"
+                className="mt-2 inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 text-xs underline"
                 href={candidate.cvFileUrl}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -2476,7 +2476,7 @@ function CandidateModal({
           <label className="flex items-start gap-2 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 p-3">
             <input
               checked={consentGiven}
-              className="mt-0.5 h-4 w-4 rounded border-border text-blue-600 focus:ring-blue-500"
+              className="mt-0.5 h-4 w-4 rounded border-border text-blue-600 dark:text-blue-400 focus:ring-blue-500"
               onChange={(e) => setConsentGiven(e.target.checked)}
               type="checkbox"
             />
@@ -2486,7 +2486,7 @@ function CandidateModal({
             </span>
           </label>
           {!consentGiven && (
-            <p className="text-2xs text-amber-600">
+            <p className="text-2xs text-amber-700 dark:text-amber-400">
               KVKK onayı olmadan aday oluşturulamaz.
             </p>
           )}
@@ -2582,7 +2582,7 @@ function ApplicationModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-            <FileText className="h-5 w-5 text-emerald-600" />
+            <FileText className="h-5 w-5 text-emerald-700 dark:text-emerald-300" />
             Yeni Başvuru
           </DialogTitle>
           <DialogClose asChild>
@@ -2677,7 +2677,7 @@ function ApplicationModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-emerald-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-emerald-700 px-5 py-2 font-semibold text-white shadow-xs hover:bg-emerald-800 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2828,7 +2828,7 @@ function StageModal({
           <label className="flex items-center gap-2">
             <input
               checked={isActive}
-              className="h-4 w-4 rounded border-border text-blue-600"
+              className="h-4 w-4 rounded border-border text-blue-600 dark:text-blue-400"
               onChange={(e) => setIsActive(e.target.checked)}
               type="checkbox"
             />
@@ -2907,7 +2907,7 @@ function CandidateDetailDrawer({
               onClick={onEdit}
               type="button"
             >
-              <Edit2 className="h-3.5 w-3.5 text-blue-600" />
+              <Edit2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
               Düzenle
             </button>
             <SheetClose asChild>
@@ -2929,7 +2929,7 @@ function CandidateDetailDrawer({
           <SheetTitle className="mt-3 font-bold text-lg text-zinc-900 dark:text-zinc-100">
             {candidate.fullName}
           </SheetTitle>
-          <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="font-mono text-xs text-muted-foreground">
             {candidate.email}
           </p>
           {candidate.phone && (
@@ -2951,7 +2951,7 @@ function CandidateDetailDrawer({
         </div>
 
         <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
-          <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+          <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
             Bilgiler
           </h4>
           <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
@@ -2997,13 +2997,13 @@ function CandidateDetailDrawer({
         </div>
 
         <div className="mt-4 rounded-2xl border border-border p-4">
-          <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+          <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
             CV
           </h4>
           {candidate.cvFileUrl ? (
             <div className="mt-2 space-y-2">
               <a
-                className="inline-flex items-center gap-1 font-semibold text-blue-600 text-xs underline"
+                className="inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400 text-xs underline"
                 href={candidate.cvFileUrl}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -3018,10 +3018,10 @@ function CandidateDetailDrawer({
                     data={candidate.cvFileUrl}
                     type="application/pdf"
                   >
-                    <p className="p-3 text-xs text-zinc-500 dark:text-zinc-400">
+                    <p className="p-3 text-xs text-muted-foreground">
                       Önizleme desteklenmiyor.{" "}
                       <a
-                        className="text-blue-600 underline"
+                        className="text-blue-600 dark:text-blue-400 underline"
                         href={candidate.cvFileUrl}
                         rel="noopener noreferrer"
                         target="_blank"
@@ -3032,13 +3032,13 @@ function CandidateDetailDrawer({
                   </object>
                 </div>
               ) : (
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-muted-foreground">
                   DOC/DOCX önizleme için dosyayı indirin.
                 </p>
               )}
             </div>
           ) : (
-            <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-2 text-xs text-muted-foreground">
               CV yüklenmemiş.
             </p>
           )}
@@ -3115,7 +3115,7 @@ function ApplicationDetailDrawer({
             <SheetTitle className="font-bold text-zinc-900 dark:text-zinc-100">
               {application.candidateName}
             </SheetTitle>
-            <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="font-mono text-xs text-muted-foreground">
               {application.candidateEmail}
             </p>
             <p className="mt-1 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
@@ -3124,7 +3124,7 @@ function ApplicationDetailDrawer({
           </div>
 
           <div className="rounded-2xl border border-border bg-zinc-50/70 p-3 dark:bg-zinc-800/40">
-            <div className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+            <div className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               Aşama
             </div>
             {application.stageName ? (
@@ -3138,7 +3138,7 @@ function ApplicationDetailDrawer({
                 <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                   {application.stageName}
                 </span>
-                <span className="text-2xs text-zinc-500 dark:text-zinc-400">
+                <span className="text-2xs text-muted-foreground">
                   — {application.status}
                 </span>
               </div>
@@ -3148,7 +3148,7 @@ function ApplicationDetailDrawer({
               </span>
             )}
             {application.headcountWarning && (
-              <p className="mt-2 text-amber-600 text-xs">
+              <p className="mt-2 text-amber-700 dark:text-amber-400 text-xs">
                 {application.headcountWarning}
               </p>
             )}
@@ -3181,7 +3181,7 @@ function ApplicationDetailDrawer({
 
           <div className="flex gap-2">
             <div className="flex-1 rounded-2xl border border-border p-3 text-center">
-              <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-muted-foreground uppercase">
                 Puan
               </div>
               <div className="mt-1 font-bold text-blue-700">
@@ -3189,7 +3189,7 @@ function ApplicationDetailDrawer({
               </div>
             </div>
             <div className="flex-1 rounded-2xl border border-border p-3 text-center">
-              <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-muted-foreground uppercase">
                 Durum
               </div>
               <div className="mt-1 font-semibold text-xs text-zinc-700 dark:text-zinc-300">
@@ -3200,7 +3200,7 @@ function ApplicationDetailDrawer({
 
           {application.notes && (
             <div className="rounded-2xl border border-border p-3">
-              <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-muted-foreground uppercase">
                 Notlar
               </div>
               <p className="mt-1 text-xs text-zinc-700 leading-relaxed dark:text-zinc-300">
@@ -3211,7 +3211,7 @@ function ApplicationDetailDrawer({
 
           {candidate && (
             <div className="rounded-2xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-              <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
+              <div className="font-bold text-2xs text-muted-foreground uppercase">
                 Aday KVKK & Etiketler
               </div>
               <div className="mt-1 flex flex-wrap gap-1">
@@ -3231,7 +3231,7 @@ function ApplicationDetailDrawer({
               </div>
               {candidate.cvFileUrl && (
                 <a
-                  className="mt-2 inline-flex items-center gap-1 font-semibold text-blue-600 text-xs underline"
+                  className="mt-2 inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400 text-xs underline"
                   href={candidate.cvFileUrl}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3248,7 +3248,7 @@ function ApplicationDetailDrawer({
                       data={candidate.cvFileUrl}
                       type="application/pdf"
                     >
-                      <p className="p-2 text-xs text-zinc-500 dark:text-zinc-400">
+                      <p className="p-2 text-xs text-muted-foreground">
                         Önizleme yok
                       </p>
                     </object>
@@ -3258,7 +3258,7 @@ function ApplicationDetailDrawer({
           )}
 
           <div className="rounded-2xl border border-border p-3 text-xs">
-            <div className="font-bold text-2xs text-muted-foreground uppercase dark:text-zinc-500">
+            <div className="font-bold text-2xs text-muted-foreground uppercase">
               Zaman
             </div>
             <div className="mt-1 text-zinc-600 dark:text-zinc-400">

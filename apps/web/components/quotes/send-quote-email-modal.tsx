@@ -288,7 +288,7 @@ export function SendQuoteEmailModal({
               <DialogTitle className="font-semibold text-base text-zinc-900 dark:text-zinc-100">
                 Teklifi E-posta ile Gönder
               </DialogTitle>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground">
                 #{quote.quoteNumber} — {quote.customerName}
               </p>
             </div>
@@ -307,7 +307,7 @@ export function SendQuoteEmailModal({
         {/* Content */}
         <div className="custom-scrollbar max-h-[72vh] space-y-4 overflow-y-auto p-5">
           {isLoadingMeta ? (
-            <div className="flex items-center gap-2 text-xs text-zinc-500">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
               Hesaplar ve şablonlar yükleniyor...
             </div>
@@ -420,7 +420,7 @@ export function SendQuoteEmailModal({
           {/* PDF Attachment Banner */}
           <div className="flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/50 p-3 dark:border-blue-950/60 dark:bg-blue-950/20">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-300">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:text-blue-400 dark:bg-blue-900/50 dark:text-blue-300">
                 <FileText className="h-5 w-5" />
               </div>
               <div>
@@ -432,7 +432,7 @@ export function SendQuoteEmailModal({
                     Otomatik QuestPDF
                   </span>
                 </div>
-                <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-2xs text-muted-foreground">
                   Kurumsal A4 teklif formu e-postaya PDF eki olarak eklenecek
                 </p>
               </div>
@@ -456,7 +456,7 @@ export function SendQuoteEmailModal({
               <label className="flex cursor-pointer items-center gap-1.5 font-medium text-xs text-zinc-700 dark:text-zinc-300">
                 <input
                   checked={attachPdf}
-                  className="rounded border-border text-blue-600 focus:ring-blue-500"
+                  className="rounded border-border text-blue-600 dark:text-blue-400 focus:ring-blue-500"
                   onChange={handleAttachPdfToggle}
                   type="checkbox"
                 />

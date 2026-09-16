@@ -172,7 +172,7 @@ export function TestSendModal({
               <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Test Gönder
               </DialogTitle>
-              <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-2xs text-muted-foreground">
                 {templateName ? `${templateName} — ` : ""}önizleme modunda
                 e-posta hazırla
               </p>
@@ -237,7 +237,7 @@ export function TestSendModal({
                 ))}
               </SelectContent>
             </Select>
-            <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-2xs text-muted-foreground">
               {selectedQuoteId
                 ? `Gerçek Veri: ${quoteOptions.find((q) => q.id === selectedQuoteId)?.quoteNumber ?? selectedQuoteId} ile render edilecek`
                 : "Mock Veri ile render edilecek — test e-postası gerçek veriye ihtiyaç duymaz"}
@@ -251,7 +251,7 @@ export function TestSendModal({
                 <Eye className="h-3.5 w-3.5" />
                 Önizleme özeti
               </p>
-              <p className="mt-1 text-2xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-2xs text-muted-foreground">
                 Gönderim sonrası dönen{" "}
                 <span className="font-mono">previewHtml</span> aşağıda iframe
                 içinde gösterilir. SMTP bu fazda yalnızca log + bildirim —

@@ -81,7 +81,7 @@ function getDeliveryStatusBadge(status: string) {
   if (status === "Success") {
     return (
       <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-medium text-2xs text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-300">
-        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+        <CheckCircle2 className="h-3 w-3 text-emerald-700 dark:text-emerald-300" />
         Success
       </span>
     );
@@ -89,15 +89,15 @@ function getDeliveryStatusBadge(status: string) {
   if (status === "Failed") {
     return (
       <span className="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 font-medium text-2xs text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-300">
-        <XCircle className="h-3 w-3 text-rose-600" />
+        <XCircle className="h-3 w-3 text-rose-600 dark:text-rose-400" />
         Failed
       </span>
     );
   }
   if (status === "Retrying") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-medium text-2xs text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/40 dark:text-amber-300">
-        <Clock className="h-3 w-3 text-amber-600" />
+      <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-medium text-2xs text-amber-700 dark:text-amber-400 dark:border-amber-900/40 dark:bg-amber-950/40 dark:text-amber-300">
+        <Clock className="h-3 w-3 text-amber-700 dark:text-amber-400" />
         Retrying
       </span>
     );
@@ -511,7 +511,7 @@ export default function WebhooksPage() {
                   HMAC-SHA256
                 </span>
               </h1>
-              <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 Tenant bazlı endpoint yönetimi, olay seçimi, HMAC imzalama ve
                 teslimat günlüğü.
               </p>
@@ -533,9 +533,9 @@ export default function WebhooksPage() {
       {/* KPI Cards - Bento Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-muted-foreground uppercase tracking-wide">
             <span>Aktif Endpoint</span>
-            <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-600 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-400">
+            <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-400">
               <ShieldCheck className="h-4 w-4" />
             </span>
           </div>
@@ -547,14 +547,14 @@ export default function WebhooksPage() {
               / {totalEndpointsDisplay} toplam
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-1 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 flex items-center gap-1 text-2xs text-muted-foreground">
             <Activity className="h-3.5 w-3.5 text-emerald-500" />
             <span>Aktif / pasif ayrımı tenant izolasyonlu</span>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-muted-foreground uppercase tracking-wide">
             <span>Toplam Teslimat</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
               <Link2 className="h-4 w-4" />
@@ -568,7 +568,7 @@ export default function WebhooksPage() {
               deneme
             </span>
           </div>
-          <div className="mt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 text-2xs text-muted-foreground">
             {failedDeliveries > 0 ? (
               <span className="text-rose-600 dark:text-rose-400">
                 {failedDeliveries} başarısız •{" "}
@@ -579,10 +579,10 @@ export default function WebhooksPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
-          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-zinc-500 uppercase tracking-wide dark:text-zinc-400">
+          <div className="mb-2 flex items-center justify-between font-medium text-2xs text-muted-foreground uppercase tracking-wide">
             <span>Başarı Oranı</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
             </span>
           </div>
           <div className="flex items-baseline gap-2">
@@ -593,13 +593,13 @@ export default function WebhooksPage() {
               success / total
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-1 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-2 flex items-center gap-1 text-2xs text-muted-foreground">
             <span
               className={
                 displaySuccessRate >= 90
-                  ? "text-emerald-600 dark:text-emerald-400"
+                  ? "text-emerald-700 dark:text-emerald-400"
                   : displaySuccessRate >= 70
-                    ? "text-amber-600 dark:text-amber-400"
+                    ? "text-amber-700 dark:text-amber-400"
                     : "text-rose-600 dark:text-rose-400"
               }
             >
@@ -632,13 +632,13 @@ export default function WebhooksPage() {
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-2xs text-zinc-500 dark:text-zinc-400">
+        <div className="flex items-center gap-2 text-2xs text-muted-foreground">
           <span className="hidden sm:inline">Tenant:</span>
           <span className="rounded-lg border border-border bg-zinc-50 px-2 py-1 font-mono text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
             {tenantSlug || "-"}
           </span>
           <button
-            className="rounded-xl border border-border p-2 text-zinc-500 transition-colors duration-150 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+            className="rounded-xl border border-border p-2 text-muted-foreground transition-colors duration-150 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
             onClick={() => {
               if (activeTab === "endpoints") {
                 loadEndpoints();
@@ -698,7 +698,7 @@ export default function WebhooksPage() {
               />
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="hidden sm:inline">
                 Sayfa {endpointPage} / {endpointsTotalPages} • Toplam{" "}
                 {endpointsTotal}
@@ -731,7 +731,7 @@ export default function WebhooksPage() {
           {/* Table */}
           <div className="overflow-hidden rounded-2xl border border-border bg-white/90 shadow-xs backdrop-blur-sm dark:bg-zinc-900/90">
             {isLoadingEndpoints ? (
-              <div className="flex h-48 items-center justify-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+              <div className="flex h-48 items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin text-zinc-900 dark:text-zinc-100" />
                 <span>Endpointler yükleniyor...</span>
               </div>
@@ -743,7 +743,7 @@ export default function WebhooksPage() {
                 <p className="mt-3 font-medium text-sm text-zinc-900 dark:text-zinc-100">
                   Yükleme hatası
                 </p>
-                <p className="mt-1 max-w-md text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="mt-1 max-w-md text-xs text-muted-foreground">
                   {endpointsError}
                 </p>
                 <button
@@ -762,7 +762,7 @@ export default function WebhooksPage() {
                 <h3 className="mt-4 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Henüz endpoint yok
                 </h3>
-                <p className="mt-1 max-w-md text-sm text-zinc-500 dark:text-zinc-400">
+                <p className="mt-1 max-w-md text-sm text-muted-foreground">
                   İlk webhook endpointinizi oluşturun. Olayları seçin, URL
                   girin, HMAC imzasıyla güvenli teslimatlar alın.
                 </p>
@@ -781,7 +781,7 @@ export default function WebhooksPage() {
                     Webhook endpoint listesi — isim, URL, olaylar, durum ve
                     aksiyonlar
                   </TableCaption>
-                  <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-800/40 dark:text-zinc-400">
+                  <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/40">
                     <TableRow>
                       <TableHead className="px-4 py-3 font-semibold h-auto">İsim</TableHead>
                       <TableHead className="px-4 py-3 font-semibold h-auto">URL</TableHead>
@@ -805,7 +805,7 @@ export default function WebhooksPage() {
                             {ep.name}
                           </div>
                           {ep.description ? (
-                            <div className="line-clamp-1 max-w-[260px] text-xs text-zinc-500 dark:text-zinc-400">
+                            <div className="line-clamp-1 max-w-[260px] text-xs text-muted-foreground">
                               {ep.description}
                             </div>
                           ) : null}
@@ -828,7 +828,7 @@ export default function WebhooksPage() {
                               type="button"
                             >
                               {copiedUrl === ep.url ? (
-                                <Check className="h-3.5 w-3.5 text-emerald-600" />
+                                <Check className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
                               ) : (
                                 <Copy className="h-3.5 w-3.5" />
                               )}
@@ -890,7 +890,7 @@ export default function WebhooksPage() {
                               <span>Test</span>
                             </button>
                             <Link
-                              className="inline-flex rounded-lg p-1.5 text-zinc-500 transition-colors duration-150 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                              className="inline-flex rounded-lg p-1.5 text-muted-foreground transition-colors duration-150 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                               href={`/${tenantSlug}/webhooks/${ep.id}`}
                               title="Düzenle"
                             >
@@ -918,7 +918,7 @@ export default function WebhooksPage() {
 
           {/* Pagination footer copy for mobile */}
           {!isLoadingEndpoints && endpoints.length > 0 && (
-            <div className="flex items-center justify-between text-xs text-zinc-500 md:hidden dark:text-zinc-400">
+            <div className="flex items-center justify-between text-xs text-muted-foreground md:hidden">
               <span>
                 Toplam {endpointsTotal} • Sayfa {endpointPage} /{" "}
                 {endpointsTotalPages}
@@ -973,7 +973,7 @@ export default function WebhooksPage() {
               />
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="hidden sm:inline">
                 Sayfa {deliveriesPage} / {deliveriesTotalPages} • Toplam{" "}
                 {deliveriesTotal}
@@ -1009,7 +1009,7 @@ export default function WebhooksPage() {
           {/* Deliveries Table */}
           <div className="overflow-hidden rounded-2xl border border-border bg-white/90 shadow-xs backdrop-blur-sm dark:bg-zinc-900/90">
             {isLoadingDeliveries ? (
-              <div className="flex h-48 items-center justify-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+              <div className="flex h-48 items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin text-zinc-900 dark:text-zinc-100" />
                 <span>Teslimatlar yükleniyor...</span>
               </div>
@@ -1021,7 +1021,7 @@ export default function WebhooksPage() {
                 <h3 className="mt-4 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                   Teslimat kaydı yok
                 </h3>
-                <p className="mt-1 max-w-md text-sm text-zinc-500 dark:text-zinc-400">
+                <p className="mt-1 max-w-md text-sm text-muted-foreground">
                   Seçili filtrelerle eşleşen teslimat bulunamadı. Endpoint
                   oluşturup bir test gönderimi deneyin veya filtreleri
                   temizleyin.
@@ -1046,7 +1046,7 @@ export default function WebhooksPage() {
                     Webhook teslimat günlüğü — endpoint, olay, durum, deneme
                     sayısı ve yanıt
                   </TableCaption>
-                  <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-800/40 dark:text-zinc-400">
+                  <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/40">
                     <TableRow>
                       <TableHead className="px-3 py-3 font-semibold h-auto">Endpoint</TableHead>
                       <TableHead className="px-3 py-3 font-semibold h-auto">Olay</TableHead>
@@ -1125,10 +1125,10 @@ export default function WebhooksPage() {
                             ? "—"
                             : `${d.durationMs} ms`}
                         </TableCell>
-                        <TableCell className="whitespace-nowrap px-3 py-3 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                        <TableCell className="whitespace-nowrap px-3 py-3 font-mono text-xs text-muted-foreground">
                           {formatDateTr(d.createdAt)}
                         </TableCell>
-                        <TableCell className="whitespace-nowrap px-3 py-3 font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                        <TableCell className="whitespace-nowrap px-3 py-3 font-mono text-xs text-muted-foreground">
                           {formatDateTr(d.nextRetryAt)}
                         </TableCell>
                         <TableCell className="px-3 py-3 text-right">
@@ -1183,7 +1183,7 @@ export default function WebhooksPage() {
                   <DialogTitle className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                     Test Gönderimi Sonucu
                   </DialogTitle>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     Dry-run • HMAC imzalı istek simüle edildi
                   </p>
                 </div>
@@ -1208,14 +1208,14 @@ export default function WebhooksPage() {
                   </span>
                 )}
                 {testResult.durationMs !== null && (
-                  <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                  <span className="font-mono text-xs text-muted-foreground">
                     {testResult.durationMs} ms
                   </span>
                 )}
               </div>
 
               <div className="rounded-xl border border-border bg-zinc-50 p-3 dark:bg-zinc-800/50">
-                <div className="mb-1 font-medium text-xs text-zinc-500 dark:text-zinc-400">
+                <div className="mb-1 font-medium text-xs text-muted-foreground">
                   X-Webhook-Signature
                 </div>
                 <div className="flex items-center gap-2">
@@ -1236,7 +1236,7 @@ export default function WebhooksPage() {
                   )}
                 </div>
                 {testResult.headers && (
-                  <div className="mt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+                  <div className="mt-2 text-2xs text-muted-foreground">
                     X-Webhook-Timestamp:{" "}
                     <span className="font-mono text-zinc-700 dark:text-zinc-300">
                       {testResult.headers["X-Webhook-Timestamp"] ||

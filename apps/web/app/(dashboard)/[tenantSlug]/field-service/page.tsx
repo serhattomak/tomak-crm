@@ -355,7 +355,7 @@ export default function FieldServicePage() {
             <Wrench className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             Saha Servis & Mobil Teknisyen Yönetimi
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             Saha ekiplerine iş emri atayın, rota ve GPS check-in&apos;lerini takip edin, yerinde dijital teslim imzasını alın.
           </p>
         </div>
@@ -386,7 +386,7 @@ export default function FieldServicePage() {
       {/* KPI Bento Ribbon */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
-          <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Toplam Servis Kartı</span>
+          <span className="text-xs font-semibold text-muted-foreground">Toplam Servis Kartı</span>
           <div className="mt-1 flex items-baseline justify-between">
             <span className="text-2xl font-black tabular-nums text-zinc-900 dark:text-zinc-50">{totalCount}</span>
             <Layers className="h-4 w-4 text-muted-foreground" />
@@ -402,7 +402,7 @@ export default function FieldServicePage() {
         </div>
 
         <div className="p-4 rounded-xl border border-amber-200/80 dark:border-amber-900/50 bg-amber-50/40 dark:bg-amber-950/20 shadow-2xs">
-          <span className="text-xs font-semibold text-amber-700 dark:text-amber-300">Sahada Devam Eden</span>
+          <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 dark:text-amber-300">Sahada Devam Eden</span>
           <div className="mt-1 flex items-baseline justify-between">
             <span className="text-2xl font-black tabular-nums text-amber-950 dark:text-amber-200">{inProgressCount}</span>
             <Clock className="h-4 w-4 text-amber-500" />
@@ -450,7 +450,7 @@ export default function FieldServicePage() {
           </div>
 
           {loading ? (
-            <div className="p-12 text-center text-zinc-500 text-xs">
+            <div className="p-12 text-center text-muted-foreground text-xs">
               <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 text-blue-500" />
               Saha servis görevleri listeleniyor...
             </div>
@@ -458,7 +458,7 @@ export default function FieldServicePage() {
             <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40">
               <Wrench className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
               <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Kayıtlı Saha Servis Emri Yok</p>
-              <p className="text-xs text-zinc-500 mt-1">Saha teknisyenleri için ilk servis görevini oluşturun.</p>
+              <p className="text-xs text-muted-foreground mt-1">Saha teknisyenleri için ilk servis görevini oluşturun.</p>
               <Button
                 size="sm"
                 onClick={() => setIsCreateOpen(true)}
@@ -491,7 +491,7 @@ export default function FieldServicePage() {
                               job.status === "Completed"
                                 ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
                                 : job.status === "InProgress"
-                                ? "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300"
+                                ? "bg-amber-100 text-amber-700 dark:text-amber-400 dark:bg-amber-950/60 dark:text-amber-300"
                                 : "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300"
                             }`}
                           >
@@ -510,7 +510,7 @@ export default function FieldServicePage() {
                           {job.title}
                         </h3>
 
-                        <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 pt-0.5">
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground pt-0.5">
                           <span className="font-medium text-zinc-800 dark:text-zinc-200">
                             {job.customerName || "Bireysel Müşteri"}
                           </span>
@@ -528,7 +528,7 @@ export default function FieldServicePage() {
                           {job.assignedTechnicianName || "Atama Bekliyor"}
                         </div>
                         {job.scheduledDate && (
-                          <div className="text-2xs text-zinc-500 mt-0.5 flex items-center justify-end gap-1">
+                          <div className="text-2xs text-muted-foreground mt-0.5 flex items-center justify-end gap-1">
                             <Calendar className="h-3 w-3" />
                             {new Date(job.scheduledDate).toLocaleDateString("tr-TR")}
                           </div>
@@ -536,7 +536,7 @@ export default function FieldServicePage() {
                       </div>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-border flex items-center justify-between text-xs text-zinc-500">
+                    <div className="mt-3 pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <CheckSquare className="h-3.5 w-3.5 text-muted-foreground" />
                         <span>
@@ -620,7 +620,7 @@ export default function FieldServicePage() {
                 {selectedJob.contactPhone && (
                   <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
                     <Phone className="h-3.5 w-3.5 text-muted-foreground" />
-                    <a href={`tel:${selectedJob.contactPhone}`} className="text-blue-600 hover:underline">
+                    <a href={`tel:${selectedJob.contactPhone}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                       {selectedJob.contactPhone}
                     </a>
                   </div>
@@ -648,7 +648,7 @@ export default function FieldServicePage() {
                     onClick={() => handleCheckinGPS("Departure")}
                     className="h-9 gap-1.5 text-xs text-zinc-700 dark:text-zinc-300"
                   >
-                    <Clock className="h-3.5 w-3.5 text-zinc-500" />
+                    <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                     Ayrılış Check-In
                   </Button>
                 </div>
@@ -675,7 +675,7 @@ export default function FieldServicePage() {
                         className={`p-2.5 rounded-lg border flex items-center gap-2.5 cursor-pointer text-xs transition-all ${ task.isCompleted ? "border-emerald-200/80 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 line-through" : "border-border bg-card text-zinc-700 dark:text-zinc-300" }`}
                       >
                         {task.isCompleted ? (
-                          <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                          <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-300 shrink-0" />
                         ) : (
                           <Square className="h-4 w-4 text-muted-foreground shrink-0" />
                         )}
@@ -714,7 +714,7 @@ export default function FieldServicePage() {
                 <div className="pt-2">
                   <Button
                     onClick={() => setIsSignModalOpen(true)}
-                    className="w-full h-10 gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm"
+                    className="w-full h-10 gap-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-sm"
                   >
                     <PenTool className="h-4 w-4" />
                     Görevi Bitir ve Müşteri İmzası Al
@@ -726,7 +726,7 @@ export default function FieldServicePage() {
             <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40 sticky top-6">
               <Truck className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
               <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Servis Emri Seçiniz</p>
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Detayları, kontrol listesini ve yerinde imza modülünü görüntülemek için soldan bir kart seçin.
               </p>
             </div>
@@ -751,7 +751,7 @@ export default function FieldServicePage() {
           >
             <div className="flex items-center justify-between border-b border-border pb-3">
               <DialogTitle className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <Wrench className="h-5 w-5 text-blue-600" />
+                <Wrench className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 Yeni Saha Servis Emri Aç
               </DialogTitle>
               <DialogClose asChild>
@@ -933,10 +933,10 @@ export default function FieldServicePage() {
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div>
                 <DialogTitle className="text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
-                  <PenTool className="h-4 w-4 text-emerald-600" />
+                  <PenTool className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
                   Müşteri Teslim & Kabul İmzası
                 </DialogTitle>
-                <p className="text-2xs text-zinc-500">
+                <p className="text-2xs text-muted-foreground">
                   {selectedJob.jobNumber} • {selectedJob.title}
                 </p>
               </div>
@@ -984,7 +984,7 @@ export default function FieldServicePage() {
                   <button
                     type="button"
                     onClick={clearCanvas}
-                    className="text-2xs text-red-600 hover:underline"
+                    className="text-2xs text-red-600 dark:text-red-400 hover:underline"
                   >
                     Temizle
                   </button>
@@ -1016,7 +1016,7 @@ export default function FieldServicePage() {
                   size="sm"
                   disabled={completing}
                   onClick={handleCompleteWithSign}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold"
+                  className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold"
                 >
                   {completing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Onayla ve Tamamla"}
                 </Button>

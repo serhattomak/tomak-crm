@@ -131,7 +131,7 @@ function KpiCard({
   return (
     <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
       <div className="flex items-center justify-between">
-        <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+        <span className="font-medium text-xs text-muted-foreground">
           {label}
         </span>
         <div className={`rounded-xl p-2 ${colorClass}`}>
@@ -318,7 +318,7 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
               className={`rounded-xl p-2.5 ${
                 isBank
                   ? "bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400"
-                  : "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400"
+                  : "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
               }`}
             >
               {isBank ? (
@@ -411,7 +411,7 @@ function StatementTableBody({
     <>
       {statementTx.map((tx) => (
         <TableRow key={tx.id}>
-          <TableCell className="py-2 font-mono text-zinc-500 dark:text-zinc-400">
+          <TableCell className="py-2 font-mono text-muted-foreground">
             {new Date(tx.transactionDate).toLocaleDateString("tr-TR")}
           </TableCell>
           <TableCell className="py-2">
@@ -680,7 +680,7 @@ export default function FinancePage() {
               Aktif Çift Taraflı Finans Motoru
             </span>
           </div>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Cari kartlar, borç/alacak bakiyeleri, kasa & banka likiditesi ve
             tahsilat/ödeme makbuzları.
           </p>
@@ -692,7 +692,7 @@ export default function FinancePage() {
             onClick={handleOpenTx}
             type="button"
           >
-            <CreditCard className="h-4 w-4 text-emerald-600" />
+            <CreditCard className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
             Fiş / Makbuz Kes
           </button>
           <button
@@ -740,7 +740,7 @@ export default function FinancePage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "cari"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabCari}
           type="button"
@@ -751,7 +751,7 @@ export default function FinancePage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "accounts"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabAccounts}
           type="button"
@@ -762,7 +762,7 @@ export default function FinancePage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "transactions"
               ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabTransactions}
           type="button"
@@ -806,7 +806,7 @@ export default function FinancePage() {
             <div className="overflow-x-auto">
               <Table className="font-sans">
                 <TableHeader>
-                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-muted-foreground uppercase tracking-wider dark:bg-zinc-800/50">
                     <TableHead className="py-3 pr-3 pl-4 h-auto">Cari Kart & Kod</TableHead>
                     <TableHead className="px-3 py-3 h-auto">Tür</TableHead>
                     <TableHead className="px-3 py-3 h-auto">VKN / TCKN</TableHead>
@@ -862,7 +862,7 @@ export default function FinancePage() {
             <div className="overflow-x-auto">
               <Table className="font-sans">
                 <TableHeader>
-                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-zinc-500 uppercase tracking-wider dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50/80 font-semibold text-2xs text-muted-foreground uppercase tracking-wider dark:bg-zinc-800/50">
                     <TableHead className="py-3 pr-3 pl-4 h-auto">Tarih & Evrak</TableHead>
                     <TableHead className="px-3 py-3 h-auto">Hesap (Kasa/Banka)</TableHead>
                     <TableHead className="px-3 py-3 h-auto">İşlem Türü</TableHead>
@@ -1733,7 +1733,7 @@ function CreateTransactionModal({
             </span>
             <div className="grid grid-cols-2 gap-2">
               <button
-                className={`rounded-xl py-2 font-bold text-xs transition-all ${ type === "Collection" ? "bg-emerald-600 text-white shadow-xs" : "border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300" }`}
+                className={`rounded-xl py-2 font-bold text-xs transition-all ${ type === "Collection" ? "bg-emerald-700 text-white shadow-xs" : "border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300" }`}
                 onClick={handleSelectCollection}
                 type="button"
               >

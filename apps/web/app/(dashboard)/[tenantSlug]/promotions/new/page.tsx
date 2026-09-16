@@ -261,7 +261,7 @@ export default function NewCampaignPage() {
       <div className="flex items-center justify-between border-border border-b pb-4">
         <div className="flex items-center gap-3">
           <Link
-            className="rounded-xl border border-border p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            className="rounded-xl border border-border p-2 text-muted-foreground hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
             href={`/${tenantSlug}/promotions`}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -270,7 +270,7 @@ export default function NewCampaignPage() {
             <h1 className="font-bold text-xl text-zinc-900 dark:text-zinc-50">
               Yeni Kampanya Oluştur
             </h1>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-muted-foreground">
               5 adımda gelişmiş indirim ve promosyon kuralları tanımlayın
             </p>
           </div>
@@ -311,7 +311,7 @@ export default function NewCampaignPage() {
       {currentStep === 1 && (
         <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Tag className="h-4 w-4 text-blue-600" />
+            <Tag className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             Adım 1: Temel Bilgiler & Zamanlama
           </h2>
 
@@ -406,7 +406,7 @@ export default function NewCampaignPage() {
                 <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                   Diğer Kampanyalarla Birleştirilebilir mi? (Stacking)
                 </span>
-                <p className="text-2xs text-zinc-500">
+                <p className="text-2xs text-muted-foreground">
                   Açık ise, bu kampanya diğer indirimlerin üzerine ilave olarak
                   uygulanabilir.
                 </p>
@@ -433,7 +433,7 @@ export default function NewCampaignPage() {
       {currentStep === 2 && (
         <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Coins className="h-4 w-4 text-blue-600" />
+            <Coins className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             Adım 2: İndirim Türü ve Mekanizması
           </h2>
 
@@ -488,7 +488,7 @@ export default function NewCampaignPage() {
                   <span className="mt-2 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                     {t.name}
                   </span>
-                  <span className="mt-0.5 text-2xs text-zinc-500">
+                  <span className="mt-0.5 text-2xs text-muted-foreground">
                     {t.desc}
                   </span>
                 </button>
@@ -657,7 +657,7 @@ export default function NewCampaignPage() {
       {currentStep === 3 && (
         <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Package className="h-4 w-4 text-blue-600" />
+            <Package className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             Adım 3: Hedefleme & Kapsam Kısıtlamaları
           </h2>
 
@@ -670,7 +670,7 @@ export default function NewCampaignPage() {
               <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                 Tüm Katalogda Geçerli
               </div>
-              <p className="mt-1 text-2xs text-zinc-500">
+              <p className="mt-1 text-2xs text-muted-foreground">
                 İstisnasız tüm ürün ve kategorilerde geçerli olur.
               </p>
             </button>
@@ -683,7 +683,7 @@ export default function NewCampaignPage() {
               <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                 Seçili Ürün & Kategoriler
               </div>
-              <p className="mt-1 text-2xs text-zinc-500">
+              <p className="mt-1 text-2xs text-muted-foreground">
                 Belirli ürün veya kategorileri dahil edin veya hariç tutun.
               </p>
             </button>
@@ -776,7 +776,7 @@ export default function NewCampaignPage() {
                         </div>
                         <button
                           aria-label="Hedefi kaldır"
-                          className="rounded p-1 text-muted-foreground hover:text-red-600"
+                          className="rounded p-1 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
                           onClick={() => removeTarget(idx)}
                           type="button"
                         >
@@ -796,7 +796,7 @@ export default function NewCampaignPage() {
       {currentStep === 4 && (
         <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Ticket className="h-4 w-4 text-blue-600" />
+            <Ticket className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             Adım 4: Tetikleyici & Kupon Kotaları
           </h2>
 
@@ -810,7 +810,7 @@ export default function NewCampaignPage() {
                 <Zap className="h-4 w-4 text-amber-500" />
                 Otomatik Kural
               </div>
-              <p className="mt-1 text-2xs text-zinc-500">
+              <p className="mt-1 text-2xs text-muted-foreground">
                 Sepet şartları sağlandığında indirim anında sepete yansır (kod
                 gerekmez).
               </p>
@@ -822,10 +822,10 @@ export default function NewCampaignPage() {
               type="button"
             >
               <div className="flex items-center gap-1.5 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
-                <Ticket className="h-4 w-4 text-blue-600" />
+                <Ticket className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 Kupon Kodu Gerektiren
               </div>
-              <p className="mt-1 text-2xs text-zinc-500">
+              <p className="mt-1 text-2xs text-muted-foreground">
                 Müşteri geçerli bir promosyon kodu girdiğinde indirim aktif
                 olur.
               </p>
@@ -893,7 +893,7 @@ export default function NewCampaignPage() {
       {currentStep === 5 && (
         <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Sparkles className="h-4 w-4 text-blue-600" />
+            <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             Adım 5: Kampanya Özeti & Onay
           </h2>
 
@@ -906,9 +906,9 @@ export default function NewCampaignPage() {
                 {name}
               </div>
               {code && (
-                <div className="font-mono text-zinc-500">Kod: {code}</div>
+                <div className="font-mono text-muted-foreground">Kod: {code}</div>
               )}
-              <div className="text-zinc-500">
+              <div className="text-muted-foreground">
                 Tarih:{" "}
                 {startDate
                   ? new Date(startDate).toLocaleDateString("tr-TR")
@@ -942,13 +942,13 @@ export default function NewCampaignPage() {
                 {type === "BuyXGetY" && `${buyQuantity} Al ${getQuantity} Öde`}
                 {type === "FreeShipping" && "Ücretsiz Kargo"}
               </div>
-              <div className="text-zinc-500">
+              <div className="text-muted-foreground">
                 Tetikleyici:{" "}
                 {triggerType === "Automatic"
                   ? "Otomatik Sepet Kuralı"
                   : `Kupon Kodu (${initialCouponCode})`}
               </div>
-              <div className="text-zinc-500">
+              <div className="text-muted-foreground">
                 Kapsam:{" "}
                 {scopeMode === "all"
                   ? "Tüm Katalog"
@@ -985,7 +985,7 @@ export default function NewCampaignPage() {
           </button>
         ) : (
           <button
-            className="flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 font-bold text-white text-xs shadow-xs hover:bg-emerald-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-emerald-700 px-6 py-2.5 font-bold text-white text-xs shadow-xs hover:bg-emerald-800 disabled:opacity-50"
             disabled={loading}
             onClick={handleSubmit}
             type="button"

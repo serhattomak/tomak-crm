@@ -87,7 +87,7 @@ export function CustomizeWidgetsModal({
     switch (iconName) {
       case "TrendingUp":
         return (
-          <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+          <TrendingUp className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
         );
       case "BarChart3":
         return (
@@ -111,21 +111,21 @@ export function CustomizeWidgetsModal({
         );
       case "CheckSquare":
         return (
-          <CheckSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+          <CheckSquare className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
         );
       case "Calendar":
         return (
           <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
         );
       case "Clock":
-        return <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
+        return <Clock className="h-4 w-4 text-amber-700 dark:text-amber-400" />;
       case "Trophy":
         return (
-          <Trophy className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+          <Trophy className="h-4 w-4 text-amber-700 dark:text-amber-400" />
         );
       case "FileSpreadsheet":
         return (
-          <FileSpreadsheet className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+          <FileSpreadsheet className="h-4 w-4 text-amber-700 dark:text-amber-400" />
         );
       case "Zap":
         return <Zap className="h-4 w-4 text-amber-500 dark:text-amber-400" />;

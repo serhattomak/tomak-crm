@@ -407,7 +407,7 @@ export function CampaignModal({
               <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                 {isEditMode ? "Kampanyayı Düzenle" : "Yeni Kampanya Oluştur"}
               </DialogTitle>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-muted-foreground">
                 {isEditMode
                   ? name
                   : "5 adımda gelişmiş indirim ve promosyon kuralları tanımlayın"}
@@ -436,7 +436,7 @@ export function CampaignModal({
                   isCurrent
                     ? "border-blue-600 border-b-2 font-bold text-blue-600 dark:text-blue-400"
                     : isDone
-                      ? "text-emerald-600 dark:text-emerald-400"
+                      ? "text-emerald-700 dark:text-emerald-400"
                       : "text-muted-foreground hover:text-zinc-600 dark:hover:text-zinc-300"
                 }`}
                 key={s.num}
@@ -454,7 +454,7 @@ export function CampaignModal({
         <div className="flex-1 overflow-y-auto p-6">
           {fetching ? (
             <div className="flex h-64 items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+              <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
             </div>
           ) : (
             <div className="space-y-4">
@@ -554,7 +554,7 @@ export function CampaignModal({
                       <span className="font-semibold text-xs text-zinc-800 dark:text-zinc-200">
                         Diğer Kampanyalarla Birleşebilir (Stacking)
                       </span>
-                      <p className="text-2xs text-zinc-500">
+                      <p className="text-2xs text-muted-foreground">
                         Açık ise diğer sepet indirimlerinin üzerine ilave
                         uygulanır.
                       </p>
@@ -631,7 +631,7 @@ export function CampaignModal({
                           <span className="mt-2 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                             {t.name}
                           </span>
-                          <span className="mt-0.5 text-3xs text-zinc-500">
+                          <span className="mt-0.5 text-3xs text-muted-foreground">
                             {t.desc}
                           </span>
                         </button>
@@ -807,7 +807,7 @@ export function CampaignModal({
                       <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                         Tüm Katalog
                       </div>
-                      <p className="mt-0.5 text-2xs text-zinc-500">
+                      <p className="mt-0.5 text-2xs text-muted-foreground">
                         Tüm ürün ve kategorilerde geçerli.
                       </p>
                     </button>
@@ -820,7 +820,7 @@ export function CampaignModal({
                       <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                         Seçili Ürün & Kategoriler
                       </div>
-                      <p className="mt-0.5 text-2xs text-zinc-500">
+                      <p className="mt-0.5 text-2xs text-muted-foreground">
                         Belirli ürün veya kategorileri hedefleyin.
                       </p>
                     </button>
@@ -901,7 +901,7 @@ export function CampaignModal({
                                 </div>
                                 <button
                                   aria-label="Hedefi kaldır"
-                                  className="rounded p-1 text-muted-foreground hover:text-red-600"
+                                  className="rounded p-1 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
                                   onClick={() => removeTarget(idx)}
                                   type="button"
                                 >
@@ -930,7 +930,7 @@ export function CampaignModal({
                         <Zap className="h-3.5 w-3.5 text-amber-500" />
                         Otomatik Kural
                       </div>
-                      <p className="mt-0.5 text-3xs text-zinc-500">
+                      <p className="mt-0.5 text-3xs text-muted-foreground">
                         Sepet sağlandığında doğrudan uygulanır.
                       </p>
                     </button>
@@ -941,10 +941,10 @@ export function CampaignModal({
                       type="button"
                     >
                       <div className="flex items-center gap-1.5 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
-                        <Ticket className="h-3.5 w-3.5 text-blue-600" />
+                        <Ticket className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                         Kupon Kodu Gerektiren
                       </div>
-                      <p className="mt-0.5 text-3xs text-zinc-500">
+                      <p className="mt-0.5 text-3xs text-muted-foreground">
                         Müşteri kupon girdiğinde aktif olur.
                       </p>
                     </button>
@@ -1015,11 +1015,11 @@ export function CampaignModal({
                         {name}
                       </div>
                       {code && (
-                        <div className="font-mono text-zinc-500">
+                        <div className="font-mono text-muted-foreground">
                           Kod: {code}
                         </div>
                       )}
-                      <div className="text-zinc-500">
+                      <div className="text-muted-foreground">
                         Tarih:{" "}
                         {startDate
                           ? new Date(startDate).toLocaleDateString("tr-TR")
@@ -1055,13 +1055,13 @@ export function CampaignModal({
                           `${buyQuantity} Al ${getQuantity} Öde`}
                         {type === "FreeShipping" && "Ücretsiz Kargo"}
                       </div>
-                      <div className="text-zinc-500">
+                      <div className="text-muted-foreground">
                         Tetikleyici:{" "}
                         {triggerType === "Automatic"
                           ? "Otomatik Kural"
                           : "Kupon Kodu"}
                       </div>
-                      <div className="text-zinc-500">
+                      <div className="text-muted-foreground">
                         Kapsam:{" "}
                         {scopeMode === "all"
                           ? "Tüm Katalog"
@@ -1101,7 +1101,7 @@ export function CampaignModal({
             </button>
           ) : (
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 font-bold text-white text-xs shadow-xs hover:bg-emerald-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-emerald-700 px-5 py-2 font-bold text-white text-xs shadow-xs hover:bg-emerald-800 disabled:opacity-50"
               disabled={loading}
               onClick={handleSubmit}
               type="button"

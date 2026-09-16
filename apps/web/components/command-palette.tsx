@@ -850,7 +850,7 @@ export function CommandPalette({
               <X className="h-4 w-4" />
             </button>
           ) : (
-            <kbd className="rounded border border-border bg-zinc-50 px-1.5 py-0.5 font-bold text-3xs text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
+            <kbd className="rounded border border-border bg-zinc-50 px-1.5 py-0.5 font-bold text-3xs text-muted-foreground dark:bg-zinc-800">
               ESC
             </kbd>
           )}
@@ -876,7 +876,7 @@ export function CommandPalette({
               {/* Dynamic Vehicle Results */}
               {categorized.vehicles.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                     Araçlar & Otomotiv
                   </div>
                   {categorized.vehicles.map((item) => {
@@ -898,7 +898,7 @@ export function CommandPalette({
               {/* Dynamic Customer Results */}
               {categorized.customers.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                     Müşteriler
                   </div>
                   {categorized.customers.map((item) => {
@@ -920,7 +920,7 @@ export function CommandPalette({
               {/* Dynamic Order Results */}
               {categorized.orders.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                     Siparişler
                   </div>
                   {categorized.orders.map((item) => {
@@ -942,7 +942,7 @@ export function CommandPalette({
               {/* Dynamic Product Results */}
               {categorized.products.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                     Ürünler & Hizmetler
                   </div>
                   {categorized.products.map((item) => {
@@ -964,7 +964,7 @@ export function CommandPalette({
               {/* Actions */}
               {categorized.actions.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                     Hızlı İşlemler
                   </div>
                   {categorized.actions.map((item) => {
@@ -986,7 +986,7 @@ export function CommandPalette({
               {/* Navigation */}
               {categorized.navigation.length > 0 && (
                 <div className="space-y-1">
-                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+                  <div className="px-3 py-1 font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                     Sayfalar & Modüller
                   </div>
                   {categorized.navigation.map((item) => {
@@ -1009,7 +1009,7 @@ export function CommandPalette({
         </div>
 
         {/* Footer Hotkey Legend */}
-        <div className="flex items-center justify-between border-border border-t bg-zinc-50/70 px-4 py-2.5 text-2xs text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+        <div className="flex items-center justify-between border-border border-t bg-zinc-50/70 px-4 py-2.5 text-2xs text-muted-foreground dark:bg-zinc-800/50">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <kbd className="rounded border border-border bg-card px-1 font-bold font-mono text-3xs text-zinc-700 shadow-2xs dark:text-zinc-300">
@@ -1104,7 +1104,7 @@ function PaletteRow({
       <div className="ml-2 flex shrink-0 items-center gap-1.5">
         {item.badge && (
           <kbd
-            className={`rounded-md border px-1.5 py-0.5 font-bold font-mono text-3xs shadow-2xs ${ isSelected ? "border-blue-200 bg-card text-blue-800 dark:border-blue-700 dark:text-blue-300" : "border-border bg-zinc-50 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400" }`}
+            className={`rounded-md border px-1.5 py-0.5 font-bold font-mono text-3xs shadow-2xs ${ isSelected ? "border-blue-200 bg-card text-blue-800 dark:border-blue-700 dark:text-blue-300" : "border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800" }`}
           >
             {item.badge}
           </kbd>

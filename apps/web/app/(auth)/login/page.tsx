@@ -133,13 +133,13 @@ export default function LoginPage() {
               <h1 className="font-normal font-serif text-3xl text-zinc-900 tracking-tight sm:text-4xl dark:text-zinc-100">
                 Tekrar Hoş Geldiniz
               </h1>
-              <p className="font-normal text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="font-normal text-xs text-muted-foreground">
                 Hesabınıza erişmek için e-posta ve şifrenizi girin
               </p>
             </div>
 
             {error && (
-              <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-center text-rose-600 text-xs dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300">
+              <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-center text-rose-600 dark:text-rose-400 text-xs dark:border-rose-800 dark:bg-rose-950/60 dark:text-rose-300">
                 {error}
               </div>
             )}
@@ -192,7 +192,7 @@ export default function LoginPage() {
                 <label className="flex cursor-pointer select-none items-center gap-2 text-zinc-600 dark:text-zinc-400">
                   <input
                     checked={rememberMe}
-                    className="h-3.5 w-3.5 rounded border-border text-blue-600 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800"
+                    className="h-3.5 w-3.5 rounded border-border text-blue-600 dark:text-blue-400 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800"
                     onChange={(e) => setRememberMe(e.target.checked)}
                     type="checkbox"
                   />
@@ -252,7 +252,7 @@ export default function LoginPage() {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-8 text-center text-xs text-muted-foreground">
             Don&apos;t have an account?{" "}
             <Link
               className="font-semibold text-zinc-900 hover:underline dark:text-zinc-100"

@@ -435,7 +435,7 @@ export default function ProductsPage() {
               {totalCount} Kayıt
             </span>
           </div>
-          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-0.5 text-xs text-muted-foreground">
             Fiziksel stoklu ürünlerinizi, danışmanlık hizmetlerinizi ve abonelik
             paketlerinizi tek noktadan yönetin.
           </p>
@@ -448,7 +448,7 @@ export default function ProductsPage() {
             onClick={() => setIsCategoryModalOpen(true)}
             type="button"
           >
-            <FolderTree className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+            <FolderTree className="h-3.5 w-3.5 text-muted-foreground" />
             <span>Kategoriler ({categories.length})</span>
           </button>
 
@@ -457,7 +457,7 @@ export default function ProductsPage() {
             onClick={() => showToast("Katalog CSV olarak dışa aktarılıyor...")}
             type="button"
           >
-            <Download className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+            <Download className="h-3.5 w-3.5 text-muted-foreground" />
             <span>Dışa Aktar</span>
           </button>
 
@@ -480,7 +480,7 @@ export default function ProductsPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Toplam Katalog
               </span>
               <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -491,7 +491,7 @@ export default function ProductsPage() {
               <Package className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>{stats?.physicalProductsCount ?? 0} Fiziksel</span>
             <span>•</span>
             <span>{stats?.servicesCount ?? 0} Hizmet</span>
@@ -504,7 +504,7 @@ export default function ProductsPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Toplam Envanter Değeri (Maliyet)
               </span>
               <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
@@ -514,11 +514,11 @@ export default function ProductsPage() {
                 })}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Coins className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>
               Satış Değeri: ₺
               {(stats?.totalRetailValue ?? 0).toLocaleString("tr-TR", {
@@ -532,18 +532,18 @@ export default function ProductsPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Kritik Stok Uyarısı
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-amber-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-amber-700 dark:text-amber-400 tracking-tight sm:text-3xl">
                 {stats?.lowStockCount ?? 0}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
               <AlertTriangle className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 font-semibold text-2xs text-rose-600">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 font-semibold text-2xs text-rose-600 dark:text-rose-400">
             <span>{stats?.outOfStockCount ?? 0} Ürün Tükendi</span>
           </div>
         </div>
@@ -552,10 +552,10 @@ export default function ProductsPage() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="font-medium text-xs text-muted-foreground">
                 Hizmet & Abonelikler
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-purple-600 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-purple-600 dark:text-purple-400 tracking-tight sm:text-3xl">
                 {(stats?.servicesCount ?? 0) + (stats?.subscriptionsCount ?? 0)}
               </div>
             </div>
@@ -563,7 +563,7 @@ export default function ProductsPage() {
               <Zap className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-zinc-500 dark:text-zinc-400">
+          <div className="mt-3 flex items-center gap-2 border-border border-t pt-2 text-2xs text-muted-foreground">
             <span>Stoksuz katma değerli teklif kalemleri</span>
           </div>
         </div>
@@ -737,20 +737,20 @@ export default function ProductsPage() {
         <div className="flex h-64 items-center justify-center rounded-3xl border border-border bg-card shadow-xs">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+            <span className="font-medium text-xs text-muted-foreground">
               Ürün ve hizmetler yükleniyor...
             </span>
           </div>
         </div>
       ) : displayedProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card p-12 text-center shadow-xs">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800 dark:text-zinc-500">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800">
             <Package className="h-6 w-6" />
           </div>
           <h3 className="mt-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
             Ürün veya Hizmet Bulunamadı
           </h3>
-          <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 max-w-sm text-xs text-muted-foreground">
             Arama kriterlerinize uygun kayıt bulunamadı veya henüz bir
             ürün/hizmet tanımlanmadı.
           </p>
@@ -770,7 +770,7 @@ export default function ProductsPage() {
         <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs">
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="border-border bg-zinc-50/50 text-zinc-500 dark:bg-zinc-800/30 dark:text-zinc-400">
+              <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
                 <TableRow>
                   <TableHead className="w-10 py-3.5 pr-2 pl-4 h-auto">
                     <Checkbox
@@ -816,7 +816,7 @@ export default function ProductsPage() {
                         />
                         <div>
                           <Link
-                            className="block font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100"
+                            className="block font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100"
                             href={`/${tenantSlug}/products/${p.id}`}
                           >
                             {p.name}
@@ -832,7 +832,7 @@ export default function ProductsPage() {
                             {p.variantsCount > 0 && (
                               <>
                                 <span>•</span>
-                                <span className="text-blue-600">
+                                <span className="text-blue-600 dark:text-blue-400">
                                   {p.variantsCount} Varyant
                                 </span>
                               </>
@@ -879,9 +879,9 @@ export default function ProductsPage() {
                             <span
                               className={`font-bold text-xs ${
                                 p.availableStock <= 0
-                                  ? "text-rose-600"
+                                  ? "text-rose-600 dark:text-rose-400"
                                   : p.isLowStock
-                                    ? "text-amber-600"
+                                    ? "text-amber-700 dark:text-amber-400"
                                     : "text-zinc-900 dark:text-zinc-100"
                               }`}
                             >
@@ -949,13 +949,13 @@ export default function ProductsPage() {
                               title="Stok Hareketi Ekle"
                               type="button"
                             >
-                              <History className="h-3 w-3 text-blue-600" />
+                              <History className="h-3 w-3 text-blue-600 dark:text-blue-400" />
                               <span>Stok</span>
                             </button>
                           </PermissionGate>
                         )}
                         <Link
-                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                          className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
                           href={`/${tenantSlug}/products/${p.id}`}
                           title="Detay Görüntüle"
                         >
@@ -963,7 +963,7 @@ export default function ProductsPage() {
                         </Link>
                         <PermissionGate permission="Products.Delete">
                           <button
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                             onClick={() => setDeletingProduct(p)}
                             title="Sil"
                             type="button"
@@ -995,7 +995,7 @@ export default function ProductsPage() {
                 <div className="mt-3 flex items-start justify-between gap-2">
                   <div>
                     <Link
-                      className="block font-bold text-sm text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100"
+                      className="block font-bold text-sm text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100"
                       href={`/${tenantSlug}/products/${p.id}`}
                     >
                       {p.name}
@@ -1035,9 +1035,9 @@ export default function ProductsPage() {
                     <div
                       className={`font-bold text-sm ${
                         p.availableStock <= 0
-                          ? "text-rose-600"
+                          ? "text-rose-600 dark:text-rose-400"
                           : p.isLowStock
-                            ? "text-amber-600"
+                            ? "text-amber-700 dark:text-amber-400"
                             : "text-zinc-800 dark:text-zinc-200"
                       }`}
                     >
@@ -1187,7 +1187,7 @@ export default function ProductsPage() {
               <DialogClose asChild>
                 <button
                   aria-label="Önizlemeyi kapat"
-                  className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                  className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   type="button"
                 >
                   <X className="h-5 w-5" />
@@ -1260,11 +1260,11 @@ function ProductTableThumb({
     return (
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 font-bold text-xs text-zinc-600 shadow-2xs dark:bg-zinc-800 dark:text-zinc-400">
         {product.type === "Physical" ? (
-          <Package className="h-5 w-5 text-blue-600" />
+          <Package className="h-5 w-5 text-blue-600 dark:text-blue-400" />
         ) : product.type === "Service" ? (
-          <Zap className="h-5 w-5 text-blue-600" />
+          <Zap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
         ) : (
-          <Box className="h-5 w-5 text-emerald-600" />
+          <Box className="h-5 w-5 text-emerald-700 dark:text-emerald-300" />
         )}
       </span>
     );
@@ -1315,7 +1315,7 @@ function ProductGridCover({
           aria-hidden="true"
           className="h-8 w-8 text-zinc-300 dark:text-zinc-600"
         />
-        <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+        <span className="rounded-lg bg-zinc-100 px-2 py-0.5 font-semibold text-3xs text-muted-foreground dark:bg-zinc-800">
           Görsel yok
         </span>
       </div>
@@ -1501,7 +1501,7 @@ function CreateProductModal({
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Yeni Ürün / Hizmet Ekle
             </DialogTitle>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-muted-foreground">
               Fiziksel stoklu ürün, danışmanlık hizmeti veya abonelik paketi
               tanımlayın
             </p>
@@ -1509,7 +1509,7 @@ function CreateProductModal({
           <DialogClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              className="rounded-full p-2 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-5 w-5" />
@@ -1530,7 +1530,7 @@ function CreateProductModal({
           {/* Type Switcher */}
           <div className="grid grid-cols-2 gap-2 rounded-2xl bg-zinc-100 p-1 sm:grid-cols-4 dark:bg-zinc-800">
             <button
-              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Physical" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Physical" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() =>
                 setFormData({
                   ...formData,
@@ -1543,7 +1543,7 @@ function CreateProductModal({
               Fiziksel Ürün
             </button>
             <button
-              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Service" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Service" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() =>
                 setFormData({
                   ...formData,
@@ -1556,7 +1556,7 @@ function CreateProductModal({
               Hizmet / Servis
             </button>
             <button
-              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Digital" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Digital" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() =>
                 setFormData({
                   ...formData,
@@ -1569,7 +1569,7 @@ function CreateProductModal({
               Dijital Ürün
             </button>
             <button
-              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Subscription" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+              className={`rounded-xl py-2 font-semibold transition-all ${ formData.type === "Subscription" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
               onClick={() =>
                 setFormData({
                   ...formData,
@@ -1682,7 +1682,7 @@ function CreateProductModal({
                 </div>
                 <button
                   aria-label="SKU oto-üret"
-                  className="rounded-xl border border-border p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, sku: generateSku() })
                   }
@@ -1708,7 +1708,7 @@ function CreateProductModal({
                 </div>
                 <button
                   aria-label="Barkod oto-üret"
-                  className="rounded-xl border border-border p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, barcode: generateBarcode() })
                   }
@@ -2015,7 +2015,7 @@ function QuickStockAdjustModal({
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Hızlı Stok Hareketi
             </DialogTitle>
-            <p className="max-w-xs truncate text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="max-w-xs truncate text-xs text-muted-foreground">
               {product.name}
             </p>
           </div>
@@ -2234,7 +2234,7 @@ function CategoryManagerModal({
             <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
               Kategori & Hiyerarşi Yönetimi
             </DialogTitle>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-muted-foreground">
               Üst ve alt kategorileri (örn. Elektronik &gt; Küçük Ev Aletleri)
               yapılandırın
             </p>
@@ -2318,7 +2318,7 @@ function CategoryManagerModal({
                   {/* Root Category Row */}
                   <div className="flex items-center justify-between rounded-2xl border border-border bg-zinc-50/80 p-3 dark:bg-zinc-800/50">
                     <div className="flex items-center gap-2">
-                      <FolderTree className="h-4 w-4 text-blue-600" />
+                      <FolderTree className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                       <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         {root.name}
                       </span>
@@ -2327,7 +2327,7 @@ function CategoryManagerModal({
                       </span>
                     </div>
                     <button
-                      className="p-1 text-muted-foreground hover:text-rose-600 dark:text-zinc-500"
+                      className="p-1 text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                       onClick={() => handleDelete(root.id)}
                       title="Ana Kategoriyi Sil"
                       type="button"
@@ -2354,7 +2354,7 @@ function CategoryManagerModal({
                         </span>
                       </div>
                       <button
-                        className="p-1 text-muted-foreground hover:text-rose-600 dark:text-zinc-500"
+                        className="p-1 text-muted-foreground hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                         onClick={() => handleDelete(sub.id)}
                         title="Alt Kategoriyi Sil"
                         type="button"

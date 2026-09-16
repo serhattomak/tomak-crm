@@ -71,7 +71,7 @@ export default function OrganizationPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-zinc-500 shadow-xs dark:text-zinc-400">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-muted-foreground shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">Organizasyon yükleniyor...</p>
         </div>
@@ -265,7 +265,7 @@ function OrganizationPageContent() {
           <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
             Organizasyon & Departmanlar
           </h1>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             Departman hiyerarşisi, organizasyon şeması, çalışan kadrosu ve
             pozisyonları yönetin.
           </p>
@@ -315,7 +315,7 @@ function OrganizationPageContent() {
       <div className="flex items-center justify-between border-border border-b pb-3">
         <div className="flex items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "chart" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "chart" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("chart")}
             type="button"
           >
@@ -324,7 +324,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "departments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "departments" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("departments")}
             type="button"
           >
@@ -333,7 +333,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "employees" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "employees" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("employees")}
             type="button"
           >
@@ -342,7 +342,7 @@ function OrganizationPageContent() {
           </button>
 
           <button
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "positions" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${ activeTab === "positions" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" }`}
             onClick={() => handleTabChange("positions")}
             type="button"
           >
@@ -359,7 +359,7 @@ function OrganizationPageContent() {
           type="button"
         >
           <RotateCcw
-            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-blue-500" : "text-zinc-500 dark:text-zinc-400"}`}
+            className={`h-3.5 w-3.5 ${isLoading ? "animate-spin text-blue-500" : "text-muted-foreground"}`}
           />
           <span>Yenile</span>
         </button>
@@ -367,7 +367,7 @@ function OrganizationPageContent() {
 
       {/* 3. Tab Contents */}
       {isLoading ? (
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-zinc-500 shadow-xs dark:text-zinc-400">
+        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-muted-foreground shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">
             Organizasyon verileri yükleniyor...
@@ -640,7 +640,7 @@ function OrgChartTab({
         <h3 className="mt-4 font-bold text-base text-zinc-900 dark:text-zinc-100">
           Organizasyon Şeması Henüz Oluşmadı
         </h3>
-        <p className="mt-1 max-w-sm text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="mt-1 max-w-sm text-xs text-muted-foreground">
           Şema oluşturmak için çalışanları ekleyip birbirine bağlı yönetici
           (Reports To) hiyerarşisi belirleyin.
         </p>
@@ -660,7 +660,7 @@ function OrgChartTab({
         >
           <ZoomIn className="h-4 w-4" />
         </button>
-        <span className="px-1 font-mono font-semibold text-2xs text-zinc-500 dark:text-zinc-400">
+        <span className="px-1 font-mono font-semibold text-2xs text-muted-foreground">
           {Math.round(zoom * 100)}%
         </span>
         <button
@@ -771,7 +771,7 @@ function OrgNodeItem({
             <h4 className="truncate font-bold text-xs text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
               {node.fullName}
             </h4>
-            <p className="truncate font-medium text-2xs text-zinc-500 dark:text-zinc-400">
+            <p className="truncate font-medium text-2xs text-muted-foreground">
               {node.title || "Ünvan Belirtilmedi"}
             </p>
             <p className="truncate font-mono text-3xs text-muted-foreground">
@@ -782,7 +782,7 @@ function OrgNodeItem({
 
         {/* Card Footer: Subordinates & Quick Actions */}
         <div className="mt-3 flex items-center justify-between border-border border-t pt-2.5 text-2xs">
-          <div className="flex items-center gap-1 font-semibold text-zinc-500 dark:text-zinc-400">
+          <div className="flex items-center gap-1 font-semibold text-muted-foreground">
             <Users className="h-3.5 w-3.5 text-muted-foreground" />
             <span>{node.directReportsCount} Doğrudan</span>
             {node.totalSubordinatesCount > node.directReportsCount && (
@@ -943,7 +943,7 @@ function DepartmentsTab({
                     <Edit2 className="h-3.5 w-3.5" />
                   </button>
                   <button
-                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                    className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                     onClick={() => onDelete(dept.id)}
                     title="Sil"
                     type="button"
@@ -955,7 +955,7 @@ function DepartmentsTab({
 
               {/* Description & Parent */}
               {dept.parentName && (
-                <div className="mt-3 flex items-center gap-1 font-medium text-2xs text-zinc-500 dark:text-zinc-400">
+                <div className="mt-3 flex items-center gap-1 font-medium text-2xs text-muted-foreground">
                   <span className="text-muted-foreground">
                     Üst Departman:
                   </span>
@@ -966,7 +966,7 @@ function DepartmentsTab({
               )}
 
               {dept.description && (
-                <p className="mt-2 line-clamp-2 text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">
                   {dept.description}
                 </p>
               )}
@@ -1140,7 +1140,7 @@ function EmployeesTab({
           <div className="flex items-center rounded-xl border border-border p-0.5">
             <button
               aria-label="Tablo görünümü"
-              className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
+              className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("table")}
               type="button"
             >
@@ -1148,7 +1148,7 @@ function EmployeesTab({
             </button>
             <button
               aria-label="Kart görünümü"
-              className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
+              className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("grid")}
               type="button"
             >
@@ -1165,7 +1165,7 @@ function EmployeesTab({
           <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
             Çalışan Bulunamadı
           </h3>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             Filtrelerinizi değiştirin veya yeni çalışan ekleyin.
           </p>
         </div>
@@ -1215,7 +1215,7 @@ function EmployeesTab({
                     <div className="font-semibold text-zinc-800 dark:text-zinc-200">
                       {emp.title || "—"}
                     </div>
-                    <div className="text-2xs text-zinc-500 dark:text-zinc-400">
+                    <div className="text-2xs text-muted-foreground">
                       {emp.departmentName || "Genel"}
                     </div>
                   </TableCell>
@@ -1242,7 +1242,7 @@ function EmployeesTab({
                         emp.status === "Active"
                           ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
                           : emp.status === "OnLeave"
-                            ? "border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
+                            ? "border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 dark:text-amber-300"
                             : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
                       }`}
                     >
@@ -1272,7 +1272,7 @@ function EmployeesTab({
                         <Edit2 className="h-4 w-4" />
                       </button>
                       <button
-                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                        className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                         onClick={() => onDelete(emp.id)}
                         title="Sil"
                         type="button"
@@ -1311,7 +1311,7 @@ function EmployeesTab({
                       <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                         {emp.fullName}
                       </h4>
-                      <p className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+                      <p className="font-medium text-xs text-muted-foreground">
                         {emp.title || "Personel"}
                       </p>
                     </div>
@@ -1452,7 +1452,7 @@ function PositionsTab({
                     </button>
                     <button
                       aria-label="Pozisyonu sil"
-                      className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:text-zinc-500"
+                      className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 dark:text-zinc-500"
                       onClick={() => onDelete(pos.id)}
                       type="button"
                     >
@@ -2486,7 +2486,7 @@ function EmployeeDetailDrawer({
 
           {/* Contact Details Card */}
           <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
-            <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+            <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               İletişim & İK Bilgileri
             </h4>
             <div className="flex items-center gap-2.5 text-zinc-700 dark:text-zinc-300">
@@ -2518,13 +2518,13 @@ function EmployeeDetailDrawer({
 
           {/* Hierarchy & Reporting Tree */}
           <div className="mt-5 space-y-3 text-xs">
-            <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+            <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               Hiyerarşi & Raporlama
             </h4>
 
             {/* Manager */}
             <div className="rounded-2xl border border-border p-3">
-              <div className="mb-1.5 font-bold text-3xs text-muted-foreground uppercase dark:text-zinc-500">
+              <div className="mb-1.5 font-bold text-3xs text-muted-foreground uppercase">
                 Bağlı Olduğu Yönetici
               </div>
               {employeeDetail.managerId && employeeDetail.managerName ? (
@@ -2539,13 +2539,13 @@ function EmployeeDetailDrawer({
                     <div className="font-bold text-zinc-900 dark:text-zinc-100">
                       {employeeDetail.managerName}
                     </div>
-                    <div className="text-3xs text-zinc-500 dark:text-zinc-400">
+                    <div className="text-3xs text-muted-foreground">
                       Yönetici Profilini Görüntüle →
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="font-medium text-xs text-zinc-500 italic dark:text-zinc-400">
+                <div className="font-medium text-xs text-muted-foreground italic">
                   En üst düzey yönetici (Üst raporlama yok)
                 </div>
               )}
@@ -2553,7 +2553,7 @@ function EmployeeDetailDrawer({
 
             {/* Direct Reports */}
             <div className="rounded-2xl border border-border p-3">
-              <div className="mb-2 flex items-center justify-between font-bold text-3xs text-muted-foreground uppercase dark:text-zinc-500">
+              <div className="mb-2 flex items-center justify-between font-bold text-3xs text-muted-foreground uppercase">
                 <span>
                   Doğrudan Yönettiği Kişiler (
                   {employeeDetail.directReports.length})
@@ -2561,7 +2561,7 @@ function EmployeeDetailDrawer({
               </div>
 
               {employeeDetail.directReports.length === 0 ? (
-                <div className="text-xs text-muted-foreground italic dark:text-zinc-500">
+                <div className="text-xs text-muted-foreground italic">
                   Doğrudan bağlı çalışan bulunmuyor.
                 </div>
               ) : (
@@ -2573,14 +2573,14 @@ function EmployeeDetailDrawer({
                       onClick={() => onSelectEmployee(report.id)}
                     >
                       <div className="flex items-center gap-2">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-500 font-bold text-3xs text-white">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-600 font-bold text-3xs text-white">
                           {report.fullName.charAt(0)}
                         </div>
                         <div>
                           <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                             {report.fullName}
                           </div>
-                          <div className="text-3xs text-zinc-500 dark:text-zinc-400">
+                          <div className="text-3xs text-muted-foreground">
                             {report.title || report.email}
                           </div>
                         </div>

@@ -151,7 +151,7 @@ export function ProductSeoFields({
           </div>
           <button
             aria-label="Slug oto-üret"
-            className="rounded-xl border border-border p-2 text-zinc-500 transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+            className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
             onClick={handleNameSync}
             title="Ürün adından slug üret"
             type="button"

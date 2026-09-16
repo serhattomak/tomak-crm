@@ -432,7 +432,7 @@ export default function ShipmentsPage() {
               <h1 className="font-bold text-xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 Kargo & Sevkiyat Yönetimi
               </h1>
-              <p className="text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+              <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                 Depo paketleme, kargo çıkışları, takip kodları, etiket basımı ve
                 iade lojistiği
               </p>
@@ -457,7 +457,7 @@ export default function ShipmentsPage() {
             onClick={() => setIsCreateReturnModalOpen(true)}
             type="button"
           >
-            <RotateCcw className="h-3.5 w-3.5 text-amber-600" />
+            <RotateCcw className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" />
             <span>İade Kargo Talebi</span>
           </button>
 
@@ -475,7 +475,7 @@ export default function ShipmentsPage() {
       {/* 2. Top Summary KPI Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+          <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Toplam Sevkiyat</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
               <Package className="h-4 w-4" />
@@ -490,13 +490,13 @@ export default function ShipmentsPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+          <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Hazırlanıyor</span>
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400">
               <Clock className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-amber-600 dark:text-amber-400">
+          <div className="mt-2 font-bold text-2xl text-amber-700 dark:text-amber-400">
             {stats?.preparingCount ?? 0}
           </div>
           <div className="mt-1 text-2xs text-muted-foreground">
@@ -505,7 +505,7 @@ export default function ShipmentsPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+          <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Dağıtımda / Yolda</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400">
               <Truck className="h-4 w-4" />
@@ -520,13 +520,13 @@ export default function ShipmentsPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+          <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Bugün Teslim</span>
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-emerald-600 dark:text-emerald-400">
+          <div className="mt-2 font-bold text-2xl text-emerald-700 dark:text-emerald-400">
             {stats?.deliveredTodayCount ?? 0}
           </div>
           <div className="mt-1 text-2xs text-muted-foreground">
@@ -535,13 +535,13 @@ export default function ShipmentsPage() {
         </div>
 
         <div className="col-span-2 rounded-2xl border border-border bg-card p-4 shadow-2xs sm:col-span-1">
-          <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+          <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Teslimat Başarısı</span>
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-teal-600 dark:text-teal-400">
+          <div className="mt-2 font-bold text-2xl text-teal-700 dark:text-teal-400">
             %{stats?.deliverySuccessRatePercentage ?? 100}
           </div>
           <div className="mt-1 text-2xs text-muted-foreground">
@@ -556,7 +556,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "outbound"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => {
             setActiveTab("outbound");
@@ -575,7 +575,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "returns"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => {
             setActiveTab("returns");
@@ -594,7 +594,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "carriers"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("carriers")}
           type="button"
@@ -610,7 +610,7 @@ export default function ShipmentsPage() {
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "analytics"
               ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+              : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("analytics")}
           type="button"
@@ -630,7 +630,7 @@ export default function ShipmentsPage() {
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-zinc-900"
+                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:focus:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Gönderi no, takip no, sipariş, müşteri veya alıcı ara..."
                 type="text"
@@ -693,7 +693,7 @@ export default function ShipmentsPage() {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-border bg-zinc-50 font-semibold text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50 font-semibold text-muted-foreground dark:bg-zinc-800/50">
                     <TableHead className="px-4 py-3.5 h-auto">Gönderi No / Tarih</TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">Sipariş & Müşteri</TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">Taşıyıcı & Takip No</TableHead>
@@ -711,7 +711,7 @@ export default function ShipmentsPage() {
                         colSpan={7}
                       >
                         <div className="flex flex-col items-center justify-center gap-2">
-                          <RefreshCw className="h-6 w-6 animate-spin text-blue-600" />
+                          <RefreshCw className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
                           <span>Kargo gönderileri yükleniyor...</span>
                         </div>
                       </TableCell>
@@ -809,7 +809,7 @@ export default function ShipmentsPage() {
                                   </button>
                                   {s.trackingUrl && (
                                     <a
-                                      className="text-blue-600 hover:underline"
+                                      className="text-blue-600 dark:text-blue-400 hover:underline"
                                       href={s.trackingUrl}
                                       rel="noopener noreferrer"
                                       target="_blank"
@@ -820,7 +820,7 @@ export default function ShipmentsPage() {
                                   )}
                                 </div>
                               ) : (
-                                <span className="text-2xs text-muted-foreground italic dark:text-zinc-500">
+                                <span className="text-2xs text-muted-foreground italic">
                                   Takip no girilmedi
                                 </span>
                               )}
@@ -847,7 +847,7 @@ export default function ShipmentsPage() {
                                 {s.recipientName}
                               </span>
                               <span
-                                className="truncate text-2xs text-zinc-500 dark:text-zinc-400"
+                                className="truncate text-2xs text-muted-foreground"
                                 title={s.recipientAddress}
                               >
                                 {s.recipientCity
@@ -940,7 +940,7 @@ export default function ShipmentsPage() {
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:text-zinc-500 dark:focus:bg-zinc-900"
+                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:focus:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="İade kodu, müşteri veya iade sebebi ara..."
                 type="text"
@@ -985,7 +985,7 @@ export default function ShipmentsPage() {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-border bg-zinc-50 font-semibold text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                  <TableRow className="border-border bg-zinc-50 font-semibold text-muted-foreground dark:bg-zinc-800/50">
                     <TableHead className="px-4 py-3.5 h-auto">İade Kodu / Tarih</TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">Müşteri</TableHead>
                     <TableHead className="px-4 py-3.5 h-auto">İade Sebebi</TableHead>
@@ -1002,7 +1002,7 @@ export default function ShipmentsPage() {
                         className="py-12 text-center text-muted-foreground"
                         colSpan={7}
                       >
-                        <RefreshCw className="mx-auto h-6 w-6 animate-spin text-blue-600" />
+                        <RefreshCw className="mx-auto h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
                       </TableCell>
                     </TableRow>
                   ) : filteredReturns.length === 0 ? (
@@ -1072,7 +1072,7 @@ export default function ShipmentsPage() {
                           </TableCell>
 
                           <TableCell className="px-4 py-3.5">
-                            <span className="text-2xs text-zinc-500 italic dark:text-zinc-400">
+                            <span className="text-2xs text-muted-foreground italic">
                               {r.inspectionNotes || "Henüz kontrol edilmedi"}
                             </span>
                           </TableCell>
@@ -1089,7 +1089,7 @@ export default function ShipmentsPage() {
                           <TableCell className="px-4 py-3.5 text-right">
                             <div className="flex items-center justify-end gap-1.5">
                               <button
-                                className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-2xs text-amber-700 hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-950/60"
+                                className="flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 font-semibold text-2xs text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-950/60"
                                 onClick={() => {
                                   setSelectedReturnForStatus(r);
                                   setIsUpdateReturnModalOpen(true);
@@ -1127,7 +1127,7 @@ export default function ShipmentsPage() {
       {activeTab === "carriers" && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-zinc-500 dark:text-muted-foreground dark:text-zinc-400">
+            <p className="text-xs text-muted-foreground dark:text-muted-foreground">
               Anlaşmalı kargo şirketleri, şube kodları ve canlı takip
               entegrasyon şablonları.
             </p>
@@ -1226,14 +1226,14 @@ export default function ShipmentsPage() {
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Zamanında Teslimat Başarısı
               </h2>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Son 30 gündeki başarılı teslim edilen paket oranı
               </p>
               <div className="mt-6 flex items-baseline gap-2">
-                <span className="font-bold text-4xl text-teal-600 dark:text-teal-400">
+                <span className="font-bold text-4xl text-teal-700 dark:text-teal-400">
                   %{stats?.deliverySuccessRatePercentage ?? 100}
                 </span>
-                <span className="font-semibold text-emerald-600 text-xs">
+                <span className="font-semibold text-emerald-700 dark:text-emerald-300 text-xs">
                   SLA Hedefi: %95
                 </span>
               </div>
@@ -1252,7 +1252,7 @@ export default function ShipmentsPage() {
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Taşıyıcı Bazlı Kargo Dağılımı
               </h2>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Aktif sevkiyatlarda kargo şirketi payları
               </p>
               <div className="mt-4 space-y-2.5">
@@ -1262,7 +1262,7 @@ export default function ShipmentsPage() {
                       <span className="font-medium text-zinc-700 dark:text-zinc-300">
                         {c.name}
                       </span>
-                      <span className="text-zinc-500 dark:text-zinc-400">
+                      <span className="text-muted-foreground">
                         {c.activeShipmentsCount} paket
                       </span>
                     </div>
@@ -1284,11 +1284,11 @@ export default function ShipmentsPage() {
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 İade & Tersine Lojistik Oranı
               </h2>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Toplam kargo hacmine oranla dönen paketler
               </p>
               <div className="mt-6 flex items-baseline gap-2">
-                <span className="font-bold text-4xl text-amber-600 dark:text-amber-400">
+                <span className="font-bold text-4xl text-amber-700 dark:text-amber-400">
                   {returns.length}
                 </span>
                 <span className="text-xs text-muted-foreground">
@@ -2039,7 +2039,7 @@ function PrintLabelModal({
         {/* Header (No print) */}
         <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div className="flex items-center gap-2">
-            <Printer className="h-4 w-4 text-blue-600" />
+            <Printer className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Kargo Sevk Etiketi & Barkod Önizleme
             </DialogTitle>
@@ -2103,7 +2103,7 @@ function PrintLabelModal({
             <div className="grid grid-cols-2 gap-4 border-zinc-900 border-b-2 pb-4 text-xs dark:border-zinc-700">
               {/* Sender */}
               <div className="border-border border-r pr-3">
-                <span className="block font-bold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
+                <span className="block font-bold text-3xs text-muted-foreground uppercase">
                   GÖNDERİCİ:
                 </span>
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">
@@ -2114,14 +2114,14 @@ function PrintLabelModal({
                   <br />
                   Başakşehir / İSTANBUL
                 </p>
-                <span className="mt-1 block text-3xs text-zinc-500 dark:text-zinc-400">
+                <span className="mt-1 block text-3xs text-muted-foreground">
                   Tel: 0850 000 00 00
                 </span>
               </div>
 
               {/* Recipient */}
               <div className="pl-1">
-                <span className="block font-bold text-3xs text-zinc-500 uppercase dark:text-zinc-400">
+                <span className="block font-bold text-3xs text-muted-foreground uppercase">
                   ALICI (TESLİMAT):
                 </span>
                 <span className="font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -2213,7 +2213,7 @@ function ShipmentDetailDrawer({
           <SheetClose asChild>
             <button
               aria-label="Kapat"
-              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:text-zinc-500 dark:hover:bg-zinc-800"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -2262,7 +2262,7 @@ function ShipmentDetailDrawer({
           {/* Delivery Address */}
           <div className="space-y-1.5 rounded-2xl border border-border p-4">
             <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-zinc-100">
-              <MapPin className="h-3.5 w-3.5 text-blue-600" />
+              <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
               <span>Teslimat Adresi & Alıcı</span>
             </h3>
             <p className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2272,7 +2272,7 @@ function ShipmentDetailDrawer({
             <p className="text-zinc-600 dark:text-zinc-400">
               {shipment.recipientAddress}
             </p>
-            <p className="text-zinc-500 dark:text-zinc-400">
+            <p className="text-muted-foreground">
               {shipment.recipientDistrict} / {shipment.recipientCity}
             </p>
           </div>
@@ -2333,7 +2333,7 @@ function ShipmentDetailDrawer({
                     </span>
                   )}
                   {h.description && (
-                    <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+                    <p className="text-2xs text-muted-foreground">
                       {h.description}
                     </p>
                   )}
@@ -2439,7 +2439,7 @@ function CreateReturnModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <div className="flex items-center gap-2">
-            <RotateCcw className="h-4 w-4 text-amber-600" />
+            <RotateCcw className="h-4 w-4 text-amber-700 dark:text-amber-400" />
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Yeni İade Kargo Talebi Başlat
             </DialogTitle>
@@ -2768,7 +2768,7 @@ function CreateCarrierModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <div className="flex items-center gap-2">
-            <Building2 className="h-4 w-4 text-blue-600" />
+            <Building2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Yeni Taşıyıcı Kargo Firması Ekle
             </DialogTitle>
@@ -2860,7 +2860,7 @@ function CreateCarrierModal({
           <div className="flex items-center gap-2">
             <input
               checked={isDefault}
-              className="h-4 w-4 rounded-sm text-blue-600"
+              className="h-4 w-4 rounded-sm text-blue-600 dark:text-blue-400"
               id="create-carrier-default-checkbox"
               onChange={(e) => setIsDefault(e.target.checked)}
               type="checkbox"

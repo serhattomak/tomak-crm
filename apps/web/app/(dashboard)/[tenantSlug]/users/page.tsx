@@ -122,7 +122,7 @@ export default function UsersManagementPage() {
             <Users className="h-6 w-6 text-blue-500" />
             Kullanıcı Yönetimi
           </h1>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             Çalışma alanı kullanıcılarını ve erişim rollerini yönetin.
           </p>
         </div>
@@ -187,7 +187,7 @@ export default function UsersManagementPage() {
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-4 font-mono text-zinc-500 dark:text-zinc-400">
+                  <TableCell className="px-6 py-4 font-mono text-muted-foreground">
                     {user.email}
                   </TableCell>
                   <TableCell className="px-6 py-4">
@@ -225,7 +225,7 @@ export default function UsersManagementPage() {
                       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-bold text-3xs ${
                         user.isActive
                           ? "border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
-                          : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
+                          : "bg-zinc-100 text-muted-foreground dark:bg-zinc-800"
                       }`}
                     >
                       {user.isActive ? "Active" : "Inactive"}

@@ -214,13 +214,13 @@ function AdminTenantsContent() {
           <h1 className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             Kayıtlı Firmalar
           </h1>
-          <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-0.5 text-xs text-muted-foreground">
             Sistemdeki kiracı firmaları, modül izinlerini ve terminolojiyi
             yönetin.
           </p>
         </div>
         <button
-          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-500 active:scale-95"
+          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-600 active:scale-95"
           onClick={() => setIsCreateModalOpen(true)}
           type="button"
         >
@@ -245,7 +245,7 @@ function AdminTenantsContent() {
       <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader className="border-border bg-zinc-50/70 text-zinc-500 dark:bg-zinc-800/60 dark:text-zinc-400">
+            <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/60">
               <TableRow>
                 <TableHead className="px-5 py-3.5 h-auto">Firma / Çalışma Alanı</TableHead>
                 <TableHead className="px-5 py-3.5 h-auto">Sektör Şablonu</TableHead>
@@ -262,7 +262,7 @@ function AdminTenantsContent() {
                     className="py-12 text-center text-muted-foreground"
                     colSpan={6}
                   >
-                    <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600" />
+                    <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
                     Firmalar yükleniyor...
                   </TableCell>
                 </TableRow>
@@ -314,7 +314,7 @@ function AdminTenantsContent() {
                     {/* Modules */}
                     <TableCell className="px-5 py-4">
                       <div className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-300">
-                        <Layers className="h-3.5 w-3.5 text-blue-600" />
+                        <Layers className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                         <span>
                           {tenant.enabledModuleCount} / {ALL_MODULES.length}{" "}
                           aktif
@@ -323,7 +323,7 @@ function AdminTenantsContent() {
                     </TableCell>
 
                     {/* Members */}
-                    <TableCell className="px-5 py-4 text-zinc-500 dark:text-zinc-400">
+                    <TableCell className="px-5 py-4 text-muted-foreground">
                       {tenant.memberCount} kullanıcı
                     </TableCell>
 
@@ -348,8 +348,8 @@ function AdminTenantsContent() {
                         <button
                           className={`rounded-xl p-2 transition ${
                             tenant.isActive
-                              ? "text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40"
-                              : "text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+                              ? "text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+                              : "text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
                           }`}
                           onClick={() =>
                             handleToggleStatus(tenant.id, tenant.isActive)
@@ -411,7 +411,7 @@ function AdminTenantsContent() {
                   <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                     Yeni Firma Tanımla
                   </DialogTitle>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-muted-foreground">
                     Sektör şablonu ve modül paketini yapılandırın
                   </p>
                 </div>
@@ -489,7 +489,7 @@ function AdminTenantsContent() {
                     seçildi)
                   </label>
                   <button
-                    className="font-semibold text-2xs text-blue-600 hover:underline"
+                    className="font-semibold text-2xs text-blue-600 dark:text-blue-400 hover:underline"
                     onClick={() =>
                       setFormData({
                         ...formData,
@@ -519,7 +519,7 @@ function AdminTenantsContent() {
                         <span className="text-xs">{mod.name}</span>
                         <input
                           checked={checked}
-                          className="h-3.5 w-3.5 rounded border-border text-blue-600 focus:ring-0"
+                          className="h-3.5 w-3.5 rounded border-border text-blue-600 dark:text-blue-400 focus:ring-0"
                           onChange={() => {}}
                           type="checkbox"
                         />
@@ -539,7 +539,7 @@ function AdminTenantsContent() {
                   İptal
                 </button>
                 <button
-                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-500 disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-600 disabled:opacity-50"
                   disabled={creating}
                   type="submit"
                 >
@@ -559,8 +559,8 @@ export default function AdminTenantsPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-64 items-center justify-center text-zinc-500 dark:text-zinc-400">
-          <Loader2 className="mr-2 h-6 w-6 animate-spin text-blue-600" />
+        <div className="flex h-64 items-center justify-center text-muted-foreground">
+          <Loader2 className="mr-2 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
           Yükleniyor...
         </div>
       }

@@ -920,7 +920,7 @@ export default function AttendancePage() {
         {/* Live Clock & Quick Action Widget */}
         <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border/60 bg-muted/40 p-3">
           <div className="flex items-center gap-2 rounded-lg border border-border/50 bg-card px-3 py-1.5 font-semibold text-sm shadow-xs dark:bg-card">
-            <Timer className="h-4 w-4 animate-pulse text-blue-600" />
+            <Timer className="h-4 w-4 animate-pulse text-blue-600 dark:text-blue-400" />
             <span>
               {currentTime?.toLocaleTimeString("tr-TR") ?? "--:--:--"}
             </span>
@@ -930,7 +930,7 @@ export default function AttendancePage() {
             {todayStatus?.isClockedIn ? (
               todayStatus.isOnBreak ? (
                 <Button
-                  className="bg-emerald-600 font-semibold text-white shadow-xs hover:bg-emerald-700"
+                  className="bg-emerald-700 font-semibold text-white shadow-xs hover:bg-emerald-800"
                   disabled={actionLoading}
                   onClick={() => handlePunch("BreakEnd")}
                 >
@@ -1062,7 +1062,7 @@ export default function AttendancePage() {
                   <span className="font-semibold text-muted-foreground text-xs">
                     Şu Anda Çalışan
                   </span>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:text-emerald-400 dark:bg-emerald-950/50">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:text-emerald-400 dark:bg-emerald-950/50">
                     <UserCheck className="h-4 w-4" />
                   </div>
                 </div>
@@ -1079,7 +1079,7 @@ export default function AttendancePage() {
                   <span className="font-semibold text-muted-foreground text-xs">
                     Molada Olanlar
                   </span>
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:text-amber-400 dark:bg-amber-950/50">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-700 dark:text-amber-400 dark:bg-amber-950/50">
                     <Coffee className="h-4 w-4" />
                   </div>
                 </div>
@@ -1100,7 +1100,7 @@ export default function AttendancePage() {
                     <AlertCircle className="h-4 w-4" />
                   </div>
                 </div>
-                <div className="mt-2 font-bold text-2xl text-rose-600">
+                <div className="mt-2 font-bold text-2xl text-rose-600 dark:text-rose-400">
                   {liveData?.lateArrivals ?? 0}
                 </div>
                 <p className="mt-1 text-muted-foreground text-xs">
@@ -1239,7 +1239,7 @@ export default function AttendancePage() {
                             </span>
                           )}
                           {emp.currentState === "OnBreak" && (
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 font-semibold text-amber-700 text-xs dark:bg-amber-950/60 dark:text-amber-300">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 font-semibold text-amber-700 dark:text-amber-400 text-xs dark:bg-amber-950/60 dark:text-amber-300">
                               <span className="h-2 w-2 animate-pulse rounded-full bg-amber-500" />
                               Molada
                             </span>
@@ -1639,7 +1639,7 @@ export default function AttendancePage() {
                                 ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
                                 : c.status === "Rejected"
                                   ? "bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
-                                  : "bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
+                                  : "bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 dark:text-amber-300"
                             }`}
                           >
                             {c.status === "Approved"
@@ -1653,7 +1653,7 @@ export default function AttendancePage() {
                           {c.status === "Pending" && (
                             <div className="flex items-center justify-end gap-2">
                               <Button
-                                className="border-emerald-300 dark:border-emerald-700 text-emerald-600 hover:bg-emerald-50"
+                                className="border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50"
                                 onClick={async () => {
                                   if (!activeTenant) {
                                     return;
@@ -1675,7 +1675,7 @@ export default function AttendancePage() {
                                 Onayla
                               </Button>
                               <Button
-                                className="border-rose-300 dark:border-rose-700 text-rose-600 hover:bg-rose-50"
+                                className="border-rose-300 dark:border-rose-700 text-rose-600 dark:text-rose-400 hover:bg-rose-50"
                                 onClick={async () => {
                                   if (!activeTenant) {
                                     return;
@@ -1792,7 +1792,7 @@ export default function AttendancePage() {
               <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-card p-6 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
                       <MapPin className="h-5 w-5" />
                     </div>
                     <div>
@@ -1811,7 +1811,7 @@ export default function AttendancePage() {
                 <div className="flex flex-col gap-2 border-border border-t pt-3 text-muted-foreground text-xs">
                   <div className="flex justify-between">
                     <span>GPS Doğrulama:</span>
-                    <span className="font-semibold text-emerald-600">
+                    <span className="font-semibold text-emerald-700 dark:text-emerald-300">
                       Zorunlu
                     </span>
                   </div>
@@ -2038,7 +2038,7 @@ export default function AttendancePage() {
                         </div>
                         <button
                           aria-label={`Mola ${idx + 1} kaldır`}
-                          className="rounded-full p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 focus:outline-hidden focus:ring-2 focus:ring-rose-400"
+                          className="rounded-full p-1.5 text-muted-foreground hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-400 focus:outline-hidden focus:ring-2 focus:ring-rose-400"
                           onClick={() => {
                             const next = templateForm.breaks.filter(
                               (_, i) => i !== idx
@@ -2135,7 +2135,7 @@ export default function AttendancePage() {
                 </div>
                 <input
                   checked={templateForm.isNightShift}
-                  className="h-4 w-4 rounded border-border text-blue-600 focus:ring-blue-500"
+                  className="h-4 w-4 rounded border-border text-blue-600 dark:text-blue-400 focus:ring-blue-500"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setTemplateForm({
                       ...templateForm,

@@ -353,8 +353,8 @@ export default function TicketDetailPage() {
   if (isLoading) {
     return (
       <div className="flex h-96 flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-8">
-        <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-        <span className="font-medium text-sm text-zinc-500 dark:text-zinc-400">
+        <RefreshCw className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+        <span className="font-medium text-sm text-muted-foreground">
           Destek talebi ayrıntıları yükleniyor...
         </span>
       </div>
@@ -368,7 +368,7 @@ export default function TicketDetailPage() {
         <h3 className="mt-4 font-bold text-lg text-zinc-900 dark:text-zinc-100">
           Talep Bulunamadı
         </h3>
-        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="mt-1 text-xs text-muted-foreground">
           Aradığınız bilet silinmiş veya mevcut olmayabilir.
         </p>
         <Button
@@ -401,7 +401,7 @@ export default function TicketDetailPage() {
 
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-blue-600 text-sm">
+              <span className="font-bold text-blue-600 dark:text-blue-400 text-sm">
                 #{ticket.ticketNumber}
               </span>
               <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
@@ -414,7 +414,7 @@ export default function TicketDetailPage() {
                 </span>
               ) : ticket.slaResolutionDueAt ? (
                 <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-medium text-2xs text-emerald-700 dark:text-emerald-300">
-                  <Timer className="h-3 w-3 text-emerald-600" />
+                  <Timer className="h-3 w-3 text-emerald-700 dark:text-emerald-300" />
                   SLA:{" "}
                   {new Date(ticket.slaResolutionDueAt).toLocaleTimeString(
                     "tr-TR",
@@ -577,7 +577,7 @@ export default function TicketDetailPage() {
                         <div className="flex items-center justify-between border-amber-200/70 dark:border-amber-800 border-b pb-2 text-amber-900">
                           <div className="flex items-center gap-2">
                             <span className="flex items-center gap-1 font-bold text-2xs text-amber-800">
-                              <Lock className="h-3 w-3 text-amber-600" />
+                              <Lock className="h-3 w-3 text-amber-700 dark:text-amber-400" />
                               Dahili Ekip Notu (Müşteri Göremez)
                             </span>
                             <span className="font-medium text-amber-700/80">
@@ -614,7 +614,7 @@ export default function TicketDetailPage() {
                         className={`max-w-[80%] rounded-2xl p-4 text-xs shadow-2xs ${ isCustomer ? "border border-border bg-card text-zinc-900 dark:text-zinc-100" : "border border-blue-600 bg-blue-600 text-white" }`}
                       >
                         <div
-                          className={`flex items-center justify-between gap-3 border-b pb-1.5 text-3xs ${ isCustomer ? "border-border text-zinc-500 dark:text-zinc-400" : "border-blue-500/80 text-blue-100" }`}
+                          className={`flex items-center justify-between gap-3 border-b pb-1.5 text-3xs ${ isCustomer ? "border-border text-muted-foreground" : "border-blue-500/80 text-blue-100" }`}
                         >
                           <span className="font-semibold">{m.senderName}</span>
                           <span>
@@ -681,7 +681,7 @@ export default function TicketDetailPage() {
                       onClick={() => setMessageMode("internal")}
                       type="button"
                     >
-                      <Lock className="h-3.5 w-3.5 text-amber-600" />
+                      <Lock className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" />
                       <span>Dahili Not (Gizli)</span>
                     </button>
                   </div>
@@ -738,7 +738,7 @@ export default function TicketDetailPage() {
                   <div className="flex items-center justify-between">
                     <span className="text-2xs text-muted-foreground">
                       {messageMode === "internal" ? (
-                        <span className="font-medium text-amber-700">
+                        <span className="font-medium text-amber-700 dark:text-amber-400">
                           ⚠️ Bu not müşteriye iletilmez
                         </span>
                       ) : (
@@ -807,7 +807,7 @@ export default function TicketDetailPage() {
                 Müşteri Profili
               </span>
               <Link
-                className="inline-flex items-center gap-1 font-semibold text-blue-600 text-xs hover:underline"
+                className="inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400 text-xs hover:underline"
                 href={`/${tenantSlug}/customers/${ticket.customerId}`}
               >
                 <span>360 Kartı</span>
@@ -857,7 +857,7 @@ export default function TicketDetailPage() {
                   <span className="block text-3xs text-muted-foreground">
                     Açık Talepler
                   </span>
-                  <span className="font-bold text-blue-600 text-sm">
+                  <span className="font-bold text-blue-600 dark:text-blue-400 text-sm">
                     {ticket.customer360?.openTicketsCount ?? 1}
                   </span>
                 </div>
@@ -873,14 +873,14 @@ export default function TicketDetailPage() {
               </span>
               <div className="flex items-center justify-between rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/70 dark:bg-blue-950/60 p-3 text-xs">
                 <div className="flex items-center gap-2">
-                  <ShoppingCart className="h-4 w-4 text-blue-600" />
+                  <ShoppingCart className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                   <span className="font-semibold text-blue-900">
                     {ticket.linkedEntityTitle}
                   </span>
                 </div>
                 {ticket.linkedEntityId && (
                   <Link
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 dark:text-blue-400 hover:underline"
                     href={`/${tenantSlug}/orders/${ticket.linkedEntityId}`}
                   >
                     <ExternalLink className="h-3.5 w-3.5" />
@@ -905,7 +905,7 @@ export default function TicketDetailPage() {
                     key={pt.id}
                   >
                     <div className="max-w-[170px] space-y-0.5">
-                      <span className="font-bold text-2xs text-blue-600">
+                      <span className="font-bold text-2xs text-blue-600 dark:text-blue-400">
                         #{pt.ticketNumber}
                       </span>
                       <p className="line-clamp-1 font-medium text-2xs text-zinc-800 dark:text-zinc-200">
@@ -948,7 +948,7 @@ export default function TicketDetailPage() {
                         {ord.status}
                       </span>
                     </div>
-                    <div className="mt-1 flex items-center justify-between text-2xs text-zinc-500 dark:text-zinc-400">
+                    <div className="mt-1 flex items-center justify-between text-2xs text-muted-foreground">
                       <span>
                         {new Date(ord.orderDate).toLocaleDateString("tr-TR")}
                       </span>
@@ -970,7 +970,7 @@ export default function TicketDetailPage() {
                             <span className="truncate font-medium text-zinc-700 dark:text-zinc-300">
                               {it.productName} {it.sku ? `(${it.sku})` : ""}
                             </span>
-                            <span className="shrink-0 font-mono text-zinc-500">
+                            <span className="shrink-0 font-mono text-muted-foreground">
                               ×{it.quantity}
                             </span>
                           </div>
@@ -1009,7 +1009,7 @@ export default function TicketDetailPage() {
                       <div className="font-bold font-mono text-2xs text-zinc-900 dark:text-zinc-100">
                         {sh.shipmentNumber}
                       </div>
-                      <div className="text-2xs text-zinc-500">
+                      <div className="text-2xs text-muted-foreground">
                         {sh.carrierName || "Taşıyıcı yok"}
                         {sh.trackingNumber ? ` · ${sh.trackingNumber}` : ""}
                       </div>
@@ -1047,14 +1047,14 @@ export default function TicketDetailPage() {
             showCloseButton={false}
           >
             <div className="flex items-center gap-2.5 border-border border-b pb-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
                 <CheckCircle2 className="h-5 w-5" />
               </div>
               <div>
                 <DialogTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Talebi Çözüldü Olarak İşaretle
                 </DialogTitle>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-muted-foreground">
                   Çözüm detaylarını ve notlarınızı ekleyin
                 </p>
               </div>
@@ -1084,7 +1084,7 @@ export default function TicketDetailPage() {
                   İptal
                 </Button>
                 <Button
-                  className="rounded-xl bg-emerald-600 font-medium text-white text-xs hover:bg-emerald-700"
+                  className="rounded-xl bg-emerald-700 font-medium text-white text-xs hover:bg-emerald-800"
                   onClick={handleResolveTicket}
                   type="button"
                 >
@@ -1134,11 +1134,11 @@ export default function TicketDetailPage() {
                   <div className="min-w-0">
                     <div className="truncate font-bold text-zinc-900 dark:text-zinc-100">
                       {t.title}{" "}
-                      <span className="font-mono text-3xs text-zinc-500">
+                      <span className="font-mono text-3xs text-muted-foreground">
                         /{t.shortcut}
                       </span>
                     </div>
-                    <div className="truncate text-2xs text-zinc-500">
+                    <div className="truncate text-2xs text-muted-foreground">
                       {t.content.slice(0, 80)}
                     </div>
                   </div>

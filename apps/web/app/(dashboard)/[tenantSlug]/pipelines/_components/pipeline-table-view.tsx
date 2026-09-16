@@ -106,7 +106,7 @@ export function PipelineTableView({
                   </div>
                 ) : (
                   <Badge
-                    className="text-3xs text-amber-600"
+                    className="text-3xs text-amber-700 dark:text-amber-400"
                     variant="outline"
                   >
                     Açık Havuz
@@ -120,7 +120,7 @@ export function PipelineTableView({
                     SLA Aşıldı
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 font-medium text-3xs text-emerald-600">
+                  <span className="inline-flex items-center gap-1 font-medium text-3xs text-emerald-700 dark:text-emerald-300">
                     <Check className="h-3.5 w-3.5" />
                     Normal
                   </span>

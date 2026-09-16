@@ -208,7 +208,7 @@ export function WhatsAppChatDrawer({
                     type="button"
                   >
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-zinc-100 font-bold text-xs dark:bg-zinc-800">
-                      <User className="h-4 w-4 text-zinc-500" />
+                      <User className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between">
@@ -223,7 +223,7 @@ export function WhatsAppChatDrawer({
                         )}
                       </div>
                       <p className="truncate font-mono text-3xs text-muted-foreground">{conv.phone}</p>
-                      <p className="mt-0.5 truncate text-2xs text-zinc-500">
+                      <p className="mt-0.5 truncate text-2xs text-muted-foreground">
                         {conv.lastMsg?.messageText || "—"}
                       </p>
                     </div>
@@ -243,7 +243,7 @@ export function WhatsAppChatDrawer({
                 {selectedPhone ? `+${selectedPhone}` : "Konuşma Seçin"}
               </h4>
               {selectedCustomer && (
-                <p className="text-2xs text-emerald-600 dark:text-emerald-400">
+                <p className="text-2xs text-emerald-700 dark:text-emerald-400">
                   Cari: {selectedCustomer.name}
                 </p>
               )}
@@ -278,7 +278,7 @@ export function WhatsAppChatDrawer({
                     key={m.id}
                   >
                     <div
-                      className={`max-w-[75%] rounded-2xl p-3 text-xs shadow-xs ${ isOutbound ? "bg-emerald-600 text-white" : "border border-border bg-card text-zinc-900 dark:text-zinc-100" }`}
+                      className={`max-w-[75%] rounded-2xl p-3 text-xs shadow-xs ${ isOutbound ? "bg-emerald-700 text-white" : "border border-border bg-card text-zinc-900 dark:text-zinc-100" }`}
                     >
                       <p className="leading-relaxed">{m.messageText}</p>
                       <div
@@ -313,7 +313,7 @@ export function WhatsAppChatDrawer({
                   value={inputText}
                 />
                 <Button
-                  className="bg-emerald-600 text-white hover:bg-emerald-700"
+                  className="bg-emerald-700 text-white hover:bg-emerald-800"
                   disabled={isSending || !inputText.trim()}
                   type="submit"
                 >

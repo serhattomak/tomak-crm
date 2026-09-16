@@ -83,7 +83,7 @@ export function ShortcutsHelpModal({
               <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Klavye Kısayolları Kılavuzu
               </DialogTitle>
-              <p className="text-2xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-2xs text-muted-foreground">
                 CRM içinde hızlı ve etkili gezinme için klavye komutları
               </p>
             </div>
@@ -103,7 +103,7 @@ export function ShortcutsHelpModal({
         <div className="flex-1 space-y-4 overflow-y-auto pr-1">
           {shortcutSections.map((section) => (
             <div className="space-y-1.5" key={section.title}>
-              <div className="font-bold text-3xs text-muted-foreground uppercase tracking-wider dark:text-zinc-500">
+              <div className="font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                 {section.title}
               </div>
               <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">

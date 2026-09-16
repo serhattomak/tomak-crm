@@ -62,7 +62,7 @@ export function ConfirmDialog({
     }
     if (variant === "warning") {
       return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
           <AlertTriangle className="h-5 w-5" />
         </div>
       );
