@@ -46,6 +46,24 @@ allowlist.) **No blocking violation remains anywhere in CRM scope.**
 | ARBITRARY_TEXT_SIZE | warn | **0** | `text-2xs` (11px) / `text-3xs` (10px) / Tailwind scale (Faz 5.5) |
 | NATIVE_TABLE | warn | **0** | `@workspace/ui` `Table` primitives (Faz 5.3) |
 | INLINE_STYLE_PROP | warn | **0** | Tailwind classes + semantic tokens (Faz 5.6) |
+| A11Y_ICON_BUTTON | warn | **106** | `aria-label` (or visible text) — a button whose only child is an icon is announced as nothing (Faz 6.1) |
+
+**Faz 6.0 (motion) is complete:** `MOTION_DURATION` and `MOTION_EASE` were added, measured
+20 and 19, and swept to 0 — and `prefers-reduced-motion` went from **zero implementation
+anywhere** to a global base rule, which §1.5 makes mandatory. That last one was the
+finding of the phase: the standard existed and nothing honoured it, across 317
+`transition-all`, 205 `transition-colors` and 32 `animate-in`.
+
+The reduced-motion rule is global rather than per-component on purpose — a `motion-reduce:`
+variant must be remembered on every new animation, and the one that gets forgotten is the
+one that hurts. Durations collapse to 0.01ms rather than 0 so `transitionend` and
+`animationend` still fire and nothing waiting on them hangs.
+
+**A11Y_ICON_BUTTON (Faz 6.1)** measures the largest single accessibility gap in the
+codebase. It is a warn rule so the gate stays green while the work is tracked. Worth noting
+for whoever sweeps it: the labels must be written in the project's Turkish vocabulary, so
+the glossary (Faz 6.3) belongs *before* the sweep, not after — otherwise 106 labels get
+written twice.
 
 **The full sweep is clean — 0 errors and 0 warnings.** From the Faz 0 baseline of 1458
 errors and 1334 advisories, every rule in this guard now reads zero, which is the

@@ -167,6 +167,13 @@ const RULES = [
     severity: "warn",
   },
   {
+    hint: "icon-only button with no accessible name — add aria-label (or visible text). A button whose only child is an icon is announced as nothing, and it is the most common a11y gap in this codebase",
+    id: "A11Y_ICON_BUTTON",
+    pattern:
+      /(?<![A-Za-z-])<button\b(?![^>]*\baria-label=)(?![^>]*\baria-labelledby=)(?![^>]*\btitle=)[^>]*>\s*<[A-Z][A-Za-z0-9]*\b[^>]*\/>\s*<\/button>/g,
+    severity: "warn",
+  },
+  {
     hint: "off-scale motion duration — use duration-150 (hover/press/colour), 200 (overlay default) or 250 (wide surfaces) per 1.5",
     id: "MOTION_DURATION",
     pattern:
