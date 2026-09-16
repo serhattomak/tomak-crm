@@ -115,9 +115,9 @@ export function SalesGaugeWidget({
                       y1="100%"
                       y2="0%"
                     >
-                      <stop offset="0%" stopColor="#06b6d4" />
-                      <stop offset="50%" stopColor="#8b5cf6" />
-                      <stop offset="100%" stopColor="#ec4899" />
+                      <stop offset="0%" stopColor="var(--chart-1)" />
+                      <stop offset="50%" stopColor="var(--chart-2)" />
+                      <stop offset="100%" stopColor="var(--chart-3)" />
                     </linearGradient>
                   </defs>
 
