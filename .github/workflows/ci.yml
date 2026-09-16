@@ -1,0 +1,63 @@
+name: CI
+
+# Two repos back this project: governance docs live outside, code lives here.
+# This workflow is the code gate. It exists because ADR-0004's Context section
+# recorded the problem plainly — "nine correct rules, a hard gate over a
+# hand-written list of 18 files, --full merely informational, and no CI
+# workflow at all: the gate existed, nothing held it."
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push supersedes an in-flight run on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
+  DOTNET_VERSION: "10.0.x"
+
+jobs:
+  # Fastest, most valuable gate: the guard has zero dependencies, so it runs
+  # without `npm ci`. It is its own job so a design-system regression reports in
+  # seconds instead of after a full install and build.
+  guard:
+    name: design-system guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: guard (full CRM scope — the only scope)
+        run: npm run guard:crm-ui
+      - name: fixture pair (clean passes, dirty fails, all 16 rules fire)
+        run: npm run guard:crm-ui:fixtures
+
+  web:
+    name: web + ui (typecheck, lint, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build --workspace=web
+
+  api:
+    name: api (.NET build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - run: dotnet build apps/api/CRM.Monolith.slnx --configuration Release
