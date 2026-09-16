@@ -682,14 +682,7 @@ function OrgChartTab({
       </div>
 
       {/* Grid Pattern Viewport */}
-      <div
-        className="min-h-[640px] overflow-auto p-12 transition-transform duration-150"
-        style={{
-          backgroundImage:
-            "radial-gradient(var(--color-zinc-300) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-        }}
-      >
+      <div className="min-h-[640px] overflow-auto bg-[radial-gradient(var(--color-zinc-300)_1px,transparent_1px)] bg-[size:24px_24px] p-12 transition-transform duration-150">
         <div
           className="flex origin-top justify-center transition-transform"
           style={{ transform: `scale(${zoom})` }}

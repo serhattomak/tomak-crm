@@ -1216,7 +1216,7 @@ function RecruitmentPageContent() {
 
               {viewMode === "kanban" ? (
                 <div className="overflow-x-auto pb-2">
-                  <div className="flex gap-4" style={{ minWidth: "800px" }}>
+                  <div className="flex min-w-[800px] gap-4">
                     {sortedStages
                       .filter((s) => s.isActive)
                       .map((stage) => {
@@ -1253,10 +1253,7 @@ function RecruitmentPageContent() {
                                 {apps.length}
                               </span>
                             </div>
-                            <div
-                              className="flex flex-1 flex-col gap-2 overflow-y-auto p-2"
-                              style={{ maxHeight: "560px", minHeight: "320px" }}
-                            >
+                            <div className="flex max-h-[560px] min-h-[320px] flex-1 flex-col gap-2 overflow-y-auto p-2">
                               {apps.length === 0 ? (
                                 <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed bg-card p-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
                                   Bu aşamada başvuru yok

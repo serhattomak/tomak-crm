@@ -167,9 +167,10 @@ const RULES = [
     severity: "warn",
   },
   {
-    hint: "inline style object — use Tailwind classes + semantic tokens (keep style only for unmeasurable dynamic values)",
+    hint: "static inline style object — use Tailwind classes + semantic tokens. Only STATIC-shaped blocks are flagged: values are plain quoted literals with no template interpolation, member access or fallback. style={{}} remains correct for unmeasurable dynamic values (1.4), so a percentage, a transform or a DB-driven colourHex is not a violation",
     id: "INLINE_STYLE_PROP",
-    pattern: /\bstyle=\{\{/g,
+    pattern:
+      /style=\{\{(?=[^{}]*?:\s*["'][^"'$]*["'])(?![^{}]*\$\{)(?![^{}]*[.?|])/g,
     severity: "warn",
   },
   {
