@@ -1,0 +1,121 @@
+-- ============================================================================
+-- LOCAL DEVELOPMENT SEED — TEMPLATE
+-- ============================================================================
+-- Copy this file and set your own password:
+--
+--     cp supabase/seed.sql.example supabase/seed.sql
+--
+-- `supabase/seed.sql` is GITIGNORED. This template is what gets committed, and
+-- it contains no working credential.
+--
+-- WHY THIS FILE EXISTS
+--   The super admin used to be created inside migration 20260819000004, with the
+--   password written into the file as a literal. That put a working credential in
+--   git history. Migrations carry SCHEMA; seed files carry DATA — and Supabase
+--   runs `supabase/seed.sql` after all migrations, on `supabase start` and on
+--   every `supabase db reset`.
+--
+-- IF YOU DO NOT COPY THIS FILE
+--   A database created from scratch will simply have no super admin. That is the
+--   intended failure mode: a missing dev user, never a known one.
+-- ============================================================================
+
+-- ----------------------------------------------------------------------------
+-- 5. SEED SUPER ADMIN USER
+-- ----------------------------------------------------------------------------
+-- The handle_new_user trigger auto-creates, from this single auth.users insert:
+--   1. public.users row
+--   2. Default tenant (workspace)
+--   3. Owner role with all permissions
+--   4. tenant_members entry
+-- ----------------------------------------------------------------------------
+DO $$
+DECLARE
+    sa_id UUID := 'a0000000-0000-0000-0000-000000000001';
+    sa_email VARCHAR := 'admin@crm.local';
+    -- >>> REPLACE THIS BEFORE COPYING. <<<
+    sa_password VARCHAR := 'CHANGE_ME_BEFORE_USE';
+    sa_encrypted_password VARCHAR;
+BEGIN
+    -- A placeholder that reaches the database is worse than no seed at all:
+    -- it looks like a working login and is trivially guessable.
+    IF sa_password = 'CHANGE_ME_BEFORE_USE' OR length(sa_password) < 12 THEN
+        RAISE EXCEPTION
+            'Set a real password in supabase/seed.sql (at least 12 characters) before seeding.';
+    END IF;
+
+    -- Generate bcrypt hash for the password using Supabase's pgcrypto
+    sa_encrypted_password := crypt(sa_password, gen_salt('bf'));
+
+    INSERT INTO auth.users (
+        id,
+        instance_id,
+        aud,
+        role,
+        email,
+        encrypted_password,
+        email_confirmed_at,
+        raw_app_meta_data,
+        raw_user_meta_data,
+        created_at,
+        updated_at,
+        confirmation_token,
+        recovery_token,
+        email_change_token_new,
+        email_change,
+        email_change_token_current,
+        phone_change,
+        phone_change_token,
+        reauthentication_token,
+        is_sso_user,
+        is_super_admin
+    ) VALUES (
+        sa_id,
+        '00000000-0000-0000-0000-000000000000',
+        'authenticated',
+        'authenticated',
+        sa_email,
+        sa_encrypted_password,
+        NOW(),
+        jsonb_build_object('provider', 'email', 'providers', ARRAY['email']),
+        jsonb_build_object('full_name', 'Super Admin', 'name', 'Super Admin'),
+        NOW(),
+        NOW(),
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        FALSE,
+        FALSE
+    )
+    ON CONFLICT (id) DO NOTHING;
+
+    -- Insert identity for auth
+    INSERT INTO auth.identities (
+        id,
+        user_id,
+        provider_id,
+        provider,
+        identity_data,
+        last_sign_in_at,
+        created_at,
+        updated_at
+    ) VALUES (
+        sa_id,
+        sa_id,
+        sa_email,
+        'email',
+        jsonb_build_object('sub', sa_id::text, 'email', sa_email, 'email_verified', true, 'full_name', 'Super Admin'),
+        NOW(),
+        NOW(),
+        NOW()
+    )
+    ON CONFLICT (provider, provider_id) DO NOTHING;
+
+    -- Wait for trigger to complete, then mark as super admin
+    UPDATE public.users SET is_super_admin = TRUE WHERE id = sa_id;
+END $$;

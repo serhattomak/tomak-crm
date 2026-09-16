@@ -24,9 +24,18 @@ import { defineConfig, devices } from "@playwright/test";
  *
  * The authenticated projects are only REGISTERED when credentials exist, so
  * `npm run test:e2e` still passes with just the smoke suite — no `.skip`, no
- * no-op green. They cannot run in CI at all: their prerequisites are a .NET API,
- * a Supabase stack and seeded tenant data, none of which this repository
- * defines. That is a hard constraint, not a preference.
+ * no-op green.
+ *
+ * They do not run in CI today, but NOT because the schema is undefined. The
+ * schema IS tracked: `supabase/migrations/` holds 42 versioned migrations. What
+ * is missing is a committed seed — the dev user needs a password, so
+ * `supabase/seed.sql` is gitignored and `seed.sql.example` is the template —
+ * plus the .NET API's own database. Wire those together and these suites can run
+ * in CI like any other.
+ *
+ * (An earlier version of this comment claimed the prerequisites were "none of
+ * which this repository defines". That was wrong, and it came from looking at the
+ * OTHER repo's near-empty `supabase/` directory.)
  *
  * Credentials: `E2E_EMAIL` / `E2E_PASSWORD`, from the environment or from
  * `apps/web/.env.test.local` (gitignored). Nothing here is committed.

@@ -68,6 +68,10 @@ next-env.d.ts
 .supabase/
 rabbitmq_data/
 redis_data/
+# Local dev seed data. It carries a dev password, so the TEMPLATE (seed.sql.example)
+# is what gets committed, never this file. Supabase runs supabase/seed.sql after all
+# migrations, on `supabase start` and on every `supabase db reset`.
+supabase/seed.sql
 
 # ============================================================================
 # Environment & Secrets

@@ -119,96 +119,21 @@ USING (
 );
 
 -- ============================================================================
--- 5. SEED SUPER ADMIN USER
+-- 5. SEED SUPER ADMIN USER — MOVED OUT OF MIGRATIONS
 -- ============================================================================
--- Create the super admin in auth.users (Supabase auth)
--- Email: admin@crm.local | Password: SuperAdmin123!
-DO $$
-DECLARE
-    sa_id UUID := 'a0000000-0000-0000-0000-000000000001';
-    sa_email VARCHAR := 'admin@crm.local';
-    sa_password VARCHAR := 'SuperAdmin123!';
-    sa_encrypted_password VARCHAR;
-BEGIN
-    -- Generate bcrypt hash for the password using Supabase's pgcrypto
-    sa_encrypted_password := crypt(sa_password, gen_salt('bf'));
-
-    -- Insert into auth.users (Supabase auth schema)
-    INSERT INTO auth.users (
-        id,
-        instance_id,
-        aud,
-        role,
-        email,
-        encrypted_password,
-        email_confirmed_at,
-        raw_app_meta_data,
-        raw_user_meta_data,
-        created_at,
-        updated_at,
-        confirmation_token,
-        recovery_token,
-        email_change_token_new,
-        email_change,
-        email_change_token_current,
-        phone_change,
-        phone_change_token,
-        reauthentication_token,
-        is_sso_user,
-        is_super_admin
-    ) VALUES (
-        sa_id,
-        '00000000-0000-0000-0000-000000000000',
-        'authenticated',
-        'authenticated',
-        sa_email,
-        sa_encrypted_password,
-        NOW(),
-        jsonb_build_object('provider', 'email', 'providers', ARRAY['email']),
-        jsonb_build_object('full_name', 'Super Admin', 'name', 'Super Admin'),
-        NOW(),
-        NOW(),
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        FALSE,
-        FALSE
-    )
-    ON CONFLICT (id) DO NOTHING;
-
-    -- Insert identity for auth
-    INSERT INTO auth.identities (
-        id,
-        user_id,
-        provider_id,
-        provider,
-        identity_data,
-        last_sign_in_at,
-        created_at,
-        updated_at
-    ) VALUES (
-        sa_id,
-        sa_id,
-        sa_email,
-        'email',
-        jsonb_build_object('sub', sa_id::text, 'email', sa_email, 'email_verified', true, 'full_name', 'Super Admin'),
-        NOW(),
-        NOW(),
-        NOW()
-    )
-    ON CONFLICT (provider, provider_id) DO NOTHING;
-
-    -- The handle_new_user trigger will auto-create:
-    --   1. public.users row
-    --   2. Default tenant (workspace)
-    --   3. Owner role with all permissions
-    --   4. tenant_members entry
-
-    -- Wait for trigger to complete, then mark as super admin
-    UPDATE public.users SET is_super_admin = TRUE WHERE id = sa_id;
-END $$;
+-- This section used to create admin@crm.local here, with the password written
+-- into the file as a literal. That put a working credential in git history and
+-- broke the one rule seed data has: migrations carry SCHEMA, seed files carry
+-- DATA. Supabase runs `supabase/seed.sql` after all migrations, on `supabase
+-- start` and on every `supabase db reset` — which is where a dev user belongs.
+--
+-- The seed now lives in `supabase/seed.sql`, which is GITIGNORED.
+-- `supabase/seed.sql.example` is the committed template: copy it and set your
+-- own password.
+--
+--     cp supabase/seed.sql.example supabase/seed.sql
+--
+-- NOTE, HONESTLY: this file has ALREADY been applied to the running local
+-- database, so this edit changes nothing there. Revoking the leaked credential
+-- is a separate, deliberate step. This edit only affects databases created from
+-- scratch after today.
