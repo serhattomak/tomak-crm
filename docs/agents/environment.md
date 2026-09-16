@@ -167,6 +167,39 @@ The **static rule** found them, because a class string exists whether or not row
 Neither instrument replaces the other: before trusting either zero, say which one
 depends on data.
 
+**A rewritten class string must keep the whitespace it did not touch.** A sweep that
+rebuilds a class list token by token has two ways to fuse two classes into one, and both
+produce the same silent result: a token that matches no utility, so neither style applies.
+
+- The run of whitespace BEFORE a dropped token belongs to the NEXT token. Removing it
+  turned `hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800` into
+  `hover:bg-zinc-100dark:hover:bg-zinc-800` in 7 places.
+- The run of whitespace at the END of a literal must be re-emitted. Dropping it turned
+  `tracking-tight ${…}` into `tracking-tight${…}`, so the DOM carried
+  `tracking-tighttext-primary-foreground` — **41 new light findings and 31 new dark ones.**
+- A literal that is ONLY whitespace (the `" "` between two interpolations in
+  `` `${a} ${b}` ``) has no tokens at all; rebuilding it with none emptied it and glued
+  the interpolations together.
+
+**Why three checks missed the first two.** The token-model controls tested the
+classifier, which was right. The plan-vs-measurement assertion compared the plan to a
+measurement built by the same broken code. A visual before/after sample passed because
+every sample happened to end with the removed token — the one position where removing the
+preceding separator is correct. And a token-multiset diff, which is the strongest check
+this repo had for a sweep, **passed clean: whitespace is not a token.**
+
+**What catches it**
+- The **runtime audit** caught the trailing-run bug (41 + 31 findings) — but it cannot see
+  a fused `hover:`/`focus:` variant, because a page visit never fires those states.
+- A **fusion-signature count** catches both:
+  `scripts/`-style count of `/[^\s\`$]\$\{/` (a `${` glued to a preceding non-space) and
+  `/\}[^\s\`]/` (a `}` glued to a following non-space), compared before and after.
+  4891 before, 4891 after on the final sweep — and it flagged the bug on the first attempt
+  across 6 files when the audit alone would have needed a hand-read of the class strings.
+- Emit the whitespace that PRECEDES each kept token, re-emit the trailing run, return
+  any token-less literal untouched, and assert it. **In a class attribute, whitespace is
+  content.**
+
 ## Verification rules
 
 1. **Every detector gets a positive control.** Inject a known defect; if the detector
