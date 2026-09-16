@@ -237,7 +237,7 @@ spots of its own — the same defect one level down:
 - **`clean.tsx` must report NOTHING.** The old check was "exits 0", and an advisory rule
   never affects the exit code, so a false positive in the advisory layer could not be
   observed here at all.
-- **`dirty.tsx`'s `LIGHT_SURFACE_NO_DARK` hit count is exact (2).** A set assertion
+- **`dirty.tsx`'s `LIGHT_SURFACE_NO_DARK` hit count is exact (3).** A set assertion
   cannot see a rule that keeps firing once while failing to see a whole shape, and
   `dirty.tsx` already fails for 16 other reasons — so reverted branch-awareness would
   stay green. The count is what makes the branch case load-bearing: strip it and the

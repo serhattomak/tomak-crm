@@ -209,7 +209,7 @@ const RULES = [
       /style=\{\{(?=[^{}]*?:\s*["'][^"'$]*["'])(?![^{}]*\$\{)(?![^{}]*[.?|])/g,
   },
   {
-    hint: "light surface with no dark: counterpart in the same branch of the class expression — in dark mode it keeps its light value. Use the token instead: bg-muted (light ~zinc-100, dark ~zinc-800) for surfaces, or bg-border for 1px rules. A white ring on a coloured surface and a translucent white art divider are NOT flagged — white is correct there",
+    hint: "light surface with no dark: counterpart in the same branch of the class expression — in dark mode it keeps its light value. Use the token instead: bg-muted (light ~zinc-100, dark ~zinc-800) for surfaces, or bg-border for 1px rules. Gradient stops count too: the rule never saw `from-<c>-50` because it is not a `bg-` class, and the runtime audit cannot read a gradient out of `backgroundColor` — so four cards kept a white gradient in dark mode with both instruments reporting clean. A white ring on a coloured surface and a translucent white art divider are NOT flagged — white is correct there",
     id: "LIGHT_SURFACE_NO_DARK",
     severity: "warn",
     className: {
@@ -220,6 +220,7 @@ const RULES = [
             "|border-zinc-(?:100|200|300)" +
             "|bg-(?:blue|emerald|amber|red|rose|indigo|purple|sky|teal|cyan|violet|orange|yellow|lime|green|pink|fuchsia)-(?:50|100|200)" +
             "|border-(?:blue|emerald|amber|red|rose|indigo|purple|sky|teal|cyan|violet|orange|yellow|lime|green|pink|fuchsia)-(?:100|200|300)" +
+            "|(?:from|via|to)-(?:blue|emerald|amber|red|rose|indigo|purple|sky|teal|cyan|violet|orange|yellow|lime|green|pink|fuchsia)-(?:50|100|200)" +
             ")(?![A-Za-z0-9\\-\\/])",
           "g"
         );

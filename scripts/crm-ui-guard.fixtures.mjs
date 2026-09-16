@@ -108,11 +108,11 @@ if (cleanSeen.length > 0) {
 // the other 16 rules keep the file failing.
 const counts = ruleHitCounts(dirty.out);
 const branchHits = counts.get("LIGHT_SURFACE_NO_DARK") ?? 0;
-if (branchHits !== 2) {
+if (branchHits !== 3) {
   failures.push(
-    `dirty.tsx: LIGHT_SURFACE_NO_DARK fired ${branchHits} time(s), expected 2 ` +
-      "(the unpaired surface + the branch-fusion case). " +
-      "A drop to 1 means the extractor stopped telling one branch from another."
+    `dirty.tsx: LIGHT_SURFACE_NO_DARK fired ${branchHits} time(s), expected 3 ` +
+      "(the unpaired surface, the branch-fusion case, and the unpaired GRADIENT stop). " +
+      "A drop means the extractor stopped seeing one of those shapes."
   );
 }
 

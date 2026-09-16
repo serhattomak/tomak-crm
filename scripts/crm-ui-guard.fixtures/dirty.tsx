@@ -83,6 +83,11 @@ export function DirtyFixture() {
             : "bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-400"
         }
       />
+      {/* LIGHT_SURFACE_NO_DARK — the GRADIENT shape. A gradient stop is a surface but
+          not a `bg-` one, so this rule never saw it; the runtime audit cannot read a
+          gradient out of `backgroundColor` either. Both instruments were blind to the
+          same class of defect. */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-100 p-4" />
       {/* CARD_SURFACE — the paired hardcoded idiom */}
       <div className="bg-white p-4 dark:bg-zinc-900" />
     </div>
