@@ -1,13 +1,20 @@
 /**
  * crm-ui-guard fixture — DIRTY.
- * Every violation class exactly once. Guard MUST fail on this file (exit 1).
+ * Every one of the guard's 16 rules fires here at least once.
+ * Guard MUST fail on this file (exit 1).
  * Not imported anywhere; excluded from --full via the fixtures dir skip.
+ *
+ * One section per rule id. The fixtures check asserts the SET of rule ids
+ * this file produces, not merely that it fails: a rule that silently stops
+ * matching stays invisible otherwise, which is exactly how INPUT_NUMBER went
+ * unnoticed here for several phases.
  */
 import { useState } from "react";
 
 export function DirtyFixture() {
   const [count, setCount] = useState(1);
   return (
+    // SLATE
     <div className="bg-slate-100 text-slate-600">
       {/* NATIVE_SELECT */}
       {/* eslint-disable-next-line */}
@@ -18,7 +25,8 @@ export function DirtyFixture() {
       >
         <option value={1}>One</option>
       </select>
-      {/* INPUT_NUMBER */}
+      {/* INPUT_NUMBER — the arrow function here is deliberate: it is the shape
+          that used to hide this rule from itself */}
       <input
         aria-label="dirty fixture number"
         onChange={(event) => setCount(Number(event.target.value))}
@@ -40,6 +48,33 @@ export function DirtyFixture() {
       <span className="bg-violet-600 text-white">accent</span>
       {/* FUCHSIA */}
       <span className="text-fuchsia-500">brand-ish</span>
+      {/* ARBITRARY_TEXT_SIZE */}
+      <span className="text-[13px]">off-scale type</span>
+      {/* NATIVE_TABLE */}
+      <table>
+        <tbody>
+          <tr>
+            <td>native table</td>
+          </tr>
+        </tbody>
+      </table>
+      {/* A11Y_ICON_BUTTON — icon-only, no accessible name */}
+      <button type="button">
+        <X />
+      </button>
+      {/* MOTION_DURATION */}
+      <span className="transition-colors duration-700" />
+      {/* MOTION_EASE */}
+      <span className="transition-transform ease-linear" />
+      {/* INLINE_STYLE_PROP — STATIC shape; no hex, so INLINE_HEX_STYLE stays
+          a separate rule */}
+      <span style={{ borderColor: "var(--border)" }} />
+      {/* CARD_SURFACE — the paired hardcoded idiom */}
+      <div className="bg-white p-4 dark:bg-zinc-900" />
     </div>
   );
+}
+
+function X() {
+  return <span aria-hidden="true">x</span>;
 }
