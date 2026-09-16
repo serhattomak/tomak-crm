@@ -39,6 +39,16 @@
 
 **⚠️ İstisna sessiz olamaz.** Bir değer marka kuralı ya da **veri sözleşmesi** olduğu için token'lanamıyorsa, `scripts/crm-ui-guard.allowlist.json`'a **gerekçesiyle** yazılır (ADR-0004 §L142). Örnekler: `(auth)/login` + `(auth)/register` Google "G" marka renkleri · `pipeline-settings-modal` aşama rengi (kalıcı, kullanıcı-düzenlenebilir veri → #25). **İstisnanın doğru muadili yoksa allowlist; varsa düzelt.**
 
+**Açık-only yüzeyler (adlandırılmış muafiyet sınıfı, 2026-09-16).** Bir yüzey **kasıtlı olarak** yalnız açık temada doğruysa bu bir ihlal değil, **adlandırılmış bir sınıftır** — ve kural bunu bilmek zorundadır, yoksa her taramada yanlış pozitif üretir. Üç üye:
+
+1. **Print rotaları** (`orders/[orderId]/print`) — kâğıdın dark mode'u yoktur. Aynı gerekçe zaten `NATIVE_TABLE` muafiyetinde yazılıdır.
+2. **Müşteri portalı** (`portal/[token]/PortalClient`) — token linkiyle açılan, **belge niteliğinde** bir yüzey: 900+ satırda `dark:` kullanımı **0**, `print:` kuralları var. Temalanabilir değildir; oraya `dark:` eşi eklemek **yanlış göçtür** (print paleti muafiyetiyle aynı sınıf).
+3. **Renkli/koyu zemin üstündeki beyaz halkalar ve ayraçlar** (`border-white`, `bg-white/40`) — burada beyaz **doğrudur**; `dark:border-*` eklemek rengi bozar. 8 beyaz halka/nokta + 2 sanat ayracı bu sınıftadır.
+
+`LIGHT_SURFACE_NO_DARK` kuralı bu sınıfı **kapsamaz**: 1. ve 2. allowlist'te (gerekçeli), 3. kuralın deseninin dışında. Dördüncü bir üye eklemek isteyen önce **buraya**, sonra allowlist'e yazar.
+
+**Token mı, `dark:` eşi mi?** Yüzey token'lanabiliyorsa **token**: `bg-muted` (açık ~`zinc-100`, koyu ~`zinc-800`) yüzeyler için · `bg-border` 1px çizgiler için · `bg-card` kart/kutu için · `text-foreground` metin için. `dark:` eşi eklemek **ikinci tercihtir**, çünkü ikisi aynı özelliği aynı varyantta yazdığında derlenmiş CSS'te **sonra gelen kazanır** ve token sessizce uygulanmaz (§2.5.4 / Faz 5.0'ın `messages` hatası).
+
 ### 1.3 Veri Yoğunluğu & Tipografi
 - İş yazılımlarında (B2B CRM) ekran alanı değerlidir. Aşırı devasa dolgular (`p-8`, `p-12`) yerine kompakt ve okunabilir hiyerarşi (`p-3.5`, `p-4`) kullanılır.
 - **Sayfa başlığı:** `text-2xl font-bold tracking-tight` (`sm:text-3xl`) — bunu `PageHeader` primitifi taşır, sayfalar elle yazmaz.
