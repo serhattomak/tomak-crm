@@ -5,6 +5,7 @@ import * as React from "react";
 
 function ThemeProvider({
   children,
+  scriptProps,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
   return (
@@ -14,6 +15,14 @@ function ThemeProvider({
       disableTransitionOnChange
       enableColorScheme={false}
       enableSystem={false}
+      scriptProps={{
+        ...scriptProps,
+        // The inline script must stay executable in the SSR output so the theme
+        // is applied before first paint. On the client it is inert: React never
+        // executes rendered scripts, and a non-JS `type` avoids React's
+        // "Encountered a script tag while rendering React component" warning.
+        type: typeof window === "undefined" ? "text/javascript" : "text/plain",
+      }}
       storageKey="crm_app_theme_mode"
       {...props}
     >
