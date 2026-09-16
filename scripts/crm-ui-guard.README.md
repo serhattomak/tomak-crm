@@ -12,7 +12,7 @@ scope (`apps/web`, `packages/ui`).
 ```sh
 # from crm-monorepo/
 npm run guard:crm-ui            # scoped CI gate: Batch 1–3 touched files (must PASS)
-npm run guard:crm-ui:full       # full CRM sweep: migration tracker (currently PASS — 0 errors, 106 advisory)
+npm run guard:crm-ui:full       # full CRM sweep: migration tracker (currently PASS — 0 errors, 0 advisory)
 node scripts/crm-ui-guard.mjs --help
 node scripts/crm-ui-guard.mjs <path...>   # ad-hoc file/dir scan
 ```
@@ -30,8 +30,8 @@ original 9 rules are unchanged by the advisory layer.
 
 ## Current baseline (`--full`, 2026-09-16)
 
-189 files scanned. **0 errors · 106 advisory warnings.** (12 hits suppressed by the
-allowlist.) **No blocking violation remains anywhere in CRM scope.**
+189 files scanned. **0 errors · 0 advisory warnings.** (12 hits suppressed by the
+allowlist.) **No violation of any kind remains anywhere in CRM scope.**
 
 | Rule | Severity | Hits | Use instead |
 | --- | --- | --- | --- |
@@ -50,7 +50,7 @@ allowlist.) **No blocking violation remains anywhere in CRM scope.**
 | CARD_SURFACE | warn | **0** | `bg-card` / `border-border` — **and delete the `dark:` partner** (Faz 5.4) |
 | MOTION_DURATION | warn | **0** | `duration-150` / `200` / `250` — values, not tokens (Faz 6.0) |
 | MOTION_EASE | warn | **0** | `ease-crm` / `ease-crm-in-out` (Faz 6.0) |
-| A11Y_ICON_BUTTON | warn | **106** | `aria-label` (or visible text) — a button whose only child is an icon is announced as nothing (Faz 6.1) |
+| A11Y_ICON_BUTTON | warn | **0** | `aria-label` (or visible text) — a button whose only child is an icon is announced as nothing (Faz 6.1) |
 
 **Faz 6.0 (motion) is complete:** `MOTION_DURATION` and `MOTION_EASE` were added, measured
 20 and 19, and swept to 0 — and `prefers-reduced-motion` went from **zero implementation
@@ -63,21 +63,27 @@ variant must be remembered on every new animation, and the one that gets forgott
 one that hurts. Durations collapse to 0.01ms rather than 0 so `transitionend` and
 `animationend` still fire and nothing waiting on them hangs.
 
-**A11Y_ICON_BUTTON (Faz 6.1)** measures the largest single accessibility gap in the
-codebase. It is a warn rule so the gate stays green while the work is tracked. Worth noting
-for whoever sweeps it: the labels must be written in the project's Turkish vocabulary, so
-the glossary (Faz 6.3) belongs *before* the sweep, not after — otherwise 106 labels get
-written twice.
+**A11Y_ICON_BUTTON (Faz 6.1)** was the largest single accessibility gap in the codebase:
+106 icon-only buttons with no accessible name. It measured 106, and then the distribution
+turned out to be the whole story — **95 of the 106 are a single `X` inside a
+`DialogClose`/`SheetClose`**, so the sweep was 92% one word. Three were inside `packages/ui`
+primitives and were fixed first (the sixth time that ordering has mattered here); the other
+103 followed. The labels are written in the project's Turkish vocabulary, which is why the
+glossary (Faz 6.3) had to come *before* the sweep rather than after — otherwise 106 labels
+would have been written twice.
 
-**The sweep is clean at the error level — 0 errors, and 6 of the 7 warn rules read
-zero.** From the Faz 0 baseline of 1458 errors and 1334 advisories, every rule in this
-guard now reads zero except `A11Y_ICON_BUTTON`, which is the newest warn rule and stands
-at 106. ADR-0004 §9 promotes a warn rule to error only when **that rule** is clean in a
-`--full` sweep, so six rules are eligible and `A11Y_ICON_BUTTON` is not until it is
-swept. This paragraph previously claimed "0 errors and 0 warnings" and "every rule reads
-zero" — true when it was written at the close of Faz 6.0, and falsified by the next
-commit, which added the a11y rule. A count in this file is a copy of a measurement, never
-a maintained estimate.
+The triage is worth keeping: `Kapat` 95 · `Kaldır` 2 · `Önceki ay` 1 · `Sonraki ay` 1 ·
+`Önceki sayfa` 1 · `Düzenle` 1 · `Düzenlemeyi iptal et` 1 · `Yenile` 1. The `X` buttons are
+`Kapat` and not `Sil` because they sit inside a close wrapper — the action is closing a
+dialog, not deleting a record. Only the two `Kaldır` sites remove anything, and those were
+separated by their **handler**, not their icon: three different actions share the same `X`
+glyph. Icon names would have mislabelled them.
+
+**The sweep is fully clean — 0 errors and 0 warnings.** From the Faz 0 baseline of 1458
+errors and 1334 advisories, **all 16 rules now read zero**, so ADR-0004 §9's promotion
+precondition is met for all 7 warning rules (the paragraph here previously said six, when
+`A11Y_ICON_BUTTON` was still standing at 106). Nothing in this file is hand-maintained: a
+count is a copy of a measurement, and the moment it stops matching the guard it is wrong.
 
 **INLINE_STYLE_PROP (Faz 5.6)** needed the rule narrowed rather than the code changed.
 It flagged every `style={{}}` while §1.4 bans inline style for **static** values only and
