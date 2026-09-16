@@ -1,0 +1,881 @@
+# CRM UI — Tek Design System Yol Haritası
+
+> **Durum:** Aktif program
+> **Karar kaydı:** [`ADR-0004`](adr/0004-crm-design-system-enforcement.md) · **Kanonik standart:** [`crm-ui-standards.md`](crm-ui-standards.md)
+> **Kapsam:** `crm-monorepo/apps/web` içindeki **52 sayfa**, 3 layout, auth/admin/portal yüzeyleri, tüm state'ler ve modallar.
+
+Bu dosya **yaşayan bir kontrol listesidir**. Bir faz tamamlandığında kutulanır; ertelenen işler "Gelecek Adımlar" bölümünde kalır.
+
+---
+
+## Ölçülen Taban (2026-09-15, Faz 0 sonrası)
+
+Sayılar `guard:crm-ui:full` çıktısındandır — tahmin değil. Her faz, ilgili sayıyı düşürmelidir.
+
+**176 dosya · 1458 error · 1334 advisory warning**
+
+> **📉 Güncel sayaç (2026-09-16, çalışma-zamanı denetimi sonrası): `--full` = 0 error · 0 advisory · 195 dosya — PASS · **17 kural** (16 `error` + 1 `warn`, ikisi de 0'da) · CI'da 4 iş · testler: web 7 birim · **6 kimliksiz + 6 oturumlu + 31 rotalı dark-mode denetimi** · api 6 · allowlist 8 giriş / 41 bastırılan hit.**
+> Taban tablosu **Faz 0 anını** kaydeder ve tarihsel referans olarak değişmeden kalır; yürüyen sayı bu notta tutulur.
+> Düşüşün kaynağı — her adım ölçüldü, zincir birbirini tutuyor:
+> `1458` (Faz 0 tabanı) → **−4** Faz 3.4 `confirm-dialog` → `1454` → **−3** Faz 3.1 (`team-members-stack` invite modalı `−2`, `dashboard-share-popover` `−1`) → `1451` → **−4** Faz 3.1 (`PortalClient`'ın iki modalı) → `1447` → **−1** Faz 3.1 (`team-members-stack` popover'ı) → `1446` → **−3** Faz 3.2 ilk sayfalar (`templates` `−2`, `tickets` `−1`) → `1443` → **−2** Faz 3.2 (`tickets/[ticketId]`'ın iki sarmalayıcısı `bg-slate-900/60`) → `1441` → **−3** Faz 3.2 sonu (`quotes`'un elle yazılmış yüzeyi primitife geçince kapsam dışı ihlalleri de götürdü) → `1438` (Faz 3 sonu) → **−399** Faz 4.0 `slate→zinc` → `1039` → **−920** Faz 4.1 `violet→blue` → `119` → **−43** Faz 4.2 `fuchsia→blue` → `76` → **−8** Faz 4.3 auth hex → `68` → **−6** Faz 4.4 widget grafik renkleri → `62` → **−1** Faz 5.1 `INPUT_NUMBER` kayıtlı muafiyet → `61` → **−61** Faz 5.2 `NATIVE_SELECT` göçü, 13 dosya/61 site → **`0`** ✅
+>
+> ### 🎉 FAZ 5 TAMAMLANDI — `--full` **0 error · 0 warning · 189 dosya · PASS**
+>
+> Faz 0 tabanı **1458 error + 1334 advisory**'ydi; **1458 → 0**. Guard'daki **her kural 0**, yani ADR-0004 §9'un uyarıların `error`'a terfi için koyduğu **ön koşul sağlandı** — bu **Faz 7**'nin işi.
+>
+> | Alt-faz | Sayaç | Sonuç |
+> |---|---|---|
+> | 5.0 `messages` çift-token | 56 kopya sınıf | ✅ |
+> | 5.1 `INPUT_NUMBER` | 1 → kayıtlı muafiyet | ✅ |
+> | 5.2 `NATIVE_SELECT` | **61 → 0** (13 dosya) | ✅ |
+> | 5.3 `NATIVE_TABLE` | **61 → 0** (28 dosya / 60 tablo) | ✅ |
+> | 5.4 `CARD_SURFACE` | **2240 → 0** (85 dosya / 1912 dize) | ✅ |
+> | 5.5 `ARBITRARY_TEXT_SIZE` | **1188 → 0** (101 dosya) | ✅ |
+> | 5.6 `INLINE_STYLE_PROP` | **31 → 0** (3 dönüşüm + kural daraltma) | ✅ |
+>
+> **Kalan işler (Faz 5 kapsamı dışında, kayıtlı):** ✅ **eşsiz yüzeylerin dark-mode triyajı YAPILDI** (2026-09-16 — `dark:` karşılığı olmayan yüzeyler daraltılmış tanımla ölçüldü: **54 aday / 18 dosya → 24 gerçek kusur düzeltildi, 30'u adlandırılmış muafiyet sınıfı**; sınıf artık `LIGHT_SURFACE_NO_DARK` kuralıyla korunuyor) · **60 tablonun** ve 85 dosyanın kart yüzeylerinin **elle görsel denetimi** · Ayarlar'da eklenen `h-auto` sınıf sırası (kozmetik) · §2.5.4'ün "kural yoksa ölçüm de yok" kuralı artık **karşılandı**.
+>
+> `violet-*` ve `fuchsia-*` **bilinçli olarak değişmedi** — onlar Faz 4. Yani bu düşüş renk işi değil, **yüzeyin primitife geçmesinin yan etkisi**: panel gidince panelin renk sınıfları da gidiyor.
+
+| Metrik | Taban | Hedef |
+| --- | --- | --- |
+| `VIOLET` (error) | **924** | 0 |
+| `SLATE` (error) | **415** | 0 |
+| `NATIVE_SELECT` (error) | **61** | 0 |
+| `FUCHSIA` (error) | **43** | 0 |
+| `INLINE_HEX_STYLE` (error) | **6** | 0 |
+| `ARBITRARY_HEX` (error) | **4** | 0 |
+| `SVG_PAINT_HEX` (error) | 4 (allowlist) | 4 (docs: Google marka) |
+| `INPUT_NUMBER` (error) | **1** | 0 |
+| `ARBITRARY_TEXT_SIZE` (warn) | **1242** | 0 → sonra `error` |
+| `NATIVE_TABLE` (warn) | **61** | 0 → sonra `error` |
+| `INLINE_STYLE_PROP` (warn) | **31** | 0 → sonra `error` |
+| Elle yazılmış `fixed inset-0` overlay | 156 | ~0 (allowlist dışı) |
+| Elle yazılmış `*Modal` / `*Drawer` bileşeni | ~60 | ~0 |
+| `packages/ui` primitif sayısı | 21 | 33+ |
+| CI workflow | yok | 1 |
+
+En çok ihlal veren dosyalar: `vehicles/page.tsx` (191), `portal/[token]/PortalClient.tsx` (114), `projects/[projectId]/page.tsx` (102), `recruitment/page.tsx` (75), `promotions/page.tsx` (69), `messages/page.tsx` (67).
+
+> **Not:** `VIOLET` 924 ve `ARBITRARY_TEXT_SIZE` 1242 — işin ağırlığı burada. Renk tarafı tahmin edilenden **büyük**, keyfi tipografi ise tek başına en büyük tekil kalem.
+
+---
+
+# Program A — Tek Design System (Faz 0 → 7)
+
+Her faz; **faz sonu özet + onay** ile ilerler. Her faz ayrı commit'tir (`crm-monorepo` / `master`).
+
+**Faz kabul kriteri (hepsi):** `npm exec -- ultracite fix` → `tsc --noEmit` → `next build` → `guard:crm-ui:full` (faz kapsamında **0 error**) → etkilenen kritik akışların elle duman testi. **Fail = STOP.** Auto-fix / bulk-sed yok.
+
+---
+
+## [x] Faz 0 — Zemin (doküman + token + guard severity katmanı) — **TAMAMLANDI**
+
+**Kabul kriteri: typecheck + build geçer, hiçbir ekran görsel olarak değişmez.**
+
+- [x] `docs/design-system.md` (440 satır) → [`crm-ui-standards.md`](crm-ui-standards.md)'ye yönlendiren redirect stub (silme yok, dış bağlantılar korunur)
+- [x] Kökteki `design.md` (203 satır) → aynı şekilde redirect stub
+- [x] `crm-ui-standards.md` güncellenir: §1.3 tipografi ölçeği (`text-2xs`/`text-3xs`, 9px kaldırıldı), §1.4 bağlayıcı kısıtlar, §2 primitif genişleme notu + "packages/ui kazanır", **§2.1 Kanonik Sayfa Kabuğu**, ADR-0004 referansı
+- [x] `crm-ui-guard.mjs`: **`severity` katmanı** eklendi (`error` varsayılan → mevcut 9 kural etkilenmedi; hata sayısı 1458'de sabit kaldı)
+- [x] `crm-ui-guard.mjs`: 3 yeni kural `warn` olarak eklendi — `ARBITRARY_TEXT_SIZE` (1242), `NATIVE_TABLE` (61), `INLINE_STYLE_PROP` (31)
+- [x] `crm-ui-guard.README.md`: severity tablosu, ölçülen taban, rules→fix map, `apps/ecommerce` hayalet notu
+- [x] `guard:crm-ui:full` ihlal sayıları ölçülüp yukarıdaki tabloya işlendi
+- [x] Fixture'lar doğrulandı: `dirty.tsx` exit 1 · `clean.tsx` exit 0 · scoped kapı **PASS**
+- [x] `globals.css`: **tipografi token'ları** — `--text-2xs` (11px) + `--text-3xs` (10px), Tailwind'in `--text-*--line-height` deseniyle
+- [x] `globals.css`: **motion token'ları** — `--ease-crm` + `--ease-crm-in-out`. Duration token değil, **değer** olarak standartlaştırıldı (§1.5)
+- [x] `crm-ui-standards.md` §1.5 Motion eklendi (easing token'ları + duration değerleri + `prefers-reduced-motion` zorunluluğu)
+- [x] `tsc --noEmit` + `next build` doğrulaması geçti (typecheck 2/2, build 2/2, 52 rota)
+- [x] **Kalan 12 sayfa (grup F)** — `attendance`, `automations`, `automations/[workflowId]`, `compliance`, `products/[productId]`, `promotions`, `promotions/[campaignId]/edit`, `quotes`, `tickets`, `tickets/[ticketId]`, `webhooks`, `webhooks/[endpointId]`
+- [x] **Son 3 sayfa** — `orders/[orderId]`, `projects/[projectId]`, `admin/tenants/[tenantId]`
+- [x] **Muafiyetler belgelendi** — `orders/[orderId]/print` + 7 bağımsız tam-ekran yüzey (standart §2.2)
+
+**Sonuç: 44 sayfa `PageContainer` kullanıyor · 8 belgelenmiş muafiyet · 44+8 = 52 ✅**
+
+**Kabul:** typecheck 2/2 · build 2/2 · `guard:crm-ui` scoped **PASS** · her dosyada açılış/kapanış dengesi OK · 44 sayfada `PageContainer` doğrulandı (grep).
+
+> **✅ Çözülen sapma 1 — `--duration-*` yerine duration değerleri.** Tailwind **4.3.3**'te `--duration-*` theme namespace'i yok (kanıtlandı: dist içinde hiç geçmiyor). Ölü token yazmak yerine easing'ler token'landı (`--ease-crm`), duration'lar standartta **değer** olarak sabitlendi (`duration-150` / `200` / `250`). ADR-0004 §5 bu gerçeğe göre düzeltildi.
+>
+> **✅ Çözülen sapma 2 — `SCOPE` listesi Faz 7'ye taşındı.** Ölçüm: scoped kapı 0 hata / 18 dosya → **PASS**, `--full` 1458 hata → FAIL. `SCOPE` Faz 0'da kaldırılsaydı varsayılan mod `--full` olur ve **Program A boyunca hiç regresyon kapısı kalmazdı**. ADR-0004 §9 bu düzeltmeyle güncellendi.
+>
+> **✅ Çözülen sapma 3 — kök dizin sürüm kontrolüne alındı.** `D:\serhatdev\crm` bir git deposu **değildi**; yani bu yol haritası, ADR-0004 ve kanonik standart sürüm kontrolsüzdü (geri alma/geçmiş yok). Faz 0'da kökte `git init` yapıldı, `crm-monorepo/` `.gitignore`'a alındı. Ayrıntı: ADR-0004 §11.
+
+
+## [x] Faz 1 — Eksik primitif katmanı — **TAMAMLANDI**
+
+`shadcn` CLI (stil `radix-luma`) ile eklendi, ardından house stiline uyarlandı. **21 → 32 primitif.**
+
+- [x] `dialog` (155 satır) — ~60 modalın ve 156 overlay'in yerini alacak
+- [x] `alert-dialog` (184 satır) — yıkıcı/önemli onaylar
+- [x] `sheet` (134 satır) — drawer / yan panel
+- [x] `dropdown-menu` (251 satır)
+- [x] `popover` (79 satır)
+- [x] `switch` (29 satır)
+- [x] `radio-group` (39 satır)
+- [x] `progress` (27 satır)
+- [x] `separator` (24 satır)
+- [x] `scroll-area` (50 satır)
+- [x] `alert` (69 satır) — CLI'dan alındı (CVA-only, Base UI yok); elle yazmaya gerek kalmadı
+- [ ] `confirm-dialog`'ın `AlertDialog` temeline taşınması + `rounded-3xl` → `rounded-xl` normalizasyonu → **Faz 3'e taşındı**
+- [ ] `tooltip` tüketicileri standarda bağlanır → **Faz 3'e taşındı** (tüketici işi)
+
+**Kabul kriteri — hepsi geçti:** typecheck 2/2 · build 2/2 (52 rota) · `guard:crm-ui` 0 error → PASS · `apps/web`'de 11 yeni primitifin **tüketicisi 0** · primitif sayısı 32 · `rounded-4xl` 0 · `from "cn"` 0.
+
+> **⚠️ Faz 1 bulgusu 1 — CLI `button.tsx`'i ezmek istedi.** `dialog`/`alert-dialog`/`sheet` bağımlılık olarak `button` çekiyor ve CLI onu registry sürümüyle değiştirmeyi teklif etti. Registry sürümü `rounded-lg` yerine **`rounded-4xl`** kullanıyor — §1.1'in yasakladığı hap form. Onaylansaydı **52 ekrandaki tüm butonlar** bozulurdu. Teklif reddedildi; zincir tıkanınca dosya geçici kenara alınıp CLI çalıştırıldı, sonra `git checkout` ile geri alındı. **`git diff` boş → `button.tsx` içerik olarak değişmedi** (hash farkı yalnızca CRLF).
+>
+> **⚠️ Faz 1 bulgusu 2 — CLI yanlış npm bağımlılığı kurdu.** Üretilen 11 dosyada `import { cn } from "cn"` yazdı ve `packages/ui/package.json`'a **`cn@^0.3.0`** ekledi. 8 dosyada import `@workspace/ui/lib/utils`'e düzeltildi; bağımlılık kaldırıldı, `npm install` ile lock senkronlandı → `package.json` ve `package-lock.json` **HEAD ile birebir aynı**. Aksi halde 8 bileşen bir, 21 bileşen başka kütüphane kullanacaktı.
+>
+> **ℹ️ Faz 1 bulgusu 3 — `confirm-dialog.tsx` standart dışı:** paneli `rounded-3xl`. §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor. Yeni paneller **standarta göre** `rounded-xl` yapıldı (legacy kod değil, standart otorite — ADR-0004 §3). `ConfirmDialog` normalizasyonu Faz 3'e taşındı.
+>
+> **✅ Temiz çıkanlar:** dekoratif gradient/blur/hex/keyfi shadow **yok**; `blur` kullanımları yalnızca `supports-backdrop-filter:backdrop-blur-sm` (fonksiyonel backdrop, yasaklı dekoratif küre değil). Radius'lar house dağılımı içinde (`rounded-2xl` 9×, `rounded-3xl` 1× zaten mevcut).
+>
+> **📌 Prosedür kalıcılaştırıldı:** `crm-ui-standards.md` **§2.1 Primitif Ekleme Prosedürü** — doğru CLI komutu + iki tuzak + her yeni primitif için uyarlama kontrol listesi.
+
+**Not:** Tüm yeni primitifler `--radius` tabanlı yuvarlaklık, semantic token ve motion tokenlı giriş/çıkış kullanır. `accordion` ve `calendar` **eklenmedi** (gerçek tüketici yok — Gelecek Adımlar'da).
+
+## [x] Faz 2 — Kanonik sayfa kabuğu (52 ekran) — **TAMAMLANDI (44 sarıldı + 8 muafiyet)**
+
+- [x] **`page-container.tsx`** — `px-4 py-5` / `md:px-6 md:py-6`, tam genişlik, `bleed` varyantı (full-bleed yüzeyler için)
+- [x] **`page-header.tsx`** — `title` / `description` / `badge` / `actions` slotları
+- [x] **Dashboard layout** — padding kaldırıldı (`p-3.5 pb-24 sm:p-5 md:p-6` → `pb-24 md:pb-0`); mobil bottom-nav payı korundu
+- [x] **Admin layout** — padding + `mx-auto max-w-7xl` kaldırıldı (tam genişlik kararı)
+- [x] **Yanlış Hallmark başlıkları düzeltildi** (dokunulan dosyalarda) — `design.md` referansı ve `theme: Zinc/Violet` iddiası kaldırıldı
+- [x] Sarmalanan 10 sayfa:
+  - `customers` (pilot — `PageHeader`'a da geçirildi, `text-[11px]` → **`text-2xs`** token'ı ilk kez kullanıldı)
+  - `analytics` (legacy çift-padding kanıtı: `space-y-6 p-4 sm:p-6 lg:p-8` → `PageContainer`, sayfa kendi padding'ini bıraktı)
+  - `field-service`, `roles`, `users`, `pipelines`, `orders`, `leaves`, `(admin)/admin/templates`, `(admin)/admin/tenants`
+- [ ] Kalan **42 sayfa**
+
+### ✅ Yan doğrulama: tipografi token'ı işlevsel
+
+`text-2xs` üretilen CSS'te doğrulandı — Faz 0 token'ının gerçekten çalıştığının kanıtı:
+```css
+.text-2xs{font-size:.6875rem;line-height:var(--tw-leading,1rem)}   /* 11px */
+```
+Bu, `ARBITRARY_TEXT_SIZE`'ın ileride `error`'a terfi edebileceğini gösterir (kural artık uygulanabilir bir alternatife sahip).
+
+### ⚠️ Teknik not — kapanış etiketi "son eşleşme" ile bulunamaz
+
+Faz 2'de bu tuzağa **fiilen düşüldü** ve typecheck yakaladı (`TS17002`, 2 dosya). Kök neden: sayfa dosyaları **tek dosyada birden fazla component** barındırıyor (`leaves/page.tsx` → `LeavesPage` + `CreateLeaveModal`; `orders/page.tsx` → `OrdersPage` + `CreateOrderWizardModal`). Her ikisi de aynı girinti seviyesinde.
+
+Sezgisel bir dönüşüm "dosyadaki son `</div>` + `);` + `}`"i ararsa **ikinci component'i** yakalar ve sayfa kökü kapanmadan kalır. `div` sayımı dengeli görünür (1 aç / 1 kapa) çünkü hata *sayıda* değil *kapsamda*dır.
+
+**Kural:** kapanış etiketi **yapısal** olarak bulunur — sayfa component'inin `return (` bloğunun gerçek sonu, yani bir sonraki `function <Ad>(` satırından hemen önceki `);` + `}` bloğu. **Her batch'ten sonra `tsc` zorunludur**; hata bu sayede commit'ten önce yakalandı.
+
+### ⚠️ Teknik not 2 — kök eleman yüzeyde göründüğü gibi değil
+
+Kategori A'nın "en mekanik" sayfası bile varsayımı kırdı: `customers/[customerId]/page.tsx`'te **ilk `<div className="space-y-6">` sayfanın kökü değil**, `if (loading)` dalının skeleton sarmalayıcısı. Gerçek kök 249. satırda. Bu sayfa **iki dönüş noktası** taşıyor ve **ikisi de** sarmalandı — aksi halde yükleme durumu farklı boşlukta görünürdü.
+
+Ders: kök eleman, component'in `return (` bloğuna *yapısal olarak* bağlıdır ve sayfa başına doğrulanmalıdır. Bu yüzden toplu script bu iş için emekliye ayrıldı; sayfalar kanıtlanmış satır numaralarıyla elle sarmalanıyor.
+
+### ⚠️ Teknik not 3 — repo dosyaları PowerShell ile yeniden yazılmaz
+
+Faz 2'de bu tuzağa **fiilen düşüldü**: `docs/crm-ui-roadmap.md`'yi tek bir başlık güncellemesi için `Get-Content -Raw … -replace … | Set-Content -Encoding UTF8` ile yeniden yazmak dosyayı **çift kodladı** — 831 mojibake izi (`—` → `â€"`, `katmanı` → `katmanÄ±`). Windows PowerShell 5.1'de `Get-Content` UTF-8'i ANSI (cp1252) olarak okur; `Set-Content -Encoding UTF8` bu bozuk metni yeniden UTF-8'e kodlar.
+
+**Kural:** repo dosyaları **yalnızca** `edit`/`write` araçlarıyla değiştirilir (UTF-8 güvenli). Toplu yeniden yazma gerekiyorsa **Node script'i** kullanılır — PowerShell'in dosya yazma cmdlet'leriyle asla. Düzeltme `git checkout <son-sağlam-commit> -- <dosya>` ile yapılır; **geçmiş gizlenmez** (reset yok), hata ve düzeltmesi kayıtta kalır.
+
+### ⚠️ Teknik not 4 — eski padding sahibi EN SON emekliye ayrılmalıydı
+
+Faz 2'nin ilk commit'inde layout'un padding'i kaldırıldı, ama sayfaların çoğu henüz `PageContainer` kullanmıyordu. Sonuç: kendi padding'i **olmayan** sayfalar bir süre **sıfır boşlukla** render edildi.
+
+Ölçüm önemliydi: etkilenen **2 sayfa** (`email`, `products`) — çünkü kategori B'deki legacy sayfaların kendi padding'i vardı, layout'unki kalkınca **doğru** hale geldiler. Bu batch'te `email` ve `products` önce sarılarak pencere kapatıldı.
+
+**Kural:** bir mekanizmanın sahibi değiştirilirken eskisi **en son** emekliye ayrılır — tıpkı guard'ın `SCOPE` listesinin, `--full` temizlenene kadar emekliye ayrılmaması gibi (ADR-0004 §9). Sıralama yanlış kurulursa aradaki durum bozuk olur.
+
+### Faz 2 sayfa haritası (kalan 23)
+
+| Kategori | Sayfalar | Not |
+| --- | --- | --- |
+| ✅ **A. `space-y-*` kökü — TAMAMLANDI** | `customers/[customerId]`, `shipments`, `payroll`, `projects`, `vehicles`, `[tenantSlug]/page`, `(admin)/admin/page` | Beklenenden zor: kök eleman sayfa başına doğrulanmalı (Teknik not 2) |
+| ✅ **B. Legacy çift-padding / max-width — TAMAMLANDI** | `inventory`, `contracts`, `settings`, `promotions/new` | Çift padding kaldırıldı; form ekranlarının `max-width`'i **istisna olarak korundu** (§2.2) |
+| ✅ **C. Sayfa-seviyesi kart sarmalayıcı — TAMAMLANDI (kategori düzeltmesiyle)** | `finance`, `invoices` | **Yanlış sınıflandırılmıştı:** kökleri kart değil, `space-y-6 p-4 sm:p-6 lg:p-8` (analytics deseni). `Card` dönüşümü gerekmedi |
+| ✅ **D. Full-bleed — KISMEN TAMAM** | ✅ `messages`, `calendar` (`bleed`) · ⛔ `orders/[orderId]/print` (**muaf** — `@media print` padding'i sıfırlıyor) · ⬜ 7 bağımsız tam-ekran yüzey: `(auth)/login`, `(auth)/register`, `portal/[token]`, `quotes/view/[token]`, `/pipelines`, `/quotes`, `/` | Bağımsız yüzeyler `PageContainer` kullanmaz (layout'ları yok, `min-h-screen` merkezlemeleri kendi) — ortaklık token/primitif düzeyinde |
+| ✅ **E. `Suspense` sarmalayıcı — TAMAMLANDI** | `organization`, `recruitment` | İnce sarmalayıcı: kabuk `*PageContent` component'ine verildi, `Suspense` çerçevesine değil |
+| **F. İncelenmesi gereken** | `attendance`, `email` ✅, `automations`, `automations/[workflowId]`, `products` ✅, `products/[productId]`, `promotions`, `promotions/[campaignId]/edit`, `quotes`, `tickets`, `tickets/[ticketId]`, `webhooks`, `webhooks/[endpointId]`, `compliance` | İlk `return` iç fonksiyona ait çıktı → elle bakılacak |
+
+**Sıra:** A → B → C → D → E → F. Her yüzey (dashboard / admin / auth / portal) bitince typecheck + build + duman testi; her batch ayrı commit.
+
+### 📌 Kalıcı borç: 391 dosyada Hallmark imzası
+
+Kod tabanında **391 dosya** `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlığı taşıyor. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik bir temizlik işi olarak Gelecek Adımlar'a eklendi.
+
+## [x] Faz 3 — Modal & overlay göçü — **TAMAMLANDI** (3.1: 37 birim · 3.2: 34/34 dosya · 3.3: 5/5 dosya)
+
+> **🔄 Devam noktası (yeni oturum buradan başlasın):**
+>
+> **✅ FAZ 3 BİTTİ — kalan overlay yok.** Üç alt-adım da ölçülmüş kapsamıyla kapandı:
+> - **3.1** — 37 birim, elle yapım overlay izi yalnızca muaf yüzeylerde
+> - **3.2** — **34/34 dosya**; `apps/web`'te `fixed inset-0` **108 → 0** (2026-09-16 ölçümü)
+> - **3.3** — **5/5 dosya**; `apps/web`'te native `confirm(` **5 → 0** + `ConfirmDialog` primitifi kanonik `alert-dialog`'a taşındı (**bulgu 6 kapandı**, `c5a4925`)
+>
+> **🆕 3.3'te çıkan yeni iş (kayıtlı, yapılmadı):** native **`alert()` 10 çağrı / 4 dosya** — `login` (1), `calendar` (2), `vehicles` (6), `tenant-switcher` (1). Bunlar **onay değil, doğrulama/hata mesajı**; muadili `toast` (sonner zaten bu dosyaların çoğunda import edilmiş). Konu 3.3 değil **toaster spec'i** → Gelecek Adımlar #23.
+>
+> **📌 Faz 3.3 dosya listesi (5 dosya — hepsi native `confirm` → `ConfirmDialog`):**
+> - `automations` (`26e2d85`) · `calendar` (`b5dfc28`) · `customers/[customerId]` (`341b2e7`) · `projects/[projectId]` (`7ef72b9`) · `webhooks` (`fb9cec2`)
+> - Hepsi repodaki yerleşik `confirmDialog` state deseniyle yapıldı (13 tüketiciyle aynı): `{ open, title, description, confirmText, variant, onConfirm }` + sayfa kökünde **tek** render. Onay metinleri **birebir korundu** (kopya değişikliği tasarım işi, bu geçişin değişkeni değil).
+> - `projects/[projectId]`: **optimistic delete** sırası korundu (madde ancak onaydan sonra listeden çıkar, `loadProjectData()` yalnız `catch`'te).
+> - `customers/[customerId]`: `useCallback` imzası ve bağımlılık dizisi **aynı** kaldı; yalnız `async` düştü.
+> - `webhooks`: `Promise<void>` → `void` (çağrı yeri dönüş değerini kullanmıyor).
+>
+> **📌 Faz 3.2 dosya listesi (34 dosya):**
+> - `(admin)/admin/templates` (`ee167e5`), `(admin)/admin/tenants` (`8f3b524`), `roles` (`07d476d`), `users` (`757799b`), `tickets` (`fbf5591`)
+> - `automations/[workflowId]` (`d9bbc3b`), `automations` — **2 overlay: drawer→`Sheet` + modal→`Dialog`** (`4e7a387`)
+> - `invoices` — modal→`Dialog` (`172fe2a`) + drawer→`Sheet` (`e5dfe86`)
+> - `leaves` — **2 modal** (`9b553d3`; ret modalının X'i **yok** → `DialogClose` yok)
+> - `contracts` — **modal→`Dialog` + drawer→`Sheet`** (`615ca49`); Hallmark silindi
+> - `compliance` — **drawer→`Sheet` + modal→`Dialog`** (`d86f3a1`)
+> - `payroll` — **2 modal** (`f453457`; bu dosyada tüm izler **0**)
+> - `field-service` — **2 modal** (`de62bca`); Hallmark silindi. ⚠️ **Farklı el stili** (attribute sırası prettier dışı, trailing comma yok, eksik noktalı virgül) → yerel stile uyuldu
+> - `orders` — **2 modal** (`79b21c7`; silme onayının X'i yok) · `orders/[orderId]` — **2 modal** (`b04982a`) · `tickets/[ticketId]` — **2 modal** (`1cda709`; çözüm modalının X'i yok, şablon yöneticisi **sarmalayıcı kaydıran** desen)
+> - `email` — **1 modal** (`62ed950`; **backdrop `<button>`** deseni, başlıkta iki buton var → yalnız X `DialogClose` oldu, tema toggle'ı kaldı)
+> - `projects` — **1 modal** (`71335b8`; Hallmark silindi) · `projects/[projectId]` — **4 overlay: 1 drawer→`Sheet` + 3 modal→`Dialog`** (`1c601be`); drawer'ın **görünür başlığı yok** → sr-only `SheetTitle`
+> - `products/[productId]` — **4 modal**, her biri kendi component'inde (`d2b187d`); `EditProductModal`'da **padding dağıtımı** gerekti (panel `p-6` + içerik kaydırıcı → `DialogContent` `p-0`, padding başlık+forma)
+> - `calendar` — **4 overlay** (`2d4e61e`); ilk 2'si **sarmalayıcı kaydıran** desen (`my-8` düştü); Hallmark silindi
+> - `finance` — **1 drawer + 4 modal** (`fd5f715`); drawer **3. print yüzeyi** (`window.print` + `print:` sınıfları)
+> - `inventory` — **3 modal + 2 drawer** (`9313be1`); ⚠️ X ikon boyutları **dosya içinde tutarsız** (modal `h-4`, drawer `h-5`) → varsayma, oku
+> - `products` — **5 overlay** (`5d3f8e8`): silme modalı + **2. lightbox** (`role="dialog"` + `stopPropagation`, focus trap yok) + 3 form modalı
+> - `webhooks` — **1 modal** (`6ab6e53`) · `webhooks/[endpointId]` — **1 modal** (`acace95`)
+> - `attendance` — **3 modal** (`8120e2f`); üçü de **token-temiz** (`border-border`, `bg-card`, `text-foreground`) → yalnız overlay katmanı değişti
+> - `vehicles` — **6 overlay** (`806a3a0`, **5000 satır — fazın en büyük tek göçü**): detay drawer'ı + 4 adımlı model sihirbazı + EPC parça + teknik doküman + doküman önizleme + kalıcı silme onayı (X'i yok → `DialogClose` 4/4). Hallmark silindi
+> - `organization` — **3 modal + 2 drawer** (`ae4c309`); **7 `fixed inset-0`'in 2'si drawer backdrop'ı**, overlay değil. Personel detay drawer'ının **iki dalı** (yükleniyor + yüklendi) da `Sheet` oldu; görünür başlık üst çubukta değil, profildeki ad `<h3>`'ü → `SheetTitle`
+> - `shipments` — **6 modal + 1 drawer** (`e1d4742`); **4. print yüzeyi** (aşağıda). Tümü `gap-0`
+> - `recruitment` — **4 modal + 2 drawer** (`61529af`); iki drawer'ın mono etiketi (`ADAY DETAYI`/`BAŞVURU DETAYI`) **etiket olarak kaldı**, gövdedeki ad başlığı `SheetTitle` oldu
+> - `messages` — **4 modal** (`2cc15f0`); **8 `fixed inset-0`'in 4'ü ayrı backdrop div'i.** Hepsi `{isX && …}` biçiminde → koşul korundu + `open`. ⚠️ **Sarmalayıcının `overflow-y-auto`'su hiç uygulanmıyordu** (panel `max-h-[92vh] overflow-hidden` ile kendi çocuklarını kırpıyordu) → aynısı korundu
+> - `quotes` — **6 modal + 1 drawer** (`28d8d6e`); **11 `fixed inset-0`'in 4'ü backdrop.** ⚠️ **Tek `return` içinde 4 overlay** (drawer + 3 modal) → sarmalayıcı `Sheet`, panel `SheetContent`, 3 `Dialog` **`Sheet` kökünün içinde** kaldı (portal → yalnız yapısal). **5. print yüzeyi** (aşağıda)
+> - **Print altyapısı:** `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`)
+>
+> **🆕 Yeni muafiyet sınıfı:** **elle yazılmış toast'lar** — `orders`, `orders/[orderId]`, `projects`, `projects/[projectId]` (**4 dosyada 5 örnek**). `fixed` + `shadow-2xl` taşıdıkları için overlay **imzasına** sahipler ama overlay değiller (backdrop/kapatma/engelleme yok, zamanlayıcıyla kapanırlar). `projects` dosyası bunu kendisi `{/* Toast */}` diye adlandırıyor. Konuları **toaster spec'i**. §2.3'teki muafiyet listesine eklendi. **Fazın en sık yanlış pozitifi** — yani "`fixed` + `shadow-2xl` var" hâlâ overlay kanıtı değil, **okuyup bakmak gerekiyor**.
+>
+> **✅ 3.2'nin deseni (3.1'den dört fark):**
+> 1. **Backdrop elemanı yok** — sarmalayıcının kendisi backdrop (`fixed inset-0 bg-…`) ve `onClick` taşımıyor. §2.3'ün dış-tıklama politikası uygulanır (form taslağı → varsayılan açık).
+> 2. **Sağ drawer'lar `Sheet`'tir** — sarmalayıcıda `justify-end`, panelde `slide-in-from-right` varsa `side="right"`.
+> 3. **Kaydırma sahibi çoğunlukla panelin kendisi** (`max-h-[90vh] … overflow-y-auto` panelde) → `DialogContent`/`SheetContent` **`overflow-y-auto`** alır. Ama içeride kaydıran blok varsa (ör. `flex-1 overflow-y-auto`) içerik `overflow-hidden` kalır. **Dosya başına doğrulanır** — kopyala-yapıştır yanlış sonuç verir.
+> 4. **`space-y-*` varsa `gap-0` şart**; panelde `max-h`/`overflow` **yoksa eklenir** (body scroll kilidi yüzünden).
+>
+> **3.2 BİTTİ — kalan overlay yok.** Sıradaki: **§3.3** (kalan silme/onay modalları → `ConfirmDialog`). ⚠️ 3.3 başlamadan **`ConfirmDialog` primitifini** okuyun: paylaşılan `alert-dialog`'u kullanmıyor, `radix-ui`'yi doğrudan kullanıp kendi overlay'ini kuruyor (Faz 3 bulgusu 6 → Gelecek Adımlar #19). Yani 3.3, çağrı yerlerini çevirmenin yanında **primitifin kendisini** de düzeltmeli.
+>
+> **📌 Not:** `app/page.tsx` (kök loading sayfası) da bir toast taşıyor ama overlay'i yok → 3.2 kapsamı dışı, toaster spec'ine ait.
+>
+> **Kalan 4 dosya overlay değil ve muaf** (tek `backdrop-blur`/`shadow-2xl`): `widgets/draggable-widget-wrapper`, `PortalClient` sticky araç çubuğu, `bulk-action-bar`, `layout/dashboard-header` (mobil alt bar da aynı sınıfta). Gerekçeler §2.3'te.
+>
+> **Tarif:** standart **§2.3** (Dialog + Sheet + print) **+ §2.4** (Popover). **Kabul kriteri:** `fixed inset-0` / `backdrop-blur` / `shadow-2xl` → 0, `tsc` + `build` yeşil, batch başına commit.
+>
+> **⚠️ Bu fazda on beş tuzak ölçülerek doğrulandı:**
+> 1. **Taban `max-width`'i koşulsuz ezmeyin** → `w-full sm:max-w-2xl`. → §2.3
+> 2. **Varyant önekli varsayılanı öneksiz ezmeyin** → `data-[side=right]:w-full`. → §2.3
+> 3. **`Popover` çapaya göre konumlanır** — mobil tam genişlik deseni yaklaşımla üretilir. → §2.4
+> 4. **Dış-tıklama:** varsayılan açık; yalnızca **geri alınamaz çıktı** varsa engellenir. → §2.3
+> 5. **Açılış/kapanış SAYILIR** — bu tuzak fazda **3 kez** çıktı: `email-thread-drawer` `TS2657`, `quick-actions-widget` `TS17002`, `contracts` (okuma sayesinde tsc'den önce yakalandı). → §2.3
+> 6. **Kaydırma sahibi dosya başına belirlenir** — kopyala-yapıştır yanlış sonuç verir.
+> 7. **Print'te `print:*` temel varyantta kalır, önekli kural özgüllükte kazanır** — print genişliğini gerçekten değiştirmek istiyorsanız önekli biçim gerekir. → §2.3
+> 8. **Ölçüm araçları sessizce yanlış sonuç verir** — `Select-String -Path`, `git show <sha>^`, `translate-` içindeki `slate-`. → bulgu 9
+> 9. **Bir dosyada hem drawer hem modal varsa bunlar farklı primitiflerdir** — aynı geçişte yapılır ama **ayrı ayrı** doğrulanır (denge sayımı 8 etiketi birlikte kontrol eder).
+> 10. **Git yazımları paralel çalıştırılmaz** — `git add` + `git commit` eşzamanlı iki komutta `index.lock` çakışır ve bir commit'in **mesajı bir dosyayı, içeriği başkasını** anlatabilir. Bu turda yaşandı; `--soft reset` ile geri alınıp doğru sırayla yeniden commit edildi. **Sıralı çalıştır, sonra `git show --stat` ile mesaj/içerik eşleşmesini doğrula.**
+> 11. **Ham `fixed inset-0` sayısı overlay sayısı DEĞİLDİR — fazladan sayar.** Bazı dosyalar backdrop'u sarmalayıcının **kardeşi** olarak ayrı bir `div` yapar (`messages`, `quotes`), bazıları sarmalayıcının kendisini backdrop yapar (`shipments`, `recruitment`), bazılarında ise drawer **kendi** backdrop'unu taşır (`organization`). Ölçülen fark: `organization` 7→**5**, `messages` 8→**4**, `quotes` 11→**7**. **Sayıyla değil, okuyarak karar verin.**
+> 12. **Sarmalayıcının `overflow-y-auto`'su panel `max-h` + `overflow-hidden` taşıyorsa zaten devrede değildir** — panel kendi çocuklarını kırpıyordur. Göçte "iyileştirme" yapıp `overflow-y-auto` vermek **kısa ekran davranışını sessizce değiştirir**; aslını birebir kurun (bkz. `messages`).
+> 13. **Kapanış bulma sezgiseli "bitişiklik" varsayar** — `tailV2` panel kapanışının **hemen ardından** sarmalayıcı kapanışını arar; araya kardeş bir overlay girerse yanlış çifti sahiplenir (`quotes`'ta oldu; `Dialog` 6 açık / 5 kapalı verdi). **Bitişikliği kardeş overlay bozar** → çok overlay'li dosyalarda denge sayımı **zorunlu**.
+> 14. **Toplu geçişten önce çalışma ağacı TEMİZ olmalı** — Faz 4'e başlarken `git status` **3 kirli dosya** gösterdi ve hiçbiri o oturumda yazılmamıştı. Biri (Popover fix) tam da toplu betiğin dokunacağı dosyadaydı; ayırma yapılmasaydı **iki konu tek commit'te** birleşecek ve ikisi de review edilemez olacaktı. **Kural:** her toplu işlemden önce `git status`; kirliyse önce ayır (sahibi olmadığın değişikliği ilgili dosyadan geri çevir → onu kendi commit'ine al → toplu geçişi yeniden uygula). Sahibi olmadığın bir değişikliği sessizce kendi commit'ine katmak "tek değişken/commit" kuralını bozar.
+> 15. **Guard "temiz" demek "doğru görünüyor" demek DEĞİL — sınıf çakışmalarını göremez.** Faz 5.0'da `messages`'ta 31 satırda token + eski sınıf **aynı** string'deydi (`dark:bg-card dark:bg-zinc-900`). İkisi de aynı özelliği aynı varyantta, aynı özgüllükte yazıyor → **kazanan, stylesheet'te sonra gelen**. Bunu tahmin etmek yerine **derlenmiş CSS'ten ölçtüm**: `.dark:bg-zinc-900` byte **258605**, `.dark:bg-card` **240413** → eski sınıf kazanıyor, token hiç uygulanmamış. **Yöntem:** `apps/web/.next/**/*.css` içinde `IndexOf(".dark\\:X")` karşılaştır (büyük olan kazanır). Guard'ın bu konuda kuralı yok — bu yüzden "PASS" bir görsel doğruluk kanıtı değildir.
+>
+> **⚠️ `apps/web`'te `prettier --write` ÇALIŞTIRMAYIN.** Kökteki `.prettierrc` `"semi": false` diyor ama `apps/web` noktalı virgüllü; `prettier --check` **dokunulmamış** dosyalarda da FAIL veriyor ve 55 satırlık değişikliği **431 satıra** çıkarır. Ayrıntı: Gelecek Adımlar #18.
+>
+> **⚠️ Elle duman testi bekleyen noktalar (typecheck bunları kanıtlayamaz):**
+> 1. `tenant-switcher` mobil drawer'ın **içinde** ve `z-[70]` yerine primitifin `z-50`'siyle portallanıyor — gözle doğrulanmalı.
+> 2. İki panelin mobil genişliği artık çapaya bağlı.
+> 3. `product-gallery` lightbox'ı `h-screen w-screen` bir `DialogContent`; ortalanma ve köşe kontrolleri.
+> 4. **`theme-provider` script tipi** (`57d44a7`): SSR `text/javascript` / istemci `text/plain` → **hidrasyon uyarısı** ve **tema flaşı** (ilk boyamada yanlış tema) için tarayıcıda bakılmalı.
+> 5. **`messages` çift-token düzeltmesi** (`b36d107`): **koyu tema görünümü değişir** — düzeltmenin amacı bu; token artık gerçekten uygulanıyor.
+> 6. **`notification-center` + `dashboard-share-popover`** (`34c5218`): bu iki popover `PopoverContent` kök dışındayken **açılamıyordu**; artık açılıyor mu?
+> 4. **PRINT ÖNİZLEMESİ (en önemlisi):** fazda **iki** print yüzeyi var — `invoices` detay drawer'ı ve `contracts` detay drawer'ı ("Yazdır / PDF" → `window.print()`). Bakılacaklar: backdrop **basmıyor** olmalı (global kural, `5229ec9`), panel A4'e sığmalı, gövde kötü bölünmemeli. Portallanmış `fixed` konumlandırma print'te kırılgandır; bu **doğrulanmadı** → Gelecek Adımlar #21.
+
+**3.2 sayfa modalları için ölçülmüş kapsam:** 34 sayfa · 108 `fixed inset-0`. Yol haritasının başındaki "75 modal component'i" tahmini **isim sayımından** geliyordu (`*Modal`/`*Drawer`); sayfa-içi modallar bu sayıma tam girmemişti. Gerçek ilerleme birimi olarak **3.1 tamamlandı** kabul edilir ve 3.2 kendi başına, yukarıdaki 108 sayaçla izlenir.
+
+**İlk tahmin (Faz 0, isim sayımı):** `fixed inset-0` sayısı 156 (şişik: her modal konteyner + backdrop diye iki overlay üretiyor). Dağılım: 108 orta-dialog, 17 sağ-sheet, 1 üst-dialog, ~22 backdrop div'i, 62 `*Modal`, 11 `*Drawer`.
+
+**Migrasyon tarifi:** `crm-ui-standards.md` **§2.3** (Dialog/Sheet — Faz 3.0 pilotunda doğrulandı) + **§2.4** (Popover/DropdownMenu — `tenant-switcher` ile doğrulandı).
+
+- [x] **3.0 Pilot** — `pipeline-settings-modal.tsx` → `Dialog` (`caf8432`)
+- [x] **3.4 `confirm-dialog.tsx` normalize edildi** (`d1e80c0`) — **sıra bilinçli olarak değiştirildi**
+- [x] `delete-customer-dialog.tsx` → `ConfirmDialog`: **50 → 28 satır** (`d1e80c0`)
+- [x] **`customers` grubu tamam** (5 dosya) — `create-customer-modal`, `edit-customer-modal`, `add-contact-modal`, `add-activity-modal` → `Dialog`; `delete-customer-dialog` → `ConfirmDialog` (`dafdeb5`)
+- [x] **`components/email` tamam** (6/6) · `components/` kök tamam (9/9) · `components/chat` tamam (1/1) · `widgets` tamam (3/3) · `pipelines/_components` tamam (2/2) · `promotions/components` tamam (2/2) · `components/quotes` tamam (2/2) · `components/products` tamam (2/2) · `components/portal` tamam (1/1) · `components/layout` tamam (1/1) · `PortalClient` tamam (2/2)
+- [x] **Kök grubun kalanı:** `team-members-stack.tsx`'in popover'ı → §2.4 ile taşındı (`138fee4`)
+- [x] **3.1 TAMAMLANDI** — 37 birim. Elle yapım overlay izi yalnızca muaf yüzeylerde (§2.3 listesi)
+- [x] **3.2 — sayfa-içi modallar:** **34 `page.tsx` · 108 `fixed inset-0`** (ölçüm 2026-09-16) → **33 göç + 1 muaf = 34/34 — BİTTİ**
+  - [x] `(admin)/admin/templates` (`ee167e5`) · `(admin)/admin/tenants` (`8f3b524`) · `roles` (`07d476d`) · `users` (`757799b`) · `tickets` (`fbf5591`)
+  - [x] `automations/[workflowId]` (`d9bbc3b`) · `automations` (`4e7a387`) · `invoices` (`172fe2a` + `e5dfe86`) · `leaves` (`9b553d3`) · `contracts` (`615ca49`) · `compliance` (`d86f3a1`) · `payroll` (`f453457`) · `field-service` (`de62bca`) · `orders` (`79b21c7`) · `orders/[orderId]` (`b04982a`) · `tickets/[ticketId]` (`1cda709`) · `email` (`62ed950`) · `projects` (`71335b8`) · `projects/[projectId]` (`1c601be`) · `products/[productId]` (`d2b187d`) · `calendar` (`2d4e61e`) · `finance` (`fd5f715`) · `inventory` (`9313be1`) · `products` (`5d3f8e8`) · `webhooks` (`6ab6e53`) · `webhooks/[endpointId]` (`acace95`) · `attendance` (`8120e2f`) · `vehicles` (`806a3a0`) · `organization` (`ae4c309`) · `shipments` (`e1d4742`) · `recruitment` (`61529af`) · `settings` (muaf — kart blur'u)
+  - [x] **Print altyapısı** — `globals.css` `@media print` overlay backdrop'larını gizliyor (`5229ec9`), derlenen CSS'te doğrulandı. **4. print yüzeyi** `shipments`'te bulundu (`e1d4742`) → Gelecek Adımlar #21 güncellendi
+  - [x] `messages` (`2cc15f0`) · `quotes` (`28d8d6e`) — **3.2 tamamlandı, kalan sayfa yok**
+- [x] **3.3 Kalan silme/onay modalları → `ConfirmDialog`** — **TAMAMLANDI.** İki yarısı:
+  - [x] **Primitif:** `confirm-dialog.tsx` kanonik `alert-dialog` üzerine taşındı (`c5a4925`) — **bulgu 6 kapandı**
+  - [x] **5 çağrı yeri:** native `confirm()` → `ConfirmDialog` (`26e2d85`, `b5dfc28`, `341b2e7`, `7ef72b9`, `fb9cec2`). Doğrulama: `apps/web` taraması **0 native `confirm(`**
+- [ ] **3.4 ✅ tamam** — `confirm-dialog.tsx` `rounded-3xl` + **`violet-600`** + token ihlallerinden arındırıldı
+
+### ⚠️ Faz 3 bulgusu 1 — paylaşılan primitifin kendisi standardı ihlal ediyordu
+
+`ConfirmDialog` — diğer kodun **uygulaması gereken** primitif — şunları taşıyordu: `rounded-3xl` panel, sabit `zinc`/`white` (token yerine), `rounded-xl` butonlar (§1.1 `rounded-lg` diyor) ve **`bg-violet-600`** (ADR-0002'nin açıkça yasakladığı `violet-*`).
+
+**Sonuç:** sıra tersine çevrildi — önce primitif düzeltildi (3.4), sonra ona taşınıldı (3.1). Aksi halde ihlaller çağrı yerlerine yayılırdı. Ölçüm: `guard --full` hata sayısı **1458 → 1454**.
+
+### ✅ Faz 3 bulgusu 2 — ölçülebilir kazanç
+
+`delete-customer-dialog.tsx`: **50 satır → 28 satır**. `fixed inset-0`, backdrop, `z-50`, `shadow-2xl`, `Button` importu — hepsi gitti. Bu, ADR-0004'ün işaret ettiği vakanın ta kendisiydi: `ConfirmDialog` zaten varken sayfanın modalı sıfırdan yazması.
+
+**Her batch'te geçerli kabul kriterleri:** el yapımı `fixed inset-0` / backdrop / `z-50` / panel `shadow`'u **sıfıra iner** · a11y primitiflerden gelir (focus trap, `Esc`, `aria-modal`) · panel radius'unun 4 varyantı tek standarda iner.
+
+### 🔴 Faz 3 bulgusu 3 — `apps/web` hiçbir biçimlendiricinin kapsamında değil
+
+Bir dosyada girintiyi normalleştirmek için `npx prettier --write` çalıştırıldı; **431 satır** değişti (220 ekleme / 211 silme) — oysa önceki 10 commit'te bir modal ~46 satır değişiyordu. Ölçüm:
+
+| Ölçüm | Sonuç |
+| --- | --- |
+| `prettier --check` → **dokunulmamış** `compose-modal`, `convert-to-ticket-modal`, `permission-gate`, `nav-config` | **4/4 FAIL** |
+| `apps/web` noktalı virgüllü satır (`compose-modal` / `convert-to-ticket-modal`) | 166 / 110 |
+| Kök `.prettierrc` | `"semi": false` — koda uymuyor |
+
+Kök `.prettierrc` `apps/web`'in fiilî stiliyle **çelişiyor**; yani `apps/web` prettier-temiz değil ve `prettier --write` orada her zaman toplu gürültü üretir. Ayrıca kökteki `biome.jsonc` (Ultracite) **dış** depoda yaşıyor ve dış `.gitignore` `crm-monorepo/`'yi dışlıyor → **AGENTS.md'deki `npm exec -- ultracite fix` komutu `apps/web`'e erişmiyor.** Faz 3'ün kabul kriterindeki "ultracite" adımı fiilen kapsamsız.
+
+**Sonuç:** değişiklik `git checkout` ile geri alındı, düzenlemeler elle yeniden uygulandı (55 satır). **Kural: `apps/web`'te biçim, çevre dosyanın stiline elle uyarlanır.** Altyapı borcu Gelecek Adımlar #18.
+
+### ⚠️ Faz 3 bulgusu 4 — primitifin taban `max-width`'i ezilince mobil kenar payı ölüyor
+
+`DialogContent` varsayılanı `w-full max-w-[calc(100%-2rem)]` — silinen `p-4` sarmalayıcısının mobil kenar payını üreten tam da bu. İlk iki Dialog migrasyonu `max-w-*`'i **koşulsuz** yazdı (`w-full max-w-lg gap-0 …`), bu da payı sildi:
+
+| | 375px | 500px | 900px |
+| --- | --- | --- | --- |
+| El yapımı (`p-4` + `max-w-lg`) | 343 | 468 | 512 |
+| `max-w-lg` koşulsuz ❌ | **375** | **500** | 512 |
+| `sm:max-w-lg` ✅ | 343 | 468 | 512 |
+
+**Kural:** genişlik `sm:` ve üstü için yazılır, taban için yazılmaz → `w-full sm:max-w-lg`. Önceki 2 dosya `ed5efff` ile geri getirildi. `whatsapp-chat-drawer` **etkilenmedi**: orijinal paneli de `w-full max-w-4xl`'di, pay yoktu.
+
+### 🔴 Faz 3 bulgusu 5 — `Sheet`'in `data-[side=*]` varsayılanları öneksiz ezmeyi yiyor
+
+`whatsapp-chat-drawer` (`491cb07`, "✅ Sheet deseni kuruldu") `className="w-full max-w-4xl flex-row sm:max-w-4xl"` taşıyordu. Bu **çalışmıyordu**. `cn()` çıktısı gerçek `tailwind-merge` ile ölçüldü:
+
+```
+önce : fixed z-50 flex  data-[side=right]:w-3/4 data-[side=right]:sm:max-w-sm  w-full max-w-4xl flex-row sm:max-w-4xl
+sonra: fixed z-50 flex  data-[side=right]:w-full max-w-4xl data-[side=right]:sm:max-w-4xl  flex-row
+```
+
+tailwind-merge yalnızca **aynı modifier listesine** sahip utility'leri birleştirir; `[data-[side=right]] ≠ []` olduğu için primitifin sınıfları **çıktıda kalır**. Kararı derlenmiş CSS'te **özgüllük** verir: `data-[side=right]:w-3/4` = (0,2,0), `w-full` = (0,1,0) → drawer **%75 genişlik + 384px tavan** ile render ediliyordu (istenen: `w-full max-w-4xl`). Migrasyonun soktuğu görünür bir regresyon; `7f639f0` ile düzeltildi, §2.3'ün "`cn()` sonuncuyu tutar" gerekçesi gerçek davranışa göre yeniden yazıldı.
+
+**Kural:** varyant önekli varsayılanı **aynı öneki taşıyan** sınıfla ez. Aynı tuzak `alert-dialog.tsx` (`data-[size=*]:max-w-xs`, `:sm:max-w-md`) için de geçerli — bugün tüketicisi olmadığı için kayda geçti, değiştirilmedi.
+
+### 📌 Faz 3 bulgusu 6 — `ConfirmDialog` paylaşılan `alert-dialog` primitifini kullanmıyor
+
+`packages/ui/src/components/confirm-dialog.tsx`, Faz 1'de eklenen `alert-dialog.tsx`'i değil, `radix-ui`'yi **doğrudan** kullanıp kendi overlay'ini kuruyor: `fixed inset-0 z-50 animate-in bg-black/60 backdrop-blur-xs` + panelde `shadow-2xl backdrop-blur-md`. Faz 3.4'te yalnızca `rounded-3xl`/`violet-600`/token ihlalleri temizlendi; overlay katmanı kaldı. Gelecek Adımlar'a alındı (#19).
+
+### 🔴 Faz 3 bulgusu 7 — Faz 1'in popover/dropdown primitifleri §1.1'i ihlal ediyordu
+
+`popover.tsx` (`PopoverContent`), `dropdown-menu.tsx` (`Content`, `SubContent`) — üçü de **`rounded-3xl`** ile yazılmıştı. §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor.
+
+Bu **bulgu 1'in birebir tekrarı** (o zaman `ConfirmDialog`'un kendisi ihlal ediyordu). Aynı sıra uygulandı: **önce primitif düzeltildi** (`db8cf6e`), sonra üç tüketici ona taşındı. Düzeltilmeseydi ihlal üç çağrı yerine yayılırdı.
+
+`dropdown-menu.tsx`'in **hiç tüketicisi yoktu** ve yine de düzeltildi: amaç, ilk menü tüketicisinin yanlış radius'u miras almaması. Öğe radius'ları (`rounded-2xl`, 4 yerde) **bırakıldı** — konteyner değiller ve mevcut 14 primitifte de geçiyorlar; ayrı bir radius-sweep kararı.
+
+Sonuç: `DialogContent`, `SheetContent`, `PopoverContent`, `AlertDialogContent` → dördü de `rounded-xl`. `packages/ui`'de `rounded-3xl` **0**.
+
+### ⚠️ Faz 3 bulgusu 8 — mobil "başlık altı tam genişlik" paneli `Popover` ile birebir üretilemez
+
+`dashboard-share-popover` ve `notification-center` panelleri iki farklı konumlanma modeli taşıyordu: mobilde `fixed inset-x-3 top-14` (başlığın altına yapışan tam genişlik panel), 640px üstünde `absolute sm:right-0 sm:w-96` (çapalı dropdown). `Popover` **yalnızca çapa** bilir; sabit `top-14` üretilemez.
+
+**Neden yine de aynı yere düşüyor:** üçünün de tetikleyicisi başlığın içinde (`components/layout/dashboard-header.tsx`, `dashboard-header.tsx`, `hub-rail.tsx` doğrulandı). Bu yüzden `align="end"` + `w-[calc(100vw-1.5rem)]` + `collisionPadding={12}` + `sideOffset={10}` eski geometriyi yaklaşık olarak yeniden üretiyor.
+
+**Takas bilinçli:** sabit `top-14` yerine konumlandırma + çarpışma yönetimi primitife geçiyor. Bedeli: tetikleyici başlıktan uzaklaşırsa panel de onunla gider. §2.4'e "yaklaşımdır, kanıt değil" notuyla yazıldı.
+
+**`DropdownMenu` hiç kullanılmadı:** üçü de menü değil (liste, paylaşım eylemleri, çalışma alanı listesi + **oluşturma formu**). Menü semantiği (roving focus, item rolleri) bunlara uymaz — §2.4'e karar kuralı olarak eklendi.
+
+### 🔴 Faz 3 bulgusu 9 — PowerShell ölçümü `[tenantSlug]` altını sessizce atlıyor
+
+Radius borcu ölçümü **iki kez yanlış** rapor edildi ve yanlış hâliyle yol haritasına yazıldı:
+
+| Ölçüm | Yanlış (yazılan) | Doğru (Node) |
+| --- | --- | --- |
+| `apps/web` `rounded-3xl` | 6 | **146** |
+| `apps/web` `rounded-2xl` | 33 | **459** |
+| Sayılan dosya | 41 | **139** |
+
+**Kök neden:** `apps/web` altındaki dosyaların **118'i** `app/(dashboard)/[tenantSlug]/` altında. PowerShell'de `Select-String -Path` ve `Get-ChildItem -Include` **yolu joker olarak** yorumlar; `[tenantSlug]` bir karakter sınıfı, `(dashboard)` bir grup sanılır → o alt ağaç eşleşmez ve **sessizce atlanır**. Hata çıkmaz, sadece eksik sayı döner.
+
+**Kural:** `apps/web` yollarında ölçüm **Node ile yürüyerek** (veya `-LiteralPath` ile) yapılır. `-Path` + `-Include` kullanılmaz. Aynı tuzak `slate-` sayımında da bir kez yaşandı (kendi kendine: `translate-` içindeki `slate-` eşleşmesi → hayalet regresyon, `1 → 2`).
+
+**Neden önemli:** yol haritası "tahmin değil ölçüm" üzerine kurulu. Yanlış ölçüm, yanlış plan demek — 146 kayıt 6 diye yazılınca radius işi "küçük" görünüyordu.
+
+**🔁 Aynı sınıfın ikinci vakası (2026-09-16, 3.2 sırasında):** Guard düşüşünü (`1446 → 1443`) dosyalara dağıtmak için `git show <sha>^:yol` kullanıldı. **`^` bir kaçış karakteri olduğu için `cmd.exe` onu yiyor** → "ebeveyn" sessizce commit'in **kendisine** çözülüyor ve her dosya **tam olarak 0** değişim raporluyor. Doğrusu `~1`. Ölçüm `~1` ile tekrarlandığında gerçek dağılım çıktı: `templates` **−2** (`bg-slate-900/40` + `border-slate-200`), `tickets` **−1** (`bg-slate-900/60`), `tenants`/`roles`/`users` **0**.
+
+**Ortak ders:** bu ortamda ölçüm araçları **sessizce** yanlış sonuç veriyor — hata fırlatmıyorlar. Bu yüzden bir ölçüm "mantıklı" görünse bile **ikinci bir yolla** doğrulanmalı (ör. hem `git show` hem çalışma kopyası, hem PowerShell hem Node).
+
+### 📌 Faz 3 bulgusu 10 — dış-tıklama politikası karara bağlandı
+
+Eski el yapımı modalların bir kısmı **dışına tıklayınca kapanmıyordu** (backdrop `onClick`'i yoktu). `Dialog`'a geçince Radix dış-tıklama + `Esc` getiriyor; §2.3 bunları "kazanç" olarak listeliyordu. Ama bazılarında kapatmak **geri alınamaz çıktı** yok ediyor.
+
+**Karar (kullanıcı onaylı):** dış-tıklama **varsayılan olarak açık**; yalnızca kapanmak yeniden üretilemeyen çıktıyı yok ediyorsa `onInteractOutside` ile engellenir. Yazılmış form taslağı **sayılmaz** (yeniden yazılabilir); `localStorage`'a yazılan durum da sayılmaz.
+
+| Dosya | Durum | Karar |
+| --- | --- | --- |
+| `quick-actions-widget` (`95af399`) | Her toggle anında `localStorage`'a yazılıyor | Varsayılan **uygulandı** |
+| `bulk-coupon-modal` (`18cae3e`) | Üretilen kupon kodları başka yerde görünmüyor | Üretim sonrası **engellendi** (`onInteractOutside`, koşullu) |
+| `campaign-modal` (`dd1c1e9`) | 5 adımlı sihirbaz, ama girdi yeniden yazılabilir | Varsayılan **uygulandı** — takasın en görünür örneği, politika sert kalırsa ilk buraya bakılmalı |
+
+Kural §2.3'e tablo + kod örneğiyle yazıldı.
+
+### 🔴 Faz 3 bulgusu 11 — lightbox `aria-modal="true"` diyordu ama focus trap'i yoktu
+
+`components/products/product-gallery.tsx`'teki görsel önizleme elle `role="dialog"` + `aria-modal="true"` kuruyordu — **ama focus trap yoktu.** Sekme tuşu overlay'den çıkıp arkadaki sayfaya gidiyordu; `aria-modal="true"` bunu ekran okuyucuya **yanlış** bildiriyordu. Yani burada mesele kozmetik değil, beyan edilen ile gerçek davranışın uyuşmamasıydı.
+
+`Dialog`'a geçiş trap'i, `role`'ü, `aria-modal`'ı ve scroll lock'u **gerçekten** sağlıyor. Yüzey görselin kendisi olduğu için primitifin chrome'u inherit edilmek yerine **negasyon** edildi (`h-screen w-screen max-w-none rounded-none bg-transparent p-4 shadow-none ring-0`) — kenar kontrolleri eski `fixed inset-0` konumlarında kalsın diye `DialogContent` viewport boyutunda.
+
+**Davranış korundu:** eski `keydown` effect'i üç iş yapıyordu — Esc (primitife geçti), scroll lock (primitifin `RemoveScroll`'ü) ve **ok tuşlarıyla gezinme** (primitif bilemez → `DialogContent`'in `onKeyDown`'una taşındı). Bu, `entity-picker-modal`'daki "Enter ile seç" vakasının aynısı: overlay göçü primitifin sağlayamadığı davranışı sessizce düşürmez.
+
+### 🔴 Faz 3 bulgusu 12 — overlay hem ekran hem **print yüzeyi** olabiliyor, ve primitif backdrop'a `className` vermiyor
+
+`invoices` detay drawer'ı aynı anda iki iş yapıyor: ekranda sağdan açılan panel, **yazdırılırken de faturanın kendisi**. Kanıt: panelde `print:max-w-none print:shadow-none`, başlıkta `print:hidden`, ve `handlePrint` drawer açıkken `window.print()` çağırıyor.
+
+`Sheet`'e geçirmek şu duvara çarptı: **`SheetContent` overlay'i (`SheetOverlay`) portal içinde içeriğin kardeşi olarak render ediyor ve `className` almıyor** → çağrı yerinden backdrop'a print sınıfı verilemiyor.
+
+**Çözüm (kullanıcı onaylı):** kural global yapıldı — `globals.css` `@media print` içinde üç overlay `data-slot`'u (+ `$="-backdrop"` yedeği) gizleniyor (`5229ec9`). Tek yerde yapmak hem tüm overlay'leri kapsıyor hem de **elle yazılmış backdrop'ları temizliyor**: bu stylesheet `print-color-adjust: exact` zorladığı için `fixed inset-0 bg-black/40` gibi backdrop'lar **zaten basılıyordu** ve hiçbir şey onları gizlemiyordu.
+
+**Yalnız backdrop gizlenir; içerik gizlenmez** — print hedefi olan yüzeyin paneli kâğıda çıkmalı.
+
+**Açık kalan, doğrulanamayan kısım:** portallanmış `fixed` konumlandırma print'te kırılgandır (sabit elemanlar sayfa başına tekrarlanabilir). Bu **önceden de böyleydi** (eski sarmalayıcı da `fixed inset-0`'dı) ve çözmek drawer'ı print yüzeyi olarak yeniden tasarlamak demek → Gelecek Adımlar'a alındı.
+
+**Print özgüllük tuzağı (§2.3'e yazıldı):** `print:max-w-none` temel varyantta derlenir; `data-[side=right]:sm:max-w-2xl` data-attribute + breakpoint taşıdığı için **özgüllükte kazanır**. Yani "print'te tam genişlik" bugün A4'te (≈703px printable vs 672px `2xl`) **tesadüfen** sağlanıyor, garanti değil.
+
+### 🧩 Primitif API boşluğu — `overlayClassName` yok
+
+Bulgu 12'nin kökü: dört overlay primitifinin hiçbiri overlay'i için `className` geçirmiyor. Global print kuralı bu vakayı çözdü, ama **başka bir ihtiyaç doğarsa** (ör. overlay'e farklı bir blur/opaklık) primitif API'si açılmalı. Şimdilik gereksiz — tek tüketici için API eklemek §2.2'nin "tek tüketici" ölçütüne takılır.
+
+### 📌 Not — `DialogContent`'in varsayılan yüzeyini ezmek meşru mu?
+
+Bulgu 11'de primitifin `bg-popover`/`shadow-xl`/`ring-1`/`p-6`/`rounded-xl` değerleri **bilinçli olarak** sıfırlandı. Kural: **primitif davranışı sağlar, tüketici yüzeyi sağlar.** Bir lightbox'ın yüzeyi görselin kendisidir; primitifin kart görünümü orada yanlış olurdu. §2.3'ün "yalnız boyut/yerleşim sınıfları geçer" cümlesi bu vakayı kapsamıyor — bu yüzden istisna burada, gerekçesiyle kayıtlı.
+
+- [ ] **`tooltip` tüketicilerinin standarda bağlanması** (Faz 1'den taşındı — tüketici işi)
+- [ ] Dokunulan her sayfada UI parçaları `_components/` altına çıkarılır (ADR-0003) — **kod taşıma ayrı bir mekanik geçiş**; bu fazda yapılmaz (tek değişken kuralı)
+
+## [x] Faz 4 — Renk disiplini (yüzey yüzey) — **TAMAMLANDI (2026-09-16)**
+
+**Ölçüm:** `--full` **1438 → 62**. Renk kurallarının **tamamı 0**: SLATE 399→0 · VIOLET 920→0 · FUCHSIA 43→0 · ARBITRARY_HEX 4→0 · SVG_PAINT_HEX 4→0 · INLINE_HEX_STYLE 6→0. Renk ihlali taşıyan dosya **51 → 0**. Kalan 62 = Faz 5 (NATIVE_SELECT 61 + INPUT_NUMBER 1).
+
+**Karar (kullanıcı onayı, 2026-09-16):** eşleme **ton birebir** — `violet-600 → blue-600`, tek kademeye indirme **değil**. Gerekçe: kontrast oranları ve `dark:` eşleri birebir korunur, diff mekanik kalır.
+
+- [x] `slate-*` → `zinc-*` — **399 hit / 21 dosya** (`44fe52c`)
+- [x] `violet-*` → `blue-*` — **920 hit / 32 dosya** (`a32e90b`; en yoğun `vehicles` 191, `projects/[projectId]` 77, `recruitment` 75)
+- [x] `fuchsia-*` → `blue-*` — **43 hit / 10 dosya** (`d6495a1`)
+- [x] **Auth yüzeyi** `register` (`fbdf476`): 4 keyfi hex → `bg-zinc-950` / `bg-zinc-100` — **kardeş ekrandan okundu**, `login` zaten tam olarak bunları kullanıyor; 4 SVG hex'i **Google "G" marka rengi** → gerekçesiyle **allowlist kaydı** (ADR-0004: istisna sessiz olamaz)
+- [x] **Widget grafik renkleri** → `--chart-*` (`a08616a`, Gelecek Adımlar #12): `lead-sources-widget`'ta 5 hex, **ton koruyan** eşleme (yeşil→`chart-2`, lead→`chart-1`, amber→`chart-3`, kurumsal→`chart-5`, bireysel→`chart-4`); sıralı 1..5 **daha kolay olurdu ve yanlış şeyi anlatırdı**; bonus: token'lar tema-duyarlı olduğu için legend artık dark mode'a uyuyor. **Inline `style` kalktı**
+- [x] `pipeline-settings-modal` aşama rengi: stil **değil**, **kalıcı + kullanıcı-düzenlenebilir veri** (bir görünüm sınıf, iki görünüm ham hex + alfa soneki olarak tüketiyor) → gerekçesiyle allowlist + **Gelecek Adımlar #25**
+- [x] **Yöntem (kalıcılaştırıldı):** guard'ın **kendi bildirdiği dosya kümesi** üzerinde deterministik betik; her adımın kanıtı **kuralın 0'a düşmesi**. Hex/keyfi değerler betiğin kapsamı dışında, elle işlendi
+- [x] **Print/e-posta istisnası belgelendi:** `email-preview.ts` **hiç** hex/renk-sınıfı eşleşmesi üretmiyor (19 `--email-*` değişkeni, hex yok, `slate`/`violet` yok) → temizliği **yapısal**; allowlist kaydı **gerekmiyor** ve belgelerdeki "kayıtlı" ifadesi düzeltildi. `globals.css` print bloğundaki `#0f172a` **kasıtlı** (tema-bağımsız mürekkep: koyu temada `--foreground` beyaza döner → beyaz üstüne beyaz basılır) → yorumla belgelendi, değiştirilmedi
+- [x] **⚠️ Yan bulgu:** `notification-center` ve `dashboard-share-popover`'da **`PopoverContent`, `Popover.Root`'un dışındaydı** (bu geçişin kendi regression'ı: `b9ec6fa`, `90316df`) → `34c5218` ile düzeltildi; repodaki 4 `Popover` tüketicisi tarandı, başka örnek yok
+
+## [x] Faz 5 — Tablo & form *görünüm* standardı — **TAMAMLANDI (5.0 ✅ · 5.1 ✅ · 5.2 ✅ 61/61 · 5.3 ✅ 60/60 · 5.4 ✅ 2240/2240 · 5.5 ✅ 1188/1188 · 5.6 ✅ 31/31)**
+
+**Motor göçü yoktur** — elle yazılmış tablolar/kanban/filtreler kalır, yalnızca görünümleri `@workspace/ui` primitiflerine bağlanır.
+
+**Ölçülmüş kapsam (2026-09-16):** NATIVE_SELECT **61 / 15 dosya** · INPUT_NUMBER **1** (primitifin içinde) · NATIVE_TABLE **61** (warn) · ARBITRARY_TEXT_SIZE **1241** (warn) · INLINE_STYLE_PROP **31** (warn) · kart yüzeyi **~1972** (`bg-white…dark:bg-zinc-9xx` 666 + `border-zinc-200` 1306, **kuralı yok**).
+
+- [x] **5.0 `messages` çift-token hatası** (`b36d107`) — 31 satırda token + eski sınıf **aynı string'de** (`dark:bg-card dark:bg-zinc-900` vb.). **Derlenmiş CSS'ten ölçüldü:** `.dark:bg-zinc-900` (byte 258605) `.dark:bg-card`'tan (240413) **sonra** geliyor → **eski sınıf kazanıyor**, token hiç uygulanmamış. 56 kopya kaldırıldı (23 kenar + 10 yüzey + 17 metin + 6 muted yüzey). **⚠️ Guard bunu göremez** (kuralı yok) → kanıt: dosyada kalan çift **0** + CSS sıralaması
+- [x] **5.1 INPUT_NUMBER → kayıtlı muafiyet** (`1a5f39d`) — tek hit **`number-input.tsx`'in kendisi**; primitifin içindeki native input **abstraction'dır**, kural implementasyonu tüketiciden ayırt edemez. Allowlist gerekçesiyle (4. kayıt)
+- [x] **5.2 `NATIVE_SELECT` 61 → 37** — **24/61 site.** `create-deal-modal` **6** (`eb84455`) · `pipeline-settings-modal` **1** (`3f92254`) · `projects/[projectId]` **7+6** (`72749e2` drawer/yeni-öğe formu — kapalı enum; `94e3a07` 6 entity seçici → `Combobox`) · `projects/[projectId]` **3** kompakt seçici + `SelectField`'a `aria-label` passthrough (`7974b93`) · `projects/[projectId]` **1** öncelik hızlı seçicisi, rozet rengi `triggerClassName`'de korunarak (`fcd4b24`). **Karar ölçütü: seçenek SAYISI değil KAYNAĞI** — kapalı enum → `SelectField`; veriye bağlı liste (küçük görünse bile büyür) → `Combobox`. `onChange` artık değeri alır (`(e) => setX(e.target.value)` → `onChange={setX}`); elle boyut (`h-8 border-input bg-background`) **düşer** — satır-içi hızlı seçiciler `triggerClassName` + **`text-3xs`** ile kompakt kalır (karar: `7974b93`, gerekçe: satır 709). **Tarif: `crm-ui-standards.md` §2.5.1.**
+- [x] **5.2 kalan 37 site / 13 dosya → BİTTİ (61/61).** Aşağıdaki sınıflandırma tablosu göç sırasında **fiilen kullanıldı**; her dosya kendi commit'inde (`775a06b` … `6d80267`):
+
+| Dosya | Site | Sınıflandırma |
+| --- | --- | --- |
+| `projects/[projectId]` | **8** | 4 atanan + 1 sprint → `Combobox` · 2 story-point → `SelectField` · 1 öncelik (1432, satır 1068 deseniyle) |
+| `webhooks` | **5** | 2 olay filtresi (`WEBHOOK_EVENTS` sabiti) + 2 durum → `SelectField` · 1 endpoint → `Combobox` |
+| `projects` | **4** | durum filtresi + durum formu → `SelectField` · lider + müşteri → `Combobox` |
+| `promotions` | **4** | tip/tetikleyici/aktif filtreleri → `SelectField` · kampanya filtresi → `Combobox` |
+| `leaves` | **3** | durum + izin türü → `SelectField` · departman (takvim) → `Combobox` |
+| `payroll` | **2** | dönem + çalışan (pusula) → **ikisi de `Combobox`** (veriye bağlı) |
+| `pipeline-filter-bar` | **2** | öncelik → `SelectField` · temsilci → `Combobox` |
+| `promotions/[campaignId]/edit` | **2** | ürün + kategori ekle (aksiyon tetikleyici) → `Combobox` + `value=""` |
+| `campaign-modal` | **2** | ürün + kategori ekle → `Combobox` + `value=""` |
+| `promotions/new` | **2** | ürün + kategori ekle → `Combobox` + `value=""` |
+| `pipeline-header` | **1** | pipeline seçici (veriye bağlı) → `Combobox` |
+| `bulk-coupon-modal` | **1** | kampanya (veriye bağlı) → `Combobox`; `required` **incelendi**: `handleSubmit`'te `if (!campaignId)` guard'ı var → kayıp yok |
+| `tasks-checklist-widget` | **1** | öncelik (kapalı enum, 4) → `SelectField`; `text-[11px]` → `text-2xs` |
+
+> **✅ 5.2 kapandı — ölçülmüş kanıt:** `NATIVE_SELECT` **37 → 0** · `--full` **37 → 0 error** (189 dosya) · `ARBITRARY_TEXT_SIZE` 1237 → **1228** · typecheck **2/2** · build **2/2** · scoped kapı **PASS**. 13 dosya, 13 commit. **Faz 5.2'nin kabul kriteri karşılandı: kapsamında 0 error.**
+>
+> **`--full` İLK KEZ PASS verdi** — 1458'den (Faz 0) 0'a. Kırıcı katmanda artık hiçbir ihlal yok; kalan sayı tamamen `warn` (5.3/5.4/5.5/5.6).
+>
+> **Göçte çıkan yeni bulgular (kalıcı kayıt):**
+> 1. **`Combobox` `aria-label` geçirmiyordu** (`71c24fc`) — 5.2'nin `SelectField` bulgusunun birebir tekrarı. Kalan 37 site **göç etmeden önce okunduğu** için yakalandı; beş site adını sessizce kaybedecekti.
+> 2. **`tailwind-merge` doğrulaması** (`5985198`): `text-2xs`/`text-3xs` **font-size** grubunda sınıflandırılıyor — `text-xs`'i eziyor ve `text-zinc-900`'ü silmiyor. Alternatif senaryo (text-color sanılsaydı) guard'ın göremeyeceği sessiz bir regresyon olurdu; **ölçüldü, varsayılmadı**.
+> 3. **CRLF dosyada `edit` aracı çok satırlı eşleşmiyor.** `leaves/page.tsx` CRLF; düzenleme, dosyanın kendi EOL'unu kullanan ve **tam-1-kez eşleşme** doğrulayan bir Node script'iyle yapıldı (eşleşmezse hiç yazmaz). Diff 38/33 — dosya baştan yazılmadı.
+> 4. **`required` varsayılmaz, okunur:** `bulk-coupon-modal`'ın native `required`'ı fazlalıktı çünkü `handleSubmit`'te `if (!campaignId)` guard'ı vardı. Her dosyada doğrulandı.
+> 5. **Boş seçenek iki primitifte iki farklı yarım** — `SelectField`'da boş `SelectItem` Radix'te **hata atar** (etiket `placeholder`'a gider), `Combobox`'ta seçenek **kalır** ve placeholder aynı etiketi taşır. §2.5.1'e yazıldı.
+> 6. **Aksiyon tetikleyiciler** (`value=""` kontrollü) elle `e.target.value = ""` sıfırlamasını **gereksiz bıraktı**; 7 sitede bu satır silindi.
+> 7. **`aria-label` yalnızca 5 siteye "korunarak" girmedi, birkaç siteye eklendi:** native `<select>` rolünü ve değerini bildirir, `<button role="combobox">` bildirmez — adsız bırakmak göç değil **kayıp** olurdu. (`pipeline-header`, `pipeline-filter-bar`, filtreler.)
+> 8. **`pj/[projectId]`'de bir seçicinin iki kopyası byte-özdeşti** (atanan hızlı seçicisi, `i=24`) → tek düzenleme ikisini kapsadı; script **beklenen eşleşme sayısını** doğruladı (`2x`), bu yüzden sessizce yarım kalmadı.
+- ⚠️ **Tip değişimi uyarısı:** story-point seçicileri state'te **sayı** tutuyor ve `value={0}` gibi sayısal seçenek değeri kullanıyordu; `SelectField` **string** konuşur → seçenek değerleri string oldu ve handler `Number(value)` ile geri çeviriyor, `value` ise `String(state)`. Göçte **tek saf-yeniden-adlandırma olmayan yer** burası
+- [x] **5.3 `NATIVE_TABLE` 61 → 0** — **28 dosya / 60 tablo.** Mekanik kısım, **Faz 4'ün onaylı yöntemiyle** yapıldı: kuralın kendi desenini (`<table(?=[\s>])`) taşıyan deterministik betik, ~1194 etiket. **Karar (kullanıcı onaylı): yoğunluk NORMALİZE EDİLMEZ** — `TableHead`'in `h-9`'u aksi halde satırları kısaltırdı; dikey dolgusu olan hücrelere `h-auto` eklendi, dolgu ve renk `className`'de kaldı. Yalnız primitifin **aynen** verdiği kopyalar düştü (`border-b`, `w-full`, `text-xs`, thead tipografi kümesi). Tarif: **§2.5.2**.
+  - **İki kayıtlı istisna (allowlist 6):** `packages/ui/src/components/table.tsx` (primitifin kendisi — 5.1'in `number-input` kaydıyla aynı sınıf; olmasa kural Faz 7'de asla `error`'a terfi edemezdi) · `orders/[orderId]/print` (print belgesi: tam ızgara + ters başlık; primitifin `overflow-auto` sarmalayıcısı **kâğıtta kırpar** ve çağrı yerinden ezilemez → §2.3'ün `overlayClassName` boşluğunun kardeşi).
+  - 🔴 **Hata (kendi) + ders:** ilk çalıştırma kapanışları `</TableRow>>` yaptı — lookahead'in **tüketmediği** `>` string'de kalıyordu, replacement bir tane daha ekledi. **28 dosyanın tamamı kırıldı** ve **her denge kontrolü geçti**, çünkü `</TableRow` sonrası karakter yine `>` ve lookahead'i tatmin ediyor: **saymak, fazladan bir parantezi göremez.** `tsc` yakaladı, `git checkout` ile geri alındı, script artık `</X>>` üzerine ayrıca assert ediyor. *Sayım tabanlı kontrol yeterli **hissettirdi** ve değildi.*
+  - **Ölçülmüş doğrulama:** `NATIVE_TABLE` **61 → 0** · `ARBITRARY_TEXT_SIZE` 1228 → **1188** (thead'in gereksiz tipografi kümesi düştü) · `--full` **0 error · 1219 advisory** · typecheck 2/2 · build 2/2 · scoped PASS. Ayrıca **primitif kendi tipografisini düzeltti** (`dd0fb71`, 20 keyfi değer → `text-2xs`/`text-3xs`; derlenmiş CSS'ten doğrulandı: `.6875rem` / `.625rem`).
+  - ⚠️ **Kozmetik kalan:** eklenen `h-auto` sınıf sırası kurala uymuyor (`px-6 py-3.5 h-auto`) — yoğunluk normalizasyonu Faz 6'ya bırakıldığı için sıra da orada düzeltilir.
+  - ⚠️ **Elle duman testi:** 60 tablonun tamamı görsel olarak değişti (primitifin yüzey token'ları: başlık zemini `bg-muted/40`, satır ayırıcı rengi, başlık tipografisi). Yoğunluk korundu ama **renk/zemin değişti** — ekran ekran bakılmalı.
+- [x] **5.4 Kart yüzeyi tek dile** — **önce guard kuralı, sonra süpürme** (onaylandı). Kural olmadan süpürmek kanıtsız kalır; bu projede ilerlemenin kanıtı **sayacın 0'a düşmesi**
+  - [x] **Kural yazıldı VE süpürme yapıldı** — `CARD_SURFACE` **2240 → 0** (`fa7c52b`, **85 dosya / 1912 string**, net **−614 satır**). Tarif: **§2.5.4**
+  - [x] **Dönüşüm:** `bg-white` → `bg-card` · `border-zinc-100/200/300(/NN)` → `border-border` · **`dark:` partnerleri SİLİNDİ** (kalsalardı token'ı ezerlerdi — Faz 5.0'ın hatası). Ayrı bir kontrol "token + eski çift aynı string'de" için **0** okudu
+  - [x] **Kural düzeltildi** (`2a7a6b4`): `bg-white/90` · `/80` + `backdrop-blur` **kapsam dışı** — buzlu cam yarı saydamlığı kasıtlı; `bg-card` opak yapardı. Kural `bg-white`'ı **önek** olarak eşliyordu. **Kural düzeltildi, göç genişletilmedi** — aşırı eşleşen kural kendini duyurmaz, sadece 0'a inmez; "sayaç temizlenene kadar göçü genişlet" yolu **her buzlu yüzeyi sessizce düzleştirirdi**
+  - ⚠️ **Dört sessiz araç hatası** (§2.5.4'e yazıldı): `className={cn("…")}` biçimi · sayacın o dala bağlı olmaması · template içindeki iç string'ler (124 site) · opaklık sonekli `dark:` partneri (59 string — **fazın yok etmek için var olduğu kusurun ta kendisi**). **En kötüsü:** üç yerde `className="[object Object]"`; **`tsc` de guard da geçti**, diff okunarak yakalandı → script artık yazmayı reddediyor
+  - [x] **Eşsiz yüzeylerin triyajı — YAPILDI (2026-09-16).** Daraltılmış tanımla ölçüm: **54 aday / 18 dosya** → **24'ü gerçek** (düzeltildi), **30'u kasıtlı** (adlandırılmış muafiyet sınıfı: print rotaları · müşteri portalı · renkli zemin üstündeki beyaz halkalar/ayraçlar). Sınıfın tamamı artık `LIGHT_SURFACE_NO_DARK` kuralıyla korunuyor — `warn` doğdu, 0'da
+  - ⏳ **Elle duman testi:** 85 dosyada kart yüzeyleri token'a geçti; **koyu temada zemin/kenarlık tonu** ve buzlu cam panellerin (`bg-white/90` — **dokunulmadı**) görünümü ekran ekran bakılmalı
+- [x] **5.5 `ARBITRARY_TEXT_SIZE` 1188 → 0** (`02b9027`, **101 dosya**, 1188 ekleme / 1188 silme). **Karar (kullanıcı onaylı): hepsi ölçeğe, TABAN 10px.** Eşleme: `11px → text-2xs` (674, **birebir** 0.6875rem) · `10px → text-3xs` (451, **birebir** 0.625rem) · `9px → text-3xs` (47, Faz 0 kararı) · `8px` (14) ve `7px` (1) → `text-3xs` (**ölçeğin tabanının altındaydı**, +2/+3px — 7px okunamıyor, taban aynı zamanda **a11y düzeltmesi**) · `11.5px → text-2xs`. **İşin %94.7'si saf kimlik değişimi.** Mekanik olarak 5.3/5.4'ten basit: saf token ikamesi, className cerrahisi yok. Script **eşlenmeyen değerde yazmayı reddediyor** — önceki üç süpürmenin dersi tek satırda: sessizce atlanan değer hata olarak görünmez, sonra "sayaç neden 0'a inmiyor" arayışı olarak görünür
+- [x] **Ölçülen kanıt:** `apps/web` + `packages/ui`'de kalan keyfi tipografi **0** · `--full` **0 error · 31 advisory** · typecheck 2/2 · build 2/2 · scoped PASS. **Dört uyarı kuralından üçü artık 0** (`NATIVE_TABLE`, `CARD_SURFACE`, `ARBITRARY_TEXT_SIZE`) → Faz 7 terfi yolu açık
+- [x] **5.6 `INLINE_STYLE_PROP` 31 → 0** (`54f5e48`). **Triyaj, süpürme değil:** 31 hit'in **19'u meşru dinamik** (yüzde, `scale()`, konum) · **9'u veriye bağlı renk** (`tpl.colorHex`, `stage.colorHex || "#3B82F6"` — **Gelecek Adımlar #25** veri sözleşmesi) · **1'i `Progress` primitifinin kendisi** · **3'ü gerçekten statik**.
+  - 🔴 **Kural standarttan GENİŞTİ.** §1.4 inline `style`'ı **yalnız statik değerler** için yasaklıyor ve aynı cümlede dinamik değerler için **meşru** sayıyor; kural ise `style={{`'nın her hâline ateşliyordu. `CARD_SURFACE`'in buzlu cam hatasının **aynısı** — ve **aynı şekilde başarısız olur**: sayaç 0'a inmez, cazip çözüm göçü genişletmek olur.
+  - **Daraltılmış desen** yalnız **her değeri saf tırnaklı-literal** olan blokları flagler (`${` yok · üye erişimi yok · `||` yok). Bu bir **şekil testi**, tahmin değil: `stage.colorHex || "#3B82F6"` (`||` ve `.` içerir) ve `${...}` taşıyan bloklar kapsam dışı. 31'in tamamına uygulandığında **tam 3** kalıyor.
+  - **3 dönüşüm:** `min-w-[800px]` · `max-h-[560px] min-h-[320px]` · `organization` canvas'ının nokta ızgarası → arbitrary `background-image` + `background-size`. **Dördü de derlenmiş CSS'te doğrulandı** (CSS değişkenli gradient + size hint, alt çizgi dönüşümünden sağ çıkmalı).
+- [x] 🎉 **FAZ 5 TAMAMLANDI — guard TAMAMEN TEMİZ: 0 error · 0 warning · 189 dosya.** Faz 0 tabanı **1458 error + 1334 advisory**'ydi. **Bu guard'daki her kural artık 0** → ADR-0004 §9'un `error`'a terfi için koyduğu **ön koşul sağlandı** (Faz 7)
+
+## [x] Faz 6 — Cila (motion + a11y + terim sözlüğü) — **TAMAMLANDI (2026-09-16)**
+
+- [x] **6.0 Motion token'ları** (`566a7ae`, `2567808`) — `MOTION_DURATION` 20 → 0, `MOTION_EASE` 19 → 0. **Bulgu: `prefers-reduced-motion` hiçbir yerde onurlandırılmıyordu** — 317 `transition-all`, 205 `transition-colors`, 32 `animate-in` boyunca **sıfır** uygulama. Global temel kural eklendi (bileşen başına `motion-reduce:` varyantı unutulur; süreler `transitionend`/`animationend` hâlâ tetiklensin diye 0.01ms'e iner, 0'a değil)
+- [x] **6.3 Türkçe terim sözlüğü** (`5dc367f`) — ölçüm + `crm-ui-standards.md` **§1.6**. **Sıra düzeltmesi:** sözlük a11y'den **önce** geldi, çünkü 106 etiket Türkçe sözlükle yazılmalı; aksi hâlde iki kez yazılırdı
+- [x] **6.1 a11y süpürmesi** (`264a0d9` kural · `e121853` primitifler · `a0075b3` 103 site) — A11Y_ICON_BUTTON **106 → 0**. Kuralın 95'i tek bir `X`/`DialogClose` deseniydi; **3 site primitifin içindeydi** (önce primitif — bu dersin 6. tekrarı). 🔴 **Düzeltme (Faz 7): gerçek sayı 106 değil 137'ydi.** Kural etiketleri `[^>]*` ile okuyordu ve bu şekil bir `>` geçemez — `onClick={() => f()}` yeter. **31 buton görünmez kaldı** ve 106 → 0 kaydedildi; Faz 7'de kural brace-aware hâle gelince 31 site daha çıktı ve etiketlendi (`8bd7c87`). Ayrıntı: ADR-0004 §9
+- [x] **6.2 Playwright smoke** (`d6952d7`, `0872bf6`) — kuruldu, `apps/web/e2e/smoke.spec.ts`, **6 test 15 saniyede geçiyor** ve CI'da kırıcı bir iş.
+  ⚠️ **Kapsam yoldan dar:** yol haritasının saydığı 6 akışın **5'i (müşteri listesi, müşteri detayı, pipeline, teklif, admin) oturum istiyor.** Bunun için tohumlanmış bir Supabase projesi gerekir ve **bu repo onu tanımlamıyor** — hiçbir yerde `supabase/config.toml` yok, `supabase/` iki depoda da takipsiz. Yani bu makinede çalışan stack **CI'da yeniden üretilemez**. O beşi yazmak çalıştırılamayan test üretirdi; test konvansiyonu `.skip`'i yasakladığı için **ölçülmüş borç olarak kaydedildi**, dekorasyon olarak commit edilmedi.
+  ✅ **Kimliksiz setin gerçekten koşabildiği varsayılmadı, doğrulandı:** middleware `127.0.0.1:54321`'e düşüyor ve `/login`, `/register`, `/quotes/view/*`, `/portal/*`'ı public sayıyor; **Supabase erişilemezken de aynı davranıyor** (ölü porta çevrildi: `/login` 200, `/` 307). Yani bu **CI'da gerçek bir kapı**, yerel bir oyuncak değil.
+
+### ⚠️ Faz 6'da ölçülen ve **kapsam dışı bırakılan** işler
+
+| Bulgu | Ölçüm | Neden ertelendi |
+|---|---|---|
+| **Nav etiketi ≠ ekran başlığı** | 28 modülün **~18'i** | Kural §1.6.4'te yazıldı (nav kazanır) ama 18 `<h1>` hizalaması ayrı geçiş |
+| **`<div onClick>` → semantik buton** | **38 site / 16 dosya** (en çok `projects/[projectId]` 8, `messages` 6) | Ayrı triyaj: kimisi `role`+`tabIndex`, kimisi gerçek `<button>` olmalı |
+| **Kalan İngilizce tek kelimeler** | 11 dosya / 14 dize | Sözlük yazıldı; süpürme ayrı iş. En yoğunu `webhooks` ('Success'/'Failed'/'Endpoint') |
+| **`dialog.tsx`/`sheet.tsx` `sr-only` "Close"** | 2 primitif | Primitif işi, çağrı yerinden önce (sözlükte karşılığı **Kapat**) |
+| **`tr.json`'un ölü namespace'leri** | 9 namespace'in **7'si 0 kullanım** | i18n altyapısı **canlı** (provider + plugin + cookie) ama yalnız `navigation`/`hubs` tüketiliyor |
+| **4 modülün i18n anahtarı yok** | `calendar` · `contracts` · `field-service` · `integrations` | `nav-config.ts`'te sabit; hiçbir dilde çevrilemez |
+| **`moduleKey` ≠ `navigation.*`** | `messages`→`chat`, `shipments`→`shipping` | Kimlik katmanı; §1.6.1'de kayda geçti |
+| **Oturumlu 5 smoke akışı** | müşteri listesi · detay · pipeline · teklif · admin | Oturum + tohumlanmış veri gerekiyor; repo `supabase/config.toml` tanımlamıyor → **CI'da üretilemez.** Çalışan bir test kullanıcısı ya da barındırılan bir test projesi verilince yazılır |
+
+
+> **Faz 5 kapanışındaki "her kural 0" iddiası 6.1 ile geçici olarak bozuldu** (a11y kuralı 106 getirdi), **6.3 süpürmesiyle yeniden sağlandı.** Bu, ADR-0004 §9'un "terfi, o kural temiz olunca" koşulunun neden **kural başına** yazıldığının kanıtı: kural eklemek ön koşulu geriye düşürebilir.
+
+## [x] Faz 7 — Sertleştirme (geri dönüşsüz) — **TAMAMLANDI (2026-09-16)**
+
+- [x] `guard:crm-ui` **kırıcı** gate oldu — **0 error · 0 advisory · 189 dosya · 16/16 kural `error`**
+- [x] Yeni kurallar **uyarıdan kırıcıya** terfi etti (`42c6735`): `ARBITRARY_TEXT_SIZE` · `NATIVE_TABLE` · `INLINE_STYLE_PROP` · `CARD_SURFACE` · `MOTION_DURATION` · `MOTION_EASE` · `A11Y_ICON_BUTTON`. Uyarı katmanı kodda ve belgede kaldı — sonraki kural yine uyarı doğup terfi etmeyi hak edebilmeli; şu an sadece boş
+- [x] **CI workflow eklendi** (`b7f1db8`) — `.github/workflows/ci.yml`, üç iş: `guard` (bağımlılıksız, `npm ci` bile yok → saniyeler), `web` (tip/lint/build), `api` (.NET 10). **Prettier bilinçli olarak yok:** `apps/web` hiçbir biçimlendiricinin kapsamında değil, geçemeyecek bir kontrol koymak yerine #18 ertelenmiş kalıyor
+- [x] **`SCOPE` listesi emekliye ayrıldı** (`c7d74bc`) — varsayılan tarama artık tam kapsam; `guard:crm-ui` ile `guard:crm-ui:full` aynı işi yapar. `--full` kabul edilmeye devam ediyor (ADR/roadmap/CI onu adıyla anıyor) ama ayrı mod değil
+- [x] `crm-ui-guard.README.md` (`acb3e8a`) ve ADR-0004 §9 nihai duruma göre güncellendi
+
+### 🔴 Faz 7'de bulunan kusur — kural standarttan **DARDI**
+
+§9.3'ün ön koşulu "ölçüldü" görünüyordu, ama ölçüm aracı bir kısmını göremiyordu. Dört kural niteliğe `[^>]*` ile ulaşıyordu; bu şekil bir `>` **geçemez**, ve JSX'te `onClick={() => f()}` ya da `disabled={page >= n}` yeterlidir:
+
+| Kural | Guard'ın dediği | Gerçek | Gizli kalan |
+|---|---|---|---|
+| `INPUT_NUMBER` | 1 | **4** | 3 |
+| `INPUT_DATE` | 0 | **5** | 5 |
+| `A11Y_ICON_BUTTON` | 0 | **31** | 31 |
+
+**Kanıt tek dosyada duruyor:** `email/page.tsx`'te "önceki sayfa" oku `disabled={page <= 1}` taşıdığı için raporlandı ve etiketlendi; kardeşi `disabled={page >= totalPages}` taşıdığı için görünmedi. İkisi arasındaki tek fark `<=` ile `>=`.
+
+Sıra bu yüzden değişti ve **önce süpür → sonra guard'ı dürüst yap → sonra terfi et → sonra emeklilik** oldu. Ters sıra, delikleri olan bir kapıyı sertleştirirdi — ve delikler tam da terfi eden kuralların içindeydi. Fixture çifti de artık kural-id **kümesini** iddia ediyor (`guard:crm-ui:fixtures`), çünkü eski `dirty.tsx` 16 kuralın **9'unu** tetikliyordu ve kontrol yalnızca "dosya FAIL veriyor mu" idi — veriyordu, diğer sekiz kural sayesinde. **Çıkış kodu kapsam değildir.**
+
+---
+
+# Program B — Registry Zenginleştirme ❌ İPTAL
+
+Karar: **`reui`, `beUI` ve `Aceternity` registry'leri eklenmez.** Gerekçe [`ADR-0004`](adr/0004-crm-design-system-enforcement.md) §2: reui'nin işe yarayan bileşenlerinin tamamı `@base-ui/react` istiyor; Radix ile birlikte ikinci bir headless foundation doğurur. Ayrıca tablo/kanban/filtre motorlarını değiştirmek, onları olduğu yerde standartlaştırmaktan **daha pahalıdır**.
+
+Bu karar aşağıdakileri kapsar ve yeniden açılmaz (yeni ADR gerekir):
+
+- `data-grid`, `kanban`, `filters`, `gantt`, `event-calendar`, `cascader`, `tree`, `sortable`, `number-field`, `autocomplete`, `stepper`, `timeline` → **alınmaz**
+- Registry config'i (`components.json` → `registries`) **boş kalır** (doğrulandı: bugün hiç third-party registry yok)
+
+---
+
+# Program C — Opsiyonel / Kayıt Altında (yapılmayacak)
+
+- **Aceternity / beUI** — CRM ekranlarında **yasak**. Dekoratif bileşenleri `crm-ui-standards.md` §1.2 anti-AI-slop kuralına aykırı; beUI'nin motion katmanı §9 "dekoratif animasyon yok" kararıyla gereksiz. İleride bir **pazarlama/landing yüzeyi** doğarsa, lisansı teyit edilerek ayrıca değerlendirilir. **Paralı plan kullanılmayacaktır.**
+- **`--space-*` ölçeği** (kökteki `design.md`'den) — spacing token ihtiyacı somutlaşırsa değerlendirilir. Bugün reddedilmiştir.
+- **Hue 270 / Geist tipografisi** (kökteki `design.md`'den) — reddedildi. Kod hue 260 + Inter/Playfair kanoniktir; hue değişimi tüm ekranların yeniden temalanması demektir.
+
+---
+
+# Gelecek Adımlar (Ertelenen İşler)
+
+Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddeler için `.scratch/` altında issue açılabilir.
+
+### Kendi başına proje
+1. **Monolit sayfa ayrıştırması** — `quotes` (~5.000 satır), `vehicles` (~4.900), `recruitment` (~3.200), `shipments` (~2.650), `organization` (~2.500), `payroll` (~2.400), `attendance` (~2.350), `messages` (~1.900), `finance` (~1.900) → 300 satır kuralı + `_components/` mimarisine tam geçiş
+2. **Görsel regresyon altyapısı** — Playwright screenshot testleri + (opsiyonel) Storybook
+3. **Tam a11y denetimi** — 52 ekranın tamamı, primitif göçünün ötesinde kalan elle yazılmış etkileşimler
+
+### Teknik borç (küçük/orta)
+4. **Dark-mode ekran taraması** — **büyük ölçüde kapandı (2026-09-16, `d7a16a1` + `ce1f77c`).** Statik tarama + **çalışma-zamanı denetimi** yazıldı: gerçek oturumla 31 rota koyu temada gezilip *boyanmış* yüzeyler ölçülüyor. Bulgu ve düzeltme: tint'lerin koyu muadilleri (441 partner, 24 dosya) + 12 `border-*-300`; açık yüzey **51 → 9**, düşük kontrast **47 → 21**. **Kural token'lı olduğunu bilir, denetim render'ı ölçer** — ikisi birbirinin yerini tutmaz. **Kalan:** 9 kasıtlı ters yüzey + 21 düşük kontrast düğümünün gözle onayı (kalem kalem kayıtlı)
+5. **Mikro kopya tam geçişi** — Türkçe terim sözlüğünün 52 ekranda eksiksiz uygulanması
+6. **`email-preview.ts` çift paletinin kaldırılması** — paylaşılan tek "token → hex" çeviriciye indirgeme
+7. **`apps/ecommerce` hayalet referanslarının temizliği** — var olmayan bu uygulama `crm-ui-guard.mjs`, `ADR-0002` ve `docs/design-system.md`'de anılıyor
+8. **`design.md` ve `docs/design-system.md` stub'larının tamamen kaldırılması** — dış referans teyidi sonrası
+9. **Boş `packages/ui/src/hooks/` export'unun kaldırılması** — `package.json`'da `"./hooks/*"` tanımlı ama klasör boş
+10. **`apps/web/components/phone-input.tsx` shim'inin kaldırılması** — import'lar doğrudan `@workspace/ui/components/phone-input`'a
+11. **Z-index ölçeği** — `z-[60]`, `z-[70]`, `z-60` keyfi değerleri için katmanlı token'lar
+12. **`--chart-*` tokenlarının kullanımı** — `lead-sources-widget`, `sales-gauge-widget` şu an hex sabit
+13. **`accordion` ve `calendar` primitifleri** — gerçek tüketici doğduğunda
+14. **`apps/web/components/` kökündeki 14 cross-feature widget'ın gözden geçirilmesi** — hangileri gerçekten paylaşılan, hangileri rota altı `_components/`'e taşınmalı
+15. **`lucide-react ^1.32.0` sürüm pininin doğrulanması** — alışılmadık bir pin
+16. **391 dosyadaki Hallmark imzasının temizliği** — `Hallmark · theme: Adaptive Zinc/Violet · design-system: design.md` başlıkları. Dokunulan dosyalarda düzeltiliyor; kalanı mekanik temizlik. Referans verdikleri doküman artık stub olduğu için sessizce yanıltıcılar
+17. **`packages/ui` biçim normalizasyonu** — eski 21 primitif `.prettierrc`'ye uymuyor (`semi: false` diyor, dosyalar noktalı virgüllü). `npm run format` 21 dosyayı toplu değiştirir; ayrı bir geçiş olarak, kendi incelemesiyle yapılmalı (tailwind eklentisi sınıf sıralarını da yeniden düzenler)
+18. **`apps/web` biçim altyapısı** — bugün **hiçbir biçimlendiricinin kapsamında değil** (Faz 3 bulgusu 3): kök `.prettierrc` `semi: false` diyor ama `apps/web` noktalı virgüllü, `prettier --check` dokunulmamış dosyalarda da FAIL veriyor; Ultracite (`biome.jsonc`) ise dış depoda ve `crm-monorepo/` gitignore'da olduğu için görünmüyor. Seçenekler: (a) `.prettierrc`'yi koda uydur (`semi: true`) ve `apps/web`'i kapsama al, (b) `crm-monorepo/`'yi Ultracite kapsamına sok, (c) `apps/web` için ayrı config. **Her seçenek tek seferlik büyük bir diff üretir** → kendi commit'i + incelemesi gerekir, Faz 3'e karıştırılmaz
+19. **✅ KAPANDI (2026-09-16, `c5a4925`) — `ConfirmDialog` paylaşılan `alert-dialog` primitifine taşındı.** Eski hâli: primitif, Faz 1'de eklenen `alert-dialog.tsx`'i değil `radix-ui`'yi doğrudan kullanıp kendi overlay'ini (`fixed inset-0` + `backdrop-blur-xs` + `shadow-2xl`) kuruyordu (Faz 3 bulgusu 6). **Yan etkisi bir hataydı:** elle yazılmış overlay'de `data-slot` **yoktu**, dolayısıyla `@media print` kuralı (`[data-slot="alert-dialog-overlay"]`) onu göremiyordu → **uygulamadaki her onay penceresi kendi scrim'ini basıyordu.** Kanonik `AlertDialogOverlay` o kuralın hedefi olduğu için hata aynı değişiklikle kapandı. **13 dosya / ~16 çağrı yeri** prop tabanlı olduğu için hiçbiri değişmedi; `AlertDialogAction`/`AlertDialogCancel` bilinçli olarak alınmadı: amber `warning` varyantının `Button` karşılığı yok, almak **yeniden tasarım** olurdu (Faz 5/6 işi).
+20. **Konteyner radius sweep'i (§1.1)** — **ölçüm düzeltildi** (bulgu 9: ilk sayım `[tenantSlug]` altını atlamıştı): `apps/web`'te **146 × `rounded-3xl`** (28 dosyada) + **459 × `rounded-2xl`**; `packages/ui`'de **14 × `rounded-2xl`**; `rounded-4xl` **0** (yasaklı olan yok). En yoğun: `products/[productId]` (17), `organization` (11), `compliance` (10), `quotes` (10). §1.1 konteynerler için `rounded-lg`/`rounded-xl` diyor; ama sayıların bir kısmı küçük çip/rozet olabilir ve konteyner değildir → **önce triyaj, sonra tek geçiş.** Faz 3 overlay işi değil: `bulk-action-bar` (`rounded-2xl` yüzen çubuk) ve `settings` kartı bu borcun örnekleri, ikisi de §2.3'te kapsam dışı ilan edildi
+21. **Print yüzeyi olan overlay'lerin yeniden tasarımı (bulgu 12)** — **beş yüzey** etkileniyor: `invoices` · `contracts` · `finance` detay drawer'ları ("Yazdır / PDF" → `window.print()`), `shipments` "Kargo Sevk Etiketi & Barkod Önizleme" modalı (`handlePrint`) ve `quotes` "Teklif Belgesi Önizleme" modalı (`handlePrint`; 2026-09-16, `28d8d6e`). Son ikisinde **`print:` sınıfı hiç yok**, yani kaybedilecek bir print düzeni zaten yoktu; tek kazanç backdrop'un artık basılmaması. Backdrop artık basılmıyor (`5229ec9`, global kural sayesinde hepsi kendiliğinden çözüldü), ama **portallanmış `fixed` konumlandırma print'te kırılgan**: sabit elemanlar sayfa başına tekrarlanabilir, sayfa kırılımı kontrol edilemez. Doğru çözüm bu yüzeyleri print için ayrı ele almak (ör. `@media print`'te içeriği normal akışa döndürmek ya da ayrı bir print rotası). **Elle print önizlemesiyle doğrulanmalı.** Aynı soru `orders/[orderId]` (muaf), `products/[productId]`, `calendar` için de doğabilir; kalan sayfalar göçerken **print akışı olan yeni bir yüzey çıkarsa buraya ekleyin**
+22. **`overlayClassName` boşluğu** - dört overlay primitifinin hiçbiri overlay'i için `className` geçirmiyor (bulgu 12'nin kökü). Global print kuralı vakayı çözdü; başka bir ihtiyaç doğarsa (farklı blur/opaklık) API açılmalı. Tek tüketici için eklenmedi
+23. **Native `alert()` → `toast`** — **10 çağrı / 4 dosya** (2026-09-16 ölçümü, Faz 3.3'te bulundu): `(auth)/login` (1), `calendar` (2), `vehicles` (6), `components/tenant-switcher` (1). Bunlar onay değil **doğrulama/hata mesajı**; native `alert()` thread'i bloklar, temayı yok sayar ve erişilebilir değil. Muadili `toast` (sonner bu dosyaların çoğunda zaten import edilmiş) veya form-içi hata metni. **Native `confirm(` artık 0** (Faz 3.3), dolayısıyla bu, o ailenin kalan tek üyesi
+24. **`--success` / `--warning` token'ları YOK** — §1.2 "`emerald`/`success`" ve "`amber`/`warning`" token'larına atıf yapıyor ama `globals.css`'te bu token'lar tanımlı değil (grep: 0 eşleşme). Bugün `emerald-*`/`amber-*` kullanılıyor ve **yasaklı değil** (renk kuralları yalnız `slate`/`violet`/`fuchsia`/hex'i yasaklar), yani acil bir ihlal yok. Faz 4'te **bilinçli olarak ertelendi**: token eklemek ADR-0004 §5'in kendi prosedürüne tabi ve yeni bir tasarım kararı gerektirir. §1.2'deki atıf **"aspirational"** olarak işaretlendi
+25. **Pipeline aşama rengi bir **veri sözleşmesi**, stil değil** — `pipeline-settings-modal`'daki `color` alanı (varsayılan `#3B82F6`) kalıcı ve **kullanıcı tarafından metin olarak düzenlenebilir**; `page.tsx:499` onu **Tailwind sınıfı** olarak, `pipeline-kanban-board:57` **ham hex** olarak, `pipeline-table-view:67-73` **hex + alfa soneki** (`${color}15`) olarak tüketiyor. Tek bir geçerli muadil değer yok. Doğru çözüm alanı bir **token sözlüğüne** (ör. `colorKey: "chart-1"`) bağlamak — API + veri göçü işi. Şimdilik gerekçesiyle allowlist'te (`INLINE_HEX_STYLE`)
+
+---
+
+## İlerleme Günlüğü
+
+| Tarih | Faz | Not |
+|---|---|---|
+| 2026-09-15 | — | Oturum kuruldu: 33 karar, Program B iptal, ADR-0004 yazıldı |
+| 2026-09-15 | Faz 0 | Redirect stub'lar yazıldı (`design-system.md` 440→~35 satır, `design.md` 203→~40 satır) |
+| 2026-09-15 | Faz 0 | Kanonik standart güncellendi: §1.3 tipografi ölçeği, §1.4 bağlayıcı kısıtlar, §2.1 sayfa kabuğu |
+| 2026-09-15 | Faz 0 | Guard'a `severity` katmanı: 3 yeni advisory kural. **Hata sayısı 1458'de sabit kaldı** — mevcut 9 kural etkilenmedi |
+| 2026-09-15 | Faz 0 | Taban ölçüldü: 176 dosya, 1458 error, 1334 advisory. Scoped kapı **PASS** |
+| 2026-09-15 | Faz 0 | **Sapma:** `--duration-*` Tailwind 4.3.3'te yok → bekliyor. **Sapma:** `SCOPE` Faz 7'ye taşındı |
+| 2026-09-15 | Faz 0 | Motion çözüldü: `--ease-crm` + `--ease-crm-in-out` token'landı, duration'lar §1.5'te değer olarak sabitlendi |
+| 2026-09-15 | Faz 0 | Kök dizin **sürüm kontrolüne alındı** (`git init` + `crm-monorepo/` gitignore). Yönetişim dokümanları artık tarihçeli |
+| 2026-09-15 | Faz 0 | **FAZ 0 KAPANDI** — typecheck 2/2, build 2/2 (52 rota), scoped kapı PASS, hata sayısı 1458'de sabit |
+| 2026-09-15 | Faz 1 | 11 primitif CLI ile eklendi → **21 → 32**. `button.tsx` ezilmedi (git diff boş) |
+| 2026-09-15 | Faz 1 | CLI'ın `cn@^0.3.0` npm bağımlılığı kaldırıldı; 11 dosyada import `@workspace/ui/lib/utils`'e çekildi. `package.json` + lock HEAD ile aynı |
+| 2026-09-15 | Faz 1 | `rounded-4xl` → `rounded-xl` (2 panel, §1.1 yasağı); `ring-3` → `ring-2` (2 dosya) |
+| 2026-09-15 | Faz 1 | **FAZ 1 KAPANDI** — typecheck 2/2, build 2/2, guard PASS, `apps/web` tüketicisi 0 |
+| 2026-09-15 | Faz 1 | Prosedür kalıcılaştırıldı: `crm-ui-standards.md` §2.1 (CLI komutu + 2 tuzak + kontrol listesi) |
+| 2026-09-15 | Faz 2 | `PageContainer` + `PageHeader` yazıldı; dashboard ve admin layout'un padding sahipliği devredildi |
+| 2026-09-15 | Faz 2 | 10 sayfa sarmalandı (customers pilotu `PageHeader`'a da geçti, `text-2xs` ilk kez kullanıldı) |
+| 2026-09-15 | Faz 2 | ✅ `text-2xs` üretilen CSS'te doğrulandı → tipografi token'ı işlevsel |
+| 2026-09-15 | Faz 2 | ⚠️ **Hata:** sezgisel kapanış-etiketi dönüşümü 2 dosyayı kırdı (`TS17002`); typecheck commit öncesi yakaladı. Yapısal eşleştirmeyle elle düzeltildi. Teknik not kaydedildi |
+| 2026-09-15 | Faz 2 | Kalan 42 sayfa kategori haritasıyla kayıt altına alındı |
+| 2026-09-15 | Faz 2 | ✅ **Kategori A tamamlandı** (7 sayfa) → **17/52**. typecheck 2/2, build 2/2 |
+| 2026-09-15 | Faz 2 | ⚠️ Teknik not 2: `customers/[customerId]`'nin kök adayı loading dalıydı → iki dönüş noktası da sarmalandı. "Mekanik" kategori bile sayfa başına doğrulama gerektiriyor |
+| 2026-09-15 | Faz 2 | ✅ **Kategori B tamamlandı** (4 sayfa) → **21/52**. `inventory`/`contracts` gerçek çift-padding'di; form ekranlarının `max-width`'i istisna olarak belgelendi |
+| 2026-09-15 | Faz 2 | ✅ **Kategori C tamamlandı** → **23/52**. `finance`/`invoices` kart değil, çift-padding deseniydi (3. kez: görünen kök, gerçek kök değil) |
+| 2026-09-15 | Faz 2 | 🔴 **Hata:** roadmap PowerShell ile yeniden yazılınca çift kodlandı (831 mojibake izi). `git checkout` ile son sağlam sürümden geri alındı, değişiklikler `edit` aracıyla yeniden uygulandı. Teknik not 3 kaydedildi |
+| 2026-09-15 | Faz 2 | ✅ **Kategori D (kısmen) + E tamamlandı** → **29/52**. `messages`/`calendar` `bleed` aldı; `organization`/`recruitment`'te kabuk `*PageContent`'e verildi; print muaf |
+| 2026-09-15 | Faz 2 | ⚠️ Teknik not 4: layout padding'i erken kaldırıldı → 2 sayfa (`email`, `products`) bir süre boşluksuz kaldı, bu batch'te kapatıldı. "Eski sahip en son emekliye ayrılır" kuralı kaydedildi |
+| 2026-09-15 | Faz 2 | ✅ **Grup F tamamlandı** (12 sayfa) → 41 sarıldı. `--full` artık 189 dosya tarıyor (Faz 1'in 11 yeni primitifi + Faz 2'nin 2'si) |
+| 2026-09-15 | Faz 2 | ✅ **Son 3 sayfa** (`orders/[orderId]`, `projects/[projectId]`, `admin/tenants/[tenantId]`) → **44 sarıldı** |
+| 2026-09-15 | Faz 2 | 🎉 **FAZ 2 KAPANDI** — 44 sarıldı + 8 belgelenmiş muafiyet = 52. typecheck 2/2, build 2/2, guard scoped PASS. Muafiyetler standart §2.2'ye yazıldı |
+| 2026-09-15 | Faz 3 | ✅ **3.0 pilot** — `pipeline-settings-modal` → `Dialog`; §2.3 migrasyon tarifi yazıldı |
+| 2026-09-15 | Faz 3 | ✅ **3.4 sıra değişikliğiyle öne alındı** — `ConfirmDialog` `rounded-3xl` + **`violet-600`** + token ihlallerinden temizlendi → guard hatası **1458 → 1454** |
+| 2026-09-15 | Faz 3 | ✅ `delete-customer-dialog` → `ConfirmDialog`: **50 → 28 satır**. El yapımı overlay sıfır |
+| 2026-09-15 | Faz 3 | 🔍 Bulgu: paylaşılan primitifin kendisi standardı ihlal ediyordu → **önce primitif düzeltilir, sonra ona taşınılır** kuralı kaydedildi |
+| 2026-09-15 | Faz 3 | ✅ **`customers` grubu tamam** (5 dosya) → **7/75**. 4 modal → `Dialog`, 1 → `ConfirmDialog`. El yapımı iz sıfır |
+| 2026-09-15 | Faz 3 | ✅ `convert-to-lead-modal` → `Dialog` → **11/75** (`42e05f5`). Diff 32/23 — desen korundu |
+| 2026-09-15 | Faz 3 | 🔴 **Hata (kendi):** girinti için `prettier --write` çalıştırıldı → **431 satır** churn (55 satırlık değişiklik). Geri alındı, elle yeniden uygulandı. **Bulgu 3** kaydedildi: `apps/web` hiçbir biçimlendiricinin kapsamında değil |
+| 2026-09-15 | Faz 3 | ✅ `template-modal` → `Dialog` → **12/75** (`4700991`). `flex flex-col`, primitifin `grid`'ini tailwind-merge ile yendi |
+| 2026-09-15 | Faz 3 | ⚠️ **Bulgu 4:** koşulsuz `max-w-*`, primitifin mobil kenar payını siliyordu (375px'te 343 → 375). Önceki 2 dosya `ed5efff` ile düzeltildi; §2.3'e boyut aktarımı kuralı yazıldı |
+| 2026-09-15 | Faz 3 | ✅ `email-account-modal` → `Dialog` → **13/75** (`06af922`). Formun ham `<input>`'ları kapsam dışı bırakıldı (Faz 5) |
+| 2026-09-15 | Faz 3 | 🔴 **Bulgu 5:** `Sheet`'in `data-[side=*]` varsayılanları, öneksiz `w-full`/`sm:max-w-*` ezmelerini **yiyor** (tailwind-merge modifier listeleri eşleşmiyor, ardından CSS özgüllüğü). `whatsapp-chat-drawer` %75 / 384px render ediyordu → `7f639f0` ile düzeltildi; §2.3'ün `cn()` gerekçesi yeniden yazıldı |
+| 2026-09-15 | Faz 3 | ✅ `email-thread-drawer` → `Sheet` → **14/75** (`c226549`, 2. Sheet). `TS2657`: kök div silinince 3 kardeş kaldı → iç içe modallar `Sheet` içine alındı (konumları değişmedi). Gerçek diff (`-w`) 25/17 |
+| 2026-09-15 | Faz 3 | 📌 **Bulgu 6:** `ConfirmDialog` paylaşılan `alert-dialog` primitifini kullanmıyor, kendi overlay'ini kuruyor → Gelecek Adımlar #19 |
+| 2026-09-15 | Faz 3 | 📊 **Ara ölçüm:** `guard:crm-ui` scoped **PASS** (0 error/18 dosya) · `--full` **1454** (taban sabit, regresyon yok) · typecheck 2/2 · `email` grubu **6/6 tamam** |
+| 2026-09-16 | Faz 3 | 📏 **Kapsam ölçümü:** yol haritası "kök (6)" diyordu; fiilî durum **8 overlay dosyası** (5 modal + 3 popover/dropdown) + `bulk-action-bar` muafiyeti. Sıra: önce Dialog'lar, sonra popover grubu |
+| 2026-09-16 | Faz 3 | ✅ **Karar:** dokunulan dosyadaki yanıltıcı Hallmark satırı **silinir** — #16 ile §2.3 "tek değişken" kuralı çelişiyordu; kullanıcı #16'yı seçti. Ölçüm: `apps/web` 139 `.tsx`'in **43**'ünde iz (37 `app/**`, 6 `components/` kök) |
+| 2026-09-16 | Faz 3 | ✅ `shortcuts-help-modal` → `Dialog` → **15/75** (`b2d2b84`) |
+| 2026-09-16 | Faz 3 | ✅ `quick-add-sales-rep-modal` → `Dialog` → **16/75** (`a7b9d02`) |
+| 2026-09-16 | Faz 3 | ✅ `entity-picker-modal` → `Dialog` → **17/75** (`7f55787`). Elle backdrop `onClick` + panel `stopPropagation` silindi; **Enter-ile-seç** davranışı `onKeyDown`'ı `DialogContent`'e taşıyarak korundu (overlay göçünde davranış kaybı yok) |
+| 2026-09-16 | Faz 3 | ✅ `team-members-stack` invite modalı → `Dialog` → **18/75** (`65b1feb`). Sarmalayıcının `overflow-y-auto` rolü `DialogContent`'e devredildi; panel `rounded-3xl` → primitiften `rounded-xl`. Dosyadaki popover sonraki adıma bırakıldı (tek değişken) |
+| 2026-09-16 | Faz 3 | ✅ `command-palette` → `Dialog` → **19/75** (`ce72250`). Faz 3'ün **tek üstten hizalı** dialogu: `top-16 translate-y-0 sm:top-24`. 8/8 ezme gerçek `tailwind-merge` ile doğrulandı; `max-w-[calc(100%-2rem)]` **bilinçli korundu** (eski `p-4` ile piksel eşit). Görünür başlık yok → `sr-only` `DialogTitle` |
+| 2026-09-16 | Faz 3 | 🔴 **Bulgu 7:** `popover.tsx` + `dropdown-menu.tsx` (`Content`/`SubContent`) `rounded-3xl` ile yazılmıştı — bulgu 1'in tekrarı. **Önce primitif** (`db8cf6e`), sonra 3 tüketici. `packages/ui`'de `rounded-3xl` artık **0**; 4 overlay primitifi `rounded-xl`'de birleşti |
+| 2026-09-16 | Faz 3 | ✅ `tenant-switcher` → **`Popover`** → **20/75** (`8797590`) — repo'nun **ilk Popover tüketicisi**. `useEffect` click-outside + Escape, `useRef`, `useId`, elle `aria-expanded`/`aria-haspopup`, `z-[70]` silindi. Gerçek diff (`-w`) **21/27 = net küçülme** |
+| 2026-09-16 | Faz 3 | ✅ `dashboard-share-popover` → `Popover` → **21/75** (`90316df`) |
+| 2026-09-16 | Faz 3 | ⚠️ **Bulgu 8:** mobil "başlık altı tam genişlik" paneli `Popover`'ın çapa modeliyle birebir üretilemez → `align="end"` + `w-[calc(100vw-1.5rem)]` + `collisionPadding={12}` + `sideOffset={10}` ile yaklaşıldı. Tetikleyiciler başlıkta olduğu için aynı yere düşüyor. **`DropdownMenu` hiç kullanılmadı** (üçü de menü değil) |
+| 2026-09-16 | Faz 3 | ✅ `notification-center` → `Popover` → **22/75** (`b9ec6fa`). İki `useId`, elle `role="dialog"`, `aria-expanded`/`aria-haspopup` silindi; `setShowTestMenu(false)` `onOpenChange`'e taşındı → artık `Esc` ve dışa tıklama dâhil **her** kapanışta çalışıyor. Gerçek diff 23/47 |
+| 2026-09-16 | Faz 3 | ✅ **§2.4 yazıldı** — Popover/DropdownMenu alt-deseni: 7 adım, konumlandırma→prop tablosu, mobil yaklaşım uyarısı, `DropdownMenu` seçim kuralı, `bulk-action-bar` kapsam-dışı gerekçesi, "4 overlay primitifi tek radius" notu |
+| 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** `guard:crm-ui` scoped **PASS** · `--full` **1451** · typecheck 2/2 · `build` 2/2 · `components/email` (6/6) + `components/` kök (8/8) tamam |
+| 2026-09-16 | Faz 3 | 🔽 **1454 → 1451:** 3 `SLATE` hatası kendiliğinden düştü, ölçülerek doğrulandı. Paneller primitife geçerken kendi renk sınıflarını bıraktılar: `team-members-stack` backdrop `bg-slate-950/60` + panel `border-slate-200` (−2), `dashboard-share-popover` panel `border-slate-200/90` (−1). `violet-*` (104) ve `fuchsia-*` (11) **değişmedi** — kapsam disiplini tuttu, renk işi Faz 4'te |
+| 2026-09-16 | Faz 3 | ⏳ **Elle duman testi bekliyor:** `tenant-switcher` mobil drawer içinde artık `z-[70]` yerine primitifin `z-50`'siyle portallanıyor (DOM sırası çözmeli, gözle doğrulanmalı); iki panelin mobil genişliği çapaya bağlı |
+| 2026-09-16 | Faz 3 | 📏 **Kapsam ölçümü:** `widgets` grubu `components/` altında değil, **`app/(dashboard)/[tenantSlug]/widgets`** altında ve 4 dosya (3 gerçek overlay + 1 muafiyet). `draggable-widget-wrapper` hover sürükleme tutamacı → overlay değil |
+| 2026-09-16 | Faz 3 | ✅ `customize-widgets-modal` → `Dialog` → **23/75** (`02517d7`). Kaydırma sahibi dosya başına belirlendi: liste kendi içinde kaydığı için `DialogContent` `overflow-hidden` kaldı — `team-members-stack`'te tam tersiydi |
+| 2026-09-16 | Faz 3 | ✅ `quick-create-modal` → `Dialog` → **24/75** (`fad85b4`). Kapanış kontrolü artık `Button` üzerinden: primitif `Button` `...props` yayıyor, `DialogClose asChild` güvenli |
+| 2026-09-16 | Faz 3 | ✅ `quick-actions-widget` satır içi modalı → `Dialog` → **25/75** (`95af399`). `localStorage`'a anında yazıldığı **doğrulandı** → dış-tıklama kazancı veri kaybı yaratmıyor |
+| 2026-09-16 | Faz 3 | 🔴 **Hata (kendi):** `TS17002` — iki açılış `div`'ini `Dialog`+`DialogContent` ile değiştirip kapanışta bir `</div>` bıraktım. `tsc` yakaladı, commit'ten önce düzeltildi. Faz 2 Teknik not 1'in tekrarı → §2.3'e "açılış/kapanış SAYILIR" kontrolü eklendi |
+| 2026-09-16 | Faz 3 | ✅ `create-deal-modal` → `Dialog` → **26/75** (`ae34d03`). Kendi `Escape` `window` dinleyicisi silindi; `useEffect` yalnızca onun için vardı |
+| 2026-09-16 | Faz 3 | ✅ `deal-detail-drawer` → **`Sheet`** → **27/75** (`e78611a`). 3 kademeli genişlik ezmesi: `data-[side=right]:w-full` + `:sm:max-w-none` + `:md:max-w-2xl` — eski `w-full` + `md:max-w-2xl` ile **birebir**. Gerçek `tailwind-merge` ile doğrulandı (primitifin 2 sınıfı çıktıdan düştü). İçindeki `ConfirmDialog` `Sheet` içine alındı |
+| 2026-09-16 | Faz 3 | ✅ `bulk-coupon-modal` → `Dialog` → **28/75** (`18cae3e`). İlk `onInteractOutside` kullanımı: üretilen kupon kodları geri alınamaz → dış-tıklama **koşullu** engellendi |
+| 2026-09-16 | Faz 3 | ✅ **Karar (kullanıcı onaylı):** dış-tıklama varsayılan açık; yalnızca **geri alınamaz çıktı** varsa engellenir. Form taslağı sayılmaz. Kural §2.3'e yazıldı |
+| 2026-09-16 | Faz 3 | ✅ `campaign-modal` → `Dialog` → **29/75** (`dd1c1e9`). 5 adımlı sihirbaz: girdi yeniden yazılabilir → varsayılan uygulandı. **Takasın en görünür örneği**, politika sert kalırsa ilk buraya bakılmalı |
+| 2026-09-16 | Faz 3 | 🔴 **Bulgu 9 — ölçüm hatası (kendi):** radius sayımı `Select-String -Path` ile yapıldı ve `[tenantSlug]` **joker** sanıldığı için 118 dosya **sessizce atlandı**. Doğru değerler: `rounded-3xl` 6 değil **146**, `rounded-2xl` 33 değil **459**. Yol haritası düzeltildi; kural: Node ile yürü ya da `-LiteralPath` |
+| 2026-09-16 | Faz 3 | ✅ **§2.3 genişletildi** — dış-tıklama politikası tablosu + kod örneği, "açılış/kapanış say" kontrolü, overlay **olmayan** yüzen yüzeylerin konsolide listesi (4 dosya, gerekçeleriyle) |
+| 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** `guard:crm-ui` scoped **PASS** · `--full` **1451** · typecheck 2/2 · `widgets` (3/3) + `pipelines/_components` (2/2) + `promotions/components` (2/2) tamam |
+| 2026-09-16 | Faz 3 | ✅ `send-quote-email-modal` → `Dialog` → **30/75** (`c922aa4`) · `TestSendModal` → `Dialog` → **31/75** (`64eb943`). İkincisi keyfi `z-[60]`'ı da kaldırdı (Gelecek Adımlar #11) |
+| 2026-09-16 | Faz 3 | ✅ `bulk-assign-modal` → `Dialog` → **32/75** (`942bec0`). Hata raporu **yeniden üretilebilir** (aynı istek aynı hataları verir) → dış-tıklama varsayılanı uygulandı, engellenmedi |
+| 2026-09-16 | Faz 3 | ✅ **`product-gallery` lightbox → `Dialog` → 33/75** (`30ec21d`). 🔴 **Bulgu 11:** elle `aria-modal="true"` + `role="dialog"` kuruluyordu ama **focus trap yoktu** — Sekme arkadaki sayfaya kaçıyordu. Primitif trap/scroll-lock/Esc sağlıyor; **ok tuşları** `DialogContent.onKeyDown`'a taşındı (davranış korundu). Yüzey negasyonu (lightbox) gerekçesiyle kayda geçti |
+| 2026-09-16 | Faz 3 | ✅ `contract-sign-modal` → `Dialog` → **34/75** (`d0cda46`) |
+| 2026-09-16 | Faz 3 | ✅ `layout/mobile-nav` drawer → **`Sheet side="left"`** → **35/75** (`aa45adc`). Faz 3'ün ilk sol Sheet'i; `md:hidden print:hidden` portal edilen içeriğe taşındı, `SheetTitle` sr-only eklendi (görünür başlık yok) |
+| 2026-09-16 | Faz 3 | ✅ `PortalClient`'ın **iki** modalı (onay + revizyon) → `Dialog` → **36/75** (`4e5d722`). Guard **1451 → 1447**: ölçüldü, `PortalClient`'ın `slate-*` sayısı 109 → 105 (panel `border-slate-200` ×2 + backdrop `bg-slate-950/50` ×2) |
+| 2026-09-16 | Faz 3 | ✅ `team-members-stack` ertelemeli popover → **`Popover`** → **37/75** (`138fee4`). `popoverRef` + click-outside/Esc effect'i + elle toggle silindi; gerçek diff 49/68 = **net küçülme** |
+| 2026-09-16 | Faz 3 | 🎉 **3.1 TAMAMLANDI (37/75).** Tüm isimli gruplar bitti. 🧹 **Hata (kendi):** `popoverRef`'i silerken yanlışlıkla yeniden ekledim — sembolü grep'leyerek commit'ten önce yakaladım (tsc de yakalardı) |
+| 2026-09-16 | Faz 3 | 📏 **3.2 kapsamı ölçüldü:** **34 `page.tsx` · 108 `fixed inset-0`**. Kalan 5 dosya overlay değil (muaf, tek `backdrop-blur`/`shadow-2xl`). `settings/page` kartındaki dekoratif blur bu listede |
+| 2026-09-16 | Faz 3 | 📊 **Kapanış ölçümü:** scoped **PASS** · `--full` **1446** · typecheck 2/2 · build 2/2 |
+| 2026-09-16 | Faz 3 | ⚠️ **Ortam uyarısı (kod değil):** `build` sırasında "diskte yeterli yer yok" (os error 112). **D: sürücüsünde 0.4 GB boş.** Ölçüm: `crm-monorepo/.turbo/cache` **477 dosyada ~40.6 GB**, `apps/web/.next` ~4 GB. Turbo cache yeniden üretilebilir; temizlik için onay bekliyor |
+| 2026-09-16 | Faz 3 | ✅ **Turbo cache temizlendi** (onaylı): `crm-monorepo/.turbo/cache` silindi → **D: 0.4 GB → 41 GB boş** |
+| 2026-09-16 | Faz 3.2 | ✅ `(admin)/admin/templates` modalı → `Dialog` → **38/75** (`ee167e5`). **Sayfa deseni netleşti:** backdrop elemanı yok (sarmalayıcı backdrop), **panel kendi kaydırıcısı** → `DialogContent` `overflow-y-auto` alır (3.1'in tersi), `space-y-6` + `gap-0` |
+| 2026-09-16 | Faz 3.2 | ✅ `(admin)/admin/tenants` modalı → `Dialog` → **39/75** (`8f3b524`) |
+| 2026-09-16 | Faz 3.2 | ✅ `roles` create-role modalı → `Dialog` → **40/75** (`07d476d`). Panelde `max-h`/`overflow` yoktu → eklendi: primitif body scroll'unu kilitlediği için uzun içerik erişilemez kalırdı. Kısa içerikte **görünmez**, dosyayı kardeşleriyle tutarlı yapar |
+| 2026-09-16 | Faz 3.2 | ✅ `users` invite modalı → `Dialog` → **41/75** (`757799b`). Aynı eksik `max-h`/`overflow` → aynı gerekçeyle eklendi |
+| 2026-09-16 | Faz 3.2 | ✅ `tickets` create-ticket modalı → `Dialog` → **42/75** (`fbf5591`). Bu panelde `max-h` + `overflow-y-auto` zaten vardı → ekleme gerekmedi |
+| 2026-09-16 | Faz 3.2 | 🔁 **Bulgu 9'un ikinci vakası:** guard düşüşünü dağıtmak için `git show <sha>^:yol` kullanıldı; **`cmd.exe` `^`'i yiyor** → "ebeveyn" commit'in kendisine çözüldü, her dosya **tam 0** değişim raporladı. `~1` ile tekrarlandı: `templates −2` + `tickets −1` = doğru dağılım. **Ders: ölçüm ikinci bir yolla doğrulanmalı** |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1443** (1458'den; zincir her adımda ölçüldü) · typecheck 2/2 · 3.2'de 5/34 sayfa |
+| 2026-09-16 | Faz 3.2 | ✅ `automations/[workflowId]` simülasyon modalı → `Dialog` → **43/75** (`d9bbc3b`). Panelde `max-h`/`overflow` yoktu → eklendi |
+| 2026-09-16 | Faz 3.2 | ✅ `automations` **iki overlay birden** → **44/75** (`4e7a387`): tarif drawer'ı **`Sheet side="right"`**, dry-run modalı `Dialog`. Sheet ezmeleri gerçek `tailwind-merge` ile doğrulandı (primitifin 2 varsayılanı düştü). Denge 8/8 etiket için kontrol edildi |
+| 2026-09-16 | Faz 3.2 | 🔴 **Bulgu 12:** `invoices` detay drawer'ı hem overlay hem **print yüzeyi** (`print:max-w-none`, `print:hidden`, `window.print()` açıkken). `SheetContent` overlay'e `className` geçirmiyor → backdrop print'e girer ve çağrı yerinden engellenemez. **Kullanıcı onayıyla iki adıma bölündü** |
+| 2026-09-16 | Faz 3.1 | ✅ **Print kuralı** (`5229ec9`): `globals.css` `@media print` içinde üç overlay `data-slot`'u + `$="-backdrop"` gizleniyor. Elle yazılmış backdrop'lar `print-color-adjust: exact` yüzünden **zaten basılıyordu** — bu kural onları da temizledi. **Derlenen CSS'te doğrulandı** (kaynakta değil) |
+| 2026-09-16 | Faz 3.2 | ✅ `invoices` create-invoice modalı → `Dialog` → **45/75** (`172fe2a`) |
+| 2026-09-16 | Faz 3.2 | ✅ `invoices` detay drawer'ı → **`Sheet side="right"`** → **46/75** (`e5dfe86`). Print niyeti sınıfları korundu; **print özgüllük tuzağı** §2.3'e yazıldı (`print:*` temel varyantta kalır, önekli kural kazanır) |
+| 2026-09-16 | Faz 3.2 | ⏳ **Elle print önizlemesi bekliyor** — programatik doğrulanamaz: backdrop basmamalı, panel A4'e sığmalı, gövde kötü bölünmemeli. Portallanmış `fixed` konumlandırma kırılgan; **doğrulanmadı** |
+| 2026-09-16 | Faz 3.2 | 🔧 **Primitif API boşluğu kaydedildi:** dört overlay primitifinin hiçbiri overlay için `className` geçirmiyor. Global print kuralı bu vakayı çözdü; başka bir ihtiyaç doğarsa `overlayClassName` açılmalı |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1443** · typecheck 2/2 · build 2/2 · 3.2'de **8/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `leaves` **iki modal** → `Dialog` → **47/75** (`9b553d3`). Ret modalının **kapatan X'i yok** → `DialogTitle` var ama `DialogClose` yok; denge sayımı (Dialog 2/2, DialogClose 1/1) bunu **doğru** raporlar, simetri beklenmez. `CreateLeaveModal`'da form içeride kaydığı için `flex flex-col overflow-hidden p-0` |
+| 2026-09-16 | Faz 3.2 | ✅ `contracts` **modal + drawer** → `Dialog` + **`Sheet side="right"`** → **48/75** (`615ca49`). Hallmark satırı (uzun varyant) silindi |
+| 2026-09-16 | Faz 3.2 | 🔎 **İkinci print yüzeyi bulundu:** `contracts` detay drawer'ında "Yazdır / PDF" → `window.print()`. `5229ec9`'daki **global** kural bunu kendiliğinden karşıladı — kuralı tek dosyaya özel yazmamanın gerekçesi buydu. Gelecek Adımlar #21 kapsamı genişledi |
+| 2026-09-16 | Faz 3.2 | 🧹 **Hata (kendi, tsc'den önce yakalandı):** `contracts`'ta iki açılış `div`'ini `Sheet`/`SheetContent` yapıp kapanışta bir `</div>` fazla bıraktım — `quick-actions-widget`'teki `TS17002`'nin **aynısı**. Bu kez **okuyarak** yakalandı, çünkü o olay "açılış/kapanış say" kontrolünü devam noktasına yazdırmıştı. Commit edilen ağaç hiç bozulmadı |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1443** · typecheck 2/2 · 3.2'de **10/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `compliance` **drawer + modal** → `Sheet` + `Dialog` → **49/75** (`d86f3a1`). Dosyada kalan 2 `zoom-in-95`/`animate-in` **kontrol edildi**: satır 1025/1041'de sonuç kartlarının iç animasyonu, overlay kromu değil (Faz 6) |
+| 2026-09-16 | Faz 3.2 | ✅ `payroll` **2 modal** → `Dialog` → **50/75** (`f453457`). 2729 satırlık dosyada izler tamamen sıfır: `fixed inset-0`/`backdrop-blur`/`shadow-2xl`/`rounded-3xl`/`fade-in`/`animate-in` = **0** |
+| 2026-09-16 | Faz 3.2 | ✅ `field-service` **2 modal** → `Dialog` → **51/75** (`de62bca`). Hallmark silindi. ⚠️ **Farklı el stili** (attribute sırası prettier dışı, trailing comma yok, eksik noktalı virgül) → **yerel stile uyuldu, normalize edilmedi** |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1443** · typecheck 2/2 · 3.2'de **13/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `orders` **2 modal** → `Dialog` → **52/75** (`79b21c7`). Silme onayının X'i yok → `DialogClose` 1/1 (doğru asimetri). 🆕 **Yeni muafiyet sınıfı:** elle yazılmış toast (satır 358) overlay **imzasını** taşıyor ama overlay değil → §2.3'e eklendi |
+| 2026-09-16 | Faz 3.2 | ✅ `orders/[orderId]` **2 modal** (`ChangeStatusModal` + `AddPaymentModal`) → `Dialog` → **53/75** (`b04982a`). 🔎 **Önemli:** bu sayfa print için `window.print()` değil **ayrı rota** kullanıyor (`/orders/{id}/print`) — Gelecek Adımlar #21'in önerdiği desen **repoda zaten var**. Yani `invoices`/`contracts` drawer'ları **istisna**, §2.3'e yazıldı |
+| 2026-09-16 | Faz 3.2 | ✅ `tickets/[ticketId]` **2 modal** → `Dialog` → **54/75** (`1cda709`). Şablon yöneticisi **sarmalayıcı kaydıran** desen (`overflow-y-auto` sarmalayıcıda) → `DialogContent`'e taşındı. Kapatma handler'ı iki iş yapıyordu (kapat + `setEditingTemplate(null)`) → ikisi de `onOpenChange`'e |
+| 2026-09-16 | Faz 3.2 | 📉 **`--full` 1443 → 1441** (−2): `tickets/[ticketId]`'ın iki sarmalayıcısı `bg-slate-900/60` taşıyordu, yüzey primitife geçince sınıflar gitti |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **16/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `email` **1 modal** → `Dialog` → **55/75** (`62ed950`). **Backdrop `<button>`** deseni; başlıkta **iki buton** var → yalnızca X `DialogClose` oldu, **tema toggle'ı kaldı** (yanlış yapılsa tema değiştirmek modalı kapatırdı) |
+| 2026-09-16 | Faz 3.2 | ✅ `projects` **1 modal** → `Dialog` → **56/75** (`71335b8`). Hallmark silindi. Dosya kendi toast'ını `{/* Toast */}` diye adlandırıyor → muafiyet net |
+| 2026-09-16 | Faz 3.2 | ✅ `projects/[projectId]` **4 overlay** → `Sheet` + 3×`Dialog` → **57/75** (`1c601be`). Fazın en büyük tek göçü. Drawer'ın **görünür başlığı yok** → sr-only `SheetTitle` |
+| 2026-09-16 | Faz 3.2 | 🔴 **Hata (kendi, 3. tekrar):** drawer'da iki açılış `div`'ini `Sheet`/`SheetContent` yapıp kapanışta bir `</div>` fazla bıraktım → `TS17002`. **Kontrolü atladım** çünkü dosyada 4 overlay vardı ve kapanışları tek tek saymak yerine hızlı geçtim. `tsc` yakaladı, commit edilen ağaç bozulmadı. **Tuzak listesinde artık 3 kayıt + 1 okumayla yakalanan near-miss** → fazın en pahalı alışkanlığı |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **19/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `products/[productId]` **4 modal** (her biri kendi component'inde) → `Dialog` → **58/75** (`d2b187d`). 🆕 **Padding sahibi kuralı:** panel `p-6` + **içerik kaydırıcı** ise `DialogContent` `p-0` alır ve padding **başlık+forma dağıtılır** — unutulsa diff'te makul görünür, ekranda içerik kenara yapışır. §2.3'e yazıldı |
+| 2026-09-16 | Faz 3.2 | ✅ `calendar` **4 overlay** → `Dialog` → **59/75** (`2d4e61e`). İlk 2'si **sarmalayıcı kaydıran** desen (`overflow-y-auto` sarmalayıcıda + panel `my-8`) → `DialogContent` `overflow-y-auto`, `my-8` düştü. Hallmark silindi |
+| 2026-09-16 | Faz 3.2 | 🧹 Kapanış sayımı bu turda **her dosyada toplu** yapıldı (4/4 ve 4/4) — tuzak 3 kez çıktığı için refleks değiştirildi. `tsc` iki dosyada da ilk denemede geçti |
+| 2026-09-16 | Faz 3.2 | 🆕 Toast muafiyeti **6 dosyada 7 örnek** oldu (`calendar` 7.'si). §2.3'e "her yeni sayfada bu imzayı görünce önce 'toast mı?' diye sor" notu eklendi |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **21/34 dosya** |
+| 2026-09-16 | Faz 3.2 | ✅ `finance` **1 drawer + 4 modal** → `Sheet` + `Dialog` → **60/75** (`fd5f715`). Drawer **3. print yüzeyi** (`handlePrintStatement` → `window.print()`, `print:` sınıfları, `print:hidden` başlık) → global kural yine karşıladı. Son 4'ü karekteristik olarak `max-h-[90vh]` vardı ama **overflow yoktu** → eklendi |
+| 2026-09-16 | Faz 3.2 | ✅ `inventory` **3 modal + 2 drawer** → **61/75** (`9313be1`). ⚠️ **Araç dersi:** bu dosyada X ikon boyutu **tutarsız** (modal `h-4 w-4`, drawer `h-5 w-5`); `h-5` varsayınca `edit` aracı oldString'i **reddetti** (araç doğru çalıştı). → **satırları oku, boyut varsayma** |
+| 2026-09-16 | Faz 3.2 | 🛠️ **Araç eklendi (temp):** `dump.cjs` (satır + girinti + JSON içerik) ve `tail.cjs` (kapanış bloğunu **deterministik** değiştirir). Elle boşluk saymak 2 kez hatalı düzenleme üretti; script üretmedi. **Tempo ~2× arttı** |
+| 2026-09-16 | Faz 3.2 | ✅ `products` **5 overlay** → **62/75** (`5d3f8e8`): silme modalı (X'i yok → `DialogClose` 4/4) + **2. lightbox** (elle `role="dialog"` + `stopPropagation`, focus trap yok) + 3 form modalı |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **24 göç + 1 muaf = 25/34** · bu turda **3 dosya / 16 overlay** (önceki turlarda 2-3 dosya) |
+| 2026-09-16 | Faz 3.2 | 📏 **Kalan kapsam ölçüldü:** **9 sayfa · 52 `fixed inset-0`** — `webhooks` (1) ve `webhooks/[endpointId]` (1) **önceki listelerde eksikti**, eklendi. `app/page.tsx` yalnız toast taşıyor → 3.2 dışı |
+| 2026-09-16 | Faz 3.2 | ✅ `webhooks` (`6ab6e53`) · `webhooks/[endpointId]` (`acace95`) · `attendance` (`8120e2f`) → **65/75**. `attendance`'ın üç modalı **token-temiz**ti → yalnız overlay katmanı değişti |
+| 2026-09-16 | Faz 3.2 | 🔴 **Hata (kendi): iki git yazımını paralel çalıştırdım** → `index.lock` çakışması; sonuç: bir commit'in **mesajı bir dosyayı, içeriği başka dosyayı** anlatıyordu. `git reset --soft HEAD~1` ile commit geri alındı (içerik kaybı yok, ağaç temiz), üç dosya doğru sırayla ve **doğru mesajlarla** yeniden commit edildi; `git show --stat` ile her commit'in mesajıyla eşleştiği doğrulandı. **Kural: git yazımları asla paralel çalıştırılmaz.** (Teknik notlar'a eklendi) |
+| 2026-09-16 | Faz 3.2 | 🛠️ `tailV2.cjs` eklendi — kapanış bloğunu **sarmalayıcı girintisinden** bulur (bağlantı metni gerekmez), önce/sonra raporlar. Bu turda **8 overlay'de** kullanıldı, hiç kapanış hatası çıkmadı |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **27 göç + 1 muaf = 28/34** · bu turda **3 dosya / 5 overlay** |
+| 2026-09-16 | Faz 3.2 | ✅ `vehicles` **6 overlay** → **66/75** (`806a3a0`). **5000 satır — fazın en büyük tek göçü.** Detay drawer'ı → `Sheet`; 4 adımlı model sihirbazı + EPC parça + teknik doküman + doküman önizleme + kalıcı silme onayı → `Dialog`. Silme onayının X'i yok → `DialogClose` 4/4 (doğru). Doküman önizlemesinin `title={document.name}` özniteliği `DialogTitle`'a korundu. Hallmark silindi |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **28 göç + 1 muaf = 29/34** · kalan **5 sayfa / 41 overlay** |
+| 2026-09-16 | Faz 3.2 | ✅ `organization` **3 modal + 2 drawer** → **67/75** (`ae4c309`). **Ölçüm tuzağı:** tarama **7 `fixed inset-0`** diyor ama **5'i overlay** — ikisi detay drawer'ının **kendi backdrop div'i**. Personel drawer'ının **iki `return` dalı** (yükleniyor + yüklendi) da `Sheet`; yükleniyor dalına **sr-only `SheetTitle`**, yüklendi dalına profildeki ad `<h3>`'ü → `SheetTitle` (üst çubuktaki mono sicil no **etiket**, başlık değil) |
+| 2026-09-16 | Faz 3.2 | ✅ `shipments` **6 modal + 1 drawer** → **68/75** (`e1d4742`). **🆕 4. print yüzeyi bulundu:** `handlePrint` → `window.print()` ("Kargo Sevk Etiketi & Barkod Önizleme") — diğer üçünün aksine **hiç `print:` sınıfı yok** → Gelecek Adımlar #21 + §2.3 güncellendi. **`gap-0`'ın ikinci gerekçesi:** bu 4 formun paneli **hiç dikey boşluk utility'si taşımıyordu** (çocuklar boşluksuz yığılıyordu); primitifin `grid gap-6`'sı kalsaydı her banda 24px eklerdi |
+| 2026-09-16 | Faz 3.2 | ✅ `recruitment` **4 modal + 2 drawer** → **69/75** (`61529af`). İki drawer'ın mono etiketi (`ADAY DETAYI`/`BAŞVURU DETAYI`) etiket kaldı, gövdedeki **ad başlığı** `SheetTitle` oldu — `organization` ile aynı kural |
+| 2026-09-16 | Faz 3.2 | 📊 **Ara ölçüm:** scoped **PASS** · `--full` **1441** · typecheck 2/2 · 3.2'de **31 göç + 1 muaf = 32/34** · kalan **2 sayfa / 19 overlay** (`messages`, `quotes`) |
+| 2026-09-16 | Faz 3.2 | ✅ `messages` **4 modal** → **70/75** (`2cc15f0`). **8 `fixed inset-0`'in 4'ü ayrı backdrop div'i** → gerçek overlay 4. Hepsi `{isX && …}` biçiminde → koşul **korundu** + `open` verildi (kapanışta unmount → yerel state sıfırlanıyor, o davranış bilinçli). ⚠️ Sarmalayıcının `overflow-y-auto`'su **hiç uygulanmıyordu** (panel `max-h-[92vh] overflow-hidden` ile kendi çocuklarını kırpıyordu) → primitifte de `overflow-hidden` seçildi, kısa ekran davranışı **birebir** korundu |
+| 2026-09-16 | Faz 3.2 | ✅ `quotes` **6 modal + 1 drawer** → **71/75** (`28d8d6e`). **11 `fixed inset-0`'in 4'ü backdrop.** ⚠️ **Tek `return` içinde 4 overlay** (drawer + 3 modal): sarmalayıcı `Sheet`, panel `SheetContent`, 3 `Dialog` **`Sheet` kökünün içinde** kaldı (portal → yalnız yapısal; alternatif ~660 satır drawer gövdesini yeniden girintilemekti). Drawer'ın taban genişlik sınırı yoktu → `data-[side=right]:sm:max-w-none data-[side=right]:md:max-w-3xl` (`deal-detail-drawer` örneği). 3 modal **`z-60` + `bg-slate-950/40` + ayrı backdrop yok** (sarmalayıcı backdrop'un kendisiydi). **5. print yüzeyi** bulundu → #21 + §2.3 güncellendi |
+| 2026-09-16 | Faz 3.2 | ⚠️ **`tailV2` yanlış eşleşti (ilk kez) — denge kontrolü yakaladı.** Sezgisel kural "panel kapanışı **hemen ardından** sarmalayıcı kapanışı gelir" varsayıyor; `quotes`'ta drawer'ın panel kapanışından sonra **yorum** geliyordu (araya 3 modal girmiş), tarama devam edip **şablon modalının** `div/div/);` çiftini sahiplendi. Sonuç: `Dialog` 6 açık / 5 kapalı + bir `Sheet` kapanışı bir dialog'un üzerine yazıldı. **Ders: sezgisel yalnız "bitişik" durumda güvenilir; kardeş overlay tam da o bitişikliği bozar.** |
+| 2026-09-16 | Faz 3.2 | 📉 **`--full` ilk kez düştü: 1441 → 1438 (-3).** Kaynak: `quotes`'ta elle yazılmış yüzeyin primitifle değişmesi, o sınıfların taşıdığı ADR-0002 ihlallerini de götürdü. **Yani scoped göç, kapsam dışı ilan edilen ihlalleri yan etki olarak azaltabiliyor** — yeni dosyalarda da beklenmeli |
+| 2026-09-16 | Faz 3.2 | ✅✅ **3.2 BİTTİ — 33 göç + 1 muaf = 34/34.** typecheck 2/2 · scoped **PASS** · `--full` **1438** · Faz 3 toplamı **71/75** · kalan: **§3.3** (silme/onay modalları, primitifin kendisi dahil) |
+| 2026-09-16 | Faz 3.3 | ✅ **`ConfirmDialog` primitifi kanonik `alert-dialog`'a taşındı** (`c5a4925`) → **bulgu 6 KAPANDI**. Elle yazılmış portal/overlay/content gitti; primitif artık portal, overlay, animasyon, yüzey (`bg-popover` + `shadow-xl` + `ring`), ve boyutu (`max-w-xs` taban → `sm:max-w-md`) sahipleniyor — bu son madde **mobil hatayı da düzeltiyor**: eski koşulsuz `max-w-md` 375px'te paneli kenardan kenara yapıyordu. **Yan etkisi bir hata düzeltmesi:** elle yazılmış overlay'de `data-slot` yoktu → `@media print` kuralı onu göremiyordu → **her onay penceresi scrim'ini basıyordu**; kanonik overlay o kuralın hedefi. 13 dosya / ~16 çağrı yeri **değişmedi** (prop tabanlı). `AlertDialogAction/Cancel` bilinçli alınmadı (amber `warning`'in `Button` karşılığı yok → yeniden tasarım olurdu) |
+| 2026-09-16 | Faz 3.3 | ✅ **5 native `confirm()` → `ConfirmDialog`** (`26e2d85` automations · `b5dfc28` calendar · `341b2e7` customers/[customerId] · `7ef72b9` projects/[projectId] · `fb9cec2` webhooks). Hepsi repodaki yerleşik `confirmDialog` state deseniyle; **onay metinleri birebir korundu**. `projects/[projectId]`: **optimistic delete sırası korundu** (`loadProjectData()` yalnız `catch`'te). `customers/[customerId]`: `useCallback` imzası/bağımlılıkları **aynı**, yalnız `async` düştü. `webhooks`: `Promise<void>` → `void` (çağrı yeri dönüşü kullanmıyor) |
+| 2026-09-16 | Faz 3.3 | 📊 **Ölçülmüş doğrulama:** `apps/web`'te `fixed inset-0` **108 → 0** · native `confirm(` **5 → 0** · typecheck 2/2 · build 2/2 · scoped **PASS** · `--full` **1438** (sabit). **🆕 Bulgu:** native **`alert()` 10 çağrı / 4 dosya** (login 1, calendar 2, vehicles 6, tenant-switcher 1) → **Gelecek Adımlar #23** |
+| 2026-09-16 | Faz 3 | ✅✅✅ **FAZ 3 TAMAMLANDI.** 3.1 (37 birim) · 3.2 (34/34 dosya) · 3.3 (5/5 dosya + primitif). Faz 3 bulgusu 6 ve 12 kapandı; elle yazım overlay katmanı **uygulamada kalmadı** (muaf yüzeyler hariç, §2.3 listesi) |
+| 2026-09-16 | Faz 4 | 📊 **Kapsam ölçüldü:** renk kuralları **1376 ihlal / 51 dosya** (VIOLET 920 · SLATE 399 · FUCHSIA 43 · INLINE_HEX_STYLE 6 · ARBITRARY_HEX 4 · SVG_PAINT_HEX 4). Kalan 62 Faz 5'in (NATIVE_SELECT 61 + INPUT_NUMBER 1). **Üç karar onaylandı:** ton birebir eşleme · `--success`/`--warning` token'ları **ertelendi** (#24) · print hex'i **belgele+kaydet** |
+| 2026-09-16 | Faz 4 | ⚠️ **Yan bulgu (kendi regression'ım):** çalışma ağacında **bana ait olmayan** 3 kirli dosya bulundu. İkisi `PopoverContent`'i `Popover.Root`'un **dışına** koyan `b9ec6fa`/`90316df` commit'lerimin düzeltmesiydi → **`34c5218`** ile ayrı commit'lendi (renk yarısı geri çevrilip önce fix). Üçüncüsü (`theme-provider.tsx`, alakasız SSR script düzeltmesi) **bilinçli olarak dokunulmadı**. Repodaki **4 `Popover` tüketicisi tarandı**, başka örnek yok |
+| 2026-09-16 | Faz 4.0 | ✅ `slate-*` → `zinc-*` · **399 hit / 21 dosya** (`44fe52c`) · SLATE **399→0** · `--full` 1438→**1039** (tam 399) · renk dosyası 51→40 |
+| 2026-09-16 | Faz 4.1 | ✅ `violet-*` → `blue-*` · **920 hit / 32 dosya** (`a32e90b`) · VIOLET **920→0** · `--full` 1039→**119** · renk dosyası 40→13. **30 Hallmark banner'ı "Zinc/Violet" olarak kaldı** — betik yalnız `violet-<ton>` eşleştiriyor, düzyazıya dokunmuyor (#16'nın işi) |
+| 2026-09-16 | Faz 4.2 | ✅ `fuchsia-*` → `blue-*` · **43 hit / 10 dosya** (`d6495a1`) · FUCHSIA **43→0** · `--full` 119→**76** · renk dosyası 13→**3** |
+| 2026-09-16 | Faz 4.3 | ✅ `register` auth yüzeyi (`fbdf476`) · ARBITRARY_HEX 4→0, SVG_PAINT_HEX 4→0 · `bg-[#070709]`→`bg-zinc-950`, `bg-[#f3f4f7]`→`bg-zinc-100` (**kardeş ekran `login`'den okundu**) · 4 SVG hex'i **kayıtlı istisna** (Google marka rengi) · `--full` 76→**68** |
+| 2026-09-16 | Faz 4.4 | ✅ Widget grafik renkleri (`a08616a`) · INLINE_HEX_STYLE **6→0** (5 düzeltildi + 1 gerekçeli kayıt) · **`--chart-1..5` ilk kez kullanıldı** (#12) · **tüm renk kuralları 0** · `--full` **62** — kalan tamamen Faz 5 |
+| 2026-09-16 | Faz 4 | ✅✅✅ **FAZ 4 TAMAMLANDI.** `--full` **1438 → 62** (1376 renk ihlali çözüldü) · renk ihlali taşıyan dosya **51 → 0** · **Yöntem kalıcılaştı:** guard'ın bildirdiği dosya kümesi + deterministik betik + kanıt olarak kuralın 0'a düşmesi |
+| 2026-09-16 | Faz 5 | 📊 **Kapsam ölçüldü:** NATIVE_SELECT **61 / 15 dosya** · INPUT_NUMBER **1** · NATIVE_TABLE 61 · ARBITRARY_TEXT_SIZE 1241 · INLINE_STYLE_PROP 31 · kart yüzeyi **~1972 (kuralı YOK)**. **İki planlama boşluğu bulundu:** (a) üç uyarı kuralının **sahibi hiçbir fazda yok**, (b) kart yüzeyi standardının **ne bölümü ne ölçümü** var. Kapsam kararı: 5.0–5.3 + kalanlar 5.4/5.5/5.6 olarak kaydedildi; kart yüzeyi için **önce kural sonra süpürme** onaylandı |
+| 2026-09-16 | Faz 5.0 | ✅ **`messages` çift-token hatası** (`b36d107`) — 31 satır, 56 kopya sınıf kaldırıldı. **Kanıt derlenmiş CSS'ten:** `.dark:bg-zinc-900` (258605) `.dark:bg-card`'tan (240413) sonra → **eski sınıf kazanıyordu**, token hiç uygulanmamış. `.dark:border-*`, `muted`, `text-foreground` çiftlerinin **hepsi** aynı yönde ölçüldü. **Yeni tuzak #15:** guard sınıf çakışmasını göremez → "PASS" görsel doğruluk kanıtı değil |
+| 2026-09-16 | Faz 5.1 | ✅ **INPUT_NUMBER → kayıtlı muafiyet** (`1a5f39d`). Tek hit primitifin (`number-input.tsx`) kendisiydi: kural **abstraction'ı tüketiciden ayırt edemiyor**. Gerekçesiyle allowlist'e (4. kayıt). `--full` 62 → **61** |
+| 2026-09-16 | Faz 5.2 | ✅ `create-deal-modal` **6 select** (`eb84455`) + `pipeline-settings-modal` **1** (`3f92254`) → NATIVE_SELECT **61 → 54**. **Karar ölçütü kalıcılaştı: seçeneğin SAYISI değil KAYNAĞI** — kapalı enum → `SelectField`, veriye bağlı liste (küçük görünse bile büyür) → `Combobox`. Sayarak karar vermek küçük tenant'ta yanlış, büyük tenant'ta doğru sonuç verir; bu yanlış türden bir tutarlılık |
+| 2026-09-16 | Faz 5 | ✅ **Çalışma ağacı temizlendi:** `theme-provider.tsx`'teki (bana ait olmayan) SSR script tipi değişikliği **`57d44a7`** ile commit'lendi — mesajda **atıf açık**: bu göç yazmadı, çalışma ağacında bulundu; typecheck+build doğrulandı, **hidrasyon davranışı tarayıcı işi** → elle test listesine #4 olarak eklendi |
+| 2026-09-16 | Faz 5.2 | ✅ `projects/[projectId]` **7/25** (`72749e2`, part 1) → NATIVE_SELECT **54 → 47**. **Tip değişimi:** story-point seçicileri state'te sayı tutuyordu, `SelectField` string konuşuyor → seçenek değerleri string + handler `Number(value)` + `value={String(state)}`. Kalan 18'in 11'i entity listesi (`Combobox`), 7'si satır-içi 10px hızlı seçici (**kompaktlık kararı bekliyor**) |
+| 2026-09-16 | Faz 5.2 | ✅ `projects/[projectId]` **13/25** (`94e3a07`, part 2) → NATIVE_SELECT **47 → 41**. 6 entity seçici → `Combobox`. **Boş seçenek tuzağı:** her birinde `<option value="">` ve **anlamlı** bir etiket vardı ("Atanmamış", "Epiksiz", "Backlog Havuzu", "İlişkisiz") — kullanıcı alanı **temizleyebiliyordu**. Combobox'ta bu iki yarım ister: (1) seçenek `value: ""` ile **kalır**, (2) `placeholder` **aynı etikete** ayarlanır. Biri eksikse davranış değişir: seçenek olmadan alan temizlenemez, placeholder olmadan temiz hâl "Seçiniz..." gösterir |
+| 2026-09-16 | Faz 5.2 | 📌 **Kompakt ayak izi kararı (verildi):** satır-içi 10px hızlı seçiciler `triggerClassName` ile **kompakt** kalacak — ama `text-[10px]` gibi **keyfi değerle değil**, `text-3xs` (10px **token**) ile; çünkü (a) primitifin standart yüksekliği yoğun backlog satırlarını yeniden akıtır, (b) `triggerClassName` tam da **yerleşim** kaçış kapısıdır ve yüzey primitifte kalır, (c) `text-[Npx]` yazmak ARBITRARY_TEXT_SIZE uyarısını (1241) büyütürdü. Kalan: `projects/[projectId]`'de **12 satır-içi hızlı seçici** → 🔁 **sonradan ölçüldü: 8** (`fcd4b24` birini daha götürdü; dosyanın fiilî kalanı 8 site, 2026-09-16 ölçümü) |
+| 2026-09-16 | Faz 5.2 | ✅ **Primitif a11y boşluğu kapatıldı + 3 kompakt seçici** (`7974b93`) → NATIVE_SELECT **41 → 38**. **Bulgu:** satır-içi seçicilerin **tek erişilebilir adı** `aria-label`'dı ve `SelectField` props'u onu **geçirmiyordu** → göç sessizce adı silerdi. `SelectField`'a `aria-label` passthrough eklendi (additive). 2 story-point seçicisi **byte-özdeşti** → tek düzenleme ikisini de kapsadı. **Kompaktlık token'la korundu** (`text-3xs`), keyfi `text-[10px]` **yazılmadan** |
+| 2026-09-16 | Faz 5.2 | ⚠️ **Kapsam dışı bırakıldı (bilinçli):** `Öncelik` hızlı seçicisi — sınıf dizesi `getPriorityBadge(item.priority)` **gömülü** taşıyor, yani rengi **veriye bağlı ve anlam taşıyor**; diğer yüzey sınıfları gibi düşürmek **öncelik renk kodlamasını** silerdi. Kendi kararını bekliyor → ✅ **ÇÖZÜLDÜ (2026-09-16, yeni oturum):** `fcd4b24` bu dosyadaki **ilk** öncelik seçicisini zaten göç etmiş, rengi `triggerClassName` içinde taşıyarak (satır 1068) — yani "kapsam dışı" notu ilkesel değil, **eşleşmeyen bir düzenlemenin** kaydıymış. Kullanıcı onayıyla kalan öncelik seçicisi de (satır 1432) aynı desenle göç edecek; kayıt bu yönde düzeltildi |
+| 2026-09-16 | Faz 5.2 | 🔁 **Kayıt boşluğu (geriye dönük):** `projects/[projectId]` öncelik hızlı seçicisi → `SelectField`, rozet rengi `triggerClassName`'de **korunarak** (`fcd4b24`, nested repo `master`). **Bu commit bu günlüğe yazılmamıştı** — 38↔37 tutarsızlığının tek kaynağı buydu: doküman 38 diyordu, gerçek 37'ydi. Commit mesajı ayrıca "diğer öncelik seçici bazı ayrıntılarda farklı, hâlâ native" diyor; yani ikinci seçici bir ilke kararıyla değil, **eşleşmeyen bir düzenlemeyle** kalmış |
+| 2026-09-16 | Faz 5.2 | 📊 **Ölçüm + mutabakat (yeni oturum).** `--full` = **37 error / 189 dosya · 1329 advisory**; kalan 37'nin **tamamı `NATIVE_SELECT`**, **13 dosya**. **İki bağımsız yöntem** (guard taraması + Node yürüyüşü, `<select(?=[\s>])`) **birebir örtüştü**. ⚠️ **Doküman kendiyle üç yerde çelişiyordu:** başlık "5.2: 2/15 dosya", checkbox "61 → 47", log "38". Üçü de ölçülmüş gerçekle değiştirildi. `ARBITRARY_TEXT_SIZE` **1237** (doküman 1241 diyordu), `NATIVE_TABLE` 61, `INLINE_STYLE_PROP` 31 |
+| 2026-09-16 | Faz 5.2 | ✅ **`Combobox` `aria-label` geçiriyor** (`71c24fc`, part 5, **primitif**). 5.2'nin `SelectField` bulgusunun (`7974b93`) **birebir tekrarı:** kalan 37 site göç etmeden **önce okundu** ve beşinin (`projects/[projectId]` 4 atanan + 1 sprint) **tek erişilebilir adının** `aria-label` olduğu, `ComboboxProps`'un onu geçirmediği görüldü → göç adı sessizce silerdi. Additive: 3 satır, 11 mevcut tüketicide `aria-label` zaten `undefined` → davranış değişmedi. **Kural işledi: önce primitif, sonra çağrı yerleri** (Faz 3 bulguları 1 ve 7) |
+| 2026-09-16 | Faz 5 | ✅ **§2.5 yazıldı** (`a390f06`) — `crm-ui-standards.md`, 122 satır: 2.5.1 `<select>` göçü (kaynak ölçütü · ortak adımlar · **boş seçenek tuzağı iki yönde**: `SelectField`'da boş `SelectItem` Radix'te **hata atar**, `Combobox`'ta seçenek **kalır** + placeholder aynı etiket · kompakt ayak izi `triggerClassName` + `text-3xs` · sayısal tip değişimi · `value=""` aksiyon tetikleyici · **veriye bağlı renk `triggerClassName`'e taşınır**, silinmez), 2.5.2 `<table>` göçü (motor değişmez, dış kabuk tüketicide kalır), 2.5.3 kapsam disiplini (**kural yoksa ölçüm de yok** · guard PASS'ı görsel kanıt değil · doküman sayacı ölçümden kopyalanır). **Faz 3'ün şekli tamamlandı:** §2.3/§2.4 süpürmeden önce yazılmıştı, §2.5 artık aynı işi Faz 5 için yapıyor |
+| 2026-09-16 | Faz 5 | ✅ **Canlı çelişki kapatıldı:** ADR-0002 eşiği **seçenek sayısı** (≤7 → `SelectField`), yol haritası ve 5.2 kararı ise **kaynak** diyordu — iki otorite sessizce çelişikti ve ilk okuyan yanlış olanı uygulardı. ADR-0002 **yerinde düzeltildi**, sessizce değil: tablo satırları + kod yorumu + §85'e **görünür revizyon notu**. Gerekçe: sayı eşiği *yanlış türden* tutarlılık üretir (4 çalışanlı tenant'ta "doğru", 40 çalışanlıda aynı seçici "yanlış"). ⚠️ ADR-0002 §85 "yeni ADR ile revize edilir" diyordu → bu **kullanıcının kararı olarak açık bırakıldı**; bağlayıcı olan §2.5.1'dir |
+| 2026-09-16 | Faz 5 | ✅ **Sayaçlar mutabık** (`nested`): `crm-ui-guard.README.md` 62 hata yazıyordu → **37**, tablo ölçüme göre yenilendi, "bu tablo ölçümün kopyasıdır, tahmin değil" uyarısı eklendi. Allowlist sayısı **3 → 4** düzeltildi. Kural→fix haritasındaki `NATIVE_SELECT` satırı kaynak ölçütüne bağlandı |
+| 2026-09-16 | Faz 5.2 | ✅ **Süpürme başladı — `tasks-checklist-widget`** (`775a06b`, 1/37). Kapalı enum → `SelectField`; native kontrolün örtük yüksekliği ~28px (komşu `Button` `h-8`) olduğu için `h-7` ile ayak izi korundu — primitifin `h-9`'u satırı büyütürdü. `text-[11px]` → `text-2xs`. Hallmark banner'ı silindi (Faz 3 kararı) |
+| 2026-09-16 | Faz 5.2 | ✅ `pipeline-header` (`5987a5b`, 2/37) · `bulk-coupon-modal` (`9cbd897`, 3/37). ⚠️ **`required` okunarak doğrulandı:** modalın native `required`'ı fazlalık — `handleSubmit`'te `if (!campaignId)` guard'ı zaten var, kayıp yok. `disabled` boş seçenek kaybı **bilinçli**: `ComboboxOption`'da per-option `disabled` yok ve tek tüketici için primitif API'si açmak §2.2'ye takılır |
+| 2026-09-16 | Faz 5.2 | ✅ `pipeline-filter-bar` (`f6355aa`, 4-5/37) — **aynı sınıf dizesi, farklı primitif:** öncelik kapalı enum → `SelectField`, temsilci veriye bağlı → `Combobox`. Kaynak kuralının varlık sebebi tam bu. İkisi de `"all"` ile başlatıldığı için "Tümü" satırı **gerçek seçenek** olarak kaldı |
+| 2026-09-16 | Faz 5.2 | ✅ `payroll` (`cc73ae4`, 6-7/37) — `selectedRun?.employees.map(...)` `ComboboxOption[]` için `?? []` gerektirdi (JSX `undefined`'ı tolere ediyordu, prop etmiyor). Ayrıca boş seçenek olmadığı için temiz hâl artık native'deki boşluk yerine varsayılan `Seçiniz...` gösteriyor — **kopya uydurmak göç değil**, not edildi |
+| 2026-09-16 | Faz 5.2 | ✅ **Aksiyon tetikleyiciler (6 site):** `promotions/[campaignId]/edit` (`f719166`, 8-9) · `campaign-modal` (`a14ec65`, 10-11) · `promotions/new` (`cefad67`, 12-13). Kontrollü `value=""` elle `e.target.value = ""` sıfırlamasını gereksiz bıraktı. `if (value)` guard'ı **silinmedi** — boş satır listede kaldığı için artık ölü değil. ⚠️ **Araç dersi:** commit mesajındaki gömülü tırnak PowerShell'i kırdı; uzun mesajlar `git commit -F <dosya>` ile veriliyor |
+| 2026-09-16 | Faz 5.2 | ✅ `leaves` (`69daa44`, 14-16/37) · `projects/page` (`d964897`, 17-20) · `promotions/page` (`961113a`, 21-24) · `webhooks` (`08f332e`, 25-29). 🔴 **Yeni tuzak — CRLF dosyada `edit` çok satırlı eşleşmiyor:** `leaves` CRLF; düzenleme, dosyanın kendi EOL'unu kullanan + **tam-1-kez eşleşme** doğrulayan Node script'iyle yapıldı (eşleşmezse **hiç yazmaz**). Aynı script `promotions/page`'in **aynı sınıf dizesini paylaşan 4 seçicisini** `onChange` üzerinden ayırdı — sınıfla eşleştirmek dördünde de yanlış hedefi vururdu |
+| 2026-09-16 | Faz 5.2 | ✅✅ **`projects/[projectId]` 8/8 site** (`6d80267`, 30-37/37) → **`NATIVE_SELECT` = 0.** Dosyanın 25 seçicisi **beş ayrı şeydi**; erken bölünme doğruydu. **Öncelik seçicisi** (kayıtlı "muaf") **aynı dosyada 400 satır önce zaten çözülmüştü** — fark yalnız `border-transparent` + `text-[10px]`; renk `triggerClassName`'de taşındı, gerekçe **çağrı yerinde yorum**. Story-point değerleri string'e döndü, `Number()` handler'a taşındı (silinmedi). **Script beklenen eşleşme sayısını doğruladı:** atanan hızlı seçicisi `i=24`'te **byte-özdeş 2 kopya** (`2x`), `i=32`'de property değerleri **40** boşlukta (38 varsayılsaydı sessizce yarım kalırdı) |
+| 2026-09-16 | Faz 5.2 | 🎉 **FAZ 5.2 KAPANDI — `--full` İLK KEZ PASS.** `0 error / 189 dosya · 1320 advisory` (1458'den). `NATIVE_SELECT` **61 → 0** · `ARBITRARY_TEXT_SIZE` 1237 → **1228** · typecheck **2/2** · build **2/2 (52 rota)** · scoped kapı **PASS**. 13 dosya / 13 commit `775a06b` → `6d80267`. **Kanıt yöntemi sabit kaldı:** guard'ın kendi dosya kümesi + kuralın **0'a düşmesi** |
+| 2026-09-16 | Altyapı | ✅ **`.turbo/cache` kök nedeni düzeltildi** (`add90b1`). Cache 22.59 GB / 258 dosyaya çıkmıştı; sebep genel şişme değil: build görevinin `outputs` deseni `[".next/**", "!.next/cache/**"]` **`.next/dev`'i de kapsıyordu** — Next 16'nın **dev-server** ağacı, tek başına 4267 MB (2937 MB'ı turbopack kalıcı cache'i). Her farklı hash'te ~1.9 GB arşivleniyor, turbo yerel FS cache'i **budamıyor**. `!.next/dev/**` eklendi. **Ölçülmüş kanıt:** aynı web build girdisi **1928.8 MB → 6.9 MB** (~280×). Cache temizliği: D: 2.3 GB → **40.7 GB**. *`dev` görevi zaten `cache: false`'dı; bilmeyen `build`'di* |
+| 2026-09-16 | Faz 5.3 | 📊 **Kapsam ölçüldü:** `NATIVE_TABLE` **61 `<table>` / 30 dosya** (biri primitifin kendisi) · `<tr>` 164 · `<th>` **389** · `<td>` **459** · `<caption>` 2 · `<tfoot>` 0 = **~1194 etiket / 29 dosya**. En ağır: `quotes` (7 tablo / 5000 satır), `inventory` (5), `attendance`/`payroll`/`recruitment` (4'er) |
+| 2026-09-16 | Faz 5.3 | ✅ **Primitif adımı** (`dd0fb71` + `74e706b`): `packages/ui`'deki **20 keyfi tipografi** token'a çevrildi (11 dosya, 20/20 ekleme-silme). **Derlenmiş CSS'ten doğrulandı** — `.text-2xs{font-size:.6875rem}` (11px), `.text-3xs{font-size:.625rem}` (10px): primitifler artık token kullanıyor ve sınıflar üretiliyor. ⚠️ **Dürüst düzeltme:** "görünür değişiklik yok" demiştim; font-size birebir ama `text-2xs` **line-height'ı da** getiriyor (1rem). Çoğu yerde konteyner `text-xs` olduğu için miras zaten 1rem'di; 10px rozetler hafifçe sıkılaşır. `table.tsx` allowlist'e eklendi (61 → 60). *Not: yardımcı script 34 sınıf dedi, doğrusu **20** — aynı sınıfı iki kez saydı; otorite guard'ın deltası* |
+| 2026-09-16 | Faz 5.3 | 🔴 **Tablo yoğunluğu kararı (kullanıcı onaylı).** §2.5.2'nin ilk yazımı "hücre dolgusu kopyadır, düşer" diyordu → **60 tabloyu birden** primitifin `h-9 px-3`/`p-3` değerine indirirdi (`users` örneği `px-6 py-3.5`). Gerçek tablo okununca sonuç somutlaştı: karar **"yoğunluk korunur"** oldu. Yalnız primitifin **aynen** verdiği kopyalar düşer; dolgu ve **renk** `className`'de kalır. `Table`'ın `h-9`'u satırı kısaltmasın diye dikey dolgulu hücrelere **`h-auto`** eklendi. Yoğunluk normalizasyonu istenirse **Faz 6** işi, ayrı geçiş |
+| 2026-09-16 | Faz 5.3 | 🔴 **Hata (kendi) — 28 dosyanın tamamı kırıldı, denge kontrolü geçti.** Kapanış kuralı `</TableRow>` yazıp orijinal `>`'ı da bıraktı → `</TableRow>>`. **Kendi sayım kontrolüm yanlış negatif verdi:** `</TableRow` sonrası karakter yine `>` olduğu için lookahead tatmin oldu ve sayım "dengeli" dedi. **Ders: saymak, fazladan bir parantezi göremez.** `tsc` yakaladı, `git checkout` ile geri alındı, script'e `</X>>` assert'i eklendi. Aynı koşuda `quotes`'ta **self-closing `<th … />`** (satır 1608) yüzünden yanlış dengesizlik alarmı çıktı → self-closing sayıma katıldı. *İki kontrol de gerekliydi: biri yanlış negatif, diğeri yanlış pozitif* |
+| 2026-09-16 | Faz 5.3 | ✅✅ **60 tablo / 28 dosya göç etti** (`f8bae1f`, 2002/1974) → **`NATIVE_TABLE` = 0.** İki kayıtlı istisna (`1fa9602`): `table.tsx` (primitifin kendisi) + `orders/[orderId]/print` (**print belgesi**: tam ızgara + `bg-zinc-900` ters başlık; primitifin `overflow-auto` sarmalayıcısı **kâğıtta kırpar** ve çağrı yerinden ezilemez → §2.3'ün `overlayClassName` boşluğunun kardeşi). Allowlist **6 kayıt**. **Ölçüm:** `ARBITRARY_TEXT_SIZE` 1228 → **1188** · `--full` **0 error · 1219 advisory** · typecheck 2/2 · build 2/2 · scoped PASS |
+| 2026-09-16 | Faz 5.3 | ⏳ **Elle duman testi bekliyor (en büyük görsel değişim):** 60 tablo **yüzey token'larına** geçti — başlık zemini `bg-muted/40`, satır ayırıcı rengi, başlık tipografisi, `hover:bg-muted/40`. **Yoğunluk korundu ama renk/zemin değişti.** Ekran ekran bakılmalı; özellikle `quotes` (7), `inventory` (5), `payroll` (4), `attendance` (4), `recruitment` (4) ve print'e yakın yüzeyler |
+| 2026-09-16 | Faz 5.4 | 📊 **Kapsam ölçüldü — ve ilk ölçüm YANLIŞTI (kendi hatam).** İki farklı regex penceresi aynı `bg-white`'ı iki kez saydı: "552 eşli + 505 eşsiz = 1057"; **gerçek 799**. Doğru sayılar iki bağımsız yöntemle (kural + satır-tabanlı yürüyüş) **birebir 2240** örtüştü. Toplam sert yüzey **2425** = 799 `bg-white` + 1626 border → **185'i `dark:` partnersiz**, yani tokenizasyon değil **dark-mode hata adayı** |
+| 2026-09-16 | Faz 5.4 | 🔎 **Primitif katmanı kendiyle çelişiyordu** — bu, aynı sınıfın **beşinci** tekrarı (Faz 3 bulgu 1/7 → 5.2 `aria-label` → 5.3 `table.tsx`): **8 primitif token kullanıyor**, **7'si hardcoded**. Otomatik kural yazılsaydı **yerleşik yanlış pozitifle** başlardı. Kullanıcı onayı: kural **dar** (yalnız eşli idiom — tek başına `bg-white` ihlal değil, print/sabit yüzey olabilir); kapsam **A+B** (primitif + kural), süpürme sonra |
+| 2026-09-16 | Faz 5.4 | ✅ **Primitif katmanı tek dile** (`beb9cc6`, 7 dosya / 53 sınıf) → `packages/ui`'de `bg-white` **13 → 0**, `border-zinc-2xx` **21 → 0**. **Ton birebir doğrulandı:** `--card` açık `oklch(1 0 0)` = saf beyaz, koyu `0.18` ≈ `zinc-900`; `--border` `0.91`/`0.28`. 🔴 **`dark:` partnerleri silindi** — kalsalardı aynı özelliği aynı varyantta yazıp `bg-card`'ı ezerlerdi (Faz 5.0'ın `messages` hatası). Opaklık soneki (`border-zinc-200/90`) aynı idiom ailesine katıldı |
+| 2026-09-16 | Faz 5.4 | 🔴 **Araç hatası (kendi, İKİ kez sessiz):** (1) ilk betik yalnız `className="…"` / template biçimini gördü, primitiflerin çoğu `className={cn("…")}` yazdığı için **4 dosya sessizce atlandı**; (2) düzeltilen sürümde **değişiklik sayacı o dala bağlı değildi** → dönüşüm hesaplanıyor, sonra `n > 0` kontrolü yüzünden **yazılmıyordu**. İkisi de "başarılı" göründü. **Ders: yazma kararını veren sayaç bir rapor değil, kontrol akışıdır.** Üçüncü bir sınıf da çıktı: guard'ın ön kontrolü `(?![A-Za-z0-9/-])` sonda `/` görünce `border-zinc-200/90`'ı reddediyordu |
+| 2026-09-16 | Faz 5.4 | ✅ **`CARD_SURFACE` kuralı** (`5d1eb37`, `warn`) → **2240 hit**. Fixture regresyonu korundu (`dirty` exit 1 · `clean` exit 0); `packages/ui` bu kural için **0** (önce primitif, sonra kural). `--full` **PASS** kaldı — warn katmanı kapıyı düşürmez (ADR-0004 §9: terfi, temiz süpürme sonrası). Tarif **§2.5.4** |
+| 2026-09-16 | Faz 5.4 | ✅✅ **SÜPÜRME BİTTİ — `CARD_SURFACE` 2240 → 0** (`fa7c52b`; **85 dosya / 1912 string**, net **−614 satır**). `bg-white` → `bg-card`, `border-zinc-100/200/300(/NN)` → `border-border`, **`dark:` partnerleri silindi**. "Token + eski çift aynı string'de" kontrolü **0** okudu (guard'ın göremediği kontrol). `text-[Npx]` deltası **0** — bir an −30 görünmüştü, o bozulmanın artefaktıymış. typecheck 2/2 · build 2/2 · scoped + full **PASS** |
+| 2026-09-16 | Faz 5.4 | 🔴 **Kural düzeltildi, göç GENİŞLETİLMEDİ** (`2a7a6b4`). `CARD_SURFACE` `bg-white`'ı **önek** olarak eşliyordu → `bg-white/90` + `backdrop-blur` (buzlu cam) da ihlal sayılıyordu; **15 site** kural ile göçün çakıştığı yer. Göç doğruydu, kural yanlıştı: kurala sınır kontrolü eklendi. **Aşırı eşleşen kural kendini duyurmaz — sadece 0'a inmez**, ve baştan çıkarıcı çözüm göçü sayaç temizlenene kadar genişletmektir; o yol **uygulamadaki her buzlu paneli sessizce düzleştirirdi** |
+| 2026-09-16 | Faz 5.4 | 🔴 **En kötü araç hatası (kendi): `className="[object Object]"`.** `transform` string beklenen yere doğrudan geçirildi (o `{value,changes}` döndürür) → üç `settings` girdisinde bozuk sınıf. **`tsc` GEÇTİ ve guard GEÇTİ** — bozuk sınıf dizesi de geçerli bir string'tir; guard'ın sınıf-çakışması kuralı yok. **Diff okunarak** yakalandı, `git checkout` ile geri alındı, script'e `[object Object]` assert'i eklendi (artık o dosyayı **yazmayı reddediyor**). **Ders: sınıf dizelerinde ne tip denetimi ne guard vardır; tek gerçek kontrol diff'i okumaktır** |
+| 2026-09-16 | Faz 5.4 | ⏳ **Kalan: 185 eşsiz yüzeyin dark-mode triyajı.** Kural bunları **yakalamaz** (eşli değiller) ve tokenizasyon işi de değiller — `dark:` partneri hiç olmayan sert yüzeyler, yani **dark-mode hata adayı**. Elle duman testi de bekliyor: 85 dosyada kart yüzeyi değişti, koyu temada zemin/kenarlık tonu ekran ekran bakılmalı; buzlu cam paneller **dokunulmadı** |
+| 2026-09-16 | Faz 6.0 | ✅ **Motion iki kuralla ölçüldü ve süpürüldü** (`566a7ae`, `2567808`). `MOTION_DURATION` **20 → 0** · `MOTION_EASE` **19 → 0**. 🔴 **Fazın bulgusu:** standart `prefers-reduced-motion`'ı **zorunlu** kılıyordu ve **hiçbir yerde uygulanmıyordu** — 317 `transition-all`, 205 `transition-colors`, 32 `animate-in`. Global temel kural eklendi (bileşen başına değil: her yeni animasyonda unutulacak olan tam da hatırlanmayandır). Süreler **0.01ms**, 0 değil — `transitionend`/`animationend` tetiklenmeye devam etsin diye |
+| 2026-09-16 | Faz 6.1 | ✅ **`A11Y_ICON_BUTTON` kuralı yazıldı** (`264a0d9`, `warn`) → **106 hit** — ölçülen en büyük tek a11y boşluğu. Kural `warn` doğdu: kapı yeşil kalırken iş takip edilebilsin (ADR-0004 §9). **Süpürme bilinçli olarak 6.3'ten SONRAYA bırakıldı** — etiketler Türkçe sözlükle yazılmalı, aksi hâlde 106 etiket iki kez yazılırdı |
+| 2026-09-16 | Faz 6.3 | 📊 **Sözlük ölçümü — ve beklenmedik keşif: repoda i18n VAR.** ContextScout "i18n framework'ü yok" dedi; **yanlıştı**: `next-intl@^4.14.2` kurulu, `apps/web/messages/{tr,en}.json` var, `app/layout.tsx`'te provider, `next.config.ts`'te plugin, locale `NEXT_LOCALE` cookie'sinden, **varsayılan `tr`**. Ama **9 namespace'in yalnız 2'si tüketiliyor** (`navigation`, `hubs` — 5 dosya); `common`/`customers`/`products`/`orders`/`quotes`/`timeline`/`bulk` **0 kullanım** → hiç yapılmamış bir göçün ölü kayıtları. **Yani `tr.json` fiilî kanonik Türkçe sözlüktür ve en görünür katmanda canlıdır.** *Ders: ikinci yöntemle doğrulama yalnız sayılar için değil, "yok" iddiaları için de gerekli* |
+| 2026-09-16 | Faz 6.3 | 📊 **Terim ölçümü (190 dosya, 1.450 hit).** Personel 40 / Çalışan 24 · Durum 123 / Statü 4 · Pipeline 32 / Huni 7 (+1 "boru hattı") · Fırsat 63 / Anlaşma 3 · Aşama 55 / Adım 12 · İptal 16 (8'i **durum** "İptal Edildi") / Vazgeç 6 · Aday 26 (yalnız işe alım) / Potansiyel 6. 🔴 **Üç etiket iki terimi birden taşıyordu:** `"Personel / Çalışan *"`, `"Yeni Çalışan / Personel Kartı Aç"`, `"Çalışanlar & Personel Listesi"` — **karar verilmemiş** demek, "ikisi de kabul" demek değil |
+| 2026-09-16 | Faz 6.3 | ✅ **§1.6 yazıldı** (`5dc367f`, +141 satır) — dört sözlük katmanı + yetki sırası (ürün varsayılanı → i18n kataloğu → **kiracı override'ı** → kimlikler), kavram tablosu, aksiyon tablosu, modül başına kanonik ad, 7 bağlayıcı kural ve **§1.6.7 doğrulama tarifi**. Kullanıcı onaylı kararlar: **Personel** · **Potansiyel Müşteri** · **Pipeline** · **Durum** · **Vazgeç (aksiyon) / İptal Edildi (durum)** · **Fırsat** · nav etiketi kanonik. ⚠️ **Kimlikler çevrilmez** (rota, `moduleKey`, `permission`, event adı, DB enum) — bu bir **veri sözleşmesidir**; `Customer.Created`/`Quotes.View` bu yüzden İngilizce kalır |
+| 2026-09-16 | Faz 6.3 | ✅ **`tr.json` + `customers` kopyası sözlüğe hizalandı** (`1ee5559`, 6 dosya / 11 dize): `Tüm Statüler → Tüm Durumlar` (×3), `Statü → Durum`, `Statü & Segment → Durum & Segment`, `Potansiyel (Lead) → Potansiyel Müşteri` (×6). `value="Lead"` **dokunulmadı** — alan değeri, kopya değil. ⚠️ **Plan 9 siteydi, 11 çıktı:** ölçüm aracı dize başına en fazla 4 konum basıyordu ve `customer-table-view.tsx:94`'ü gizledi → **rapordaki bir üst sınır tam liste gibi okunur** |
+| 2026-09-16 | Faz 6.3 | 🔴 **"6 İngilizce başlık" aslında 6 İngilizce EKRANDI** (`feb27e6`, 78 satır / 6 dosya). Ölçüm: 17 dosyada 36 tamamen İngilizce dize, **21'i bu 6 ekranda** — `roles`, `users`, `settings`, `login`, `register`, workspace. Yalnız `<h1>`'i çevirmek `"Sistem Ayarları"` başlığının altında `"Workspace Name"` bırakırdı — **tutarlı İngilizceden daha kötü**, çünkü bitmiş görünür. İkisi zaten yarı Türkçeydi (`users`'ta `"Rol Seçiniz"`, `settings`'te `"Entegrasyonlar & Webhooklar"`). `roles` alt başlığındaki **"automatically update Redis cache"** kaldırıldı (§1.6.6 kural 4). **Yöntem: satır-bütünü eşleştirme, asla alt-dize** — alt-dize geçişi `"Email Address"` içindeki `"Email"`i bozardı |
+| 2026-09-16 | Faz 6.1 | ✅ **A11Y_ICON_BUTTON 106 → 0** — **önce primitif** (`e121853`: `date-picker` 2 + `combobox` 1), sonra 103 site (`a0075b3`, 45 dosya). 📊 **Dağılım işin kendisiydi: 95'i `DialogClose`/`SheetClose` içinde tek bir `X`** → süpürmenin **%92'si tek kelime** ve o kelime zaten yerleşikti (`"Kapat"` en yaygın mevcut `aria-label`'dı, 9 kez). Kalan 8: `Kaldır` 2 · `Önceki/Sonraki ay` 2 · `Önceki sayfa` · `Düzenle` · `Düzenlemeyi iptal et` · `Yenile`. **`X` = "Kapat", "Sil" değil** çünkü kapatma sarmalayıcısının içinde; gerçekten silen 2 site **ikonla değil handler'la** ayrıldı — üç farklı aksiyon aynı `X` glifini paylaşıyor |
+| 2026-09-16 | Faz 6.1 | 🔴 **Kendi sınıflandırıcı hatam, yazmadan yakalandı:** 400 karakterlik geriye bakış penceresi **önceki kardeş butonu** yuttu → `leaves`'in `ChevronRight`'ı "Önceki ay" okundu. İki kardeş ay butonu, yakınlık sezgiselinin tam da kırıldığı durumdur (Faz 3.2'nin `tailV2` dersinin aynısı). Handler tespiti artık **yalnız eşleşen butonun kendi metninden** yapılıyor; pencere yalnız "`DialogClose` içinde miyim" yapısal sorusu için kullanılıyor |
+| 2026-09-16 | Faz 6.1 | 🎉 **`--full` = 0 error · 0 advisory · 189 dosya · PASS — 16 kuralın tamamı 0.** Faz 0 tabanı **1458 error + 1334 advisory**'ydi. ADR-0004 §9'un terfi ön koşulu artık **7 uyarı kuralının tamamı** için sağlandı (eski kayıt 6 diyordu). typecheck 2/2 · build 2/2 · scoped PASS |
+| 2026-09-16 | Doküman | 🔴 **İki otorite dokümanı kendiyle çelişiyordu.** (1) `crm-ui-guard.README.md` satır 68 "0 errors and 0 warnings … every rule reads zero" derken satır 49 aynı dosyada `A11Y_ICON_BUTTON`'ı **106** gösteriyordu (paragraf Faz 6.0 kapanışında doğruydu, bir sonraki commit yanlışladı). Ayrıca allowlist "4 kayıt" diyordu, dosyada **6** vardı; kural tablosu **`INPUT_DATE`**'i ve **iki motion kuralını** hiç içermiyordu ve `CARD_SURFACE` satırı tablodan paragrafa kaymıştı. (`aec3b90`, `3f17fd1`) **Tablo artık guard'ın kendi `RULES` dizisine karşı doğrulanıyor** — gözle bakmak `INPUT_DATE`'i bulmazdı. (2) Yol haritasının **İlerleme Günlüğü 5.4'te bitiyordu**; 5.5/5.6 yalnız checklist'te, **6.0/6.1 hiçbir yerde** kayıtlı değildi |
+| 2026-09-16 | Faz 7 | 🔴 **Kural standarttan DARDI — ve bunu yalnız ikinci bir yöntem gösterdi.** `INPUT_NUMBER`, `INPUT_DATE`, `SVG_PAINT_HEX` ve `A11Y_ICON_BUTTON` niteliğe `[^>]*` ile ulaşıyordu; bu şekil bir `>` geçemez ve `onClick={() => f()}` yeterli. Bağımsız brace/string-farkında tarama: `INPUT_NUMBER` 1 → **4** · `INPUT_DATE` 0 → **5** · `A11Y_ICON_BUTTON` 0 → **31**. **Yani "106 → 0" diye kaydedilen a11y süpürmesi eksikti; gerçek sayı 137'ydi.** Bu, "kural standarttan geniş olabilir" dersinin ikizi — ama daha kötüsü, çünkü **başarı raporluyor** |
+| 2026-09-16 | Faz 7 | ✅ **Guard brace-aware oldu** (`08c8857`) — `scanTags()` etiketi brace derinliği sayarak ve string literal'leri atlayarak okur; `pattern` yalnız düz metin kuralları için kaldı. 4 kural dönüştürüldü (`SVG_PAINT_HEX` bugün 8=8 örtüşse de, bir kuralı bozuk varsayımda bırakmak bu sınıfın hayatta kalma yoludur). `--full` 0 error · **31 advisory** — 31'i gerçek ve yeni görünür |
+| 2026-09-16 | Faz 7 | ✅ **Görünmez 8 native input süpürüldü** (`0d1842e`, 2 dosya): `projects/page.tsx` Bütçe/Başlangıç/Hedef Bitiş · `projects/[projectId]` Tahmini-Harcanan Efor/Bitiş/sprint tarihleri. Bütçe `suffix={currency}` aldı — **README'nin `suffix ₺` tarifi tek-para-birimi varsayımıydı** ve `proj.currency` proje başına değişiyor; hardcoded ₺ kullanıcı USD seçtiğinde yalan söylerdi. ⚠️ **Bu repodaki İLK `suffix` kullanımı** — öncesinde 0 `suffix=`/`prefix=` var, yani "para" kuralı hiç uygulanmamıştı. Efor alanları `step={0.5}` + `precision={1}` + `showStepper` (standart saat alanını kapsamıyor) |
+| 2026-09-16 | Faz 7 | 🔴 **Kendi hatam, diff okunarak yakalandı:** ilk süpürme geçişi enjekte edilen her etiket satırını **çift girintiledi** — etiketin kendi baş boşluğu değiştirilen aralığın **öncesinde** kalıyor, ben devam satırlarının girintisini ilk satıra da uyguladım. Özellik/adlandırma satırları orijinalle byte-özdeş çıktığı için diff'te **değişmemiş bağlam** olarak göründüler. Ağaç geri alındı, script düzeltildi, yeniden koşuldu |
+| 2026-09-16 | Faz 7 | ✅ **31 görünmez a11y sitesi etiketlendi** (`8bd7c87`, 20 dosya / 31 ekleme). **Varlık-nitelikli** üslup (kullanıcı onaylı): `Satırı kaldır` ×3 · `Hedefi kaldır` ×3 · `Aramayı temizle` ×4 · `Adayı sil`/`Adayı düzenle` · `İlanı sil` · `Aşamayı düzenle` · `Pozisyonu sil`/`Pozisyonu düzenle` · `Personeli görüntüle`/`Personeli düzenle` · `Ürünü kaldır` · `Karşılaştırmadan çıkar` · `Dahili not modunu kapat` · `Tablo/Kart görünümü` · `Sonraki sayfa` · `Geri` ×2 · `Kopyala` ×2 · `Kapat` ×2 · `Yenile`. **`Kaldır` vs `Sil` ikonla değil handler'la ayrıldı** — `handleRemoveItem` "Satırı kaldır", `handleDeleteCandidate` "Adayı sil", ikisi de `Trash2` render ediyor |
+| 2026-09-16 | Faz 7 | ✅ **Fixture çifti gerçek bir kanıt oldu** (`b67b524`) ve **kalıcı bir kapıya dönüştü** (`scripts/crm-ui-guard.fixtures.mjs` + `guard:crm-ui:fixtures`). Bulgu: eski `dirty.tsx` "her ihlal sınıfı bir kez" diyordu ama **16 kuralın 9'unu** tetikliyordu ve `INPUT_NUMBER` vakası **hiç ateşlemiyordu** (çok satırlı `<input`, `type=` öncesinde ok fonksiyonu). Kontrol yalnız "dirty exit 1" idi → diğer sekiz kural yüzünden yeşil kaldı. **Çıkış kodu kapsam değildir.** Artık kural-id **kümesi** iddia ediliyor: 16/16, eksik yok, fazla yok. `clean.tsx`'in kendisi de 2 gerçek ihlal taşıyordu (elle yazılmış tema kenarlığı + statik `var()` stili) — kural gevşetilmedi, fixture düzeltildi. **Negatif test yapıldı:** dirty'den bir vakayı silmek kontrolü kırmızıya çeviriyor |
+| 2026-09-16 | Faz 7 | ✅ **Yedi kural `error`'a terfi etti** (`42c6735`) — `severity: "warn"` kaldırıldı, §9.1'e göre varsayılan `error`. **Terfi ancak bu sıradan sonra doğruydu:** ön koşul ilan edildiğinde guard 8 native input ve 31 etiketsiz butona kördü, fixture 16'nın 9'unu kanıtlıyordu |
+| 2026-09-16 | Faz 7 | ✅ **`SCOPE` listesi emekliye ayrıldı** (`c7d74bc`) — tek kapsam, tek kapı. Liste işini yaptı: Program A boyunca `--full` FAIL veriyordu ve her koşuda düşen bir kapı kapı değildir. Ama tanımı gereği gerçeğinden dardı ve son işi, kendi emeklilik ölçütünü göremeyen bir kuralın arkasına saklanmak oldu. 🔴 **Kendi hatam:** ilk deneme guard'ın kendi yardım **template literal**'ine ham backtick soktu → string'i kapattı, script kırıldı; hemen çalıştırılarak yakalandı, ağaç yamalanmak yerine geri alındı |
+| 2026-09-16 | Faz 7 | ✅ **CI eklendi** (`b7f1db8`) — `.github/workflows/ci.yml`: `guard` (bağımlılıksız → saniyeler), `web` (tip/lint/build), `api` (.NET 10). Her komut önce yerel koşuldu: fixture PASS · typecheck 2/2 · lint exit 0 · `build --workspace=web` ✓ · `dotnet build … -c Release` **0 hata** · `npm install --dry-run` "up to date" (yani `npm ci` bayat lock'ta patlamaz). **Prettier yok** — `apps/web` biçimlendirici kapsamında değil (#18) |
+| 2026-09-16 | Faz 7 | 🎉 **FAZ 7 KAPANDI — guard gerçek bir kapı.** `--full` **0 error · 0 advisory · 189 dosya** · **16/16 kural `error`** · fixture **16/16** · CI üç iş. Faz 0 tabanı **1458 error + 1334 advisory**'ydi. **Program A'nın kalan tek maddesi: 6.2 Playwright smoke testleri** (kurulu değil) |
+| 2026-09-16 | Doküman | ✅ `crm-ui-guard.README.md` (`acb3e8a`) + ADR-0004 §9 + bu dosya nihai duruma göre güncellendi. README'deki a11y kaydı **106 → 137** olarak düzeltildi ve hata **silinmedi** — çünkü asıl ders hatanın kendisi: uyarı katmanı kapıyı düşüremediği için, eşleşmeyi bırakan bir kural **ilerleme gibi okunuyor** |
+| 2026-09-16 | Faz 6.2 | 📊 **Kapsam ölçüldü ve beklenti düzeltildi.** Yol haritası "6 smoke testi" diyordu; ölçüm: **5'i oturum istiyor** ve bu repo bir Supabase projesi tanımlamadığı için CI'da üretilemiyor. Kimliksiz yüzeyler doğrulandı: `/login` 200 · `/register` 200 · korumalı rota 307 → `/login`, **ve Supabase erişilemezken de aynı** (ölü porta çevrildi). Yani 6 test CI'da kırıcı kapı olabiliyor; kalan 5 ölçülmüş borç |
+| 2026-09-16 | Faz 6.2 | ✅ **Playwright kuruldu** (`0872bf6`) — `apps/web/e2e/smoke.spec.ts` **6 test / 15 sn**: login render + alan adları · register render · korumalı rota yönlendirmesi · boş form gönderimi · reddedilen giriş (URL sabit, form yeniden kullanılabilir) · konsol hatası yok. `webServer` kendi build'ini yapıyor. CI'a **`e2e` işi** eklendi; `web` işi artık birim testlerini de koşuyor |
+| 2026-09-16 | Faz 6.2 | 🔴 **Testin ilk koşusu 2 kırmızı verdi ve sebebi öğreticiydi:** `getByRole("button", { name: "Giriş Yap" })` **Google** butonunu tıkladı — Playwright'ta `name` **alt-dize** eşleşir ve "Google ile Giriş Yap" onu içeriyor. Tıklama OAuth'a gitti. Locator'lar `exact: true` aldı. (Yani başarısızlık bir test artefaktıydı ama **gerçek bir ürün hatasını** görünür kıldı: aşağıdaki madde.) |
+| 2026-09-16 | Faz 6.2 | 🔴 **Gerçek a11y hatası: etiketler input'lara bağlı değildi.** İki auth ekranında da `<label>`'da `htmlFor` **yok**, `<input>`'ta `id` **yok** (ölçüm: 2 dosyada 0 + 0). Etiketler görsel olarak üstte duruyor, yani **doğru görünüp yanlış okunuyor**: ekran okuyucu kontrolü adsız duyuruyor, elde yalnız placeholder kalıyor (o da yazmaya başlayınca kaybolur). **Kullanıcının gördüğü ilk ekranda.** Guard bunu **yapısal olarak göremez** — 6.1'in kuralı ikon-only butonlara bakıyor, bu bambaşka bir şekil. Yalnızca alanı **etiketiyle** isteyen bir test bulabilirdi. 5 alan düzeltildi (`d6952d7`); "Beni hatırla" zaten doğruydu (input etiketin içinde → örtük bağ) |
+| 2026-09-16 | Faz 6.2 | 🔴 **Önceki "6 İngilizce ekran çevrildi" kaydı eksikti — 3 submit butonu hâlâ İngilizceydi.** `Sign In` · `Sign Up` · `Save Changes` → `Giriş Yap` · `Kayıt Ol` · `Kaydet`. **Üçü de aynı şekli paylaşıyor** ve kaçırılma sebepleri tam da bu: etiketleri bir **JSX ifadesinden sonra** geliyor (`{isLoading && <Loader2/>}` + `Sign In`). Eski çıkarıcı `>([^<>{}]+)<` kullanıyordu ve o desen `{}` ya da `<>` **geçemez** → metin hiç örneklenmedi. **Bakmayan bir ölçüm, hiçbir şey bulmayan ölçümden ayırt edilemez** — ve bu, bu projede aynı ailenin **üçüncü** üyesi (guard'ın `[^>]*`'i, üst sınırlı triyaj listesi, şimdi bu). Yerine konan tarayıcı bilinçli olarak aptal: **JSX metin düğümü, kırpılmış içeriğinde hiç kod noktalama işareti bulunmayan satırdır** — komşu satırda ne olduğu umurunda değil. Yeniden ölçüm: 6 ekranda **gerçek İngilizce prose kalmadı** |
+| 2026-09-16 | Faz 6.2 | ✅ **Repodaki tek web testi ilk kez çalıştı** (`fbacbf9`). İki sebeple çalışamıyordu: (1) **hiçbir yerde `test` script'i yoktu** — kökte de yoktu, yani `npm run test` hiç var olmamıştı ve `apps/api/tests` altındaki .NET test projesi de kökten erişilemezdi; (2) test `node:test` kullanıyordu (doğru seçim, sıfır bağımlılık) ama içe aktardığı modül `.tsx`'ti → Node `ERR_UNKNOWN_FILE_EXTENSION`. Çözüm: üç saf helper `product-gallery-utils.ts`'e çıkarıldı (JSX yok, React yok, import yok) → test **yeni bağımlılık olmadan** koşuyor. Sonuç: `npm run test` = **web 7 + api 6** |
+| 2026-09-16 | Faz 6.2 | 🔴 **Kendi hatam, build'i düşürdü:** `turbo.json`'a `test` görevi **sondaki virgül olmadan** eklendi → JSON geçersiz oldu ve **typecheck ile build birlikte kırıldı**. Koşturarak yakalandı, düzeltildi, commit öncesi ikisi de yeniden doğrulandı |
+| 2026-09-16 | Faz 6.2 | 📌 **Yeni bulgu: Next 16 `middleware`'ı deprecated ilan etti** — her `next start` "The middleware file convention is deprecated. Please use proxy instead" uyarısı basıyor. Yerel doküman (`node_modules/next/dist/docs/.../middleware.md`) doğruluyor: *"deprecated in Next.js 16 and renamed to `proxy.js`. All functionality remains the same — only the file and export names have changed."* `AGENTS.md` "deprecation uyarılarını dinle" diyor. ⚠️ **Bu commit test hakkındaydı ve dosya auth-kritik** → ayrı geçiş olarak kaydedildi |
+| 2026-09-16 | Faz 6.2 | 🎉 **FAZ 6 KAPANDI.** 6.0 motion ✅ · 6.1 a11y ✅ · 6.2 smoke ✅ · 6.3 sözlük ✅. Test durumu: **web 7 birim + 6 e2e · api 6** · typecheck 2/2 · build 2/2 · lint exit 0 · guard 0 error / **192 dosya** · fixture **16/16** · CI **4 iş**. Guard'ın `SKIP_DIRS`'ine Playwright çıktı dizinleri eklendi — üretilmiş bir artefakt kapıyı düşürebilmemeli |
+| 2026-09-16 | Faz 6.2 | ✅ **`middleware` → `proxy` geçişi yapıldı** (`38e0963`) — aynı oturumda, çünkü artık **kanıtlanabilirdi**. Değişiklik tam olarak iki satır: `apps/web/middleware.ts` → `proxy.ts`, `export function middleware()` → `proxy()`. `config`/`matcher` dokunulmadı; `lib/supabase/middleware.ts` **adını koruyor** çünkü o bir Next dosya konvansiyonu değil, kütüphane modülü. **İki yolla doğrulandı** (yeniden adlandırma hiçbir şey yapmadan da doğru görünebilir): deprecation uyarısı `next build`'den **kayboldu** ve rotada konvansiyon görünüyor; ayrıca smoke suite'in korumalı-rota testi (307 → `/login`) hâlâ geçiyor → **proxy gerçekten çalışıyor**. Yan not: Next 16'da proxy **Node.js runtime'ına** düşüyor; Supabase SSR yardımcısı iki runtime'da da çalışıyor |
+| 2026-09-16 | Dark-mode | 📊 **Ölçüm üç deneme aldı ve ilk ikisi yanlıştı.** v1 her string literal'ini ayrı değerlendirdi → **4245** (ama `cn("bg-x","dark:bg-y")` tek ifade!). v2 `className` ifadesini birim aldı ama **varyant önekini göremedi** (`dark:hover:bg-zinc-800` var, ben `dark:bg-` arıyordum) ve değişmemesi *doğru* olan renkleri saydı (`text-white` dolu butonda, `bg-blue-600`, `focus:border-blue-500`) → **4044**. v3 daralttı: varyantsız **açık yüzey** + hiç (varyant önekli) `dark:` karşılığı yok → **54 aday / 18 dosya**. *Bu, projenin en eski dersinin dördüncü tekrarı: kural standarttan geniş olunca gürültü gerçek bulguyu gizler* |
+| 2026-09-16 | Dark-mode | ✅ **24 gerçek kusur token'landı** (`9a8427c`, 10 dosya): `bg-zinc-50(/50)` · `bg-zinc-100` · `bg-zinc-200` → `bg-muted(/50)`; 1px ayraç → `bg-border`; register girdileri → `bg-muted` + `text-foreground` + `focus:bg-card`. **Eşleme `globals.css`'ten okundu, tahmin edilmedi:** `--muted` açık `oklch(0.965)` ≈ zinc-100 (`0.967`) **birebir**, koyu `0.24` ≈ zinc-800; `--border` `0.91` ≈ zinc-200 (`0.92`); `--card` açık saf beyaz, koyu `0.18` ≈ zinc-900. **Register'ın açık ara en net vakasıydı:** login'in aynı girdileri `dark:bg-zinc-800 dark:text-zinc-100 dark:focus:bg-zinc-900` taşırken register **üçünü de** taşımıyordu — aynı form, iki davranış |
+| 2026-09-16 | Dark-mode | ⚠️ **Kendi yanlış iddiamı geri aldım.** `orders/[orderId]/print:253`'te "`bg-zinc-50 bg-card` sınıf çakışması var" demiştim; kaynak aslında `idx % 2 === 1 ? "bg-zinc-50" : "bg-card"` — bir **zebra şerit ternary'si** ve dallar birbirini dışlıyor. O görüntü, literalleri `" "` ile birleştiren **kendi tarayıcımın artefaktıydı.** Düzeltilecek çakışma yoktu; "düzeltseydim" bir non-bug'ı bozardım. *(Aynı birleştirme, bir dalda yazılan `dark:` karşılığını diğer dal için de sayabilir → kuralın bilinen ve kayda geçen sınırı.)* |
+| 2026-09-16 | Dark-mode | ✅ **`LIGHT_SURFACE_NO_DARK` kuralı eklendi** (`b0de1fe`, `warn`, 0'da). **Birim sınıf İFADESİ**, tek string değil — desen tabanlı sürüm çalışamaz: `cn("bg-white","dark:bg-zinc-900")` partneri yan argümanda tutar ve `[^"'\n]*` penceresi ikisini de yakalar. Guard'a `pattern` ve `tag` yanına **üçüncü kural şekli** eklendi. **Kapsam bilinçli olarak dar ve daraltma bulgunun kendisi:** `border-white` (8 beyaz halka) yasaklanmaz — renkli zemin üstünde beyaz **doğrudur**; `bg-white/40` sanat ayracı yasaklanmaz; gerçekten açık-only iki yüzey **gerekçesiyle** allowlist'te (portal + print). **Fixture kontrolü hemen işini yaptı:** kural, dirty fixture'da vakası olmadığı için **reddedildi** — `INPUT_NUMBER`'ı birkaç faz saklayan hatanın aynısı, bu kez otomatik yakalandı |
+| 2026-09-16 | Dark-mode | ✅ **Standart genişletildi** — `crm-ui-standards.md` §1.2'ye **"Açık-only yüzeyler (adlandırılmış muafiyet sınıfı)"**: üç üye (print rotaları · müşteri portalı · renkli zemin üstündeki beyaz halkalar/ayraçlar) ve **token mı `dark:` eşi mi** kuralı: token tercih edilir, çünkü ikisi aynı özelliği yazarsa derlenmiş CSS'te sonra gelen kazanır ve token sessizce uygulanmaz. **Dördüncü üye eklemek isteyen önce standart'a, sonra allowlist'e yazar** |
+| 2026-09-16 | Dark-mode | 📊 **Kapanış:** adaylar **54 → 30** (kalan 30 kasıtlı) · kural 0'da · fixture **17/17** · guard **0 error · 0 advisory / 192 dosya** · allowlist **8 giriş / 28 bastırılan** · typecheck 2/2 · build 2/2 · lint 2/2 · birim web 7 + api 6 · e2e 6/6 · README tablosu guard'ın `RULES` dizisine karşı doğrulandı (**17 kural = 17 satır, eksik/fazla/severity uyuşmazlığı yok**) |
+| 2026-09-16 | Faz 6.2 | ✅ **Oturumlu e2e açıldı** (`d7a16a1`) — gerçek bir test kullanıcısıyla **5 akış** (pano · müşteri listesi→detay · pipeline · teklif · admin) + `dark-mode` denetimi. Üçe ayrılmış proje: `smoke` (kimliksiz, CI kapısı) · `authenticated` · `dark-mode` — **kimlik yoksa yalnız smoke kaydedilir**, yani CI `.skip` olmadan yeşil kalır. Giriş **gerçek formdan** bir kez yapılıp `storageState` ile paylaşılıyor. ⚠️ Sır dosyası (`.env.test.local`) bu araçta yazmaya kapalı → kullanıcı oluşturur; repo'da sır yok |
+| 2026-09-16 | Faz 6.2 | 🔴 **Aracımın 3 hatası, hepsi yakalandı — ve biri "0 bulgu"yu tamamen geçersiz kılıyordu.** (1) Renk çözücü `rgb()`/`rgba()` regex'iyle okuyordu; tema token'ları `oklch` ve Chromium onları **`lab(…)`** olarak hesaplıyor → regex `null` döndü → kod **sessizce BEYAZ varsaydı** → her token'lı koyu zemin "açık" sanıldı → **31 rotada "0 bulgu"**. Çözüm: rengi **canvas'a boyayıp piksel okumak** (`#ffffff`/`#09090b`/`oklch`/`lab` ile doğrulandı). (2) Kontrast yalnız **kendi opak zemini olan** elemanları ölçüyordu → metinlerin çoğu kapsam dışıydı. (3) Efektif zemin yürüyüşü **ebeveynden** başlıyordu → kendi zeminini atlıyordu; kullanıcı avatarı 31 rotada "1.08:1" diye raporlandı, gerçeği ~5:1. Düzeltince **31 yanlış pozitif gitti**. **Her iki dedektöre pozitif kontrol eklendi** (bilinen beyaz kutu + bilinen okunamaz metin) — 1. hatayı **yalnız bu** buldu. *Guard'ın fixture dersinin ikinci bir araca uygulanmış hâli* |
+| 2026-09-16 | Faz 6.2 | 🔴 **Bulunan gerçek bug: `--destructive-foreground` token'ı YOK ve onu kullanan tek sınıf canlıydı.** `hub-rail` bildirim rozeti (`bg-destructive … text-destructive-foreground`): sınıf hiçbir renk üretmediği için metin miras alıyordu → **31 rotanın tamamında ~1:1, okunamaz**. §1.2'nin `bg-success` için yazdığı "var olmayan token sessizce hiçbir şey yapar" kuralının **canlı örneği**; `text-white` ile düzeltildi. **Kullanıcı kararı (2026-09-16):** yeni token **eklenmez**, §1.2 **gerçekle hizalanır** (atıflar "hedef" değil "mevcut durum" olarak yeniden yazıldı + `--success`/`--warning` için "YOK" uyarısı netleştirildi) |
+| 2026-09-16 | Faz 6.2 | 📊 **Denetim yeni bir kusur sınıfı buldu: yumuşak tint'ler.** Statik kuralım (beyaz/zinc/neutral) **renkli tint'leri kapsamıyordu**. Ölçüm: 1323 tint site'ı partner'sız — ama bu sayı kusurdan **geniş** (dolu vurgu butonları `bg-blue-600` 203, vurgu metinleri `text-blue-600` 154; ikisi de bozulmaz). Doğru küme **yalnız açık yüzeyler + kenarlıklar (ton 50/100/200)**. **Eşleme kod tabanının KENDİ konvansiyonundan ölçüldü** (`bg-<c>-50` → `dark:bg-<c>-950/60` · `border-<c>-200` → `dark:border-<c>-800` · `text-<c>-600` → `dark:text-<c>-400`), uydurulmadı |
+| 2026-09-16 | Faz 6.2 | ✅✅ **Tint süpürmesi bitti: 441 + 12 = 453 koyu partner, 24 dosya** (`ce1f77c`). **İki geçiş gerekti ve sebebi dersin kendisi:** pass 1 yüzeyleri koyulaştırdı → açık yüzey **51 → 10** ama düşük kontrast **47 → 83'e ÇIKTI** — çipin içindeki metin hâlâ koyu vurguydu ve artık **koyu çip üzerinde**. Pass 2 metin partnerlerini ekledi → **21**. *Yüzeyi düzeltip metnini unutmak işi kötüleştirir; bunu yalnız çalışma-zamanı ölçüm görebildi.* **Kural tint sınıfını kapsayacak şekilde genişletildi** → sınıf geri gelemez |
+| 2026-09-16 | Faz 6.2 | 🔴 **Üç araç/scope hatası daha, hepsi yakalandı.** (1) **Muafiyet sınıfını ihlal ettim:** süpürme `PortalClient`'e 18 partner ekledi — oysa **kasıtlı açık-only** (§1.2'de adlandırılmış, allowlist'te). *Script standardın muafiyet sınıfını okumuyor* → dosya geri alındı; boşluk kayda geçti. (2) pass-1'in "dark partner var mı" testi **birleştirilmiş ifadeyi** okuduğu için ternary'nin **dışlayan dalındaki** partneri saydı → `roles` kartları kaçtı (`bg-blue-50/70` + `dark:text-zinc-100` = **1.01:1, okunamaz**); elle düzeltildi. (3) Kuralı genişletirken **dıştaki yakalayıcı grubu** sildim → `m[1]` undefined → guard çöktü; koşarak yakalandı |
+| 2026-09-16 | Faz 6.2 | 📊 **Nihai denetim (31 rota, koyu tema, pozitif kontrollü):** açık yüzey **51 → 9** · düşük kontrast **47 → 21**. Kalan 9 açık yüzey **kasıtlı ters butonlar** (`bg-zinc-900 … dark:bg-zinc-100`); kalan 21 düğüm kalem kalem kayıtlı (nav rozeti `--destructive-foreground` bug'ıyla **kapandı**; `bg-amber-500 text-white` ≈2:1 · takvim gün rozetleri · `text-indigo-900`/`text-red-900` · compliance). **Statik kural: `LIGHT_SURFACE_NO_DARK` 0'da.** Guard **0 error · 0 advisory · 195 dosya** · fixture **17/17** · typecheck 2/2 · build 2/2 · birim web 7 + api 6 · **kimliksiz e2e 6/6** · **oturumlu 6/6** |
