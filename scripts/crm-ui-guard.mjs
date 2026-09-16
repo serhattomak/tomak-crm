@@ -95,7 +95,16 @@ const SKIP_DIRS = new Set([
 ]);
 
 /**
- * @typedef {{ id: string, pattern: RegExp, hint: string, severity?: "error" | "warn" }} Rule
+ * @typedef {object} Rule
+ * @property {string} id
+ * @property {string} hint
+ * @property {"error" | "warn"} [severity]
+ * @property {RegExp} [pattern] used when the rule is a plain text match
+ * @property {{ name: string, test: (open: string, body: string) => boolean }} [tag]
+ *   used instead of `pattern` for anything that has to look *inside* an
+ *   element's attributes. `pattern`-based tag rules must never reach an
+ *   attribute with `[^>]*`: see `scanTags`.
+ *
  * NOTE: SLATE uses a `(?<![A-Za-z])` lookbehind so `translate-x-*`
  * utilities never match.
  * @type {Rule[]}
@@ -109,14 +118,20 @@ const RULES = [
   {
     hint: '<input type="number"> — use NumberInput from packages/ui (para: precision=2 suffix ₺; adet: precision=0 stepper)',
     id: "INPUT_NUMBER",
-    pattern:
-      /<input\b[^>]*?\btype\s*=\s*(?:"number"|'number'|\{\s*["']number["']\s*\})/gs,
+    tag: {
+      name: "input",
+      test: (open) =>
+        /\btype\s*=\s*(?:"number"|'number'|\{\s*["']number["']\s*\})/.test(open),
+    },
   },
   {
     hint: '<input type="date"> — use DatePicker (clearable, YYYY-MM-DD, TR locale) or DateRangePicker from packages/ui',
     id: "INPUT_DATE",
-    pattern:
-      /<input\b[^>]*?\btype\s*=\s*(?:"date"|'date'|\{\s*["']date["']\s*\})/gs,
+    tag: {
+      name: "input",
+      test: (open) =>
+        /\btype\s*=\s*(?:"date"|'date'|\{\s*["']date["']\s*\})/.test(open),
+    },
   },
   {
     hint: "arbitrary hex fill (bg-[#…]/text-[#…]/…) — use design tokens (bg-muted, text-zinc-*, …)",
@@ -133,8 +148,11 @@ const RULES = [
   {
     hint: 'SVG paint hex (fill="#…"/stroke="#…") — use currentColor or design tokens',
     id: "SVG_PAINT_HEX",
-    pattern:
-      /<(?:svg|path|circle|rect|line|polyline|polygon)\b[^>]*?\b(?:fill|stroke)\s*=\s*["']#[0-9a-fA-F]{3,8}["']/gs,
+    tag: {
+      name: "svg|path|circle|rect|line|polyline|polygon",
+      test: (open) =>
+        /\b(?:fill|stroke)\s*=\s*["']#[0-9a-fA-F]{3,8}["']/.test(open),
+    },
   },
   {
     hint: "slate-* — use zinc-* (dark-mode readable)",
@@ -169,9 +187,13 @@ const RULES = [
   {
     hint: "icon-only button with no accessible name — add aria-label (or visible text). A button whose only child is an icon is announced as nothing, and it is the most common a11y gap in this codebase",
     id: "A11Y_ICON_BUTTON",
-    pattern:
-      /(?<![A-Za-z-])<button\b(?![^>]*\baria-label=)(?![^>]*\baria-labelledby=)(?![^>]*\btitle=)[^>]*>\s*<[A-Z][A-Za-z0-9]*\b[^>]*\/>\s*<\/button>/g,
     severity: "warn",
+    tag: {
+      name: "button",
+      test: (open, body) =>
+        !/\baria-label=|\baria-labelledby=|\btitle=/.test(open) &&
+        /^\s*<[A-Z][A-Za-z0-9]*\b[^>]*\/>\s*$/.test(body),
+    },
   },
   {
     hint: "off-scale motion duration — use duration-150 (hover/press/colour), 200 (overlay default) or 250 (wide surfaces) per 1.5",
@@ -261,6 +283,70 @@ function lineOf(index, content) {
 }
 
 /**
+ * Locate `<name …>` elements without relying on `[^>]`.
+ *
+ * `[^>]*` silently fails whenever an attribute contains a `>` — and an arrow
+ * function (`onClick={() => router.push(x)}`) or a comparison
+ * (`disabled={page >= n}`) is enough to provide one. Measured on 2026-09-16:
+ * patterns built on `[^>]` reported 0 while 31 unnamed icon-only buttons and
+ * 8 native `<input type="number|date">` were sitting in apps/web, and the
+ * fixture's "every violation class exactly once" claim was never checked
+ * per-rule, so nothing noticed.
+ *
+ * This walks the tag counting brace depth and skipping string literals, so a
+ * `>` inside `{…}` or `"…"` cannot end the tag early.
+ *
+ * @param {string} content
+ * @param {string} name element name, or a `|`-alternation of names
+ *   (e.g. `"svg|path|circle"`) — it is used inside a non-capturing group.
+ * @returns {{ index: number, open: string, body: string }[]} `open` is the
+ *   opening tag, `body` the inner content (`""` when self-closing or
+ *   unterminated).
+ */
+function scanTags(content, name) {
+  /** @type {{ index: number, open: string, body: string }[]} */
+  const out = [];
+  const re = new RegExp(`<(?:${name})\\b`, "g");
+  const closeRe = new RegExp(`</(?:${name})>`);
+  /** @type {RegExpExecArray | null} */
+  let m;
+  while ((m = re.exec(content)) !== null) {
+    let i = m.index + m[0].length;
+    let depth = 0;
+    let selfClosing = false;
+    while (i < content.length) {
+      const c = content[i];
+      if (c === "{") {
+        depth++;
+      } else if (c === "}") {
+        depth--;
+      } else if (c === ">" && depth === 0) {
+        selfClosing = content[i - 1] === "/";
+        break;
+      } else if (c === '"' || c === "'" || c === "`") {
+        const q = c;
+        i++;
+        while (i < content.length && content[i] !== q) {
+          if (content[i] === "\\") {
+            i++;
+          }
+          i++;
+        }
+      }
+      i++;
+    }
+    const openEnd = Math.min(i + 1, content.length);
+    let body = "";
+    if (!selfClosing) {
+      const close = closeRe.exec(content.slice(openEnd));
+      body = close ? content.slice(openEnd, openEnd + close.index) : "";
+    }
+    out.push({ body, index: m.index, open: content.slice(m.index, openEnd) });
+  }
+  return out;
+}
+
+/**
  * @param {string} rel
  * @param {string} ruleId
  * @param {AllowEntry[]} allowlist
@@ -284,19 +370,36 @@ function scanFile(abs, allowlist) {
   const violations = [];
   let suppressed = 0;
   for (const rule of RULES) {
-    rule.pattern.lastIndex = 0;
-    /** @type {RegExpExecArray | null} */
-    let m;
-    while ((m = rule.pattern.exec(content)) !== null) {
-      if (m[0].length === 0) {
-        rule.pattern.lastIndex++;
-        continue;
+    /** @type {number[]} */
+    const hitIndexes = [];
+    if (rule.tag) {
+      for (const el of scanTags(content, rule.tag.name)) {
+        if (rule.tag.test(el.open, el.body)) {
+          hitIndexes.push(el.index);
+        }
       }
+    } else if (rule.pattern) {
+      rule.pattern.lastIndex = 0;
+      /** @type {RegExpExecArray | null} */
+      let m;
+      while ((m = rule.pattern.exec(content)) !== null) {
+        if (m[0].length === 0) {
+          rule.pattern.lastIndex++;
+          continue;
+        }
+        hitIndexes.push(m.index);
+        // Guard against zero-width loops on `s`-flag patterns.
+        if (rule.pattern.lastIndex === m.index) {
+          rule.pattern.lastIndex++;
+        }
+      }
+    }
+    for (const index of hitIndexes) {
       if (allowed(rel, rule.id, allowlist)) {
         suppressed++;
         continue;
       }
-      const line = lineOf(m.index, content);
+      const line = lineOf(index, content);
       violations.push({
         excerpt: (lines[line - 1] ?? "").trim().slice(0, 160),
         file: rel,
@@ -305,10 +408,6 @@ function scanFile(abs, allowlist) {
         rule: rule.id,
         severity: rule.severity ?? "error",
       });
-      // Guard against zero-width loops on `s`-flag patterns.
-      if (rule.pattern.lastIndex === m.index) {
-        rule.pattern.lastIndex++;
-      }
     }
   }
   return { suppressed, violations };
