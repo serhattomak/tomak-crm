@@ -24,6 +24,33 @@ being incapable of finding anything.
 Ports are not reliable as a liveness check: `Test-NetConnection` on `54321` succeeded
 while the whole stack was stopped. Check containers, not ports.
 
+## Supabase auth schema: two columns, two types
+
+The auth tables do not agree on what a user id is. Measured, not assumed:
+
+| Column | Type |
+|---|---|
+| `auth.users.id` | `uuid` |
+| `auth.sessions.user_id` | `uuid` |
+| `auth.refresh_tokens.user_id` | **`character varying`** |
+
+Postgres has no implicit cast between `varchar` and `uuid`, so a statement that joins
+`refresh_tokens` to `users` on the id fails with `operator does not exist:
+character varying = uuid` and takes the whole transaction down with it. That is exactly
+what happened while rotating the dev password: the `UPDATE` succeeded, the
+`refresh_tokens` delete failed, and everything rolled back. The fix is a cast, and it
+is asymmetric on purpose:
+
+```sql
+DELETE FROM auth.refresh_tokens
+ WHERE user_id = (SELECT id::text FROM auth.users WHERE email = '...');
+DELETE FROM auth.sessions
+ WHERE user_id = (SELECT id      FROM auth.users WHERE email = '...');
+```
+
+Verify with `SELECT pg_typeof(id) FROM auth.users LIMIT 1` rather than trusting this
+table — it was written from one reading of one version of the auth schema.
+
 ## Names that must not be renamed
 
 Both of these exist because a service derives its identity from the **directory name**.
