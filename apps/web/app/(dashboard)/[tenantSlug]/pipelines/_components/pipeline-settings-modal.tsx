@@ -1,4 +1,3 @@
-/* Hallmark · component: pipeline-settings-modal · genre: modern-minimal · theme: Adaptive Zinc/Violet */
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
@@ -10,6 +9,7 @@ import {
 } from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
+import { SelectField } from "@workspace/ui/components/select";
 import { toast } from "@workspace/ui/components/sonner";
 import { Layers, Plus, Settings, Trash2, X } from "lucide-react";
 import type React from "react";
@@ -173,22 +173,25 @@ export function PipelineSettingsModal({
               <Label className="text-xs">
                 Otomatik Dağıtım Algoritması (Routing)
               </Label>
-              <select
-                className="h-8 w-full rounded-md border border-input bg-background px-2.5 font-medium text-foreground text-xs shadow-xs focus:border-primary focus:outline-none"
-                onChange={(e) => setRoutingStrategy(e.target.value)}
+              <SelectField
+                onChange={setRoutingStrategy}
+                options={[
+                  {
+                    label: "Round-Robin (Sırayla Eşit Dağıtım)",
+                    value: "RoundRobin",
+                  },
+                  {
+                    label: "İş Yükü Dengeli (En Az İşi Olana)",
+                    value: "LeastLoaded",
+                  },
+                  {
+                    label: "Sadece Çevrimiçi / Aktif Personele",
+                    value: "OnlineOnly",
+                  },
+                  { label: "Manuel / Açık Havuz Modeli", value: "Manual" },
+                ]}
                 value={routingStrategy}
-              >
-                <option value="RoundRobin">
-                  Round-Robin (Sırayla Eşit Dağıtım)
-                </option>
-                <option value="LeastLoaded">
-                  İş Yükü Dengeli (En Az İşi Olana)
-                </option>
-                <option value="OnlineOnly">
-                  Sadece Çevrimiçi / Aktif Personele
-                </option>
-                <option value="Manual">Manuel / Açık Havuz Modeli</option>
-              </select>
+              />
             </div>
 
             <div className="space-y-1 sm:col-span-2">
