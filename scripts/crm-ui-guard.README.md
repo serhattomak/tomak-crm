@@ -35,7 +35,7 @@ build. It reads 0 today, so the promotion is available as soon as that is truste
 
 ## Current baseline (`--full`, 2026-09-16)
 
-192 files scanned. **0 errors · 0 advisory warnings.** (28 hits suppressed by the
+195 files scanned. **0 errors · 0 advisory warnings.** (41 hits suppressed by the
 allowlist.) **No violation of any kind remains anywhere in CRM scope.**
 
 | Rule | Severity | Hits | Use instead |
@@ -56,7 +56,7 @@ allowlist.) **No violation of any kind remains anywhere in CRM scope.**
 | MOTION_DURATION | error | **0** | `duration-150` / `200` / `250` — values, not tokens (Faz 6.0) |
 | MOTION_EASE | error | **0** | `ease-crm` / `ease-crm-in-out` (Faz 6.0) |
 | A11Y_ICON_BUTTON | error | **0** | `aria-label` (or visible text) — a button whose only child is an icon is announced as nothing (Faz 6.1) |
-| LIGHT_SURFACE_NO_DARK | warn | **0** | `bg-muted` (light ~zinc-100 / dark ~zinc-800) for surfaces, `bg-border` for 1px rules — a light surface with no `dark:` counterpart keeps its light value in dark mode |
+| LIGHT_SURFACE_NO_DARK | warn | **0** | `bg-muted` (light ~zinc-100 / dark ~zinc-800) for surfaces, `bg-border` for 1px rules, and for **tinted** surfaces the paired dark value: `bg-<c>-50/100` → `dark:bg-<c>-950/60`, `bg-<c>-200` → `dark:bg-<c>-900/60`, `border-<c>-100/200/300` → `dark:border-<c>-900/40` / `-800` / `-700` (crm-ui-standards.md §1.2.1). A light surface with no `dark:` counterpart keeps its light value in dark mode — and `text-<c>-600…900` needs its own partner, or fixing the surface alone makes contrast *worse* |
 
 **Faz 6.0 (motion) is complete:** `MOTION_DURATION` and `MOTION_EASE` were added, measured
 20 and 19, and swept to 0 — and `prefers-reduced-motion` went from **zero implementation
@@ -211,6 +211,12 @@ retired in Faz 7 (ADR-0004 §9.5) once a full sweep reached 0 errors and 0 warni
 most of Program A the full sweep was `FAIL`, and a gate that fails on every run is not a
 gate. But it was narrower than the truth by construction, and the last thing it did was hide
 its own retirement criterion behind a rule that could not see.
+
+**This rule cannot see whether a surface *renders* correctly** — only that it is paired. That is
+what the Playwright dark-mode audit is for: it walks the real DOM in the dark theme and measures
+painted backgrounds and text contrast (`apps/web/e2e/dark-mode.spec.ts`, 31 routes, both detectors
+carrying positive controls). It found the tinted class in the first place, and it caught the
+contrast regression that fixing surfaces without their text causes.
 
 **CI now holds all of this** (Faz 7, `.github/workflows/ci.yml`): the guard and the fixture
 check run in their own job *without* `npm ci`, because the guard has zero dependencies — a
