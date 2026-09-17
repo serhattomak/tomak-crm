@@ -145,6 +145,35 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Kart anatomisi — üst boşluğun TEK sahibi (2026-09-18, grilling oturumu)
+
+   Sorun: `CardContent` / `CardFooter` varsayılanı `pt-0 sm:pt-0` taşıyordu. Ama `pt`
+   utility'leri `p`'den SONRA üretildiği için aynı varyantta çakıştıklarında `pt` kazanır;
+   tailwind-merge de ikisini birlikte hayatta bırakır (`pt`'nin conflict entry'si yok).
+   Sonuç: `CardContent className="p-3.5"` birleşimi `sm:p-5 sm:pt-0 p-3.5` oluyordu ve
+   640px üstünde üst boşluk 0'a düşüyordu — başlıksız kartlarda metin üst kenara yapışık.
+   Aynı hata 9 widget footer'ında `pt-2`'yi yiyip metni `border-t` çizgisine yapıştırıyordu.
+
+   Çözüm: "başlık varsa üst sıfır" bilgisini sınıf dizisinden ÇIKARIP yapıya taşımak.
+   Kural bilinçli olarak KATMANSIZ: Tailwind v4 utility'leri `@layer utilities` içinde yaşar
+   ve katmansız stiller katmanlıları yener. Böylece header'lı içerik çağrı yerinden
+   yanlışlıkla ezilemez ve bug yeni bir çağrı yerinde tekrar doğamaz.
+
+   ⚠️ Bilinçli kabul edilen bedel: header'lı bir `CardContent` artık kendi `pt-*` sınıfıyla
+   üst boşluk ALAMAZ. Üst boşluk istiyorsan `CardHeader` kullanma (o zaman bu kural
+   eşleşmez) ya da boşluğu içerideki bir sarmalayıcıya ver. Standartlar §1.3'te yazılıdır.
+
+   `~` (genel kardeş) kullanılıyor, `+` değil: widget'larda `CardHeader` ile `CardContent`
+   bir sarmalayıcı `div` içinde kardeş olabiliyor; araya başka bir düğüm girse de eşleşsin.
+
+   `card-footer` bilinçli olarak DIŞARIDA: footer'ın ayırıcı çizgisi zaten `border-t`'dir ve
+   altında `pt-2` gibi gerçek bir boşluğa ihtiyaç duyar, sıfıra değil.
+   --------------------------------------------------------------------------- */
+[data-slot="card-header"] ~ [data-slot="card-content"] {
+  padding-top: 0;
+}
+
 @media print {
   @page {
     size: A4 portrait;
