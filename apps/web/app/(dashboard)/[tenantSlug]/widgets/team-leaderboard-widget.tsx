@@ -279,7 +279,7 @@ export function TeamLeaderboardWidget() {
           )}
         </CardHeader>
 
-        <CardContent className="pt-0">
+        <CardContent>
           {/* Content Area */}
           {isLoading ? (
             <div className="space-y-2 py-2">

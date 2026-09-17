@@ -50,17 +50,21 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("p-4 pt-0 sm:p-5 sm:pt-0", className)}
+      className={cn("p-4 sm:p-5", className)}
       data-slot="card-content"
       {...props}
     />
   );
 }
 
+// Dikey dolgu bilinçli olarak varyantsız (`py-2`, `p-4 sm:p-5` değil): varyant taşıyan bir
+// varsayılan, çağrı yerinin düz `pt-*` sınıfını o breakpoint'te yener — footer'ın `pt-2`'si
+// 640px üstünde tam olarak böyle 0'a düşüyordu. Yatayda responsive kademe kalıyor, çünkü
+// çağrı yerleri yatayı hiç özelleştirmiyor. Ayrıntı: globals.css kart anatomisi notu.
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex items-center p-4 pt-0 sm:p-5 sm:pt-0", className)}
+      className={cn("flex items-center px-4 py-2 sm:px-5", className)}
       data-slot="card-footer"
       {...props}
     />

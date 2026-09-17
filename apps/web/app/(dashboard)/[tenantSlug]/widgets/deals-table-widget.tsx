@@ -150,7 +150,7 @@ export function DealsTableWidget() {
           </Button>
         </CardHeader>
 
-        <CardContent className="pt-0">
+        <CardContent>
           {isLoading ? (
             <div className="space-y-2 py-2">
               {[1, 2, 3, 4].map((i) => (

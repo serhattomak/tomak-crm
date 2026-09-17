@@ -114,7 +114,7 @@ export function RevenueChartWidget({
         </CardHeader>
 
         {/* Content Area */}
-        <CardContent className="pt-0">
+        <CardContent>
           {isLoading ? (
             <div className="flex h-44 items-center justify-center">
               <Skeleton className="h-28 w-full" />

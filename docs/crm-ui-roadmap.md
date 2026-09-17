@@ -10,8 +10,8 @@ Bu dosya **yaşayan bir kontrol listesidir**. Bir faz tamamlandığında kutulan
 
 ## 📍 NEREDE KALDIK — buradan başla
 
-> **Son güncelleme: 2026-09-17** — yalnızca push durumu tazelendi; aşağıdaki özetin geri
-> kalanı 2026-09-16 tarihli. Bu bölüm aşağıdaki ~1050 satırın (ve 269 satırlık İlerleme
+> **Son güncelleme: 2026-09-18** — kart anatomisi düzeltmesi eklendi (aşağıda **"✅
+> 2026-09-18"** bölümü). Bu bölüm aşağıdaki ~1100 satırın (ve 270 satırlık İlerleme
 > Günlüğü'nün) özetidir. Devam etmek için günlüğe inmene gerek yok.
 
 **Program A (Faz 0–7) TAMAMEN KAPANDI** — sekiz fazın hepsi `[x]`. **Program B** iptal edildi,
@@ -40,6 +40,37 @@ commit'ler push edildi, üzerine bu oturumun 4 altyapı commit'i eklendi
 | **#17** | `packages/ui` biçim normalizasyonu — aynı geçişte kapandı | `21f2039` |
 | **#16** | 28 Hallmark imzası silindi — premis çürüdü: **mekanikti** | `ddd6bcb` |
 | — | Script çıkarımlarının bıraktığı biçim sapması düzeltildi | `31585c4` |
+
+### ✅ 2026-09-18 — Kart anatomisi: üst boşluk bug'ı (kullanıcı bildirimi)
+
+> Bildirim: *"Bazı yerlerde yazılar üst borderlara yakın gözüküyor. Örneğin müşteri
+> detaylarındaki Genel Bakış alanındaki Toplam Ciro, Fırsatlar alanları vs. Bunun gibi
+> birçok alan var."*
+
+| Ne | Sonuç |
+|---|---|
+| **Kök neden** | `CardContent` / `CardFooter` varsayılanı `pt-0 sm:pt-0` taşıyordu. `pt` utility'leri `p`'den **sonra** üretildiği için aynı varyantta `pt` kazanır; tailwind-merge de ikisini birlikte hayatta bırakır (`pt`'nin conflict entry'si yok) → `p-3.5` yazan **başlıksız** bir kartta **640px üstünde üst boşluk 0**'a düşüyordu |
+| **Bug A — 11 site** | `customer-tabs-content.tsx`: header'sız `CardContent`. Kullanıcının adıyla saydığı `Toplam Ciro` · `Fırsatlar` · `Teklifler` · `Destek Talepleri` + işlem satırları, zaman çizelgesi, notlar, iletişim kartı |
+| **Bug B — 9 site** | widget `CardFooter`'ları: `pt-2` aynı sebeple 0'a düşüp metni `border-t` çizgisine yapıştırıyordu (üst 0 / alt 12 → asimetrik) |
+| **Düzeltme** | (1) `CardContent` → `p-4 sm:p-5`; `CardFooter` → `px-4 py-2 sm:px-5` (dikey **bilinçli varyantsız** — varyant taşıyan varsayılan çağrı yerinin düz `pt-*`'ını yener, hatanın ta kendisi buydu). (2) `globals.css`'e **katmansız** kural: `[data-slot="card-header"] ~ [data-slot="card-content"] { padding-top: 0 }` → "başlık varsa üst sıfır" artık **sınıfın değil yapının** bilgisi, yeni bir çağrı yeri hatayı geri getiremez. (3) 16 çağrı yerindeki gereksiz `pt-0` temizlendi |
+| **Ölçüm — gerçek sayfa, A/B** | Geçici prob rotası + gerçek rota denetimi, `getComputedStyle`, iki genişlik, **pozitif kontrol** (kasıtlı asimetrik div) ile. Düzeltme öncesi: **8 sapma** — müşteri detayında 4 kart (`t0 l20 r20`) + dashboard'da 4 footer (`border-t`'ye yapışık), hepsi **yalnız 1280px'te**. Sonrası: **0 sapma**. 390px'te iki durumda da 0 → bug yalnızca `sm+`, bu yüzden mobilde görünmüyordu |
+| **No-op kanıtı** | 16 `pt-0` temizliğinden sonra ölçüm çıktısı **birebir aynı** — üst-boşluk sahipliği tamamen CSS kuralına geçti |
+| **Araç kapıları** | typecheck **2/2** · guard **PASS** (0 error, 205 dosya) · lint **0 error / 347 uyarı** (A/B ile doğrulandı: 347→347, değişiklik sıfır bulgu; AGENTS.md'deki "343" bayat) · `npm run format` **no-op** |
+| **Sıra** | İlerleme Günlüğü kuralı uygulandı: önce kural eklendi (varsayılan hâlâ sahipteyken) ve `pt-8` probuyla (base 32px → 0) kanıtlandı, **sonra** eski mekanizma emekliye ayrıldı |
+| **Standart** | `crm-ui-standards.md` **§1.3.1 Kart Anatomisi** eklendi — padding'in tek sahibi, "başlık varsa üst sıfır" semantiği ve kabul edilen bedel yazılı |
+
+**Yan bulgu 1 — `next dev` istemci JS'i 403 (mevcut yapılandırma hatası):**
+`next.config.ts`'teki `allowedDevOrigins` girdileri port içeriyor (`"localhost:3000"`,
+`"127.0.0.1:3000"`) ama Next **bare host** bekliyor (`['127.0.0.1']`). Sonuç: `127.0.0.1:3000`
+üzerinden açılan sayfalarda `/_next/static/chunks/*` **403** dönüyor ve sayfalar **hydrate
+olamıyor** — istemci tarafı veri çeken ekranlar (müşteri detayı dahil) yükleme ekranında kalıyor.
+Playwright `next build && next start` kullandığı için (prod'da bu engel yok) bugüne kadar
+görülmemiş. Ölçüm bu yüzden `localhost:3000` üzerinden yapıldı.
+
+**Yan bulgu 2 — Supabase policy'de sonsuz özyineleme (kapsam dışı, ayrı madde gerekir):**
+anon anahtarıyla `tenants`/`customers` sorgusu **500** dönüyor:
+`42P17 infinite recursion detected in policy for relation "tenant_members"`. `service_role`
+etkilenmiyor. Yerel REST üzerinden doğrudan okuma yapan her yol bunu yaşar.
 
 ### 🔴 ÖNCE BUNLAR — senden bekleyen, başkası yapamaz
 
@@ -84,14 +115,15 @@ başlıkları/marjları sıfırlıyor → metin düz bir yığın). Üç seçene
 | 22 | `overlayClassName` boşluğu (4 overlay primitifi) | somut ihtiyaç doğması |
 | 24 | `--success` / `--warning` token'ları | ADR-0004 §5 · **tasarım kararı** |
 | 25 | Pipeline renk alanı = **veri sözleşmesi** | API + veri göçü |
-| **30** | **ad.1 bitti** — ad.2: radius köprüsünü emekliye ayırmak | önizleme + "kart nedir" triyajı |
+| **30** | **ad.1 bitti** — ad.2: radius köprüsünü emekliye ayırmak | önizleme + **#33** (elle yazılmış kartlar `Card`/`StatCard` primitifine taşınırsa print koruması `data-slot="card"` üzerinden kendiliğinden gelir, `data-print-block` gerekmez) |
 | **31** | **Lint borcu: 5546 teşhis** — kural-kural triyaj | kararlar (aşağı bak) |
 | **32** | `contracts` + ölü `prose` | yukarıdaki karar 2 |
+| **33** | **`StatCard` + `StatCardGrid`** ve ~19 ham metrik kartının migrasyonu | kararlar **alındı** (aşağıda #33) — uygulama bekliyor |
 
 ### 🛠️ Bağımsız ilerlenebilecekler (karar gerektirmez)
 
 1. **#31 — triyaj tablosu** (kural kural *uygula / kapat / daralt*). Ölçülmüş hali hazır: `noJsxPropsBind` **1693** (0 mekanik — **mimari karar**, ~1693 handler `useCallback`) · `useSortedClasses` **1317** (1303 mekanik) · `noLeakedRender` 390 · `useAwait` 301 · `noLabelWithoutControl` 297 (a11y) · `noNestedTernary` 164 · `format` 95 · … · **mekanik 1699 / elle 3949**. `ultracite` **hiçbir CI kapısında değil**; `npm run lint` = ESLint (0 error / 347 uyarı).
-2. **#30 ad.2** — elle yazılmış kartları `data-print-block` ile işaretleyip radius listesini **en son** emekliye ayırmak (ters sıra ~541 yüzeyi korumasız bırakır). Önizleme sonrası.
+2. **#30 ad.2** — elle yazılmış kartları `data-print-block` ile işaretleyip radius listesini **en son** emekliye ayırmak (ters sıra ~541 yüzeyi korumasız bırakır). Önizleme sonrası. ⚠️ **2026-09-18 güncellemesi:** ölçüm kartlarının çoğu **#33** ile `Card`/`StatCard` primitifine taşınacak; primitife taşınan yüzey `data-slot="card"`'ı bedava kazanır, yani **`data-print-block` işi #33'ün yan ürünü olarak küçülür.** İki madde birlikte planlanmalı.
 3. **Ekran-çıktısı ailesi (5 yüzey)** — `dashboard-share-popover` · `analytics` · `payroll` · `vehicles` · `dashboard-tabs-bar`. Maddenin kapsamı **dışında bırakıldı ve karara bağlanmadı**: "bu ekranı bas" ayrı bir soru (belge değil).
 4. **#25** — pipeline renk alanını token sözlüğüne bağlamak (`colorKey: "chart-1"`), şu an gerekçesiyle allowlist'te.
 5. **Kalan print yüzeyleri** — önizleme geçerse reçete hazır: belge component'i → ayrı rota → buton `router.push` → A-yamasını emekliye ayır.
@@ -767,6 +799,12 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
    **KARAR (kullanıcı, 2026-09-16): süpürme yapılmayacak.** Gerekçe ölçüm: çip yok, `2xl` konsensüs değil, ve
    izinli hedef print korumasını düşürür. Radius bir **görsel tercih** olarak kalır; madde "kasıtlı ertelendi"
    diye kaydedilir. Print çelişkisi ayrı maddeye ayrıldı → **#30**
+   **⚠️ SCOPED İSTİSNA (2026-09-18, kullanıcı onaylı):** `StatCard` primitifi (**#33**) `rounded-lg`
+   kullanır — yani bu kararın **metrik kartları** diliminde bilinçli olarak dışına çıkılıyor.
+   Gerekçe: metrik kartları `Card` primitifiyle aynı yüzeyi paylaşmalı (tek lehçe hedefi), ve
+   `2xl`→`lg` süpürmesinin gerekçesi **tüm 535 kullanım** içindi, primitifin kendi ölçeği değil.
+   **Kapsam dar tutuldu: yalnız ~19 metrik yüzeyi.** #20'nin geri kalanı (445 `2xl` / 86 `3xl`)
+   hâlâ **ertelenmiş** durumda — bu istisna o kararı genişletmez.
 21. **Print yüzeyi olan overlay'lerin yeniden tasarımı (bulgu 12)** — **beş yüzey** etkileniyor: `invoices` · `contracts` · `finance` detay drawer'ları ("Yazdır / PDF" → `window.print()`), `shipments` "Kargo Sevk Etiketi & Barkod Önizleme" modalı (`handlePrint`) ve `quotes` "Teklif Belgesi Önizleme" modalı (`handlePrint`; 2026-09-16, `28d8d6e`). Son ikisinde **`print:` sınıfı hiç yok**, yani kaybedilecek bir print düzeni zaten yoktu; tek kazanç backdrop'un artık basılmaması. Backdrop artık basılmıyor (`5229ec9`, global kural sayesinde hepsi kendiliğinden çözüldü), ama **portallanmış `fixed` konumlandırma print'te kırılgan**: sabit elemanlar sayfa başına tekrarlanabilir, sayfa kırılımı kontrol edilemez. Doğru çözüm bu yüzeyleri print için ayrı ele almak (ör. `@media print`'te içeriği normal akışa döndürmek ya da ayrı bir print rotası). **Elle print önizlemesiyle doğrulanmalı.** Aynı soru `orders/[orderId]` (muaf), `products/[productId]`, `calendar` için de doğabilir; kalan sayfalar göçerken **print akışı olan yeni bir yüzey çıkarsa buraya ekleyin**
    **📏 ÖLÇÜM + KARAR + PİLOT (2026-09-16).** Maddenin "beş yüzey"i doğru ama eksik.
    Ölçüm: **13 `window.print()` çağrısı / 12 dosya**. Maddenin 5'i (invoices · contracts · finance ·
@@ -865,6 +903,7 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 30. **Print kuralı radius sınıflarını "kart" seçicisi olarak kullanıyor — yapısal düzeltme** (2026-09-16, #20'nin triyajında bulundu). `packages/ui/src/styles/globals.css` `@media print` bloğunda `.rounded-3xl`, `.rounded-2xl`, `.rounded-xl` + `[class*="widget"]`, `[class*="Widget"]` bir arada **"kart"** anlamına geliyor (`break-inside: avoid`, `page-break-inside: avoid`, `box-shadow: none`). Bu bir **gizli bağ**: radius bir *görsel* karardır ama print *davranışını* taşıyor. **Kanıt — `Card` primitifi bugün kuralın dışında:** `packages/ui/src/components/card.tsx` tek radius olarak `rounded-lg` kullanıyor ve `lg` listede yok → **17 dosyadaki 38 `<Card>` print koruması almıyor.** §1.1 ise konteynerler için `lg`'yi açıkça izinli sayıyor → **standart doğru, print kuralı yanlış.** Düzeltme: kartı radius sınıfıyla değil bir **işaretle** tanımla. `Card` primitifi `data-slot="card"` (+ `card-header/title/description/content/footer`) **zaten** taşıyor → primitif tarafı bedava. Elle yazılmış kart yüzeyleri (ölçüm: 62 dosya) ayrı ele alınmalı. **Sıra bağlayıcı** (İlerleme Günlüğü kuralı: *eski mekanizma en son emekliye ayrılır*): önce `[data-slot="card"]` **eklenir**, radius listesi **en son** düşürülür — ters sıra, bugün korunan ~541 yüzeyi korumasız bırakır. ⚠️ **Ölçüm uyarısı:** "kart yüzeyi"nin tanımı hiçbir yerde yazılı değil; `bg-card + border-border` **gevşek bir vekil** ve bar/çip/girdi/kabuk yakalıyor → sayılar bu yüzden **üst sınırdır** (kendi ölçümüm 104 "kaçırılan" dedi, örnekleri okuyunca çoğu kart değil). **Elle print önizlemesiyle doğrulanmalı** (#21 ile aynı adım). #21 ve #22 ile komşu.
    **ADIM 1 YAPILDI (2026-09-16, `973750f`):** `[data-slot="card"]` seçici listesinin **başına** eklendi, radius köprüsü **bilerek yerinde bırakıldı** (sıra bağlayıcı: köprü önce düşerse korunan 541 yüzey korumasız kalır). **Kanıt derlenmiş CSS'te** (`apps/web/.next/static/chunks/*.css`: `@media print{…[data-slot=card],.rounded-3xl,.rounded-2xl,.rounded-xl,…{break-inside:avoid!important…}`) — kaynakta değil, çünkü asıl iddia render edilen stil. ⚠️ **Ölçüm kaydı (bu oturumun 3. kör dedektörü):** ilk kontrol "derlenmiş CSS'te YOK" dedi ve **yanlıştı** — minifier tırnakları düşürüyor (`[data-slot="card"]` → `[data-slot=card]`), grep tırnaklı biçimi arıyordu. Aynı sıfırı temiz bir ağaç da verir. İkinci kör dedektör doğrulama betiğinin **seçici ayrıştırıcısıydı**: dilimi yorumun *işaretçi metninden* alıyordu, `/*` açılışını kesiyor ve **yorum gövdesini seçici** sanıyordu (iki kez çöp bastı). Verdiktler etkilenmedi (gerçek girdileri sınıyor) ama *"yanlış ayrıştıran bir dedektör kanıt değildir."*
    **Kalan iş (adım 2):** elle yazılmış kartları `data-print-block` ile işaretleyip radius listesini emekliye ayırmak — ve bu, "kart nedir" tanımının **yazılı olmadığı** için kendi triyajını gerektiriyor (62 dosya, üst sınır). **Print önizlemesi hâlâ yapılmadı.**
+   **2026-09-18 revizyonu:** adım 2'nin planı **#33'e bağlandı.** Elle yazılmış metrik kartları `StatCard` primitifine taşınırsa `data-slot="card"`'ı miras alırlar — yani print koruması "işaretleme" işi olmaktan çıkıp **migrasyonun yan ürünü** olur. Sıra kuralı yine bağlayıcı: radius köprüsü, `[data-slot="card"]` kapsamı genişledikten **sonra** ve **en son** düşürülür.
 
 31. **Lint-kuralı borcu — `npm run check` 5554 teşhis** (2026-09-16, #18 kapanışında ayrıldı; biçim borcu değil **kural** borcu). Kural-kural triyaj gerektirir: **uygula / kapat / daralt**, sonra süpürme, sonra terfi.
     | Kural | # | FIXABLE | Not |
@@ -886,6 +925,27 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
    - **Sözleşme gövdesi `contentHtml` API'den stilsiz geliyor** (`ContractEndpoints.cs`: `ContentHtml = req.ContentHtml`) — yani stil HTML'in içinde de yok, kapsayıcıda olması gerekiyordu ve o da ölü.
    **⚠️ Düzeltmenin tuzağı (kontrollü ölçüm):** guard'ın `SLATE` kuralı `/(?<![A-Za-z])slate-(…)\b/` — `text-slate-500`'ü **yakalıyor**, `prose-slate`'i **görmüyor** (pozitif/negatif kontrollerle doğrulandı). Yani typography kurulursa `PortalClient`'daki `prose-slate` **canlanır** ve guard'ın göremediği bir slate paleti doğar — typography'nin kendi gri ölçeği. **Karar (kullanıcı): ayrı madde, `contracts` şimdilik atlanır.** Seçenekler: (a) typography kur — yeni bağımlılık, ADR-0004 prosedürü, + yukarıdaki guard deliği · (b) enjekte HTML'i kapsayıcıda arbitrary variant'larla (`[&_h2]:mt-4 [&_ul]:list-disc`) tasarım sistemi içinde stillendir, `prose` sınıflarını sil — guard görür, yeni bağımlılık yok · (c) olduğu gibi bırak. Ölçüm: `contracts/page.tsx` 802 satır, `print:` sınıfı **0**, `window.print()` 768'de (Sheet footer'ı).
 
+
+33. **`StatCard` + `StatCardGrid` — metrik kartlarının tek biçime inmesi** (2026-09-18, kullanıcı bildiriminin grilling'inde doğdu). Kart üst-boşluk bug'ı düzeltilirken ölçüldü: metrik kartları **20+ bağımsız kopya** halinde ve **üç ayrı görsel lehçe** konuşuyor.
+
+    **Ölçülen envanter (recon):** ~18 sayfada ham `rounded-2xl border border-border bg-card p-4/p-5` kümesi · `invoices/page.tsx:57` ve `finance/page.tsx:124`'te **birebir aynı** `KpiCard` (byte-byte kopya; ikisinde de `trend` prop'u **ölü** — hiçbir çağrı yeri geçmiyor) · `email/page.tsx:107` `KpiCards` (üçüncü varyant, `font-mono`, `isLoading` → `"-"`) · `widgets/kpi-metrics-widget.tsx` (delta + sparkline + `justify-between`) · `customer-stats-banner` + `pipeline-stats-banner` (`Card` üzerine `p-4`) · **9 farklı grid dizesi** (`gap-3`/`3.5`/`4`, mobil `grid-cols-1` vs `2`, 4. kolon `md:` vs `lg:`, bir yerde `sm:grid-cols-5`) · değer tipografisi **6 farklı ölçekte** (`text-xl`, `text-2xl`, `text-2xl sm:text-3xl`, `text-3xl`, `text-lg`, `font-mono`) · ikon kabı **10 farklı biçimde** (`h-7`…`h-11`, `rounded-md/lg/xl/2xl`, renkli karo vs nötr çerçeveli).
+
+    **KARARLAR (kullanıcı, 2026-09-18):**
+    - **Yapı:** tek `StatCard`, tüm slotlar opsiyonel — `label` · `value` · `icon` · `tone` · `isLoading` · `hint` · `delta {direction,label}` · `meta` (footer düğümü) · `sparkline`. Hiçbir çağrı yeri link/tıklanabilirlik istemiyor (ölçüldü).
+    - **İnşa:** `Card` primitifi **üzerine** kurulur → `data-slot="card"` miras → print koruması bedava (**#30 ad.2'yi besler**). `CardHeader`/`CardContent` kullanmaz, tek `p-3.5` uniform → §1.3.1'in üst-boşluk mekanizmasına hiç girmez.
+    - **Yüzey:** `rounded-lg` + `border-border/80` kanonik. ⚠️ Bu **#20'ye bilinçli scoped istisnadır** — #20 "radius süpürmesi yapılmayacak" diyor (kart yüzeylerinde `2xl` %33), biz yalnız **metrik kartları** dilimini `lg`'ye indiriyoruz. Görsel sonuç: ~19 yüzeyde 14.4px → 8px.
+    - **`tone`:** kapalı set — `primary` · `info` (blue) · `success` (emerald) · `warning` (amber) · `danger` (rose) · `neutral` · `none`. §1.2'nin onayladığı ailelerle birebir hizalanır; `sky`/`indigo`/`purple` (standartta onaylı değil) kapanır. Ham `colorClass: string` prop'u ölür.
+    - **İkon kabı:** renkli tone karo — `h-8 w-8 rounded-lg bg-<tone>-50 text-<tone>-600 dark:bg-<tone>-950/50`.
+    - **Değer tipografisi:** tek ölçek + `tabular-nums` **varsayılan**. `font-mono` (email), `text-lg` (payroll), `text-3xl` (admin) emekliye ayrılır.
+    - **Grid:** `StatCardGrid`, `columns: 2–5`. `gap` ve breakpoint'ler tekbiçimlenir, kolon sayısı sayfa başına kalır.
+    - **Muaf 5:** `compliance` hero (SVG donut, `rounded-3xl`) · `webhooks` + `inventory` (§5.4 frosted muafiyeti — belgelenmiş kuralı çiğnememek için) · `projects` (yatay düzen) · `revenue-chart-widget` mini blokları (başka bir kartın gövdesindeki alt karo).
+    - **Doğrulama:** listeli manuel (dokunulan her sayfa × 390/1280 × açık/koyu) + **commit edilmeyen** geçici ölçüm aleti. Kalıcı dedektör yok — §1.3.1'in yapısal kuralı hatayı inşa gereği imkânsız kılıyor.
+
+    **Kapsam:** ~19 yüzey (analytics · orders · tickets · products · contracts · leaves · automations · vehicles · shipments · promotions · attendance · payroll · `admin/admin` · finance · invoices · email · `customer-stats-banner` · `pipeline-stats-banner` · `kpi-metrics-widget`). `products/[productId]`'de stat kartı **yok** (ölçüldü).
+
+    **Kabul edilen bedeller:** değer tipografisi normalizasyonu 4 sayfada kişisel tercihi düşürür · `p-3.5` migrasyonu bugün `p-4`/`p-5` olan kartları bir tık yoğunlaştırır · `uppercase` etiketler (5 sayfa) düşer.
+
+    **Not:** `crm-ui-standards.md`'de stat/KPI kartı kuralı **yoktu**; primitif yazıldığında §2 tablosuna `StatCard`/`StatCardGrid` satırları eklenmeli.
 
 ---
 
@@ -1162,3 +1222,15 @@ Bu program tamamlandıktan sonra ele alınacak. Kendi başına proje olan maddel
 | 2026-09-16 | #21 | 📌 **Durum: belge ailesi 4/5 bitti** (`invoices` · `quotes` **B deseni silindi** · `shipments` A6 · `finance`). `contracts` → **#32** (ölü `prose`). Ekran-çıktısı ailesi (5 yüzey: share-popover, analytics, payroll, vehicles, tabs-bar) **karara bağlanmadı** — maddenin kapsamı dışında. **🔴 Maddenin kendi şartı hâlâ borçlu: hiçbir yüzeyin basılı çıktısı elle görülmedi.** Dört rota için önizleme kontrol listesi oturum kaydında; statik araçlar print sonucunu göremez, madde **önizlemesiz kapatılamaz** |
 | 2026-09-16 | #16 | ✅ **KAPANDI — "mekanik değil" hükmü artık geçersiz** (`ddd6bcb`). Ölçüm premisi çürüttü: **28 dosya / hepsinde 1 satır / hepsi satır 1'de / hepsi kendi başına `/* … */`; şekil ~30 değil 7.** Ve maddenin gerekçesi olan **blok yorum içi `* Hallmark Critique Stamp` satırları: 0** — Faz 3 onları zaten silmiş, yani **sorunun şekli iş kısmen yapıldığı için değişmişti**. Silindi (yeniden yazılmadı): imzalar **stub `design.md`**'ye işaret ettiği için yanıltıcı. Süpürme **dört ön koşul** ile "tahmin etme, reddet" yazıldı → **28/28 geçti, atlanan 0**. Kodda `Hallmark` **0**. İçerik **TS parser'ıyla**: tanımlayıcı 0 · dize 0 · parse hatası 0. guard PASS 204 · fixtures 17/17 · typecheck 2/2 · lint 0/347 · build 2/2 |
 | 2026-09-16 | #16 | ⚠️ **Süpürmenin son kontrolü bir işlem hatasını çıkardı** (`31585c4`): `npm run format` **"Fixed 6 files"** dedi — süpürme yalnız sildiği için bunu üretemezdi. Sebep: **script'le çıkarılan 6 print dosyası hiç Biome'dan geçmemişti**; dilimi 8 boşluk kaydırmak hangi satırların sığdığını değiştiriyor, Biome JSX'i yeniden akıtıyor. Dört commit boyunca guard/fixtures/typecheck/lint/build koştu ama **`format` koşmadı** → sapma birikti. **Kural environment.md'ye (10–12): kapı listesi biçimlendiriciyi içermiyor → mekanik dönüşümden sonra `format` no-op kontrolü; yazan bir script doğrulayan bir script değildir (naif brace sayımı bir fonksiyonu öksüz bıraktı, `git checkout` ile geri alındı); süpürmede "reddet" "iyi-niyetli tahmin"den iyidir** |
+| 2026-09-18 | — | 🔴 **Kullanıcı bildirimi:** *"Bazı yerlerde yazılar üst borderlara yakın gözüküyor. Örneğin müşteri detaylarındaki Genel Bakış alanındaki Toplam Ciro, Fırsatlar alanları vs."* 5 turluk grilling ile kök neden + kapsam sözleşmeye bağlandı |
+| 2026-09-18 | — | 🔍 **Kök neden (ölçüldü):** `CardContent`/`CardFooter` varsayılanı `pt-0 sm:pt-0`. `pt` utility'leri `p`'den sonra üretildiği için aynı varyantta `pt` kazanır ve tailwind-merge ikisini birlikte tutar → başlıksız kartta `p-3.5`'in üstü **640px üstünde 0**. **Bug A 11 site** (müşteri detayı: Toplam Ciro · Fırsatlar · Teklifler · Destek Talepleri + 7), **Bug B 9 site** (widget footer'larında `pt-2` → 0, metin `border-t` çizgisine yapışık). Çağrı yerinde düzeltilemez: `pt-3.5` yazmak `sm:pt-0`'ı yenmez |
+| 2026-09-18 | — | 📏 **Ölçüm aleti kuruldu ve önce KENDİSİ sınandı:** geçici prob rotası (`/public/padding-probe` — proxy'nin public ön eki, kimlik gerektirmez) + `getComputedStyle` ile `padding-top` vs `padding-left`, iki genişlik, **kasıtlı asimetrik div pozitif kontrolüyle**. Temel ölçüm: **4/14 sapma**, kontrol yakalandı → dedektör görebiliyor |
+| 2026-09-18 | — | ✅ **Commit A (yeni mekanizma):** `globals.css`'e **katmansız** kural `[data-slot="card-header"] ~ [data-slot="card-content"] { padding-top: 0 }`. Varsayılan hâlâ yerindeyken ölçüldü → **tek ölçüm değişti, o da ayırt edici olan**: `pt-8` probu 390px'te **32 → 0**. İlerleme Günlüğü kuralı ("eski mekanizma en son emekliye ayrılır") uygulandı |
+| 2026-09-18 | — | ✅ **Commit B (emeklilik):** `CardContent` → `p-4 sm:p-5` · `CardFooter` → `px-4 py-2 sm:px-5` (**dikey bilinçli varyantsız** — varyant taşıyan varsayılan çağrı yerinin düz `pt-*`'ını yener, hatanın ta kendisi buydu) · 16 çağrı yerindeki gereksiz `pt-0` silindi → ölçüm **14/14**, sonra çıktı **birebir aynı** (no-op: üst-boşluk sahipliği tamamen kurala geçti) |
+| 2026-09-18 | — | 📏 **Gerçek sayfada A/B (ikinci yöntem):** `.auth/user.json` çerezleriyle gerçek rotalar tarandı. **Önce: 8 sapma** — müşteri detayında `Toplam Ciro` · `Fırsatlar` · `Teklifler` · `Destek Talepleri` → `t0 l20 r20`, dashboard'da 4 widget footer'ı `border-t`'ye yapışık; hepsi **yalnız 1280px'te**. **Sonra: 0 sapma.** 390px'te iki durumda da 0 → bug `sm+`'a özgü, bu yüzden mobilde görünmüyordu |
+| 2026-09-18 | — | 📊 **Kapılar:** typecheck 2/2 · guard **PASS** (0 error / 205 dosya) · lint **0 error / 347 uyarı** — **A/B ile doğrulandı: stash'li hâlde 347, değişiklikle 347** (AGENTS.md'deki "343" bayat; güncel taban #31'de de 347 yazıyor) · `npm run format` **no-op** |
+| 2026-09-18 | — | 📏 **Ölçüm kaydı (kendi aletimde yakalanan kusur):** ilk gerçek-sayfa denetimi, yüzey render etmeyen 12 rotayı "0 sapma" diye raporladı — **ölçememek temiz görünmekle aynı**. Alet düzeltildi: yüzey bulunmayan rota artık `ÖLÇÜLEMEDİ` yazar ve çıkış kodu 3 döner. Bu 12 rotanın kartları **ham div** (yani `data-slot` yok) — 0 yüzey orada beklenen davranış, ama sessizce "temiz" denemezdi |
+| 2026-09-18 | — | 📄 **Standart:** `crm-ui-standards.md` **§1.3.1 Kart Anatomisi** — padding'in tek sahibi, slot tablosu, "başlık varsa üst sıfır"ın yapısal olduğu ve kabul edilen bedel (başlıklı `CardContent` artık `pt-*` ile ezilemez) yazıldı |
+| 2026-09-18 | #33 | ✅ **Karar kaydı (uygulama bekliyor):** `StatCard` + `StatCardGrid` ile ~19 ham metrik kartı tek biçime iniyor. `Card` üzerine kurulur → print koruması `data-slot="card"` üzerinden **#30 ad.2'ye yan ürün** olur. Kapalı `tone` seti (§1.2'nin onayladığı aileler), tek değer tipografisi + `tabular-nums`, renkli tone ikon kabı, 2–5 kolonlu grid, **5 muaf** (compliance hero · frosted ×2 · projects yatay · revenue-chart alt karosu). Radius: `rounded-lg` kanonik → **#20'ye bilinçli scoped istisna** |
+| 2026-09-18 | — | 🟡 **Yan bulgu 1 (repo yapılandırması):** `next.config.ts` `allowedDevOrigins` girdileri port içeriyor (`"localhost:3000"`, `"127.0.0.1:3000"`) ama Next **bare host** bekliyor → `127.0.0.1:3000`'de `/_next/static/chunks/*` **403**, sayfalar **hydrate olamıyor** (istemci tarafı veri çeken ekranlar yükleme ekranında kalıyor). Playwright `next start` kullandığı için görülmemiş. Ölçüm `localhost:3000` üzerinden yapıldı |
+| 2026-09-18 | — | 🟡 **Yan bulgu 2 (kapsam dışı, ayrı madde):** anon anahtarıyla `tenants`/`customers` sorgusu **500** — `42P17 infinite recursion detected in policy for relation "tenant_members"`. `service_role` etkilenmiyor |

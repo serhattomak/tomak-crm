@@ -134,7 +134,7 @@ export function PipelineFunnelWidget({
         </CardHeader>
 
         {/* Funnel Visualizer */}
-        <CardContent className="pt-0">
+        <CardContent>
           {isLoading ? (
             <div className="space-y-2.5 py-2">
               <Skeleton className="h-10 w-full" />

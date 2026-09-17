@@ -310,7 +310,7 @@ export function CustomerTabsContent({
                 Tümünü Gör →
               </Button>
             </CardHeader>
-            <CardContent className="p-4 pt-0">
+            <CardContent className="p-4">
               {customer.activities.length === 0 ? (
                 <EmptyState
                   title="Aktivite Bulunmuyor"
@@ -909,7 +909,7 @@ export function CustomerTabsContent({
                 Özel Müşteri Notu Ekle
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 pt-0">
+            <CardContent className="p-4">
               <form onSubmit={handleNoteSubmit}>
                 <textarea
                   className="w-full rounded-md border border-input bg-background p-2.5 text-foreground text-xs placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
@@ -1062,7 +1062,7 @@ export function CustomerTabsContent({
                 Müşteri Finansal Özeti & Bakiye
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 p-4 pt-0">
+            <CardContent className="space-y-4 p-4">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <div className="rounded-lg border border-border/60 bg-muted/30 p-3.5">
                   <span className="font-medium text-2xs text-muted-foreground">

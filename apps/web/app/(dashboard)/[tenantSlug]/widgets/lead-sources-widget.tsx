@@ -107,7 +107,7 @@ export function LeadSourcesWidget({
           <Info className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
 
-        <CardContent className="pt-0">
+        <CardContent>
           {isLoading ? (
             <div className="flex h-40 items-center justify-center">
               <Skeleton className="h-28 w-full" />

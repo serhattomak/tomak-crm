@@ -120,7 +120,7 @@ export function UpcomingMeetingsWidget() {
           </Button>
         </CardHeader>
 
-        <CardContent className="pt-0">
+        <CardContent>
           {/* Quick Add Meeting Form */}
           {showAddForm && (
             <form

@@ -96,7 +96,7 @@ export function SalesGaugeWidget({
           )}
         </CardHeader>
 
-        <CardContent className="pt-0">
+        <CardContent>
           {isLoading ? (
             <div className="flex h-40 items-center justify-center">
               <Skeleton className="h-28 w-full" />

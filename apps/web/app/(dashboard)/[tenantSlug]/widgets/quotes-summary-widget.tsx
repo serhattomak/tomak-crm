@@ -146,7 +146,7 @@ export function QuotesSummaryWidget() {
           </Link>
         </CardHeader>
 
-        <CardContent className="pt-0">
+        <CardContent>
           {/* Quick Stats Pills */}
           <div className="mb-3.5 grid grid-cols-3 gap-2">
             <div className="rounded-lg border border-border/80 bg-muted/40 p-2 text-center">

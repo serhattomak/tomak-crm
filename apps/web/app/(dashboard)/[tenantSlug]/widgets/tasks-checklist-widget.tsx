@@ -194,7 +194,7 @@ export function TasksChecklistWidget() {
           )}
         </CardHeader>
 
-        <CardContent className="pt-0">
+        <CardContent>
           {/* Quick Add Task Input with Priority Selector */}
           <form
             className="mb-3 flex flex-col gap-2 sm:flex-row"

@@ -25,7 +25,7 @@ export function CustomerSidebarSummary({
             İletişim & Konum
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2.5 p-4 pt-0 text-xs">
+        <CardContent className="space-y-2.5 p-4 text-xs">
           {customer.phone ? (
             <div className="flex items-center gap-2.5">
               <Phone className="h-3.5 w-3.5 text-muted-foreground" />
@@ -82,7 +82,7 @@ export function CustomerSidebarSummary({
             Sorumlu Satış Temsilcisi
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-4 pt-0">
+        <CardContent className="p-4">
           {customer.assignedEmployeeName ? (
             <div className="flex items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 font-bold text-primary text-xs shadow-2xs">
@@ -113,7 +113,7 @@ export function CustomerSidebarSummary({
               Fatura & Vergi Bilgileri
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-1.5 p-4 pt-0 text-xs">
+          <CardContent className="space-y-1.5 p-4 text-xs">
             {customer.taxNumber ? (
               <div className="flex justify-between">
                 <span className="text-muted-foreground">VKN / TCKN:</span>

@@ -86,6 +86,35 @@ Durum renkleri **çift** yazılır: açık tonu + koyu muadili. Ölçülen konva
 
 > **9px kaldırıldı** (ADR-0004 §5): veri yoğun bir CRM'de okunmaz ve üçüncü mikro boyutun işlevi yok. Mevcut `text-[9px]` kullanımları `text-3xs`'e (10px) katlanır.
 
+### 1.3.1 Kart Anatomisi — padding'in tek sahibi
+
+`Card` primitifi (`packages/ui/src/components/card.tsx`) kart dolgusunun **tek sahibidir**.
+Kart iç boşluğunu çağrı yerinde `p-*` / `pt-*` ile **ezmeyin**.
+
+| Slot | Varsayılan | Sorumluluk |
+| --- | --- | --- |
+| `CardHeader` | `p-4 sm:p-5` | Başlık dolgusu — kartın üst boşluğunu veren slot budur |
+| `CardContent` | `p-4 sm:p-5` | Gövde dolgusu. Başlıktan **sonra** geliyorsa üst boşluk 0'dır |
+| `CardFooter` | `px-4 py-2 sm:px-5` | Dikey dolgu bilinçli olarak **varyantsız** — çağrı yerinin `pt-*`'ı her ekranda geçerli olsun diye |
+
+**"Başlık varsa üst sıfır" kuralı yapısaldır, sınıf değil.** `globals.css`'te katmansız bir kural
+uygular: `[data-slot="card-header"] ~ [data-slot="card-content"] { padding-top: 0 }`. Katmansız
+olması bilinçli — Tailwind utility'lerini yener, böylece yeni bir çağrı yeri aynı hatayı geri
+getiremez.
+
+⚠️ **Bunun sonucu:** başlıklı bir `CardContent` kendi `pt-*` sınıfıyla üst boşluk **alamaz**.
+Üst boşluk istiyorsan `CardHeader` kullanma (kural eşleşmez) ya da boşluğu içerideki bir
+sarmalayıcı elemana ver.
+
+**Neden böyle (2026-09-18 ölçümü):** önceki varsayılan `p-4 pt-0 sm:p-5 sm:pt-0` idi. `pt`
+utility'leri `p`'den sonra üretildiği için aynı varyantta `pt` kazanıyor; tailwind-merge de
+ikisini birlikte hayatta bırakıyor (`pt`'nin conflict entry'si yok). Sonuç: `p-3.5` yazan
+başlıksız bir `CardContent`'te 640px üstünde üst boşluk **0**'a düşüyordu (metin üst kenara
+yapışık), ve `CardFooter`'daki `pt-2` yine 0'a düşüp metni `border-t` çizgisine yapıştırıyordu.
+Bu hata sınıfı **guard'ın göremediği** türdendir (§2.5.3): yalnızca derlenmiş CSS'te ve
+cascade'de görünür. Ölçüm yöntemi: iki genişlikte `getComputedStyle` ile `padding-top` vs
+`padding-left` karşılaştırması + kasıtlı asimetrik bir **pozitif kontrol**.
+
 ### 1.4 Bağlayıcı Kısıtlar (kaynak değil, sonuç)
 
 > **Temel kural (ADR-0004 §3):** Bir bileşenin **kaynağı** değil, **görsel sonucu** bu standarda tabidir. `shadcn` CLI ile eklenen bir primitif de, elle yazılan da aynı yuvarlaklık, token ve dekorasyonsuzluk kurallarına uymak zorundadır. Uymuyorsa house stiline çekilir.
