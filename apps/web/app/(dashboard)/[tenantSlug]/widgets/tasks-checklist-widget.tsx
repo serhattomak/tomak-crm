@@ -169,7 +169,7 @@ export function TasksChecklistWidget() {
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-success-ink">
               <CheckSquare className="h-4 w-4" />
             </div>
             <div>
@@ -202,7 +202,7 @@ export function TasksChecklistWidget() {
           >
             <div className="relative flex flex-1 items-center">
               <input
-                className="w-full rounded-lg border border-border/80 bg-background px-3 py-1.5 text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+                className="w-full rounded-lg border border-border bg-card px-3 py-1.5 text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:outline-none"
                 onChange={(e) => setNewTaskTitle(e.target.value)}
                 placeholder="Yeni görev başlığı yazın..."
                 type="text"
@@ -280,7 +280,7 @@ export function TasksChecklistWidget() {
                   activeFilter === "completed"
                     ? "Tamamlanan görev bulunmuyor"
                     : activeFilter === "pending"
-                      ? "Bekleyen tüm görevler tamamlandı! 🎉"
+                      ? "Bekleyen tüm görevler tamamlandı"
                       : "Henüz planlanan görev bulunmuyor"
                 }
               />
@@ -288,12 +288,12 @@ export function TasksChecklistWidget() {
               <div className="max-h-60 space-y-1.5 overflow-y-auto pr-1">
                 {filteredTasks.map((task) => (
                   <div
-                    className={`group flex items-center justify-between gap-3 rounded-lg border p-2.5 transition-all ${task.isCompleted ? "border-border/50 bg-muted/30 opacity-60" : "border-border/80 bg-card hover:border-border hover:bg-muted/40"}`}
+                    className={`group flex items-center justify-between gap-3 rounded-lg border p-2.5 transition-all ${task.isCompleted ? "border-border/50 bg-muted/30 opacity-60" : "border-border bg-card hover:border-border hover:bg-muted/60"}`}
                     key={task.id}
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <button
-                        className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-all ${task.isCompleted ? "border-emerald-500 bg-emerald-500 text-white" : "border-border bg-background hover:border-emerald-500"}`}
+                        className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-all ${task.isCompleted ? "border-success bg-success text-white" : "border-border bg-card hover:border-success"}`}
                         onClick={() => toggleTask(task.id, task.isCompleted)}
                         type="button"
                       >
@@ -373,7 +373,7 @@ export function TasksChecklistWidget() {
       </div>
 
       {tasks.length > 0 && (
-        <CardFooter className="flex items-center justify-between border-border/80 border-t pt-2 pb-3 text-muted-foreground text-xs">
+        <CardFooter className="flex items-center justify-between border-border border-t pt-2 pb-3 text-muted-foreground text-xs">
           <span>
             Kalan acil:{" "}
             <strong className="text-foreground">
@@ -385,7 +385,7 @@ export function TasksChecklistWidget() {
             </strong>
           </span>
           <Button
-            className="h-6 p-0 text-emerald-700 text-xs hover:text-emerald-700 dark:text-emerald-400"
+            className="h-6 p-0 text-success-ink text-xs hover:text-success-ink"
             onClick={async () => {
               const completedTasks = tasks.filter((t) => t.isCompleted);
               for (const t of completedTasks) {

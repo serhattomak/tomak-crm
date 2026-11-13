@@ -112,7 +112,7 @@ interface KpiCardsProps {
 function KpiCards({ isLoading, stats }: KpiCardsProps) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
+      <div className="rounded-xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
           <span className="font-medium text-xs text-muted-foreground">
             Gelen Kutusu
@@ -129,7 +129,7 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
+      <div className="rounded-xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
           <span className="font-medium text-xs text-muted-foreground">
             Okunmamış İletiler
@@ -150,7 +150,7 @@ function KpiCards({ isLoading, stats }: KpiCardsProps) {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
+      <div className="rounded-xl border border-border bg-card p-5 shadow-2xs">
         <div className="flex items-center justify-between">
           <span className="font-medium text-xs text-muted-foreground">
             Bugün Gönderilen
@@ -512,7 +512,7 @@ function TemplateCard({
   }, []);
 
   return (
-    <div className="flex flex-col justify-between space-y-3 rounded-2xl border border-border bg-card p-5 shadow-2xs">
+    <div className="flex flex-col justify-between space-y-3 rounded-xl border border-border bg-card p-5 shadow-2xs">
       <div>
         <div className="flex items-center justify-between">
           <h3 className="line-clamp-1 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
@@ -627,7 +627,7 @@ function MessagesTableView({
         </p>
         {accounts.length === 0 ? (
           <button
-            className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-medium text-background text-xs hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900"
             onClick={onOpenNewAccount}
             type="button"
           >
@@ -727,7 +727,7 @@ function AccountsTableView({
           bağlayın.
         </p>
         <button
-          className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-medium text-background text-xs hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900"
           onClick={onOpenNewAccount}
           type="button"
         >
@@ -808,7 +808,7 @@ function TemplatesGridView({
 
   if (templates.length === 0) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-8 text-center">
+      <div className="rounded-xl border border-border bg-card p-8 text-center">
         <FileText className="mx-auto mb-2 h-10 w-10 text-zinc-300" />
         <p className="font-medium text-sm text-zinc-900 dark:text-zinc-100">
           Henüz kayıtlı şablon bulunmuyor
@@ -875,7 +875,7 @@ function EmailNavHeader({
           <Inbox className="h-4 w-4" />
           <span>Gelen Kutusu</span>
           {unreadCount > 0 ? (
-            <span className="rounded-full bg-zinc-900 px-2 py-0.5 font-semibold text-3xs text-white dark:bg-zinc-100 dark:text-zinc-900">
+            <span className="rounded-full bg-foreground px-2 py-0.5 font-semibold text-3xs text-background dark:bg-zinc-100 dark:text-zinc-900">
               {unreadCount}
             </span>
           ) : null}
@@ -1608,7 +1608,7 @@ export default function EmailWorkbenchPage() {
 
           <PermissionGate permission="Emails.Send">
             <button
-              className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-medium text-background text-xs shadow-sm hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
               onClick={handleOpenCompose}
               type="button"
             >
@@ -1651,7 +1651,7 @@ export default function EmailWorkbenchPage() {
       {activeTab === "inbox" ||
       activeTab === "sent" ||
       activeTab === "drafts" ? (
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
           <MessagesTableView
             accounts={accounts}
             activeTab={activeTab}
@@ -1710,7 +1710,7 @@ export default function EmailWorkbenchPage() {
 
             <PermissionGate permission="Emails.ManageAccounts">
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-medium text-background text-xs hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900"
                 onClick={handleOpenNewAccount}
                 type="button"
               >
@@ -1720,7 +1720,7 @@ export default function EmailWorkbenchPage() {
             </PermissionGate>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
             <AccountsTableView
               accounts={accounts}
               isLoading={isLoadingAccounts}
@@ -1750,7 +1750,7 @@ export default function EmailWorkbenchPage() {
 
             <PermissionGate permission="Emails.ManageAccounts">
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-medium text-background text-xs hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900"
                 onClick={handleOpenNewTemplate}
                 type="button"
               >

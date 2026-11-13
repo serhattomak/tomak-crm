@@ -52,7 +52,7 @@ export function DashboardWidgetGrid({
 }: DashboardWidgetGridProps) {
   if (currentTabWidgets.length === 0) {
     return (
-      <div className="grid grid-flow-dense grid-cols-12 gap-5 print:grid print:grid-cols-12 print:gap-4 print:overflow-visible">
+      <div className="grid grid-flow-dense grid-cols-12 gap-3.5 print:grid print:grid-cols-12 print:gap-4 print:overflow-visible">
         <EmptyDashboardState
           onOpenCustomize={onOpenCustomize}
           onResetDefaults={onResetDefaults}
@@ -67,7 +67,7 @@ export function DashboardWidgetGrid({
   const isTasksActive = currentTabWidgets.includes("tasks-checklist");
 
   return (
-    <div className="grid grid-flow-dense grid-cols-12 gap-5 print:grid print:grid-cols-12 print:gap-4 print:overflow-visible">
+    <div className="grid grid-flow-dense grid-cols-12 gap-3.5 print:grid print:grid-cols-12 print:gap-4 print:overflow-visible">
       {currentTabWidgets.map((widgetId, index) => {
         let spanClass = "col-span-12 lg:col-span-6";
         let widgetContent: React.ReactNode = null;

@@ -308,7 +308,7 @@ export default function PipelinesPage() {
   const slaBreachedCount = deals.filter((d) => d.isSlaBreached).length;
 
   return (
-    <PageContainer className="space-y-6">
+    <PageContainer className="space-y-5">
       {/* 1. Header Section */}
       <PipelineHeader
         activePipeline={activePipeline}
@@ -344,7 +344,7 @@ export default function PipelinesPage() {
 
       {/* 4. Deals View (Kanban Board or Table View) */}
       {isLoading ? (
-        <div className="flex h-64 items-center justify-center rounded-lg border border-border/80 bg-card shadow-xs">
+        <div className="flex h-64 items-center justify-center rounded-xl border border-border bg-card shadow-card">
           <div className="flex flex-col items-center gap-2">
             <Skeleton className="h-8 w-8 rounded-full" />
             <span className="font-medium text-muted-foreground text-xs">

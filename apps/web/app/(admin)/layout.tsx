@@ -61,7 +61,7 @@ export default function AdminLayout({
       {/* Mobile Top Header */}
       <header className="sticky top-0 z-30 flex items-center justify-between border-border border-b bg-card px-4 py-3 shadow-2xs md:hidden">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-xs">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-foreground text-background shadow-xs">
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div>
@@ -97,7 +97,7 @@ export default function AdminLayout({
               <Link
                 className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 font-semibold text-xs transition ${
                   isActive
-                    ? "bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400"
+                    ? "bg-accent-soft text-accent-foreground"
                     : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 }`}
                 href={item.href}
@@ -115,7 +115,7 @@ export default function AdminLayout({
               onClick={() => router.push("/")}
               type="button"
             >
-              <ArrowLeft className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <ArrowLeft className="h-4 w-4 text-primary " />
               <span>CRM Çalışma Alanına Dön</span>
             </button>
           </div>
@@ -127,7 +127,7 @@ export default function AdminLayout({
         <div className="space-y-6">
           {/* Logo & Admin Branding */}
           <div className="flex items-center gap-3 px-1 pt-1">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 shadow-blue-500/20 shadow-md">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 shadow-blue-500/20 shadow-md">
               <ShieldCheck className="h-5 w-5 text-white" />
             </div>
             <div className="min-w-0">
@@ -135,7 +135,7 @@ export default function AdminLayout({
                 <span className="font-extrabold text-sm text-zinc-900 tracking-tight dark:text-zinc-100">
                   CRM Cloud
                 </span>
-                <span className="rounded-md border border-blue-200/60 bg-blue-50 px-1.5 py-0.5 font-bold text-3xs text-blue-600 dark:border-blue-800 dark:bg-blue-950/60 dark:text-blue-400">
+                <span className="rounded-md bg-accent-soft px-1.5 py-0.5 font-bold text-3xs text-accent-foreground">
                   ADMIN
                 </span>
               </div>
@@ -158,14 +158,14 @@ export default function AdminLayout({
                 <Link
                   className={`flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-xs transition-all ${
                     isActive
-                      ? "bg-blue-50 font-semibold text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400"
+                      ? "bg-accent-soft font-semibold text-accent-foreground"
                       : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                   }`}
                   href={item.href}
                   key={item.href}
                 >
                   <item.icon
-                    className={`h-4 w-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground"}`}
+                    className={`h-4 w-4 ${isActive ? "text-primary " : "text-muted-foreground"}`}
                   />
                   <span>{item.name}</span>
                 </Link>
@@ -177,16 +177,16 @@ export default function AdminLayout({
         {/* Bottom Profile & Return to Workspace */}
         <div className="space-y-3 border-border border-t pt-4">
           <button
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-zinc-50/80 px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-blue-700 dark:hover:bg-zinc-900 dark:hover:text-blue-400"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-zinc-50/80 px-3 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:border-blue-300 hover:bg-white hover:text-primary dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-blue-700 dark:hover:bg-zinc-900 dark:hover:text-blue-400"
             onClick={() => router.push("/")}
             type="button"
           >
-            <ArrowLeft className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+            <ArrowLeft className="h-3.5 w-3.5 text-primary " />
             <span>Firmalara Dön</span>
           </button>
 
           <div className="flex items-center gap-3 rounded-xl border border-border bg-zinc-50/80 p-2.5 dark:bg-zinc-800/60">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-600 font-bold text-white text-xs shadow-2xs">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-foreground font-bold text-background text-xs shadow-2xs">
               SA
             </div>
             <div className="min-w-0 flex-1">

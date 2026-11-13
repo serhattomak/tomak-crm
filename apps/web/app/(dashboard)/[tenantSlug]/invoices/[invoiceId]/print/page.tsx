@@ -54,7 +54,7 @@ export default function InvoicePrintPage() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function InvoicePrintPage() {
           {error || "Fatura bulunamadı."}
         </p>
         <Link
-          className="mt-4 inline-flex text-blue-600 text-xs underline dark:text-blue-400"
+          className="mt-4 inline-flex text-primary text-xs underline "
           href={`/${tenantSlug}/invoices`}
         >
           Faturalara dön
@@ -87,7 +87,7 @@ export default function InvoicePrintPage() {
           Faturalara Dön
         </Link>
         <button
-          className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs hover:bg-blue-700"
+          className="inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs hover:bg-foreground/90"
           onClick={handlePrint}
           type="button"
         >

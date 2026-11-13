@@ -175,7 +175,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
   if (isLoading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 text-zinc-500">
-        <RefreshCw className="mb-3 h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+        <RefreshCw className="mb-3 h-8 w-8 animate-spin text-primary " />
         <span className="font-semibold text-xs">Teklif hazırlanıyor...</span>
       </div>
     );
@@ -226,7 +226,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                 </div>
               ) : (
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-md shadow-blue-500/20 hover:bg-blue-700 active:scale-95"
+                  className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-md shadow-blue-500/20 hover:bg-foreground/90 active:scale-95"
                   onClick={() => setIsContractModalOpen(true)}
                   type="button"
                 >
@@ -239,7 +239,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
           {/* Audit Trail Badge */}
           {isSigned && (
-            <div className="flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 text-emerald-900 text-xs">
+            <div className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 text-emerald-900 text-xs">
               <CheckCircle2 className="h-5 w-5 text-emerald-600" />
               <div>
                 <strong>Dijital Olarak Onaylandı & İmzalandı</strong>
@@ -317,7 +317,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 p-4">
         <div className="w-full max-w-md space-y-4 rounded-3xl border border-border bg-card p-8 text-center shadow-xl">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 dark:text-rose-400">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:text-rose-400">
             <AlertCircle className="h-6 w-6" />
           </div>
           <h2 className="font-bold text-base text-zinc-900">
@@ -502,7 +502,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
     <div className="min-h-screen bg-zinc-100/70 px-4 py-8 font-sans sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Top Floating Action Bar */}
-        <div className="sticky top-4 z-40 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-white/95 p-4 shadow-md backdrop-blur-md">
+        <div className="sticky top-4 z-40 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-white/95 p-4 shadow-md backdrop-blur-md">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-600 dark:text-blue-400">
               <FileSpreadsheet className="h-5 w-5" />
@@ -548,7 +548,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
               </span>
             ) : (
               <button
-                className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-1.5 font-bold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-[0.99]"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-1.5 font-bold text-background text-xs shadow-xs transition hover:bg-foreground/90 active:scale-[0.99]"
                 onClick={() => setIsAcceptModalOpen(true)}
                 type="button"
               >
@@ -604,7 +604,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           </div>
 
           {/* Client & Description Banner */}
-          <div className="grid grid-cols-1 gap-4 rounded-2xl border border-border bg-zinc-50 p-5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 rounded-xl border border-border bg-zinc-50 p-5 sm:grid-cols-2">
             <div>
               <span className="block font-bold text-3xs text-muted-foreground uppercase tracking-wider">
                 SAYIN / MÜŞTERİ:
@@ -634,7 +634,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
               Teklif Kalemleri
             </h3>
 
-            <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+            <div className="overflow-x-auto rounded-xl border border-border bg-card">
               <Table className="border-collapse">
                 <TableHeader>
                   <TableRow className="border-border bg-zinc-50 font-bold text-2xs text-zinc-600">
@@ -709,7 +709,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
 
           {/* Totals Summary */}
           <div className="flex justify-end pt-2">
-            <div className="w-80 space-y-2.5 rounded-2xl border border-border bg-zinc-50/80 p-4 text-xs">
+            <div className="w-80 space-y-2.5 rounded-xl border border-border bg-zinc-50/80 p-4 text-xs">
               <div className="flex justify-between text-zinc-600">
                 <span>Ara Toplam (KDV Hariç):</span>
                 <span className="font-bold text-zinc-900">
@@ -744,7 +744,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
           {/* Terms & Conditions Sections */}
           <div className="space-y-4 border-border border-t pt-6 text-zinc-700 text-xs">
             {quote.paymentTerms && (
-              <div className="space-y-1 rounded-2xl border border-border bg-zinc-50 p-4">
+              <div className="space-y-1 rounded-xl border border-border bg-zinc-50 p-4">
                 <h4 className="font-bold text-zinc-900 text-xs">
                   Ödeme Şartları
                 </h4>
@@ -755,7 +755,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             )}
 
             {quote.deliveryTerms && (
-              <div className="space-y-1 rounded-2xl border border-border bg-zinc-50 p-4">
+              <div className="space-y-1 rounded-xl border border-border bg-zinc-50 p-4">
                 <h4 className="font-bold text-zinc-900 text-xs">
                   Teslimat & Sevkiyat Şartları
                 </h4>
@@ -766,7 +766,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             )}
 
             {quote.bankDetails && (
-              <div className="space-y-1 rounded-2xl border border-border bg-zinc-50 p-4 font-mono">
+              <div className="space-y-1 rounded-xl border border-border bg-zinc-50 p-4 font-mono">
                 <h4 className="font-bold font-sans text-zinc-900 text-xs">
                   Banka Hesap & IBAN Bilgileri
                 </h4>
@@ -777,7 +777,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             )}
 
             {quote.termsAndConditions && (
-              <div className="space-y-1 rounded-2xl border border-border bg-zinc-50 p-4">
+              <div className="space-y-1 rounded-xl border border-border bg-zinc-50 p-4">
                 <h4 className="font-bold text-zinc-900 text-xs">
                   Genel Hükümler & Garanti Şartları
                 </h4>
@@ -801,13 +801,13 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
             </div>
 
             {isSuccessAccepted || quote.status === "Accepted" ? (
-              <span className="inline-flex items-center gap-2 rounded-2xl bg-emerald-700 px-6 py-2.5 font-bold text-white text-xs shadow-md">
+              <span className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-6 py-2.5 font-bold text-white text-xs shadow-md">
                 <CheckCircle2 className="h-4 w-4" />
                 <span>Teklif Onaylandı</span>
               </span>
             ) : (
               <button
-                className="inline-flex items-center gap-2 rounded-2xl bg-blue-600 px-6 py-2.5 font-bold text-white text-xs shadow-md transition hover:bg-blue-700 active:scale-[0.99]"
+                className="inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-2.5 font-bold text-background text-xs shadow-md transition hover:bg-foreground/90 active:scale-[0.99]"
                 onClick={() => setIsAcceptModalOpen(true)}
                 type="button"
               >
@@ -904,7 +904,7 @@ export default function PortalClient({ initialToken }: PortalClientProps) {
                   Vazgeç
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-bold text-white text-xs shadow-xs transition hover:bg-blue-700 disabled:opacity-50"
+                  className="rounded-xl bg-foreground px-5 py-2 font-bold text-background text-xs shadow-xs transition hover:bg-foreground/90 disabled:opacity-50"
                   disabled={isAccepting}
                   type="submit"
                 >

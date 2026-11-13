@@ -11,6 +11,10 @@ interface CustomerStatsBannerProps {
   stats: CustomerStatsDto | null;
 }
 
+/**
+ * Customer KPIs — the reference metric card: micro label, tabular number,
+ * quiet footer rule. No hover state; these are not interactive.
+ */
 export function CustomerStatsBanner({
   stats,
   loading,
@@ -19,114 +23,90 @@ export function CustomerStatsBanner({
     ? Math.round((stats.activeCustomers / stats.totalCustomers) * 100)
     : 0;
 
-  return (
-    <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-      {/* 1. Total Customers */}
-      <Card className="flex flex-col justify-between p-4 transition-all duration-150 hover:border-border hover:shadow-xs">
-        <div className="flex items-start justify-between gap-2">
-          <div className="space-y-1">
-            <span className="font-medium text-muted-foreground text-xs">
-              Toplam Müşteri
-            </span>
-            <div className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
-              {loading ? (
-                <Skeleton className="h-8 w-20" />
-              ) : (
-                (stats?.totalCustomers ?? 0)
-              )}
-            </div>
-          </div>
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/50 text-foreground shadow-2xs">
-            <Users className="h-4 w-4" />
-          </div>
-        </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 text-2xs text-muted-foreground">
+  const metrics = [
+    {
+      footer: (
+        <div className="flex items-center gap-2 text-2xs text-muted-foreground">
           <span>{stats?.companiesCount ?? 0} Şirket</span>
-          <span>•</span>
+          <span className="text-border">•</span>
           <span>{stats?.individualsCount ?? 0} Bireysel</span>
         </div>
-      </Card>
-
-      {/* 2. Active Customers */}
-      <Card className="flex flex-col justify-between p-4 transition-all duration-150 hover:border-border hover:shadow-xs">
-        <div className="flex items-start justify-between gap-2">
-          <div className="space-y-1">
-            <span className="font-medium text-muted-foreground text-xs">
-              Aktif Müşteriler
-            </span>
-            <div className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
-              {loading ? (
-                <Skeleton className="h-8 w-20" />
-              ) : (
-                (stats?.activeCustomers ?? 0)
-              )}
-            </div>
-          </div>
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/50 text-foreground shadow-2xs">
-            <UserCheck className="h-4 w-4" />
-          </div>
-        </div>
-        <div className="mt-3 flex items-center gap-1.5 border-border/60 border-t pt-2">
+      ),
+      icon: Users,
+      label: "Toplam Müşteri",
+      skeletonWidth: "w-20",
+      value: stats?.totalCustomers ?? 0,
+    },
+    {
+      footer: (
+        <div className="flex items-center gap-1.5">
           <Badge size="sm" variant="success">
             %{activeRate} Aktiflik
           </Badge>
-          <span className="text-2xs text-muted-foreground">oranı sağlandı</span>
+          <span className="text-2xs text-muted-foreground">oranı</span>
         </div>
-      </Card>
-
-      {/* 3. Lead Customers */}
-      <Card className="flex flex-col justify-between p-4 transition-all duration-150 hover:border-border hover:shadow-xs">
-        <div className="flex items-start justify-between gap-2">
-          <div className="space-y-1">
-            <span className="font-medium text-muted-foreground text-xs">
-              Potansiyel Müşteri
-            </span>
-            <div className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
-              {loading ? (
-                <Skeleton className="h-8 w-20" />
-              ) : (
-                (stats?.leadCustomers ?? 0)
-              )}
-            </div>
-          </div>
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/50 text-foreground shadow-2xs">
-            <UserPlus className="h-4 w-4" />
-          </div>
-        </div>
-        <div className="mt-3 flex items-center gap-1.5 border-border/60 border-t pt-2">
+      ),
+      icon: UserCheck,
+      label: "Aktif Müşteri",
+      skeletonWidth: "w-20",
+      value: stats?.activeCustomers ?? 0,
+    },
+    {
+      footer: (
+        <div className="flex items-center gap-1.5">
           <Badge size="sm" variant="accent">
-            Dönüşüm Bekleyen
+            Dönüşüm
           </Badge>
-          <span className="text-2xs text-muted-foreground">aday müşteri</span>
+          <span className="text-2xs text-muted-foreground">bekleyen aday</span>
         </div>
-      </Card>
-
-      {/* 4. Total Volume / Revenue */}
-      <Card className="flex flex-col justify-between p-4 transition-all duration-150 hover:border-border hover:shadow-xs">
-        <div className="flex items-start justify-between gap-2">
-          <div className="space-y-1">
-            <span className="font-medium text-muted-foreground text-xs">
-              Toplam Müşteri Hacmi
-            </span>
-            <div className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
-              {loading ? (
-                <Skeleton className="h-8 w-28" />
-              ) : (
-                `₺${(stats?.totalRevenue ?? 0).toLocaleString("tr-TR")}`
-              )}
-            </div>
-          </div>
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/50 text-foreground shadow-2xs">
-            <TrendingUp className="h-4 w-4" />
-          </div>
-        </div>
-        <div className="mt-3 flex items-center gap-2 border-border/60 border-t pt-2 text-2xs text-muted-foreground">
-          <span>Ort. Müşteri Değeri:</span>
-          <strong className="font-semibold text-foreground">
+      ),
+      icon: UserPlus,
+      label: "Potansiyel Müşteri",
+      skeletonWidth: "w-20",
+      value: stats?.leadCustomers ?? 0,
+    },
+    {
+      footer: (
+        <div className="flex items-center gap-1.5 text-2xs text-muted-foreground">
+          <span>Ort. değer</span>
+          <strong className="font-semibold text-foreground tabular-nums">
             ₺{(stats?.averageRevenuePerCustomer ?? 0).toLocaleString("tr-TR")}
           </strong>
         </div>
-      </Card>
+      ),
+      icon: TrendingUp,
+      label: "Toplam Hacim",
+      skeletonWidth: "w-28",
+      value: `₺${(stats?.totalRevenue ?? 0).toLocaleString("tr-TR")}`,
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {metrics.map((metric) => (
+        <Card className="p-4" key={metric.label}>
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0 space-y-1.5">
+              <span className="block font-semibold text-3xs text-muted-foreground uppercase tracking-wider">
+                {metric.label}
+              </span>
+              <div className="font-semibold text-2xl text-foreground tracking-tight tabular-nums">
+                {loading ? (
+                  <Skeleton className={`h-7 ${metric.skeletonWidth}`} />
+                ) : (
+                  metric.value
+                )}
+              </div>
+            </div>
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+              <metric.icon className="size-3.5" />
+            </div>
+          </div>
+          <div className="mt-3 border-border border-t pt-2.5">
+            {metric.footer}
+          </div>
+        </Card>
+      ))}
     </div>
   );
 }

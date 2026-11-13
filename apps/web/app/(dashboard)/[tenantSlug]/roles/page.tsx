@@ -197,7 +197,7 @@ export default function RolesManagementPage() {
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+          <h1 className="flex items-center gap-2.5 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             <Shield className="h-6 w-6 text-blue-500" />
             Roller & Yetkiler
           </h1>
@@ -233,7 +233,7 @@ export default function RolesManagementPage() {
       {/* Main Grid: Roles List (Left) and Matrix (Right) */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
         {/* Roles List */}
-        <div className="space-y-2 rounded-2xl border border-border bg-card p-4 shadow-xs md:col-span-4">
+        <div className="space-y-2 rounded-xl border border-border bg-card p-4 shadow-xs md:col-span-4">
           <div className="mb-2 px-2 font-bold text-2xs text-muted-foreground uppercase tracking-wider">
             Available Roles ({roles.length})
           </div>
@@ -279,7 +279,7 @@ export default function RolesManagementPage() {
         </div>
 
         {/* Permissions Matrix */}
-        <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-xs md:col-span-8">
+        <div className="flex flex-col justify-between rounded-xl border border-border bg-card p-6 shadow-xs md:col-span-8">
           {selectedRole ? (
             <div>
               <div className="mb-6 flex items-center justify-between border-border border-b pb-4">
@@ -314,7 +314,7 @@ export default function RolesManagementPage() {
               <div className="max-h-[460px] space-y-6 overflow-y-auto pr-2">
                 {permissionGroups.map((group) => (
                   <div className="space-y-3" key={group.module}>
-                    <div className="flex items-center gap-1.5 font-bold text-2xs text-blue-600 uppercase tracking-wider dark:text-blue-400">
+                    <div className="flex items-center gap-1.5 font-bold text-2xs text-primary uppercase tracking-wider ">
                       <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                       {group.module} Module
                     </div>
@@ -329,7 +329,7 @@ export default function RolesManagementPage() {
                           >
                             <input
                               checked={isChecked}
-                              className="mt-0.5 rounded border-border text-blue-600 dark:text-blue-400 focus:ring-blue-500"
+                              className="mt-0.5 rounded border-border text-primary  focus:ring-blue-500"
                               onChange={() => togglePermission(perm.id)}
                               type="checkbox"
                             />
@@ -337,7 +337,7 @@ export default function RolesManagementPage() {
                               <div className="font-semibold text-xs text-zinc-900 dark:text-zinc-100">
                                 {perm.name}
                               </div>
-                              <div className="font-mono text-3xs text-blue-600/90 dark:text-blue-400">
+                              <div className="font-mono text-3xs text-primary/90 ">
                                 {perm.code}
                               </div>
                               {perm.description && (
@@ -426,7 +426,7 @@ export default function RolesManagementPage() {
                   Rol Adı
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleName(e.target.value)}
                   placeholder="Örn: Satış Yöneticisi"
                   required
@@ -440,7 +440,7 @@ export default function RolesManagementPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                  className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                   onChange={(e) => setNewRoleDesc(e.target.value)}
                   placeholder="Sorumluluklar ve erişim kapsamı..."
                   rows={3}

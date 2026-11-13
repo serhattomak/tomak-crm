@@ -67,7 +67,7 @@ export default function CariStatementPrintPage() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -79,7 +79,7 @@ export default function CariStatementPrintPage() {
           {error || "Cari hesap bulunamadı."}
         </p>
         <Link
-          className="mt-4 inline-flex text-blue-600 text-xs underline dark:text-blue-400"
+          className="mt-4 inline-flex text-primary text-xs underline "
           href={`/${tenantSlug}/finance`}
         >
           Finansa dön
@@ -100,7 +100,7 @@ export default function CariStatementPrintPage() {
           Finansa Dön
         </Link>
         <button
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs hover:bg-blue-700"
+          className="inline-flex items-center gap-2 rounded-lg bg-foreground px-3.5 py-1.5 font-semibold text-background text-xs hover:bg-foreground/90"
           onClick={handlePrint}
           type="button"
         >

@@ -31,10 +31,10 @@ export function PipelineTableView({
   onSelectDeal,
 }: PipelineTableViewProps) {
   return (
-    <div className="overflow-hidden rounded-lg border border-border/80 bg-card shadow-xs">
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
       <Table>
         <TableHeader>
-          <TableRow className="bg-muted/40 hover:bg-muted/40">
+          <TableRow>
             <TableHead className="pl-6">Fırsat Başlığı</TableHead>
             <TableHead>Müşteri / Şirket</TableHead>
             <TableHead>Aşama</TableHead>
@@ -53,31 +53,26 @@ export function PipelineTableView({
               key={deal.id}
               onClick={() => onSelectDeal(deal.id)}
             >
-              <TableCell className="py-3.5 pl-6 font-medium text-foreground">
+              <TableCell className="py-2 pl-6 font-medium text-foreground">
                 {deal.title}
               </TableCell>
               <TableCell className="text-muted-foreground">
                 {deal.customerName || "-"}
               </TableCell>
               <TableCell>
-                <span
-                  className="inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-3xs"
-                  style={{
-                    backgroundColor: deal.stageColor
-                      ? `${deal.stageColor}15`
-                      : "#3B82F615",
-                    borderColor: deal.stageColor
-                      ? `${deal.stageColor}35`
-                      : "#3B82F635",
-                    color: deal.stageColor || "#1E40AF",
-                  }}
-                >
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-0.5 font-medium text-3xs text-muted-foreground">
+                  <i
+                    className="size-1.5 flex-none rounded-full"
+                    style={{
+                      backgroundColor: deal.stageColor || "var(--chart-1)",
+                    }}
+                  />
                   {deal.stageName}
                 </span>
               </TableCell>
               <TableCell>
                 <span
-                  className={`inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-3xs ${getPriorityBadgeClass(
+                  className={`inline-flex items-center rounded-md px-2 py-0.5 font-medium text-3xs ${getPriorityBadgeClass(
                     deal.priority
                   )}`}
                 >
@@ -86,7 +81,7 @@ export function PipelineTableView({
               </TableCell>
               <TableCell>
                 <span
-                  className={`inline-flex items-center rounded-md border px-2 py-0.5 font-medium text-3xs ${getSourceBadgeClass(
+                  className={`inline-flex items-center rounded-md px-2 py-0.5 font-medium text-3xs ${getSourceBadgeClass(
                     deal.source
                   )}`}
                 >
@@ -96,39 +91,36 @@ export function PipelineTableView({
               <TableCell>
                 {deal.assignedUserId ? (
                   <div className="flex items-center gap-1.5">
-                    <Avatar className="h-5 w-5">
-                      <AvatarFallback className="bg-primary/10 text-3xs text-primary">
+                    <Avatar className="size-5">
+                      <AvatarFallback className="bg-accent-soft text-3xs text-accent-foreground">
                         {deal.assignedUserName?.charAt(0) || "U"}
                       </AvatarFallback>
                     </Avatar>
                     <span className="text-xs">{deal.assignedUserName}</span>
                   </div>
                 ) : (
-                  <Badge
-                    className="text-3xs text-amber-700 dark:text-amber-400"
-                    variant="outline"
-                  >
+                  <Badge size="sm" variant="warning">
                     Açık Havuz
                   </Badge>
                 )}
               </TableCell>
               <TableCell>
                 {deal.isSlaBreached ? (
-                  <span className="inline-flex items-center gap-1 font-medium text-3xs text-destructive">
-                    <AlertTriangle className="h-3.5 w-3.5" />
+                  <span className="inline-flex items-center gap-1 font-medium text-3xs text-danger-ink">
+                    <AlertTriangle className="size-3.5" />
                     SLA Aşıldı
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 font-medium text-3xs text-emerald-700 dark:text-emerald-300">
-                    <Check className="h-3.5 w-3.5" />
+                  <span className="inline-flex items-center gap-1 font-medium text-3xs text-success-ink">
+                    <Check className="size-3.5" />
                     Normal
                   </span>
                 )}
               </TableCell>
-              <TableCell className="text-right font-semibold text-foreground">
+              <TableCell className="text-right font-semibold text-foreground tabular-nums">
                 {formatCurrency(deal.value, deal.currency)}
               </TableCell>
-              <TableCell className="pr-6 text-right">
+              <TableCell className="py-2 pr-6 text-right">
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();

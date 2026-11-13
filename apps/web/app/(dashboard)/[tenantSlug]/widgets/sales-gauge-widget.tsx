@@ -75,7 +75,7 @@ export function SalesGaugeWidget({
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <Trophy className="h-4 w-4" />
             </div>
             <div>
@@ -106,42 +106,30 @@ export function SalesGaugeWidget({
               {/* Speedometer Radial Gauge */}
               <div className="relative my-2 flex flex-col items-center justify-center">
                 <svg className="w-44 overflow-visible" viewBox="0 0 200 120">
-                  <defs>
-                    <linearGradient
-                      id="salesGaugeGrad"
-                      x1="0%"
-                      x2="100%"
-                      y1="100%"
-                      y2="0%"
-                    >
-                      <stop offset="0%" stopColor="var(--chart-1)" />
-                      <stop offset="50%" stopColor="var(--chart-2)" />
-                      <stop offset="100%" stopColor="var(--chart-3)" />
-                    </linearGradient>
-                  </defs>
-
-                  {/* Background track */}
+                  {/* Track + value arc share one path; the arc length is the truth,
+                      not a hardcoded end point. */}
                   <path
                     className="stroke-muted"
                     d="M 20,110 A 80,80 0 0,1 180,110"
                     fill="none"
                     strokeLinecap="round"
-                    strokeWidth="14"
+                    strokeWidth="12"
                   />
-                  {/* Active Neon track */}
                   <path
-                    d="M 20,110 A 80,80 0 0,1 168,60"
+                    d="M 20,110 A 80,80 0 0,1 180,110"
                     fill="none"
-                    stroke="url(#salesGaugeGrad)"
+                    stroke="var(--primary)"
+                    strokeDasharray="251.33"
+                    strokeDashoffset={251.33 * (1 - currentScore / 100)}
                     strokeLinecap="round"
-                    strokeWidth="14"
+                    strokeWidth="12"
                   />
                 </svg>
 
                 {/* Centered Score */}
                 <div className="absolute top-10 flex flex-col items-center text-center">
                   <div className="flex items-center gap-1">
-                    <span className="font-bold text-3xl text-foreground tracking-tight">
+                    <span className="font-semibold text-3xl text-foreground tabular-nums tracking-tight">
                       %{currentScore}
                     </span>
                   </div>
@@ -156,7 +144,7 @@ export function SalesGaugeWidget({
               </div>
 
               {/* Highlights */}
-              <div className="mt-2 space-y-2 rounded-lg border border-border/80 bg-muted/40 p-3 text-xs">
+              <div className="mt-2 space-y-2 rounded-lg bg-muted/60 p-3 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-muted-foreground">
                     Tamamlanan Siparişler:
@@ -194,7 +182,7 @@ export function SalesGaugeWidget({
       </div>
 
       {hasData && (
-        <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
+        <CardFooter className="justify-center border-border border-t pt-2 pb-3">
           <Link
             className="flex items-center justify-center gap-1.5 font-semibold text-primary text-xs transition hover:underline"
             href={`/${activeTenant?.slug || "workspace"}/orders`}

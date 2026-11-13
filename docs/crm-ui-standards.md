@@ -9,6 +9,57 @@
 
 ---
 
+## 0. v2 kabuğu — yürürlükte (2026-11-14)
+
+> Aşağıdaki maddeler §0.4'te listelenen eski maddelerin **yerine geçer**; çelişkide burası kazanır.
+> Uygulama kaydı ve fazlar: `.scratch/ui-refresh-2026-11/spec.md`. Yürürlük kanıtı: kabuk, dashboard, satış, kayıt/para, 18 modül, auth/admin.
+
+### 0.1 Renk ve yüzey
+
+| Token | Açık | Rol |
+|---|---|---|
+| `--background` | `#EDEFF3` | Uygulama tuvali (gri). **Beyaz yüzey `bg-card`'dır** |
+| `--card` | `#FFFFFF` | Kabuk, kart, tablo |
+| `--foreground` | `#16181D` | Birincil metin |
+| `--muted-foreground` | `#68707D` | İkincil metin — beyazda **4.5:1** (ölçüldü) |
+| `--muted` | `#F4F5F8` | Dolgu, hover, segment rayı |
+| `--border` / `--input` | `#ECEEF3` / `#E4E7EC` | 1px ayraç / form kenarı |
+| `--primary` | periwinkle `#6D5BE8` ailesi | Aksan: aktif durum, odak, seri 1 |
+| `--success` · `--warning` · `--danger` · `--info` | `#12B76A` · `#F79009` · `#F04438` · `#2E90FA` | Durum çekirdeği |
+| `*-soft` / `*-ink` | örn. `#ECFDF3` / `#067647` | Çip yüzeyi + çip metni **birlikte** yazılır |
+
+`--muted-foreground`, `--primary` ve durum çiftleri WCAG AA (4.5:1) için ölçülerek ayarlandı; **tema başına çalışma-zamanı denetimi** `apps/web/e2e/theme-audit.spec.ts` (açık ve koyu projeler). 2026-11-14: 31 rotada **0 düşük kontrast düğümü**.
+
+### 0.2 Kabuk
+
+- Tek beyaz kabuk: 232px sidebar + 54px üst bar + kaydırma alanı. Çift ray (64px ikon + 225px menü) **kaldırıldı**.
+- 5 hub, sidebar'ın üstündeki 24px şeritte (`CRM/OPS/HRM/CMS/SYS`); nav öğeleri 30px satır.
+- Üst bar: geri, breadcrumb, komut araması (`⌘K`), bildirim, kısayollar. Sayfa aksiyonları `PageHeader`'da kalır.
+- Masaüstünde tuval boşluğu 10px (`md:p-2.5`), kabuk `rounded-2xl` + `shadow-shell`.
+- Sidebar daraltıldığında üst bardaki düğmeyle geri açılır; mobil drawer/bottom nav davranışı değişmedi.
+
+### 0.3 Ölçek
+
+| Öğe | Değer |
+|---|---|
+| Yarıçap | kabuk 14 (`rounded-2xl`) · kart/modal 11 (`rounded-xl`) · buton/girdi 8 (`rounded-lg`) · çip 5 |
+| Gölge | `shadow-card` (kart, neredeyse düz) · `shadow-shell` (kabuk) · `shadow-lift` (yüzen/sürüklenen) |
+| Tipografi | sayfa başlığı 23–24px/650 · kart başlığı 14px/600 · gövde 12.5px · meta 11px · tablo başlığı 9px uppercase +0.06em |
+| Yoğunluk | nav 30px · tablo satırı 44px · içerik dolgusu `px-4 py-4 md:px-6 md:py-5` |
+| Motion | hover 150ms `ease-out` · katman 200ms · `prefers-reduced-motion` global |
+
+### 0.4 Yürürlükten kalkan / değişen maddeler
+
+- **§1.1:** 8px taban kalır; **kabuk 14 ve kart 11 artık izinli**. "Bubbly hap form yasak" aynen geçerli.
+- **§1.2:** `--primary` periwinkle **token değeridir**; `violet-*`/`fuchsia-*`/`slate-*` **sınıf** yasağı aynen sürer. Faz 4'teki 920 `violet→blue` göçü geri alınmadı.
+- **§1.2 / Gelecek #24:** `--success` / `--warning` / `--danger` / `--info` + `-soft`/`-ink` eklendi; yeni çipler skala sınıfı değil bu çiftleri kullanır.
+- **§1.3:** sayfa başlığı 23–24px; `sm:text-3xl` büyümesi kaldırıldı.
+- **§2.2:** çift ray → tek sidebar + üst bar; `PageContainer` dolgusu `px-4 py-4 md:px-6 md:py-5`.
+- **§2.3:** overlay yarıçapı 11px, `shadow-lift`; print kuralları değişmedi.
+- **Dekoratif gradyan:** yalnız marka işareti (`.brand-mark`) ve tek histogram. Buton/kart/ikon karosu gradyanı yasak.
+
+---
+
 ## 1. Tasarım Dili ve İlkeler (Design Principles)
 
 ### 1.1 Tactile Feel & Kenar Yuvarlaklığı (Border Radius)

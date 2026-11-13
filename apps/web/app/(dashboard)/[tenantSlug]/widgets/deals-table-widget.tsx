@@ -124,7 +124,7 @@ export function DealsTableWidget() {
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md border border-border/80 bg-muted/60 text-primary shadow-2xs">
+            <div className="flex size-7 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <Building2 className="h-3.5 w-3.5" />
             </div>
             <div>
@@ -231,7 +231,7 @@ export function DealsTableWidget() {
                     <TableCell className="whitespace-nowrap py-2 text-right">
                       <div className="flex items-center justify-end">
                         <div
-                          className="flex h-5.5 w-5.5 items-center justify-center rounded-full bg-primary/20 font-bold text-3xs text-primary shadow-2xs"
+                          className="flex size-6 items-center justify-center rounded-full bg-accent-soft font-semibold text-3xs text-accent-foreground"
                           title={deal.assignedUserName || "Temsilci"}
                         >
                           {(deal.assignedUserName || "T")
@@ -248,7 +248,7 @@ export function DealsTableWidget() {
         </CardContent>
       </div>
 
-      <div className="flex items-center justify-between border-border/70 border-t px-4 py-2.5 font-medium text-2xs text-muted-foreground">
+      <div className="flex items-center justify-between border-border border-t px-4 py-2.5 font-medium text-2xs text-muted-foreground">
         <span>{deals.length} anlaşmanın potansiyeli:</span>
         <strong className="font-semibold text-foreground">
           ₺{totalValue.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}

@@ -3,14 +3,7 @@
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Card } from "@workspace/ui/components/card";
-import {
-  Building2,
-  ChevronRight,
-  Globe,
-  Mail,
-  Phone,
-  User,
-} from "lucide-react";
+import { ChevronRight, Globe, Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import type { CustomerListDto } from "@/lib/api-client";
 
@@ -23,6 +16,15 @@ export function CustomerGridView({
   customers,
   tenantSlug,
 }: CustomerGridViewProps) {
+  const initialsOf = (name: string) =>
+    name
+      .split(" ")
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
   const getStatusBadgeProps = (
     status: string
   ): {
@@ -49,19 +51,12 @@ export function CustomerGridView({
         const statusInfo = getStatusBadgeProps(c.status);
 
         return (
-          <Card
-            className="group flex flex-col justify-between p-4 transition-all duration-150 hover:border-border hover:shadow-xs"
-            key={c.id}
-          >
+          <Card className="group flex flex-col justify-between p-4" key={c.id}>
             <div>
               <div className="flex items-start justify-between gap-2.5">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/60 text-primary shadow-2xs">
-                    {c.type === "Company" ? (
-                      <Building2 className="h-4.5 w-4.5" />
-                    ) : (
-                      <User className="h-4.5 w-4.5" />
-                    )}
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted font-semibold text-2xs text-muted-foreground">
+                    {initialsOf(c.name)}
                   </div>
                   <div>
                     <Link

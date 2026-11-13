@@ -31,7 +31,7 @@ export function Input({
     <input
       aria-invalid={hasError ? "true" : undefined}
       className={cn(
-        "w-full rounded-lg border bg-background font-medium text-xs text-foreground shadow-2xs transition-all placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+        "w-full rounded-lg border bg-card font-medium text-xs text-foreground shadow-2xs transition-all placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
         sizeClasses,
         hasError
           ? "border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/20"

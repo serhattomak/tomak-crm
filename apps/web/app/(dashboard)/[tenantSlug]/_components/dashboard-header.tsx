@@ -29,7 +29,7 @@ export function DashboardHeader({
     <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center print:hidden">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground tracking-tight">
             Dashboard
           </h1>
           <Badge className="gap-1 px-2 py-0.5 text-2xs" variant="accent">

@@ -73,7 +73,7 @@ export function RevenueChartWidget({
         {/* Header and Controls */}
         <CardHeader className="flex flex-col justify-between gap-3 pb-3 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <BarChart3 className="h-4 w-4" />
             </div>
             <div>
@@ -122,7 +122,7 @@ export function RevenueChartWidget({
           ) : hasData ? (
             <div className="relative pt-2 pb-1">
               <div className="grid grid-cols-2 gap-3 py-2 sm:grid-cols-4">
-                <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
+                <div className="rounded-lg bg-muted/60 p-3">
                   <span className="block font-medium text-2xs text-muted-foreground">
                     Toplam Sipariş Geliri
                   </span>
@@ -133,18 +133,18 @@ export function RevenueChartWidget({
                     })}
                   </span>
                 </div>
-                <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
+                <div className="rounded-lg bg-muted/60 p-3">
                   <span className="block font-medium text-2xs text-muted-foreground">
                     Tahsil Edilen
                   </span>
-                  <span className="mt-1 block font-bold text-base text-emerald-700 tracking-tight dark:text-emerald-300">
+                  <span className="mt-1 block font-bold text-base text-success-ink tracking-tight tabular-nums">
                     ₺
                     {(orderStats?.paidRevenue || 0).toLocaleString("tr-TR", {
                       minimumFractionDigits: 2,
                     })}
                   </span>
                 </div>
-                <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
+                <div className="rounded-lg bg-muted/60 p-3">
                   <span className="block font-medium text-2xs text-muted-foreground">
                     Aktif Teklif Hacmi
                   </span>
@@ -155,7 +155,7 @@ export function RevenueChartWidget({
                     ).toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
                   </span>
                 </div>
-                <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
+                <div className="rounded-lg bg-muted/60 p-3">
                   <span className="block font-medium text-2xs text-muted-foreground">
                     Toplam Sipariş
                   </span>
@@ -183,7 +183,7 @@ export function RevenueChartWidget({
       </div>
 
       {hasData && (
-        <CardFooter className="flex flex-wrap items-center justify-between gap-4 border-border/80 border-t pt-2 pb-3 text-xs">
+        <CardFooter className="flex flex-wrap items-center justify-between gap-4 border-border border-t pt-2 pb-3 text-xs">
           <div className="flex items-center gap-5">
             <div>
               <span className="font-medium text-3xs text-muted-foreground">
@@ -200,7 +200,7 @@ export function RevenueChartWidget({
               <span className="font-medium text-3xs text-muted-foreground">
                 Teslim Edilen:
               </span>
-              <div className="font-semibold text-emerald-700 text-xs dark:text-emerald-300">
+              <div className="font-semibold text-success-ink text-xs tabular-nums">
                 {orderStats?.deliveredOrders ?? 0} Sipariş
               </div>
             </div>

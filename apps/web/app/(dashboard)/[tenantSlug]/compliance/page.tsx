@@ -362,11 +362,11 @@ export default function CompliancePage() {
       <div className="flex flex-col gap-4 border-border border-b pb-6 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="rounded-2xl bg-gradient-to-tr from-amber-600 to-red-600 p-2.5 text-white shadow-amber-500/20 shadow-md">
+            <div className="rounded-xl bg-accent-soft p-2.5 text-accent-foreground shadow-md">
               <Scale className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="flex items-center gap-2 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+              <h1 className="flex items-center gap-2 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 Mevzuat & İş Hukuku Uyum Motoru
                 <span className="flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2.5 py-0.5 font-semibold text-emerald-800 dark:text-emerald-300 text-xs">
                   <ShieldCheck className="h-3.5 w-3.5" /> 4857 / 5510 / 6331
@@ -402,7 +402,7 @@ export default function CompliancePage() {
       {/* 2. Executive KPI Cards */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {/* Score Card */}
-        <div className="flex items-center justify-between rounded-3xl border border-border bg-card p-5 shadow-xs">
+        <div className="flex items-center justify-between rounded-xl border border-border bg-card p-5 shadow-xs">
           <div>
             <span className="mb-1 block font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               UYUM SAĞLIK SKORU
@@ -447,7 +447,7 @@ export default function CompliancePage() {
         </div>
 
         {/* Violations Count */}
-        <div className="rounded-3xl border border-border bg-card p-5 shadow-xs">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-xs">
           <div className="mb-1 flex items-center justify-between font-semibold text-xs text-muted-foreground">
             <span className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               AKTİF İHLALLER
@@ -468,15 +468,15 @@ export default function CompliancePage() {
         </div>
 
         {/* Financial Risk Exposure */}
-        <div className="rounded-3xl border border-border bg-gradient-to-br bg-card from-red-50/40 via-white to-amber-50/40 p-5 shadow-xs dark:from-red-950/20 dark:via-zinc-900 dark:to-amber-950/20">
-          <div className="mb-1 flex items-center justify-between font-semibold text-red-600 dark:text-red-400 text-xs">
-            <span className="font-bold text-2xs text-red-500 uppercase tracking-wider">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-card">
+          <div className="mb-1 flex items-center justify-between font-semibold text-danger-ink text-xs">
+            <span className="font-bold text-2xs text-danger-ink uppercase tracking-wider">
               CEZA RİSK MARUZİYETİ
             </span>
             <Banknote className="h-4 w-4 text-red-500" />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="font-extrabold text-2xl text-red-900">
+            <span className="font-extrabold text-2xl text-danger-ink">
               {(scoreData?.estimatedPenaltyExposureTl ?? 0).toLocaleString(
                 "tr-TR"
               )}
@@ -491,7 +491,7 @@ export default function CompliancePage() {
         </div>
 
         {/* Overridden Exceptions */}
-        <div className="rounded-3xl border border-border bg-card p-5 shadow-xs">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-xs">
           <div className="mb-1 flex items-center justify-between font-semibold text-xs text-muted-foreground">
             <span className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               ONAYLANAN İSTİSNALAR
@@ -499,19 +499,19 @@ export default function CompliancePage() {
             <FileCheck className="h-4 w-4 text-blue-500" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-extrabold text-3xl text-blue-600 dark:text-blue-400">
+            <span className="font-extrabold text-3xl text-primary ">
               {scoreData?.overriddenViolationsCount ?? 0}
             </span>
             <span className="text-xs text-muted-foreground">kayıt</span>
           </div>
-          <span className="mt-1 block font-medium text-blue-600 dark:text-blue-400 text-xs">
+          <span className="mt-1 block font-medium text-primary  text-xs">
             Gerekçeli yönetici onayı
           </span>
         </div>
       </div>
 
       {/* 3. Navigation Tabs Toolbar */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-2 shadow-xs md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-2 shadow-xs md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
             className={`rounded-lg px-4 py-2 font-bold text-xs transition-all ${activeTab === "rules" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
@@ -592,7 +592,7 @@ export default function CompliancePage() {
       {activeTab === "rules" && (
         <div className="space-y-3">
           {isLoading ? (
-            <div className="rounded-3xl border border-border bg-card p-12 text-center">
+            <div className="rounded-xl border border-border bg-card p-12 text-center">
               <RefreshCw className="mx-auto mb-3 h-6 w-6 animate-spin text-amber-700 dark:text-amber-400" />
               <p className="font-semibold text-xs text-zinc-600 dark:text-zinc-400">
                 Yasal mevzuat kuralları yükleniyor...
@@ -602,7 +602,7 @@ export default function CompliancePage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {filteredRules.map((rule) => (
                 <div
-                  className="flex flex-col justify-between rounded-3xl border border-border bg-card p-5 shadow-xs transition-all hover:border-amber-300"
+                  className="flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:border-amber-300"
                   key={rule.id}
                 >
                   <div>
@@ -625,7 +625,7 @@ export default function CompliancePage() {
 
                     {/* Penalty Notice Box */}
                     {rule.penaltyDescription && (
-                      <div className="mb-4 space-y-1 rounded-2xl border border-border bg-zinc-50 p-3 text-xs text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
+                      <div className="mb-4 space-y-1 rounded-xl border border-border bg-zinc-50 p-3 text-xs text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                         <span className="flex items-center gap-1 font-bold text-2xs text-zinc-700 dark:text-zinc-300">
                           <AlertTriangle className="h-3 w-3 text-amber-500" />
                           Yasal Yaptırım / Ceza Uyarısı:
@@ -663,7 +663,7 @@ export default function CompliancePage() {
 
       {/* 5. Tab 2: Violations & Compliance Audit Log */}
       {activeTab === "violations" && (
-        <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
           <div className="flex items-center justify-between border-border border-b bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
             <div>
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -790,7 +790,7 @@ export default function CompliancePage() {
       {activeTab === "simulator" && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* Controls Form */}
-          <div className="space-y-4 rounded-3xl border border-border bg-card p-6 shadow-xs">
+          <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-xs">
             <div className="flex items-center gap-2 border-border border-b pb-3">
               <div className="rounded-xl bg-indigo-50 dark:bg-indigo-950/60 p-2 text-indigo-600 dark:text-indigo-400">
                 <Play className="h-4 w-4 fill-current" />
@@ -988,7 +988,7 @@ export default function CompliancePage() {
               )}
 
               <button
-                className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-red-600 py-2.5 font-bold text-white text-xs shadow-amber-600/20 shadow-md transition-all hover:from-amber-700 hover:to-red-700"
+                className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl bg-accent-soft py-2.5 font-bold text-accent-foreground text-xs shadow-md transition-all hover: hover:"
                 disabled={isSimulating}
                 onClick={handleRunSimulator}
               >
@@ -1003,7 +1003,7 @@ export default function CompliancePage() {
           </div>
 
           {/* Results Box */}
-          <div className="flex flex-col justify-between rounded-3xl border border-border bg-card p-6 shadow-xs md:col-span-2">
+          <div className="flex flex-col justify-between rounded-xl border border-border bg-card p-6 shadow-xs md:col-span-2">
             <div>
               <div className="mb-4 flex items-center justify-between border-border border-b pb-3">
                 <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1016,7 +1016,7 @@ export default function CompliancePage() {
 
               {simResult ? (
                 simResult.isCompliant ? (
-                  <div className="zoom-in-95 animate-in space-y-3 rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 p-6 text-center">
+                  <div className="zoom-in-95 animate-in space-y-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 p-6 text-center">
                     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-white shadow-emerald-500/30 shadow-md">
                       <Check className="h-6 w-6 stroke-[3]" />
                     </div>
@@ -1034,7 +1034,7 @@ export default function CompliancePage() {
                 ) : (
                   <div className="zoom-in-95 animate-in space-y-3">
                     <div
-                      className={`rounded-2xl border p-4 ${
+                      className={`rounded-xl border p-4 ${
                         simResult.hasHardBlock
                           ? "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/60 text-red-900 dark:text-red-300"
                           : "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300"
@@ -1061,7 +1061,7 @@ export default function CompliancePage() {
                     <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
                       {simResult.violations.map((v, idx) => (
                         <div
-                          className="space-y-1.5 rounded-2xl border border-border bg-zinc-50 p-3.5 dark:bg-zinc-800/50"
+                          className="space-y-1.5 rounded-xl border border-border bg-zinc-50 p-3.5 dark:bg-zinc-800/50"
                           key={idx}
                         >
                           <div className="flex items-center justify-between">
@@ -1152,7 +1152,7 @@ export default function CompliancePage() {
                 </label>
                 <div className="space-y-2">
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${editEnforcement === "HardBlock" ? "border-red-500 bg-red-50/50 dark:bg-red-950/60" : "border-border hover:border-zinc-300"}`}
+                    className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${editEnforcement === "HardBlock" ? "border-red-500 bg-red-50/50 dark:bg-red-950/60" : "border-border hover:border-zinc-300"}`}
                     onClick={() => setEditEnforcement("HardBlock")}
                   >
                     <input
@@ -1174,7 +1174,7 @@ export default function CompliancePage() {
                   </label>
 
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${editEnforcement === "SoftWarning" ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/60" : "border-border hover:border-zinc-300"}`}
+                    className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${editEnforcement === "SoftWarning" ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/60" : "border-border hover:border-zinc-300"}`}
                     onClick={() => setEditEnforcement("SoftWarning")}
                   >
                     <input
@@ -1196,7 +1196,7 @@ export default function CompliancePage() {
                   </label>
 
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3 transition-all ${editEnforcement === "Disabled" ? "border-zinc-400 bg-zinc-100 dark:bg-zinc-800" : "border-border hover:border-zinc-300"}`}
+                    className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-all ${editEnforcement === "Disabled" ? "border-zinc-400 bg-zinc-100 dark:bg-zinc-800" : "border-border hover:border-zinc-300"}`}
                     onClick={() => setEditEnforcement("Disabled")}
                   >
                     <input
@@ -1294,7 +1294,7 @@ export default function CompliancePage() {
               </DialogClose>
             </div>
 
-            <div className="space-y-1 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 p-3.5 text-amber-900 dark:text-amber-300 text-xs">
+            <div className="space-y-1 rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/60 p-3.5 text-amber-900 dark:text-amber-300 text-xs">
               <span className="block font-bold">
                 İhlal Edilen Kural: {overridingViolation.details}
               </span>

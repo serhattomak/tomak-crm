@@ -637,7 +637,7 @@ export default function PayrollPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 text-white shadow-emerald-500/20 shadow-sm">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-soft text-accent-foreground shadow-sm">
               <Banknote className="h-5 w-5" />
             </span>
             <div>
@@ -666,7 +666,7 @@ export default function PayrollPage() {
 
           <PermissionGate permission="Payroll.Manage">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-3.5 py-2 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90"
               onClick={() => setShowCreateRunModal(true)}
             >
               <Plus className="h-4 w-4" />
@@ -679,7 +679,7 @@ export default function PayrollPage() {
       {/* KPI Cards Row */}
       {activeRun && (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-2xs">
             <div className="flex items-center justify-between font-medium text-xs text-muted-foreground">
               <span>
                 Toplam Brüt Maaş ({MONTH_NAMES[activeRun.month - 1]}{" "}
@@ -695,7 +695,7 @@ export default function PayrollPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-2xs">
             <div className="flex items-center justify-between font-medium text-xs text-muted-foreground">
               <span>Ödenecek Net Maaş</span>
               <TrendingUp className="h-4 w-4 text-emerald-500" />
@@ -708,12 +708,12 @@ export default function PayrollPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-2xs">
             <div className="flex items-center justify-between font-medium text-xs text-muted-foreground">
               <span>SGK & Vergi Toplamı</span>
               <ShieldCheck className="h-4 w-4 text-blue-500" />
             </div>
-            <div className="mt-2 font-bold text-blue-600 dark:text-blue-400 text-lg">
+            <div className="mt-2 font-bold text-primary  text-lg">
               {formatCurrency(
                 activeRun.totalSgkEmployee +
                   activeRun.totalSgkEmployer +
@@ -726,7 +726,7 @@ export default function PayrollPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-2xs">
             <div className="flex items-center justify-between font-medium text-xs text-muted-foreground">
               <span>Toplam İşveren Maliyeti</span>
               <Percent className="h-4 w-4 text-purple-500" />
@@ -746,7 +746,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "runs"
-              ? "bg-blue-600 text-white shadow-xs"
+              ? "bg-foreground text-background shadow-xs"
               : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("runs")}
@@ -761,7 +761,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "puantaj"
-              ? "bg-blue-600 text-white shadow-xs"
+              ? "bg-foreground text-background shadow-xs"
               : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("puantaj")}
@@ -773,7 +773,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "payslip"
-              ? "bg-blue-600 text-white shadow-xs"
+              ? "bg-foreground text-background shadow-xs"
               : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("payslip")}
@@ -785,7 +785,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "icmal"
-              ? "bg-blue-600 text-white shadow-xs"
+              ? "bg-foreground text-background shadow-xs"
               : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           }`}
           onClick={() => {
@@ -803,7 +803,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "simulator"
-              ? "bg-blue-600 text-white shadow-xs"
+              ? "bg-foreground text-background shadow-xs"
               : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("simulator")}
@@ -815,7 +815,7 @@ export default function PayrollPage() {
         <button
           className={`flex items-center gap-2 rounded-xl px-3.5 py-2 font-semibold text-xs transition-all ${
             activeTab === "parameters"
-              ? "bg-blue-600 text-white shadow-xs"
+              ? "bg-foreground text-background shadow-xs"
               : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("parameters")}
@@ -828,7 +828,7 @@ export default function PayrollPage() {
       {/* TAB 1: BORDRO DÖNEMLERİ (RUNS) */}
       {activeTab === "runs" && (
         <div className="space-y-4">
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
             <Table>
               <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                 <TableRow>
@@ -1007,7 +1007,7 @@ export default function PayrollPage() {
       {activeTab === "puantaj" && (
         <div className="space-y-4">
           {/* Controls Header */}
-          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <div className="font-medium text-xs text-muted-foreground">
                 Seçili Dönem:
@@ -1067,7 +1067,7 @@ export default function PayrollPage() {
           </div>
 
           {/* Interactive Puantaj Table */}
-          <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-2xs">
+          <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-2xs">
             <Table className="min-w-[1000px]">
               <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
                 <TableRow>
@@ -1230,7 +1230,7 @@ export default function PayrollPage() {
       {/* TAB 3: RESMİ BORDRO ZARFI (PUSULA - PRINT & PDF) */}
       {activeTab === "payslip" && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-4 shadow-2xs print:hidden">
+          <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4 shadow-2xs print:hidden">
             <div className="flex items-center gap-3">
               <span className="font-semibold text-xs text-zinc-700 dark:text-zinc-300">
                 Personel Pusulası:
@@ -1253,7 +1253,7 @@ export default function PayrollPage() {
 
             <div className="flex items-center gap-2">
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
+                className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-colors hover:bg-foreground/90"
                 onClick={() => window.print()}
               >
                 <Printer className="h-4 w-4 text-white" />
@@ -1264,7 +1264,7 @@ export default function PayrollPage() {
 
           {/* Official Turkish Standard Payslip Document */}
           {payslipData ? (
-            <div className="overflow-hidden rounded-2xl border border-border bg-card p-6 font-sans text-zinc-900 shadow-sm dark:text-zinc-100 print:border-none print:p-0 print:shadow-none">
+            <div className="overflow-hidden rounded-xl border border-border bg-card p-6 font-sans text-zinc-900 shadow-sm dark:text-zinc-100 print:border-none print:p-0 print:shadow-none">
               {/* Document Header */}
               <div className="flex items-center justify-between border-zinc-900 border-b-2 pb-4">
                 <div>
@@ -1634,7 +1634,7 @@ export default function PayrollPage() {
               </div>
             </div>
           ) : (
-            <div className="rounded-2xl border border-border bg-card p-12 text-center text-muted-foreground">
+            <div className="rounded-xl border border-border bg-card p-12 text-center text-muted-foreground">
               Görüntülemek için puantaj ekranından veya yukarıdaki seçim
               kutusundan bir çalışan seçiniz.
             </div>
@@ -1645,7 +1645,7 @@ export default function PayrollPage() {
       {/* TAB 4: BORDRO İCMALİ & EXPORT */}
       {activeTab === "icmal" && (
         <div className="space-y-4">
-          <div className="flex flex-col items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xs sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-3 rounded-xl border border-border bg-card p-4 shadow-2xs sm:flex-row">
             <div>
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Aylık Bordro İcmal Tablosu
@@ -1669,7 +1669,7 @@ export default function PayrollPage() {
           </div>
 
           {icmalData && (
-            <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-2xs">
+            <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-2xs">
               <Table className="min-w-[1200px] text-2xs">
                 <TableHeader className="border-border bg-zinc-50 font-bold text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
                   <TableRow>
@@ -1800,7 +1800,7 @@ export default function PayrollPage() {
       {activeTab === "simulator" && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Inputs Column */}
-          <div className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-2xs lg:col-span-5">
+          <div className="space-y-4 rounded-xl border border-border bg-card p-5 shadow-2xs lg:col-span-5">
             <div className="border-border border-b pb-3">
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Maaş & Parametre Girişi
@@ -1984,7 +1984,7 @@ export default function PayrollPage() {
             </div>
 
             <button
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 font-bold text-white text-xs shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-foreground py-2.5 font-bold text-background text-xs shadow-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
               disabled={simulating}
               onClick={handleSimulate}
             >
@@ -2001,8 +2001,8 @@ export default function PayrollPage() {
               <div className="space-y-4">
                 {/* Highlight Cards */}
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl border border-emerald-200/80 dark:border-emerald-800 bg-gradient-to-br from-emerald-50 to-teal-50 p-5 shadow-2xs dark:from-emerald-950/30 dark:to-teal-950/30">
-                    <div className="font-bold text-emerald-800 text-xs uppercase tracking-wider">
+                  <div className="rounded-xl border border-transparent bg-success-soft p-5">
+                    <div className="font-bold text-success-ink text-xs uppercase tracking-wider">
                       ÖDENECEK NET MAAŞ
                     </div>
                     <div className="mt-2 font-black text-2xl text-emerald-700">
@@ -2013,8 +2013,8 @@ export default function PayrollPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl border border-purple-200/80 dark:border-purple-800 bg-gradient-to-br from-purple-50 to-indigo-50 p-5 shadow-2xs dark:from-purple-950/30 dark:to-indigo-950/30">
-                    <div className="font-bold text-purple-800 text-xs uppercase tracking-wider">
+                  <div className="rounded-xl border border-transparent bg-accent-soft p-5">
+                    <div className="font-bold text-accent-foreground text-xs uppercase tracking-wider">
                       TOPLAM İŞVEREN MALİYETİ
                     </div>
                     <div className="mt-2 font-black text-2xl text-purple-700">
@@ -2028,7 +2028,7 @@ export default function PayrollPage() {
                 </div>
 
                 {/* Detailed Breakdown Card */}
-                <div className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-2xs">
+                <div className="space-y-4 rounded-xl border border-border bg-card p-5 shadow-2xs">
                   <h3 className="font-bold text-xs text-zinc-900 uppercase tracking-wider dark:text-zinc-100">
                     Detaylı Vergi & Yasal Kesinti Analizi
                   </h3>
@@ -2128,7 +2128,7 @@ export default function PayrollPage() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-2xl border border-border bg-card p-12 text-center text-muted-foreground">
+              <div className="rounded-xl border border-border bg-card p-12 text-center text-muted-foreground">
                 Hesaplama yapılıyor...
               </div>
             )}
@@ -2139,7 +2139,7 @@ export default function PayrollPage() {
       {/* TAB 6: MEVZUAT PARAMETRELERİ (SETTINGS) */}
       {activeTab === "parameters" && (
         <div className="max-w-4xl space-y-6">
-          <div className="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-2xs">
+          <div className="space-y-6 rounded-xl border border-border bg-card p-6 shadow-2xs">
             <div>
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Türkiye Yasal Bordro Parametreleri (
@@ -2421,7 +2421,7 @@ export default function PayrollPage() {
                   Bordro Başlığı (İsteğe Bağlı)
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
                   onChange={(e) =>
                     setNewRunForm({ ...newRunForm, title: e.target.value })
                   }
@@ -2436,7 +2436,7 @@ export default function PayrollPage() {
                   Açıklama / Notlar
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
                   onChange={(e) =>
                     setNewRunForm({ ...newRunForm, notes: e.target.value })
                   }
@@ -2446,7 +2446,7 @@ export default function PayrollPage() {
                 />
               </div>
 
-              <div className="rounded-2xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/60 dark:bg-blue-950/60 p-3 font-medium text-2xs text-blue-900 dark:text-blue-300 leading-relaxed">
+              <div className="rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/60 dark:bg-blue-950/60 p-3 font-medium text-2xs text-blue-900 dark:text-blue-300 leading-relaxed">
                 Bu işlem başlatıldığında şirketteki tüm aktif çalışanların
                 kadro, pozisyon ve taban maaş bilgileri otomatik olarak
                 kopyalanır ve 30 günlük standart puantaj hesabı yapılır.
@@ -2461,7 +2461,7 @@ export default function PayrollPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
+                  className="rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-xs transition-colors hover:bg-foreground/90"
                   type="submit"
                 >
                   Dönemi Oluştur ve Hesapla
@@ -2759,7 +2759,7 @@ export default function PayrollPage() {
               <div className="flex items-center gap-2 pt-1">
                 <input
                   checked={editingPuantaj.form.hasBes}
-                  className="rounded border-border text-blue-600 dark:text-blue-400 focus:ring-0"
+                  className="rounded border-border text-primary  focus:ring-0"
                   id="hasBesEdit"
                   onChange={(e) =>
                     setEditingPuantaj({
@@ -2789,7 +2789,7 @@ export default function PayrollPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
+                  className="rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-xs transition-colors hover:bg-foreground/90"
                   type="submit"
                 >
                   Kaydet ve Yeniden Hesapla

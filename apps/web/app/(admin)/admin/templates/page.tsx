@@ -191,7 +191,7 @@ export default function AdminTemplatesPage() {
           </p>
         </div>
         <button
-          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-600 active:scale-95"
+          className="flex items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 font-semibold text-background text-xs shadow-sm transition hover:bg-foreground active:scale-95"
           onClick={handleOpenCreate}
           type="button"
         >
@@ -204,7 +204,7 @@ export default function AdminTemplatesPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {loading ? (
           <div className="col-span-full py-12 text-center text-muted-foreground">
-            <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+            <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-primary " />
             Şablonlar yükleniyor...
           </div>
         ) : (
@@ -216,7 +216,7 @@ export default function AdminTemplatesPage() {
 
             return (
               <div
-                className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs transition-all hover:border-blue-200 hover:shadow-xs"
+                className="flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-2xs transition-all hover:border-blue-200 hover:shadow-xs"
                 key={tpl.id}
               >
                 <div className="space-y-4">
@@ -235,7 +235,7 @@ export default function AdminTemplatesPage() {
                       </div>
                     </div>
                     <button
-                      className="rounded-xl border border-border bg-muted p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:hover:text-blue-400"
+                      className="rounded-xl border border-border bg-muted p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-primary dark:hover:text-blue-400"
                       onClick={() => handleOpenEdit(tpl)}
                       title="Şablonu Düzenle"
                     >
@@ -346,7 +346,7 @@ export default function AdminTemplatesPage() {
                     Şablon Adı *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-ring"
                     onChange={(e) =>
                       setEditTemplate({ ...editTemplate, name: e.target.value })
                     }
@@ -362,7 +362,7 @@ export default function AdminTemplatesPage() {
                     Şablon Anahtarı (Key) *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-card p-2.5 font-mono text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 font-mono text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-ring"
                     onChange={(e) =>
                       setEditTemplate({
                         ...editTemplate,
@@ -384,7 +384,7 @@ export default function AdminTemplatesPage() {
                   Açıklama
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-ring"
                   onChange={(e) =>
                     setEditTemplate({
                       ...editTemplate,
@@ -417,7 +417,7 @@ export default function AdminTemplatesPage() {
                         <span>{mod.name}</span>
                         <input
                           checked={checked}
-                          className="h-3 w-3 rounded text-blue-600 dark:text-blue-400 focus:ring-0"
+                          className="h-3 w-3 rounded text-primary  focus:ring-0"
                           onChange={() => {}}
                           type="checkbox"
                         />
@@ -460,7 +460,7 @@ export default function AdminTemplatesPage() {
                   İptal
                 </button>
                 <button
-                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-600 disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-sm hover:bg-foreground disabled:opacity-50"
                   disabled={saving}
                   type="submit"
                 >

@@ -352,8 +352,8 @@ export default function TicketDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-96 flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-8">
-        <RefreshCw className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+      <div className="flex h-96 flex-col items-center justify-center gap-3 rounded-xl border border-border bg-card p-8">
+        <RefreshCw className="h-8 w-8 animate-spin text-primary " />
         <span className="font-medium text-sm text-muted-foreground">
           Destek talebi ayrıntıları yükleniyor...
         </span>
@@ -363,7 +363,7 @@ export default function TicketDetailPage() {
 
   if (!ticket) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-12 text-center">
+      <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-card p-12 text-center">
         <AlertCircle className="h-10 w-10 text-red-500" />
         <h3 className="mt-4 font-bold text-lg text-zinc-900 dark:text-zinc-100">
           Talep Bulunamadı
@@ -372,7 +372,7 @@ export default function TicketDetailPage() {
           Aradığınız bilet silinmiş veya mevcut olmayabilir.
         </p>
         <Button
-          className="mt-4 gap-2 rounded-xl bg-blue-600 text-white"
+          className="mt-4 gap-2 rounded-xl bg-foreground text-background"
           onClick={() => router.push(`/${tenantSlug}/tickets`)}
         >
           <ArrowLeft className="h-4 w-4" />
@@ -385,7 +385,7 @@ export default function TicketDetailPage() {
   return (
     <PageContainer className="space-y-4">
       {/* 1. Top Bar & Navigation */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <Button
             className="rounded-xl border-border text-zinc-600 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
@@ -401,7 +401,7 @@ export default function TicketDetailPage() {
 
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-blue-600 dark:text-blue-400 text-sm">
+              <span className="font-bold text-primary  text-sm">
                 #{ticket.ticketNumber}
               </span>
               <span className="rounded-md bg-zinc-100 px-2 py-0.5 font-medium text-2xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
@@ -499,7 +499,7 @@ export default function TicketDetailPage() {
             <button
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "conversation"
-                  ? "bg-zinc-900 text-white shadow-2xs"
+                  ? "bg-foreground text-background shadow-2xs"
                   : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               }`}
               onClick={() => setActiveTab("conversation")}
@@ -512,7 +512,7 @@ export default function TicketDetailPage() {
             <button
               className={`flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                 activeTab === "activities"
-                  ? "bg-zinc-900 text-white shadow-2xs"
+                  ? "bg-foreground text-background shadow-2xs"
                   : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
               }`}
               onClick={() => setActiveTab("activities")}
@@ -532,12 +532,12 @@ export default function TicketDetailPage() {
           </div>
 
           {activeTab === "conversation" ? (
-            <div className="flex min-h-[500px] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+            <div className="flex min-h-[500px] flex-col overflow-hidden rounded-xl border border-border bg-card shadow-xs">
               {/* Messages Stream Container */}
               <div className="max-h-[520px] flex-1 space-y-4 overflow-y-auto bg-zinc-50 p-4 sm:p-6 dark:bg-zinc-800/50">
                 {/* Initial Description if no messages */}
                 {ticket.messages.length === 0 && (
-                  <div className="rounded-2xl border border-border bg-card p-4 text-xs shadow-2xs">
+                  <div className="rounded-xl border border-border bg-card p-4 text-xs shadow-2xs">
                     <div className="flex items-center justify-between font-semibold text-zinc-700 dark:text-zinc-300">
                       <span>{ticket.customerName} (İlk Talep)</span>
                       <span className="text-3xs text-muted-foreground">
@@ -571,7 +571,7 @@ export default function TicketDetailPage() {
                     return (
                       /* Yellow / Amber Internal Whisper Note */
                       <div
-                        className="rounded-2xl border border-amber-300/80 bg-amber-50/90 dark:bg-amber-950/60 p-4 text-xs shadow-xs"
+                        className="rounded-xl border border-amber-300/80 bg-amber-50/90 dark:bg-amber-950/60 p-4 text-xs shadow-xs"
                         key={m.id}
                       >
                         <div className="flex items-center justify-between border-amber-200/70 dark:border-amber-800 border-b pb-2 text-amber-900">
@@ -611,7 +611,7 @@ export default function TicketDetailPage() {
                       )}
 
                       <div
-                        className={`max-w-[80%] rounded-2xl p-4 text-xs shadow-2xs ${isCustomer ? "border border-border bg-card text-zinc-900 dark:text-zinc-100" : "border border-blue-600 bg-blue-600 text-white"}`}
+                        className={`max-w-[80%] rounded-xl p-4 text-xs shadow-2xs ${isCustomer ? "border border-border bg-card text-zinc-900 dark:text-zinc-100" : "border border-primary bg-foreground text-background"}`}
                       >
                         <div
                           className={`flex items-center justify-between gap-3 border-b pb-1.5 text-3xs ${isCustomer ? "border-border text-muted-foreground" : "border-blue-500/80 text-blue-100"}`}
@@ -724,7 +724,7 @@ export default function TicketDetailPage() {
 
                 <form className="space-y-2" onSubmit={handleSendMessage}>
                   <textarea
-                    className={`w-full rounded-2xl border p-3 text-xs transition-all focus:outline-none ${messageMode === "internal" ? "border-amber-300 dark:border-amber-700 bg-amber-50/40 dark:bg-amber-950/60 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-blue-500 dark:text-zinc-100"}`}
+                    className={`w-full rounded-xl border p-3 text-xs transition-all focus:outline-none ${messageMode === "internal" ? "border-amber-300 dark:border-amber-700 bg-amber-50/40 dark:bg-amber-950/60 text-amber-950 focus:border-amber-500" : "border-border bg-card text-zinc-900 focus:border-ring dark:text-zinc-100"}`}
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder={
                       messageMode === "internal"
@@ -750,7 +750,7 @@ export default function TicketDetailPage() {
                       className={`gap-2 rounded-xl font-semibold text-white text-xs shadow-sm ${
                         messageMode === "internal"
                           ? "bg-amber-600 hover:bg-amber-700"
-                          : "bg-blue-600 hover:bg-blue-700"
+                          : "bg-foreground hover:bg-foreground/90"
                       }`}
                       disabled={isSending || !messageText.trim()}
                       type="submit"
@@ -772,7 +772,7 @@ export default function TicketDetailPage() {
             </div>
           ) : (
             /* ACTIVITY AUDIT LOG */
-            <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
               <h3 className="mb-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 İşlem ve Durum Günlüğü
               </h3>
@@ -801,13 +801,13 @@ export default function TicketDetailPage() {
         {/* Right Panel: Customer 360 & Context (4 Cols) */}
         <div className="space-y-4 lg:col-span-4">
           {/* Customer Profile Card */}
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
             <div className="flex items-center justify-between border-border border-b pb-2.5">
               <span className="font-bold text-xs text-zinc-800 dark:text-zinc-200">
                 Müşteri Profili
               </span>
               <Link
-                className="inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400 text-xs hover:underline"
+                className="inline-flex items-center gap-1 font-semibold text-primary  text-xs hover:underline"
                 href={`/${tenantSlug}/customers/${ticket.customerId}`}
               >
                 <span>360 Kartı</span>
@@ -857,7 +857,7 @@ export default function TicketDetailPage() {
                   <span className="block text-3xs text-muted-foreground">
                     Açık Talepler
                   </span>
-                  <span className="font-bold text-blue-600 dark:text-blue-400 text-sm">
+                  <span className="font-bold text-primary  text-sm">
                     {ticket.customer360?.openTicketsCount ?? 1}
                   </span>
                 </div>
@@ -867,20 +867,20 @@ export default function TicketDetailPage() {
 
           {/* Linked CRM Entity (e.g. Order or Product) */}
           {ticket.linkedEntityTitle && (
-            <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
               <span className="mb-2 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
                 İlişkili CRM Kaydı
               </span>
               <div className="flex items-center justify-between rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/70 dark:bg-blue-950/60 p-3 text-xs">
                 <div className="flex items-center gap-2">
-                  <ShoppingCart className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <ShoppingCart className="h-4 w-4 text-primary " />
                   <span className="font-semibold text-blue-900">
                     {ticket.linkedEntityTitle}
                   </span>
                 </div>
                 {ticket.linkedEntityId && (
                   <Link
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
+                    className="text-primary  hover:underline"
                     href={`/${tenantSlug}/orders/${ticket.linkedEntityId}`}
                   >
                     <ExternalLink className="h-3.5 w-3.5" />
@@ -891,7 +891,7 @@ export default function TicketDetailPage() {
           )}
 
           {/* Previous Tickets History */}
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
             <span className="mb-2.5 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Müşterinin Geçmiş Talepleri
             </span>
@@ -905,7 +905,7 @@ export default function TicketDetailPage() {
                     key={pt.id}
                   >
                     <div className="max-w-[170px] space-y-0.5">
-                      <span className="font-bold text-2xs text-blue-600 dark:text-blue-400">
+                      <span className="font-bold text-2xs text-primary ">
                         #{pt.ticketNumber}
                       </span>
                       <p className="line-clamp-1 font-medium text-2xs text-zinc-800 dark:text-zinc-200">
@@ -926,7 +926,7 @@ export default function TicketDetailPage() {
           </div>
 
           {/* Customer 360: Recent Orders with Products */}
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
             <span className="mb-2.5 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Son Siparişler (Gerçek Veri)
             </span>
@@ -993,7 +993,7 @@ export default function TicketDetailPage() {
           </div>
 
           {/* Customer 360: Recent Shipments / Kargo */}
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
             <span className="mb-2.5 block font-bold text-xs text-zinc-800 dark:text-zinc-200">
               Kargo & Sevkiyat (Son 5)
             </span>
@@ -1234,7 +1234,7 @@ export default function TicketDetailPage() {
                   </button>
                 )}
                 <button
-                  className="rounded-xl bg-blue-600 px-4 py-1.5 font-semibold text-white text-xs hover:bg-blue-700"
+                  className="rounded-xl bg-foreground px-4 py-1.5 font-semibold text-background text-xs hover:bg-foreground/90"
                   onClick={handleTemplateSave}
                   type="button"
                 >

@@ -78,7 +78,7 @@ export default function OrganizationPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-muted-foreground shadow-xs">
+        <div className="flex h-72 flex-col items-center justify-center rounded-xl border border-border bg-card p-8 text-muted-foreground shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">Organizasyon yükleniyor...</p>
         </div>
@@ -265,11 +265,11 @@ function OrganizationPageContent() {
       {/* 1. Header & Navigation */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <div className="flex items-center gap-2 font-semibold text-blue-600 text-xs uppercase tracking-wider dark:text-blue-400">
+          <div className="flex items-center gap-2 font-semibold text-primary text-xs uppercase tracking-wider ">
             <Network className="h-4 w-4" />
             <span>Organization & People</span>
           </div>
-          <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+          <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
             Organizasyon & Departmanlar
           </h1>
           <p className="mt-1 text-xs text-muted-foreground">
@@ -320,7 +320,7 @@ function OrganizationPageContent() {
 
       {/* 2. Navigation Tabs */}
       <div className="flex items-center justify-between border-border border-b pb-3">
-        <div className="flex items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
+        <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
             className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "chart" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
             onClick={() => handleTabChange("chart")}
@@ -374,7 +374,7 @@ function OrganizationPageContent() {
 
       {/* 3. Tab Contents */}
       {isLoading ? (
-        <div className="flex h-72 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-muted-foreground shadow-xs">
+        <div className="flex h-72 flex-col items-center justify-center rounded-xl border border-border bg-card p-8 text-muted-foreground shadow-xs">
           <Loader2 className="mb-3 h-8 w-8 animate-spin text-blue-500" />
           <p className="font-semibold text-xs">
             Organizasyon verileri yükleniyor...
@@ -640,8 +640,8 @@ function OrgChartTab({
 
   if (nodes.length === 0) {
     return (
-      <div className="flex min-h-[420px] flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card p-8 text-center shadow-xs">
-        <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-blue-50 text-blue-600 shadow-blue-500/10 shadow-sm dark:bg-blue-950/40 dark:text-blue-400">
+      <div className="flex min-h-[420px] flex-col items-center justify-center rounded-xl border border-border border-dashed bg-card p-8 text-center shadow-xs">
+        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-blue-500/10 shadow-sm dark:bg-blue-950/40 dark:text-blue-400">
           <Network className="h-7 w-7" />
         </div>
         <h3 className="mt-4 font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -656,9 +656,9 @@ function OrgChartTab({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-border bg-zinc-50/70 shadow-xs dark:bg-zinc-800/40">
+    <div className="relative overflow-hidden rounded-xl border border-border bg-zinc-50/70 shadow-xs dark:bg-zinc-800/40">
       {/* Chart Canvas Controls */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-2xl border border-border bg-card p-1.5 shadow-md backdrop-blur-sm">
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 rounded-xl border border-border bg-card p-1.5 shadow-md backdrop-blur-sm">
         <button
           className="rounded-xl p-1.5 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
           onClick={() => setZoom((z) => Math.min(z + 0.15, 1.8))}
@@ -726,11 +726,11 @@ function OrgNodeItem({
   const levelBadge = useMemo(() => {
     switch (node.level) {
       case "Executive":
-        return "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-blue-500/20";
+        return "bg-accent-soft text-accent-foreground ";
       case "Director":
-        return "bg-gradient-to-r from-blue-500 to-indigo-600 text-white";
+        return "bg-accent-soft text-accent-foreground";
       case "Manager":
-        return "bg-gradient-to-r from-indigo-500 to-cyan-500 text-white";
+        return "bg-accent-soft text-accent-foreground";
       case "Lead":
         return "bg-cyan-100 text-cyan-800";
       default:
@@ -741,7 +741,7 @@ function OrgNodeItem({
   return (
     <div className="flex flex-col items-center">
       {/* Node Card */}
-      <div className="group relative z-10 w-72 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-300 hover:shadow-blue-500/10 hover:shadow-xl">
+      <div className="group relative z-10 w-72 rounded-xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-300 hover:shadow-blue-500/10 hover:shadow-xl">
         {/* Top badges */}
         <div className="mb-3 flex items-center justify-between">
           <span
@@ -765,17 +765,17 @@ function OrgNodeItem({
           {node.avatarUrl ? (
             <img
               alt={node.fullName}
-              className="h-11 w-11 shrink-0 rounded-2xl object-cover ring-2 ring-blue-500/30"
+              className="h-11 w-11 shrink-0 rounded-xl object-cover ring-2 ring-blue-500/30"
               src={node.avatarUrl}
             />
           ) : (
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-500 font-extrabold text-sm text-white shadow-blue-500/25 shadow-md">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-soft font-extrabold text-sm text-accent-foreground shadow-md">
               {node.fullName.charAt(0).toUpperCase()}
             </div>
           )}
 
           <div className="min-w-0 flex-1">
-            <h4 className="truncate font-bold text-xs text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
+            <h4 className="truncate font-bold text-xs text-zinc-900 transition-colors group-hover:text-primary dark:text-zinc-100 dark:group-hover:text-blue-400">
               {node.fullName}
             </h4>
             <p className="truncate font-medium text-2xs text-muted-foreground">
@@ -905,7 +905,7 @@ function DepartmentsTab({
         <div className="relative max-w-sm flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
           <input
-            className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+            className="w-full rounded-xl border border-border bg-card py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:outline-none dark:text-zinc-100"
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Departman adı, kod veya maliyet merkezi ara..."
             type="text"
@@ -918,14 +918,14 @@ function DepartmentsTab({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredDepts.map((dept) => (
           <div
-            className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:border-blue-200 hover:shadow-md"
+            className="flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:border-blue-200 hover:shadow-md"
             key={dept.id}
           >
             <div>
               {/* Header */}
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2.5">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-blue-500/20 shadow-md">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-soft text-accent-foreground shadow-md">
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
@@ -933,7 +933,7 @@ function DepartmentsTab({
                       {dept.name}
                     </h3>
                     {dept.code && (
-                      <span className="font-bold font-mono text-3xs text-blue-600 dark:text-blue-400">
+                      <span className="font-bold font-mono text-3xs text-primary ">
                         [{dept.code}]
                       </span>
                     )}
@@ -1016,7 +1016,7 @@ function DepartmentsTab({
               </div>
 
               <button
-                className="flex items-center gap-1 font-bold text-2xs text-blue-600 transition-colors hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                className="flex items-center gap-1 font-bold text-2xs text-primary transition-colors hover:text-blue-800  dark:hover:text-blue-300"
                 onClick={() => onAddChild(dept.id)}
                 type="button"
               >
@@ -1072,12 +1072,12 @@ function EmployeesTab({
   return (
     <div className="space-y-4">
       {/* Filters Bar */}
-      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-4 shadow-xs sm:flex-row sm:items-center">
         {/* Search */}
         <div className="relative min-w-[240px] flex-1">
           <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
           <input
-            className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-900 dark:text-zinc-100"
+            className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-900 dark:text-zinc-100"
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="İsim, e-posta, sicil no veya unvan ile ara..."
             type="text"
@@ -1145,7 +1145,7 @@ function EmployeesTab({
           <div className="flex items-center rounded-xl border border-border p-0.5">
             <button
               aria-label="Tablo görünümü"
-              className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
+              className={`rounded-lg p-1.5 ${viewMode === "table" ? "bg-foreground text-background dark:bg-zinc-100 dark:text-zinc-900" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("table")}
               type="button"
             >
@@ -1153,7 +1153,7 @@ function EmployeesTab({
             </button>
             <button
               aria-label="Kart görünümü"
-              className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
+              className={`rounded-lg p-1.5 ${viewMode === "grid" ? "bg-foreground text-background dark:bg-zinc-100 dark:text-zinc-900" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() => setViewMode("grid")}
               type="button"
             >
@@ -1165,7 +1165,7 @@ function EmployeesTab({
 
       {/* Content: Table or Grid */}
       {employees.length === 0 ? (
-        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card p-8 text-center shadow-xs">
+        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-border border-dashed bg-card p-8 text-center shadow-xs">
           <Users className="h-10 w-10 text-zinc-300 dark:text-zinc-600" />
           <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
             Çalışan Bulunamadı
@@ -1175,7 +1175,7 @@ function EmployeesTab({
           </p>
         </div>
       ) : viewMode === "table" ? (
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
           <Table>
             <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
               <TableRow>
@@ -1210,7 +1210,7 @@ function EmployeesTab({
                           src={emp.avatarUrl}
                         />
                       ) : (
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 font-extrabold text-white text-xs shadow-xs">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-soft font-extrabold text-accent-foreground text-xs shadow-xs">
                           {emp.fullName.charAt(0).toUpperCase()}
                         </div>
                       )}
@@ -1303,7 +1303,7 @@ function EmployeesTab({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {employees.map((emp) => (
             <div
-              className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:border-blue-300 hover:shadow-md"
+              className="flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:border-blue-300 hover:shadow-md"
               key={emp.id}
             >
               <div>
@@ -1312,11 +1312,11 @@ function EmployeesTab({
                     {emp.avatarUrl ? (
                       <img
                         alt={emp.fullName}
-                        className="h-11 w-11 rounded-2xl object-cover ring-2 ring-blue-500/20"
+                        className="h-11 w-11 rounded-xl object-cover ring-2 ring-blue-500/20"
                         src={emp.avatarUrl}
                       />
                     ) : (
-                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 font-bold text-sm text-white shadow-blue-500/20 shadow-sm">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft font-bold text-sm text-accent-foreground shadow-sm">
                         {emp.fullName.charAt(0).toUpperCase()}
                       </div>
                     )}
@@ -1409,7 +1409,7 @@ function PositionsTab({
 }) {
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
         <Table>
           <TableHeader className="border-border bg-zinc-50/90 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
             <TableRow>
@@ -1567,7 +1567,7 @@ function DepartmentModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-            <Building2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <Building2 className="h-5 w-5 text-primary " />
             {department?.id ? "Departmanı Düzenle" : "Yeni Departman Oluştur"}
           </DialogTitle>
           <DialogClose asChild>
@@ -1587,7 +1587,7 @@ function DepartmentModal({
               Departman Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
               onChange={(e) => setName(e.target.value)}
               placeholder="Örn: Yazılım & Teknoloji"
               required
@@ -1602,7 +1602,7 @@ function DepartmentModal({
                 Departman Kodu
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-900 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-900 uppercase focus:border-ring focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="Örn: TECH"
                 type="text"
@@ -1614,7 +1614,7 @@ function DepartmentModal({
                 Maliyet Merkezi
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setCostCenter(e.target.value)}
                 placeholder="CC-102"
                 type="text"
@@ -1674,7 +1674,7 @@ function DepartmentModal({
               Açıklama
             </label>
             <textarea
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Departmanın temel görev ve sorumlulukları..."
               rows={2}
@@ -1691,7 +1691,7 @@ function DepartmentModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2 font-semibold text-background shadow-xs hover:bg-foreground/90 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -1782,7 +1782,7 @@ function PositionModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-            <Briefcase className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <Briefcase className="h-5 w-5 text-primary " />
             {position?.id ? "Pozisyonu Düzenle" : "Yeni Pozisyon Ekle"}
           </DialogTitle>
           <DialogClose asChild>
@@ -1802,7 +1802,7 @@ function PositionModal({
               Pozisyon / Ünvan Başlığı *
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Örn: Senior Frontend Developer"
               required
@@ -1889,7 +1889,7 @@ function PositionModal({
               Görev Tanımı
             </label>
             <textarea
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Pozisyonun ana sorumlulukları..."
               rows={2}
@@ -1906,7 +1906,7 @@ function PositionModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2 font-semibold text-background shadow-xs hover:bg-foreground/90 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2059,7 +2059,7 @@ function EmployeeModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <DialogTitle className="flex items-center gap-2 font-bold text-base text-zinc-900 dark:text-zinc-100">
-            <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <Users className="h-5 w-5 text-primary " />
             {employee?.id
               ? "Çalışan Kartını Düzenle"
               : "Yeni Çalışan / Personel Kartı Aç"}
@@ -2077,7 +2077,7 @@ function EmployeeModal({
 
         <form className="space-y-4 text-xs" onSubmit={handleSubmit}>
           {/* Quick link existing user */}
-          <div className="rounded-2xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/40 dark:bg-blue-950/60 p-3">
+          <div className="rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/40 dark:bg-blue-950/60 p-3">
             <label className="mb-1 block font-bold text-blue-950">
               Sistem Kullanıcısı Eşleştir (Opsiyonel)
             </label>
@@ -2108,7 +2108,7 @@ function EmployeeModal({
                 Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Ahmet"
                 required
@@ -2121,7 +2121,7 @@ function EmployeeModal({
                 Soyadı *
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Yılmaz"
                 required
@@ -2137,7 +2137,7 @@ function EmployeeModal({
                 E-posta Adresi *
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ahmet@sirket.com"
                 required
@@ -2206,7 +2206,7 @@ function EmployeeModal({
                 Özel / Görünen Ünvan
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Senior Architect"
                 type="text"
@@ -2216,7 +2216,7 @@ function EmployeeModal({
           </div>
 
           {/* Manager / Reports To Hierarchy */}
-          <div className="rounded-2xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40">
+          <div className="rounded-xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40">
             <label className="mb-1 block font-bold text-zinc-900 dark:text-zinc-100">
               Bağlı Olduğu Yönetici (Reports To)
             </label>
@@ -2292,7 +2292,7 @@ function EmployeeModal({
                 Sicil No
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
                 onChange={(e) => setEmployeeNumber(e.target.value)}
                 placeholder="EMP-1002"
                 type="text"
@@ -2351,7 +2351,7 @@ function EmployeeModal({
               Avatar Fotoğraf URL
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://images.unsplash.com/photo-..."
               type="url"
@@ -2368,7 +2368,7 @@ function EmployeeModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2 font-semibold text-background shadow-xs hover:bg-foreground/90 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2461,7 +2461,7 @@ function EmployeeDetailDrawer({
                 onClick={onEdit}
                 type="button"
               >
-                <Edit2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                <Edit2 className="h-3.5 w-3.5 text-primary " />
                 <span>Düzenle</span>
               </button>
               <SheetClose asChild>
@@ -2481,11 +2481,11 @@ function EmployeeDetailDrawer({
             {employeeDetail.avatarUrl ? (
               <img
                 alt={employeeDetail.fullName}
-                className="h-20 w-20 rounded-3xl object-cover ring-4 ring-blue-500/20"
+                className="h-20 w-20 rounded-xl object-cover ring-4 ring-blue-500/20"
                 src={employeeDetail.avatarUrl}
               />
             ) : (
-              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-500 font-extrabold text-2xl text-white shadow-blue-500/25 shadow-xl">
+              <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-accent-soft font-extrabold text-2xl text-accent-foreground shadow-xl">
                 {employeeDetail.fullName.charAt(0).toUpperCase()}
               </div>
             )}
@@ -2493,7 +2493,7 @@ function EmployeeDetailDrawer({
             <SheetTitle className="mt-3 font-bold text-lg text-zinc-900 dark:text-zinc-100">
               {employeeDetail.fullName}
             </SheetTitle>
-            <p className="font-semibold text-blue-600 text-xs dark:text-blue-400">
+            <p className="font-semibold text-primary text-xs ">
               {employeeDetail.title || "Ünvan Tanımlanmadı"}
             </p>
 
@@ -2508,7 +2508,7 @@ function EmployeeDetailDrawer({
           </div>
 
           {/* Contact Details Card */}
-          <div className="mt-6 space-y-3 rounded-2xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
+          <div className="mt-6 space-y-3 rounded-xl border border-border bg-zinc-50/70 p-4 text-xs dark:bg-zinc-800/40">
             <h4 className="font-bold text-2xs text-muted-foreground uppercase tracking-wider">
               İletişim & İK Bilgileri
             </h4>
@@ -2546,7 +2546,7 @@ function EmployeeDetailDrawer({
             </h4>
 
             {/* Manager */}
-            <div className="rounded-2xl border border-border p-3">
+            <div className="rounded-xl border border-border p-3">
               <div className="mb-1.5 font-bold text-3xs text-muted-foreground uppercase">
                 Bağlı Olduğu Yönetici
               </div>
@@ -2575,7 +2575,7 @@ function EmployeeDetailDrawer({
             </div>
 
             {/* Direct Reports */}
-            <div className="rounded-2xl border border-border p-3">
+            <div className="rounded-xl border border-border p-3">
               <div className="mb-2 flex items-center justify-between font-bold text-3xs text-muted-foreground uppercase">
                 <span>
                   Doğrudan Yönettiği Kişiler (
@@ -2596,7 +2596,7 @@ function EmployeeDetailDrawer({
                       onClick={() => onSelectEmployee(report.id)}
                     >
                       <div className="flex items-center gap-2">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-600 font-bold text-3xs text-white">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-foreground font-bold text-3xs text-background">
                           {report.fullName.charAt(0)}
                         </div>
                         <div>
@@ -2620,7 +2620,7 @@ function EmployeeDetailDrawer({
         {/* Footer */}
         <div className="border-border border-t pt-4 text-center">
           <button
-            className="w-full rounded-xl bg-blue-600 py-2.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+            className="w-full rounded-xl bg-foreground py-2.5 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
             onClick={onClose}
             type="button"
           >

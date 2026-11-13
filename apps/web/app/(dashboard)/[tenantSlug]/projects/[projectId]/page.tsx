@@ -717,7 +717,7 @@ export default function ProjectDetailPage() {
     return (
       <div className="space-y-4 py-8">
         <div className="h-10 w-48 animate-pulse rounded-xl bg-zinc-200 dark:bg-zinc-800" />
-        <div className="h-64 w-full animate-pulse rounded-3xl bg-zinc-100 dark:bg-zinc-800/50" />
+        <div className="h-64 w-full animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800/50" />
       </div>
     );
   }
@@ -730,7 +730,7 @@ export default function ProjectDetailPage() {
           Proje Bulunamadı
         </h2>
         <Link
-          className="mt-4 font-semibold text-sm text-blue-600 dark:text-blue-400 hover:underline"
+          className="mt-4 font-semibold text-sm text-primary  hover:underline"
           href={`/${tenantSlug}/projects`}
         >
           ← Projeler Listesine Dön
@@ -743,7 +743,7 @@ export default function ProjectDetailPage() {
     <PageContainer className="space-y-6 pb-16">
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900">
+        <div className="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-xl border border-zinc-800 bg-foreground px-4 py-3 text-background text-xs shadow-2xl dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900">
           <CheckCircle2 className="h-4 w-4 text-emerald-400 dark:text-emerald-600" />
           <span>{toastMessage}</span>
         </div>
@@ -761,13 +761,11 @@ export default function ProjectDetailPage() {
               <span>Projeler</span>
             </Link>
             <span>/</span>
-            <span className="font-bold text-blue-600 dark:text-blue-400">
-              {project.key}
-            </span>
+            <span className="font-bold text-primary ">{project.key}</span>
           </div>
 
           <div className="mt-1 flex items-center gap-3">
-            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+            <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {project.name}
             </h1>
             {project.customerName && (
@@ -784,7 +782,7 @@ export default function ProjectDetailPage() {
             onClick={() => setIsCreateSprintModalOpen(true)}
             type="button"
           >
-            <Layers className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+            <Layers className="h-3.5 w-3.5 text-primary " />
             <span>Sprint Aç</span>
           </button>
 
@@ -798,7 +796,7 @@ export default function ProjectDetailPage() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-95"
+            className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90 active:scale-95"
             onClick={() => {
               setCreateItemSprintId(activeSprint?.id || null);
               setIsCreateItemModalOpen(true);
@@ -816,7 +814,7 @@ export default function ProjectDetailPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "backlog"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("backlog")}
@@ -832,7 +830,7 @@ export default function ProjectDetailPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "board"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("board")}
@@ -850,7 +848,7 @@ export default function ProjectDetailPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "epics"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("epics")}
@@ -872,7 +870,7 @@ export default function ProjectDetailPage() {
           {/* Active Sprint Section */}
           {activeSprint && (
             <div
-              className={`rounded-2xl border p-5 shadow-2xs transition-all ${dragOverSprintId === activeSprint.id ? "border-emerald-500 bg-emerald-50/60 ring-2 ring-emerald-500 dark:bg-emerald-950/40" : "border-emerald-200/80 bg-card dark:border-emerald-900/60"}`}
+              className={`rounded-xl border p-5 shadow-2xs transition-all ${dragOverSprintId === activeSprint.id ? "border-emerald-500 bg-emerald-50/60 ring-2 ring-emerald-500 dark:bg-emerald-950/40" : "border-emerald-200/80 bg-card dark:border-emerald-900/60"}`}
               onDragLeave={(e) => {
                 if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                   setDragOverSprintId(null);
@@ -1116,7 +1114,7 @@ export default function ProjectDetailPage() {
 
             return (
               <div
-                className={`rounded-2xl border p-5 shadow-2xs transition-all ${dragOverSprintId === sprint.id ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
+                className={`rounded-xl border p-5 shadow-2xs transition-all ${dragOverSprintId === sprint.id ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
                 key={sprint.id}
                 onDragLeave={(e) => {
                   if (!e.currentTarget.contains(e.relatedTarget as Node)) {
@@ -1162,7 +1160,7 @@ export default function ProjectDetailPage() {
                     </span>
 
                     <button
-                      className="rounded-xl bg-blue-600 px-3.5 py-1.5 font-bold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95"
+                      className="rounded-xl bg-foreground px-3.5 py-1.5 font-bold text-background text-xs shadow-xs hover:bg-foreground/90 active:scale-95"
                       onClick={() =>
                         handleUpdateSprintStatus(sprint.id, "Active")
                       }
@@ -1293,7 +1291,7 @@ export default function ProjectDetailPage() {
 
           {/* Backlog Pool Section */}
           <div
-            className={`rounded-2xl border p-5 shadow-2xs transition-all ${dragOverSprintId === "backlog" ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
+            className={`rounded-xl border p-5 shadow-2xs transition-all ${dragOverSprintId === "backlog" ? "border-blue-500 bg-blue-50/60 ring-2 ring-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
             onDragLeave={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                 setDragOverSprintId(null);
@@ -1459,7 +1457,7 @@ export default function ProjectDetailPage() {
                             })),
                         ]}
                         placeholder="Sprinte Taşı ▾"
-                        triggerClassName="h-6 px-2 font-semibold text-3xs text-blue-600 dark:text-blue-400"
+                        triggerClassName="h-6 px-2 font-semibold text-3xs text-primary "
                         value=""
                       />
                     )}
@@ -1514,7 +1512,7 @@ export default function ProjectDetailPage() {
 
                   return (
                     <div
-                      className={`flex min-h-[400px] flex-col rounded-2xl border p-3.5 transition-all ${isOver ? "border-blue-500 bg-blue-50/70 ring-2 ring-blue-500 dark:border-blue-700 dark:bg-blue-950/40" : "border-border bg-zinc-50/70 dark:bg-zinc-900/50"}`}
+                      className={`flex min-h-[400px] flex-col rounded-xl border p-3.5 transition-all ${isOver ? "border-blue-500 bg-blue-50/70 ring-2 ring-blue-500 dark:border-blue-700 dark:bg-blue-950/40" : "border-border bg-zinc-50/70 dark:bg-zinc-900/50"}`}
                       key={colStatus}
                       onDragLeave={(e) => {
                         if (
@@ -1714,7 +1712,7 @@ export default function ProjectDetailPage() {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card py-16 text-center">
+            <div className="flex flex-col items-center justify-center rounded-xl border border-border border-dashed bg-card py-16 text-center">
               <Layers className="h-10 w-10 text-muted-foreground" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Aktif Sprint Bulunmuyor
@@ -1741,7 +1739,7 @@ export default function ProjectDetailPage() {
 
             return (
               <div
-                className="rounded-2xl border border-border bg-card p-5 shadow-2xs"
+                className="rounded-xl border border-border bg-card p-5 shadow-2xs"
                 key={epic.id}
               >
                 <div className="flex items-start justify-between">
@@ -1787,7 +1785,7 @@ export default function ProjectDetailPage() {
           })}
 
           {epics.length === 0 && (
-            <div className="col-span-full rounded-3xl border border-border border-dashed bg-card py-16 text-center">
+            <div className="col-span-full rounded-xl border border-border border-dashed bg-card py-16 text-center">
               <Milestone className="mx-auto h-10 w-10 text-muted-foreground" />
               <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-zinc-200">
                 Henüz Epik Oluşturulmamış
@@ -1866,7 +1864,7 @@ export default function ProjectDetailPage() {
                   Başlık
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 font-bold text-sm text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 font-bold text-sm text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDrawerTitle(e.target.value)}
                   required
                   type="text"
@@ -2064,7 +2062,7 @@ export default function ProjectDetailPage() {
                   Açıklama & Detaylar
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDrawerDescription(e.target.value)}
                   placeholder="İş maddesinin detaylı açıklaması..."
                   rows={3}
@@ -2089,7 +2087,7 @@ export default function ProjectDetailPage() {
               {/* Save Button */}
               <div className="flex justify-end">
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-bold text-white text-xs shadow-xs hover:bg-blue-700 active:scale-95 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2 font-bold text-background text-xs shadow-xs hover:bg-foreground/90 active:scale-95 disabled:opacity-50"
                   disabled={drawerSaving}
                   type="submit"
                 >
@@ -2111,14 +2109,14 @@ export default function ProjectDetailPage() {
 
               <form className="mt-2 flex gap-2" onSubmit={handleAddSubtask}>
                 <input
-                  className="flex-1 rounded-xl border border-border bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="flex-1 rounded-xl border border-border bg-zinc-50/70 px-3 py-1.5 text-xs text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSubtaskTitle(e.target.value)}
                   placeholder="Yeni kontrol maddesi yazın..."
                   type="text"
                   value={newSubtaskTitle}
                 />
                 <button
-                  className="rounded-xl bg-zinc-900 px-3 py-1.5 font-bold text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+                  className="rounded-xl bg-foreground px-3 py-1.5 font-bold text-background text-xs hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900"
                   disabled={!newSubtaskTitle.trim()}
                   type="submit"
                 >
@@ -2159,7 +2157,7 @@ export default function ProjectDetailPage() {
 
               <form className="mt-2 space-y-2" onSubmit={handleAddComment}>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewCommentContent(e.target.value)}
                   placeholder="Yorum ekle veya not bırak..."
                   rows={2}
@@ -2167,7 +2165,7 @@ export default function ProjectDetailPage() {
                 />
                 <div className="flex justify-end">
                   <button
-                    className="rounded-xl bg-blue-600 px-4 py-1.5 font-bold text-white text-xs hover:bg-blue-700"
+                    className="rounded-xl bg-foreground px-4 py-1.5 font-bold text-background text-xs hover:bg-foreground/90"
                     disabled={!newCommentContent.trim()}
                     type="submit"
                   >
@@ -2242,7 +2240,7 @@ export default function ProjectDetailPage() {
                   Başlık *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewItemTitle(e.target.value)}
                   placeholder="İş maddesi başlığı..."
                   required
@@ -2345,7 +2343,7 @@ export default function ProjectDetailPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewItemDescription(e.target.value)}
                   placeholder="İşin detayları..."
                   rows={2}
@@ -2362,7 +2360,7 @@ export default function ProjectDetailPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-bold text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="rounded-xl bg-foreground px-5 py-2 font-bold text-background hover:bg-foreground/90 disabled:opacity-50"
                   disabled={!newItemTitle.trim() || submittingItem}
                   type="submit"
                 >
@@ -2415,7 +2413,7 @@ export default function ProjectDetailPage() {
                   Sprint Adı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSprintName(e.target.value)}
                   placeholder={`Sprint ${sprints.length + 1}`}
                   required
@@ -2429,7 +2427,7 @@ export default function ProjectDetailPage() {
                   Sprint Hedefi (Goal)
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewSprintGoal(e.target.value)}
                   placeholder="Bu sprintte neyi başarmayı hedefliyoruz?"
                   rows={2}
@@ -2468,7 +2466,7 @@ export default function ProjectDetailPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-bold text-white hover:bg-blue-700"
+                  className="rounded-xl bg-foreground px-5 py-2 font-bold text-background hover:bg-foreground/90"
                   disabled={!newSprintName.trim()}
                   type="submit"
                 >
@@ -2521,7 +2519,7 @@ export default function ProjectDetailPage() {
                   Epik Adı *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewEpicName(e.target.value)}
                   placeholder="Örn. Kullanıcı Yönetimi & Yetkilendirme"
                   required
@@ -2535,7 +2533,7 @@ export default function ProjectDetailPage() {
                   Açıklama
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setNewEpicDescription(e.target.value)}
                   placeholder="Epik hedefleri ve kapsam..."
                   rows={2}
@@ -2578,7 +2576,7 @@ export default function ProjectDetailPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-bold text-white hover:bg-blue-700"
+                  className="rounded-xl bg-foreground px-5 py-2 font-bold text-background hover:bg-foreground/90"
                   disabled={!newEpicName.trim()}
                   type="submit"
                 >

@@ -208,11 +208,11 @@ export function DealDetailDrawer({
 
       <SheetContent
         aria-describedby={undefined}
-        className="data-[side=right]:w-full border-border/80 overflow-hidden data-[side=right]:sm:max-w-none data-[side=right]:md:max-w-2xl"
+        className="data-[side=right]:w-full border-border overflow-hidden data-[side=right]:sm:max-w-none data-[side=right]:md:max-w-2xl"
         showCloseButton={false}
       >
         {/* Drawer Header */}
-        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-border/80 border-b bg-muted/30 p-3.5 sm:p-5">
+        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-border border-b bg-muted/30 p-3.5 sm:p-5">
           <div className="flex min-w-0 items-center gap-2.5">
             <SheetClose asChild>
               <Button
@@ -263,12 +263,12 @@ export function DealDetailDrawer({
               <span className="mb-2 block font-semibold text-2xs text-muted-foreground uppercase tracking-wider">
                 Aşama İlerlemesi (Tıklayarak Değiştirin)
               </span>
-              <div className="grid grid-cols-2 gap-2 rounded-lg border border-border/80 bg-muted/40 p-2.5 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2 rounded-lg border border-border bg-muted/60 p-2.5 sm:grid-cols-4">
                 {activePipeline?.stages?.map((stage) => {
                   const isCurrent = deal.stageId === stage.id;
                   return (
                     <button
-                      className={`flex flex-col justify-between rounded-md p-2 text-left font-medium text-xs transition-colors ${isCurrent ? "bg-primary text-primary-foreground shadow-xs" : "border border-border/70 bg-card text-foreground hover:bg-accent"}`}
+                      className={`flex flex-col justify-between rounded-md p-2 text-left font-medium text-xs transition-colors ${isCurrent ? "bg-primary text-primary-foreground" : "border border-border bg-card text-foreground hover:bg-accent"}`}
                       key={stage.id}
                       onClick={() => handleStageChange(stage.id)}
                       type="button"
@@ -319,7 +319,7 @@ export function DealDetailDrawer({
             )}
 
             {/* 3. Core Properties Grid */}
-            <div className="grid grid-cols-2 gap-4 rounded-lg border border-border/80 bg-card p-4 shadow-xs sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 rounded-lg border border-border bg-card p-4 sm:grid-cols-3">
               {/* Value */}
               <div>
                 <span className="font-medium text-3xs text-muted-foreground uppercase">
@@ -357,7 +357,7 @@ export function DealDetailDrawer({
                       <AlertTriangle className="h-3.5 w-3.5" /> Süre Aşıldı
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 font-medium text-3xs text-emerald-700 dark:text-emerald-300">
+                    <span className="inline-flex items-center gap-1 font-medium text-3xs text-success-ink">
                       <Check className="h-3.5 w-3.5" /> Uygun
                     </span>
                   )}
@@ -387,7 +387,7 @@ export function DealDetailDrawer({
               deal.contactName ||
               deal.contactEmail ||
               deal.contactPhone) && (
-              <div className="space-y-3 rounded-lg border border-border/80 bg-card p-4 shadow-xs">
+              <div className="space-y-3 rounded-lg border border-border bg-card p-4">
                 <h4 className="flex items-center gap-1.5 font-semibold text-foreground text-xs">
                   <User className="h-3.5 w-3.5 text-primary" />
                   Müşteri & İletişim Bilgileri
@@ -435,7 +435,7 @@ export function DealDetailDrawer({
 
             {/* 5. Tabs: Timeline (Aktiviteler) & Notes (Notlar) */}
             <div>
-              <div className="mb-4 flex border-border/70 border-b">
+              <div className="mb-4 flex border-border border-b">
                 <button
                   className={`flex items-center gap-1.5 border-b-2 px-3 py-2 font-medium text-xs transition-colors ${
                     activeTab === "timeline"
@@ -467,10 +467,10 @@ export function DealDetailDrawer({
                 <div className="space-y-2.5">
                   {deal.activities?.map((act) => (
                     <div
-                      className="flex items-start gap-3 rounded-lg border border-border/80 bg-muted/30 p-3 text-xs"
+                      className="flex items-start gap-3 rounded-lg border border-border bg-muted/30 p-3 text-xs"
                       key={act.id}
                     >
-                      <div className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-md bg-primary/10 text-primary">
+                      <div className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-md bg-muted text-muted-foreground">
                         <Activity className="h-3.5 w-3.5" />
                       </div>
                       <div className="flex-1">
@@ -523,7 +523,7 @@ export function DealDetailDrawer({
                   <div className="space-y-2">
                     {deal.notes?.map((n) => (
                       <div
-                        className="rounded-lg border border-border/80 bg-card p-3 text-xs shadow-2xs"
+                        className="rounded-lg border border-border bg-card p-3 text-xs shadow-2xs"
                         key={n.id}
                       >
                         <div className="mb-1 flex items-center justify-between">

@@ -117,9 +117,9 @@ export function CreateDealModal({
         className="flex max-h-[92vh] w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-lg"
         showCloseButton={false}
       >
-        <div className="flex shrink-0 items-center justify-between border-border/80 border-b bg-muted/30 p-4 sm:p-5">
+        <div className="flex shrink-0 items-center justify-between border-border border-b bg-muted/30 p-4 sm:p-5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
               <Plus className="h-4 w-4" />
             </div>
             <DialogTitle className="font-semibold text-foreground text-sm sm:text-base">
@@ -249,7 +249,7 @@ export function CreateDealModal({
           </div>
 
           {/* Contact Information (Lead) */}
-          <div className="space-y-2 border-border/80 border-t pt-3">
+          <div className="space-y-2 border-border border-t pt-3">
             <h4 className="font-semibold text-primary text-xs">
               Potansiyel Müşteri / Kontak Bilgisi
             </h4>
@@ -279,7 +279,7 @@ export function CreateDealModal({
           </div>
 
           {/* Source & Initial Note */}
-          <div className="space-y-2 border-border/80 border-t pt-3">
+          <div className="space-y-2 border-border border-t pt-3">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <div className="space-y-1">
                 <Label className="text-xs">Kaynak</Label>
@@ -309,7 +309,7 @@ export function CreateDealModal({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-2 border-border/80 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
             <Button onClick={onClose} size="sm" type="button" variant="outline">
               Vazgeç
             </Button>

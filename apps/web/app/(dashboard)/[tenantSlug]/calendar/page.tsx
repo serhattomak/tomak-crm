@@ -82,7 +82,7 @@ const ACTIVITY_TYPE_CONFIG: Record<string, ActivityTypeConfig> = {
     border: "border-emerald-200 dark:border-emerald-800",
     icon: PhoneCall,
     label: "Arama / Çağrı",
-    text: "text-emerald-700 dark:text-emerald-300",
+    text: "text-success-ink",
   },
   Meeting: {
     bg: "bg-blue-50 dark:bg-blue-950/40",
@@ -856,11 +856,11 @@ export default function CalendarHubPage() {
               size="sm"
               variant="outline"
             >
-              <LinkIcon className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+              <LinkIcon className="h-3.5 w-3.5 text-primary" />
               Senkronizasyon
             </Button>
             <Button
-              className="h-9 gap-1.5 bg-emerald-700 font-medium text-white text-xs hover:bg-emerald-800"
+              className="h-9 gap-1.5 border-border bg-card font-medium text-foreground text-xs hover:bg-muted"
               onClick={() => {
                 setCallForm({
                   customerId: "",
@@ -885,7 +885,7 @@ export default function CalendarHubPage() {
               Çağrı Kaydet
             </Button>
             <Button
-              className="h-9 gap-1.5 bg-zinc-900 font-medium text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+              className="h-9 gap-1.5 bg-foreground font-medium text-background text-xs hover:bg-foreground/90"
               onClick={() => {
                 setActivityForm({
                   assignedUserId: "",
@@ -1013,7 +1013,7 @@ export default function CalendarHubPage() {
                     <span
                       className={`inline-flex h-6 w-6 items-center justify-center rounded-full font-bold text-xs transition-colors ${
                         cell.isToday
-                          ? "bg-blue-600 font-black text-white shadow-md"
+                          ? "bg-foreground font-black text-background shadow-md"
                           : cell.isCurrentMonth
                             ? "text-zinc-800 dark:text-zinc-200"
                             : "text-muted-foreground"
@@ -1103,7 +1103,7 @@ export default function CalendarHubPage() {
                 <span
                   className={`mt-1 flex h-7 w-7 items-center justify-center rounded-full font-bold text-sm ${
                     w.isToday
-                      ? "bg-blue-600 font-black text-white shadow-md"
+                      ? "bg-foreground font-black text-background shadow-md"
                       : "text-zinc-800 dark:text-zinc-200"
                   }`}
                 >
@@ -1627,7 +1627,7 @@ export default function CalendarHubPage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-blue-600 text-white hover:bg-blue-700"
+                  className="bg-foreground text-background hover:bg-foreground/90"
                   type="submit"
                 >
                   {activityForm.id ? "Güncelle" : "Randevuyu Kaydet"}
@@ -1655,7 +1655,7 @@ export default function CalendarHubPage() {
           >
             <div className="mb-4 flex items-center justify-between border-border border-b pb-3">
               <DialogTitle className="flex items-center gap-2 font-bold text-lg text-zinc-900 dark:text-zinc-100">
-                <PhoneCall className="h-5 w-5 text-emerald-700 dark:text-emerald-300" />
+                <PhoneCall className="h-5 w-5 text-success-ink" />
                 Hızlı Satış Çağrı / Görüşme Kaydedici
               </DialogTitle>
               <DialogClose asChild>
@@ -1682,7 +1682,7 @@ export default function CalendarHubPage() {
                     }
                     type="button"
                   >
-                    <PhoneOutgoing className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
+                    <PhoneOutgoing className="h-4 w-4 text-success-ink" />
                     Giden Arama (Biz Aradık)
                   </button>
                   <button
@@ -1964,7 +1964,7 @@ export default function CalendarHubPage() {
                     </span>
                   </div>
                   <a
-                    className="shrink-0 rounded-lg bg-blue-600 px-2.5 py-1 font-bold text-white text-xs hover:bg-blue-700"
+                    className="shrink-0 rounded-lg bg-foreground px-2.5 py-1 font-bold text-background text-xs hover:bg-foreground/90"
                     href={selectedActivity.meetingLink}
                     rel="noreferrer"
                     target="_blank"

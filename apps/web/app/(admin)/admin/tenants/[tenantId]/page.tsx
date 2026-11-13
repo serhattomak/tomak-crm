@@ -223,7 +223,7 @@ export default function AdminTenantDetailPage() {
   if (loading && !tenant) {
     return (
       <div className="flex h-64 items-center justify-center text-muted-foreground">
-        <Loader2 className="mr-2 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+        <Loader2 className="mr-2 h-6 w-6 animate-spin text-primary " />
         Firma bilgileri yükleniyor...
       </div>
     );
@@ -263,11 +263,11 @@ export default function AdminTenantDetailPage() {
 
         <div className="flex items-center gap-2.5">
           <Link
-            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:border-blue-300 hover:bg-zinc-50 hover:text-blue-600 dark:text-zinc-300 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+            className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-2xs transition hover:border-blue-300 hover:bg-zinc-50 hover:text-primary dark:text-zinc-300 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
             href={`/${tenant?.slug}`}
             target="_blank"
           >
-            <ExternalLink className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+            <ExternalLink className="h-3.5 w-3.5 text-primary " />
             <span>Canlı Çalışma Alanını Aç</span>
           </Link>
         </div>
@@ -278,7 +278,7 @@ export default function AdminTenantDetailPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "modules"
-              ? "border-blue-600 text-blue-600 dark:text-blue-400"
+              ? "border-primary text-primary "
               : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("modules")}
@@ -290,7 +290,7 @@ export default function AdminTenantDetailPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-bold text-xs transition ${
             activeTab === "labels"
-              ? "border-blue-600 text-blue-600 dark:text-blue-400"
+              ? "border-primary text-primary "
               : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
           }`}
           onClick={() => setActiveTab("labels")}
@@ -303,13 +303,13 @@ export default function AdminTenantDetailPage() {
       {/* TAB 1: MODULES MANAGEMENT */}
       {activeTab === "modules" && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-2xl border border-border bg-zinc-50/50 p-4 text-xs text-zinc-600 shadow-2xs dark:bg-zinc-800/40 dark:text-zinc-400">
+          <div className="flex items-center justify-between rounded-xl border border-border bg-zinc-50/50 p-4 text-xs text-zinc-600 shadow-2xs dark:bg-zinc-800/40 dark:text-zinc-400">
             <p>
               Bu firmanın kullanıcılarının erişebileceği modülleri aşağıdan
               aktif/pasif yapabilir veya menüde görünecek özel ismi
               özelleştirebilirsiniz.
             </p>
-            <span className="font-bold text-blue-600 dark:text-blue-400">
+            <span className="font-bold text-primary ">
               {modules.filter((m) => m.isEnabled).length} / {modules.length}{" "}
               Aktif Modül
             </span>
@@ -318,7 +318,7 @@ export default function AdminTenantDetailPage() {
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             {modules.map((mod) => (
               <div
-                className={`rounded-2xl border p-4.5 transition-all ${mod.isEnabled ? "border-blue-200/80 bg-card shadow-xs dark:border-blue-800" : "border-border bg-zinc-50/40 opacity-70 dark:bg-zinc-800/30"}`}
+                className={`rounded-xl border p-4.5 transition-all ${mod.isEnabled ? "border-blue-200/80 bg-card shadow-xs dark:border-blue-800" : "border-border bg-zinc-50/40 opacity-70 dark:bg-zinc-800/30"}`}
                 key={mod.moduleKey}
               >
                 <div className="flex items-center justify-between">
@@ -357,7 +357,7 @@ export default function AdminTenantDetailPage() {
                     Menüde Görünecek Özel İsim:
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-zinc-50/50 px-2.5 py-1.5 text-xs text-zinc-800 placeholder-zinc-400 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:bg-zinc-900"
+                    className="w-full rounded-xl border border-border bg-zinc-50/50 px-2.5 py-1.5 text-xs text-zinc-800 placeholder-zinc-400 focus:border-blue-500 focus:bg-card focus:outline-none dark:bg-muted/50  dark:focus:bg-card"
                     defaultValue={mod.displayNameOverride ?? ""}
                     onBlur={(e) =>
                       handleUpdateModuleName(mod.moduleKey, e.target.value)
@@ -376,7 +376,7 @@ export default function AdminTenantDetailPage() {
       {activeTab === "labels" && (
         <div className="space-y-6">
           {/* Active Industry Template Info */}
-          <div className="flex flex-col justify-between gap-4 rounded-2xl border border-amber-200/80 bg-amber-50/40 p-5 shadow-2xs sm:flex-row sm:items-center dark:border-amber-800 dark:bg-amber-950/30">
+          <div className="flex flex-col justify-between gap-4 rounded-xl border border-amber-200/80 bg-amber-50/40 p-5 shadow-2xs sm:flex-row sm:items-center dark:border-amber-800 dark:bg-amber-950/30">
             <div>
               <div className="flex items-center gap-2 font-bold text-amber-900 text-sm dark:text-amber-300">
                 <Sparkles className="h-4 w-4 text-amber-700 dark:text-amber-400" />
@@ -391,7 +391,7 @@ export default function AdminTenantDetailPage() {
               </p>
             </div>
             <button
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 font-semibold text-white text-xs shadow-sm hover:bg-blue-600 disabled:opacity-50"
+              className="flex items-center gap-2 rounded-xl bg-foreground px-5 py-2.5 font-semibold text-background text-xs shadow-sm hover:bg-foreground disabled:opacity-50"
               disabled={saving}
               onClick={handleSaveLabels}
             >
@@ -405,7 +405,7 @@ export default function AdminTenantDetailPage() {
           </div>
 
           {/* Add New Override Box */}
-          <div className="space-y-3 rounded-2xl border border-border bg-zinc-50/50 p-5 shadow-2xs dark:bg-zinc-800/40">
+          <div className="space-y-3 rounded-xl border border-border bg-zinc-50/50 p-5 shadow-2xs dark:bg-zinc-800/40">
             <h3 className="font-bold text-xs text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
               Yeni Özel Alan Etiketi (Override) Ekle
             </h3>
@@ -434,33 +434,28 @@ export default function AdminTenantDetailPage() {
                   onClick={handleAddOverride}
                   type="button"
                 >
-                  <Plus className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <Plus className="h-4 w-4 text-primary " />
                   <span>Listeye Ekle</span>
                 </button>
               </div>
             </div>
             <p className="text-2xs text-muted-foreground">
               Örnekler:{" "}
-              <code className="font-semibold text-blue-600 dark:text-blue-400">
-                products.name
-              </code>
+              <code className="font-semibold text-primary ">products.name</code>
               ,{" "}
-              <code className="font-semibold text-blue-600 dark:text-blue-400">
-                products.sku
-              </code>
-              ,{" "}
-              <code className="font-semibold text-blue-600 dark:text-blue-400">
+              <code className="font-semibold text-primary ">products.sku</code>,{" "}
+              <code className="font-semibold text-primary ">
                 products.brand
               </code>
               ,{" "}
-              <code className="font-semibold text-blue-600 dark:text-blue-400">
+              <code className="font-semibold text-primary ">
                 customers.name
               </code>
             </p>
           </div>
 
           {/* List of Custom Overrides */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
             <div className="flex items-center justify-between border-border border-b p-4 font-bold text-xs text-zinc-600 uppercase tracking-wider dark:text-zinc-400">
               <span>
                 Bu Firmaya Özel Etiket Tanımları ({customOverrides.length})
@@ -485,7 +480,7 @@ export default function AdminTenantDetailPage() {
                       </span>
                       <span className="text-muted-foreground">➔</span>
                       <input
-                        className="rounded-xl border border-border bg-zinc-50/50 px-3 py-1.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100 dark:focus:bg-zinc-900"
+                        className="rounded-xl border border-border bg-zinc-50/50 px-3 py-1.5 text-xs text-foreground focus:border-blue-500 focus:bg-card focus:outline-none dark:bg-muted/50  dark:focus:bg-card"
                         onChange={(e) => {
                           const val = e.target.value;
                           setCustomOverrides((prev) =>

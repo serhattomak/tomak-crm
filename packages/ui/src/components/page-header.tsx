@@ -14,9 +14,9 @@ interface PageHeaderProps extends React.ComponentProps<"div"> {
  * Canonical page header. Title/description/badge/actions in one place so every
  * screen speaks the same hierarchy.
  *
- * NOTE: the page title is deliberately `text-2xl sm:text-3xl` — this is the
- * house page-title scale. `crm-ui-standards.md` sec.1.3's smaller heading rule
- * applies to card and section headings, not to page titles.
+ * NOTE: the page title is deliberately `text-2xl` — the floating-shell spec
+ * (§3.5) pins the page title at 23–24px. It no longer grows to 30px on `sm`:
+ * the new hierarchy comes from weight and spacing, not from scale.
  */
 function PageHeader({
   actions,
@@ -37,13 +37,13 @@ function PageHeader({
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <h1 className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground tracking-tight">
             {title}
           </h1>
           {badge}
         </div>
         {description ? (
-          <p className="mt-0.5 text-muted-foreground text-xs">{description}</p>
+          <p className="mt-1 text-muted-foreground text-xs">{description}</p>
         ) : null}
       </div>
       {actions ? (

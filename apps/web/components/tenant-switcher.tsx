@@ -69,33 +69,31 @@ export function TenantSwitcher({ isCollapsed = false }: TenantSwitcherProps) {
     <Popover onOpenChange={handleOpenChange} open={isOpen}>
       <PopoverTrigger asChild>
         <button
-          className={`group relative flex h-11 w-full items-center rounded-xl border border-border bg-zinc-50/80 p-1.5 text-left transition-all duration-250 hover:border-zinc-300 hover:bg-zinc-100/80 active:scale-[0.99] dark:bg-zinc-800/60 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 ${isCollapsed ? "justify-center border-transparent bg-transparent p-0" : "justify-between px-2"}`}
+          className={`group relative flex items-center gap-2.5 rounded-lg p-1 text-left transition-colors hover:bg-muted ${isCollapsed ? "size-9 justify-center p-0" : "w-full"}`}
           title={`Çalışma Alanı: ${activeTenant?.name || "Seçin"}`}
           type="button"
         >
-          <div className="flex min-w-0 items-center gap-2.5">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 font-bold text-white text-xs shadow-2xs ring-2 ring-blue-500/20 transition-transform group-hover:scale-105">
-              {initials.charAt(0)}
+          <div className="brand-mark flex size-[30px] shrink-0 items-center justify-center rounded-lg font-bold text-white text-2xs shadow-2xs transition-transform group-hover:scale-[1.03]">
+            {initials.charAt(0)}
+          </div>
+          <div
+            className={`min-w-0 overflow-hidden transition-all duration-250 ease-crm ${
+              isCollapsed
+                ? "pointer-events-none max-w-0 -translate-x-2 opacity-0"
+                : "max-w-xs flex-1 translate-x-0 opacity-100"
+            }`}
+          >
+            <div className="truncate font-semibold text-foreground text-xs">
+              {activeTenant?.name || "Çalışma Alanı Seçin"}
             </div>
-            <div
-              className={`min-w-0 overflow-hidden transition-all duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isCollapsed
-                  ? "pointer-events-none max-w-0 -translate-x-2 opacity-0"
-                  : "max-w-xs translate-x-0 opacity-100"
-              }`}
-            >
-              <div className="truncate font-bold text-xs text-zinc-900 dark:text-zinc-100">
-                {activeTenant?.name || "Çalışma Alanı Seçin"}
-              </div>
-              <div className="truncate font-medium text-3xs text-muted-foreground">
-                Kurumsal Workspace
-              </div>
+            <div className="truncate text-3xs text-muted-foreground">
+              Kurumsal workspace
             </div>
           </div>
           <ChevronDown
-            className={`h-3.5 w-3.5 shrink-0 text-muted-foreground transition-all duration-250 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 ${
+            className={`size-3.5 shrink-0 text-muted-foreground transition-transform duration-250 ${
               isOpen ? "rotate-180" : ""
-            } ${isCollapsed ? "hidden opacity-0" : "opacity-100"}`}
+            } ${isCollapsed ? "hidden" : ""}`}
           />
         </button>
       </PopoverTrigger>

@@ -13,15 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/components/table";
-import {
-  Building2,
-  Mail,
-  Phone,
-  Plus,
-  Trash2,
-  User,
-  Users,
-} from "lucide-react";
+import { Mail, Phone, Plus, Trash2, Users } from "lucide-react";
 import Link from "next/link";
 import { PermissionGate } from "@/components/permission-gate";
 import type { CustomerListDto } from "@/lib/api-client";
@@ -53,7 +45,7 @@ export function CustomerTableView({
 }: CustomerTableViewProps) {
   if (loading) {
     return (
-      <div className="rounded-lg border border-border/80 bg-card p-4 shadow-2xs">
+      <div className="rounded-xl border border-border bg-card shadow-card p-4">
         <div className="space-y-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <Skeleton className="h-12 w-full" key={i} />
@@ -116,8 +108,17 @@ export function CustomerTableView({
     }
   };
 
+  const initialsOf = (name: string) =>
+    name
+      .split(" ")
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
   return (
-    <div className="rounded-lg border border-border/80 bg-card shadow-2xs">
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
       <Table>
         <TableHeader>
           <TableRow>
@@ -145,7 +146,7 @@ export function CustomerTableView({
 
             return (
               <TableRow
-                className={isSelected ? "bg-primary/5" : undefined}
+                className={isSelected ? "bg-accent-soft" : undefined}
                 key={c.id}
               >
                 <TableCell className="w-10 pr-2 pl-3">
@@ -162,12 +163,8 @@ export function CustomerTableView({
                     className="group flex items-center gap-2.5"
                     href={`/${tenantSlug}/customers/${c.id}`}
                   >
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/60 text-primary shadow-2xs">
-                      {c.type === "Company" ? (
-                        <Building2 className="h-4 w-4" />
-                      ) : (
-                        <User className="h-4 w-4" />
-                      )}
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted font-semibold text-2xs text-muted-foreground">
+                      {initialsOf(c.name)}
                     </div>
                     <div>
                       <div className="font-semibold text-foreground text-xs transition-colors group-hover:text-primary">
@@ -239,7 +236,7 @@ export function CustomerTableView({
                 <TableCell className="px-3">
                   {c.assignedEmployeeName ? (
                     <div className="flex items-center gap-1.5">
-                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/20 font-bold text-3xs text-primary">
+                      <div className="flex size-5 items-center justify-center rounded-full bg-accent-soft font-semibold text-3xs text-accent-foreground">
                         {c.assignedEmployeeName.charAt(0)}
                       </div>
                       <span className="font-medium text-2xs text-foreground">
@@ -261,7 +258,7 @@ export function CustomerTableView({
                   <div className="flex items-center justify-end gap-1">
                     <PermissionGate permission="Customers.Delete">
                       <Button
-                        className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                        className="text-muted-foreground hover:bg-danger-soft hover:text-danger-ink"
                         onClick={() => onDeleteCustomer(c)}
                         size="icon-xs"
                         title="Müşteriyi Sil"

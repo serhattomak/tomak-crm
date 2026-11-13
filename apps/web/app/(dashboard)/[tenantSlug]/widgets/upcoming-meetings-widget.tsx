@@ -83,11 +83,11 @@ export function UpcomingMeetingsWidget() {
   const getTypeIcon = (type: MeetingItem["type"]) => {
     switch (type) {
       case "video":
-        return <Video className="h-3 w-3 text-blue-500" />;
+        return <Video className="h-3 w-3 text-info" />;
       case "phone":
-        return <Phone className="h-3 w-3 text-emerald-500" />;
+        return <Phone className="h-3 w-3 text-success" />;
       case "in-person":
-        return <MapPin className="h-3 w-3 text-amber-500" />;
+        return <MapPin className="h-3 w-3 text-warning" />;
     }
   };
 
@@ -96,7 +96,7 @@ export function UpcomingMeetingsWidget() {
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <Calendar className="h-4 w-4" />
             </div>
             <div>
@@ -124,11 +124,11 @@ export function UpcomingMeetingsWidget() {
           {/* Quick Add Meeting Form */}
           {showAddForm && (
             <form
-              className="mb-3 space-y-2 rounded-lg border border-border/80 bg-muted/40 p-3"
+              className="mb-3 space-y-2 rounded-lg border border-border bg-muted/60 p-3"
               onSubmit={handleAddMeeting}
             >
               <Input
-                className="h-8 bg-background text-xs"
+                className="h-8 bg-card text-xs"
                 onChange={(e) => setNewTitle(e.target.value)}
                 placeholder="Görüşme konusu (Örn: Fiyat Teklifi Görüşmesi)..."
                 required
@@ -152,13 +152,13 @@ export function UpcomingMeetingsWidget() {
 
               <div className="grid grid-cols-2 gap-2">
                 <Input
-                  className="h-8 bg-background text-xs"
+                  className="h-8 bg-card text-xs"
                   onChange={(e) => setNewCustomer(e.target.value)}
                   placeholder="Müşteri / Kurum..."
                   value={newCustomer}
                 />
                 <Input
-                  className="h-8 bg-background text-xs"
+                  className="h-8 bg-card text-xs"
                   onChange={(e) => setNewTime(e.target.value)}
                   placeholder="Saat (Örn: 14:30)..."
                   value={newTime}
@@ -202,7 +202,7 @@ export function UpcomingMeetingsWidget() {
               <div className="max-h-60 space-y-2 overflow-y-auto pr-1">
                 {meetings.map((meeting) => (
                   <div
-                    className="group rounded-lg border border-border/70 bg-card p-3 transition-all hover:border-border hover:bg-muted/40"
+                    className="group rounded-lg border border-border bg-card p-3 transition-all hover:border-border hover:bg-muted/60"
                     key={meeting.id}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -255,7 +255,7 @@ export function UpcomingMeetingsWidget() {
       </div>
 
       {meetings.length > 0 && (
-        <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
+        <CardFooter className="justify-center border-border border-t pt-2 pb-3">
           <span className="cursor-pointer font-semibold text-primary text-xs hover:underline">
             {meetings.length} Görüşme Kayıtlı
           </span>

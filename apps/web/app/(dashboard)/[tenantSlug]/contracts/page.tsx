@@ -274,7 +274,7 @@ export default function ContractsPage() {
           </Button>
 
           <Button
-            className="flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98]"
+            className="flex items-center gap-2 bg-foreground text-background hover:bg-foreground/90 active:scale-[0.98]"
             onClick={() => setIsCreateModalOpen(true)}
             size="sm"
           >
@@ -354,7 +354,7 @@ export default function ContractsPage() {
               <button
                 className={`rounded-lg px-2.5 py-1.5 font-medium text-xs transition ${
                   statusFilter === s
-                    ? "bg-blue-600 text-white"
+                    ? "bg-foreground text-background"
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 }`}
                 key={s}
@@ -460,7 +460,7 @@ export default function ContractsPage() {
                   </TableCell>
                   <TableCell className="px-4 py-3">
                     {c.signedAt ? (
-                      <div className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400">
+                      <div className="flex items-center gap-1 text-success-ink">
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         <span>
                           {new Date(c.signedAt).toLocaleDateString("tr-TR")} (
@@ -637,7 +637,7 @@ export default function ContractsPage() {
                   Vazgeç
                 </Button>
                 <Button
-                  className="bg-blue-600 text-white hover:bg-blue-700"
+                  className="bg-foreground text-background hover:bg-foreground/90"
                   disabled={isSubmitting}
                   type="submit"
                 >
@@ -773,7 +773,7 @@ export default function ContractsPage() {
                 Yazdır / PDF
               </Button>
               <Button
-                className="bg-blue-600 text-white hover:bg-blue-700"
+                className="bg-foreground text-background hover:bg-foreground/90"
                 onClick={() => setSelectedContract(null)}
                 size="sm"
               >

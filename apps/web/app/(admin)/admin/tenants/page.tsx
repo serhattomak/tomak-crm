@@ -227,7 +227,7 @@ function AdminTenantsContent() {
           </p>
         </div>
         <button
-          className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-600 active:scale-95"
+          className="flex items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 font-semibold text-background text-xs shadow-sm transition hover:bg-foreground active:scale-95"
           onClick={() => setIsCreateModalOpen(true)}
           type="button"
         >
@@ -240,7 +240,7 @@ function AdminTenantsContent() {
       <div className="relative">
         <Search className="absolute top-3 left-3.5 h-4 w-4 text-muted-foreground" />
         <input
-          className="w-full rounded-xl border border-border bg-card py-2.5 pr-4 pl-10 text-xs text-zinc-800 placeholder-zinc-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-zinc-100"
+          className="w-full rounded-xl border border-border bg-card py-2.5 pr-4 pl-10 text-xs text-zinc-800 placeholder-zinc-400 shadow-2xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-ring dark:text-zinc-100"
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Firma adı veya slug ile ara..."
           type="text"
@@ -249,7 +249,7 @@ function AdminTenantsContent() {
       </div>
 
       {/* Tenants Table */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader className="border-border bg-zinc-50/70 text-muted-foreground dark:bg-zinc-800/60">
@@ -277,7 +277,7 @@ function AdminTenantsContent() {
                     className="py-12 text-center text-muted-foreground"
                     colSpan={6}
                   >
-                    <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+                    <Loader2 className="mx-auto mb-2 h-6 w-6 animate-spin text-primary " />
                     Firmalar yükleniyor...
                   </TableCell>
                 </TableRow>
@@ -304,7 +304,7 @@ function AdminTenantsContent() {
                         </div>
                         <div>
                           <Link
-                            className="font-bold text-sm text-zinc-900 hover:text-blue-600 dark:text-zinc-100 dark:hover:text-blue-400"
+                            className="font-bold text-sm text-zinc-900 hover:text-primary dark:text-zinc-100 dark:hover:text-blue-400"
                             href={`/admin/tenants/${tenant.id}`}
                           >
                             {tenant.name}
@@ -329,7 +329,7 @@ function AdminTenantsContent() {
                     {/* Modules */}
                     <TableCell className="px-5 py-4">
                       <div className="flex items-center gap-1.5 font-medium text-zinc-700 dark:text-zinc-300">
-                        <Layers className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                        <Layers className="h-3.5 w-3.5 text-primary " />
                         <span>
                           {tenant.enabledModuleCount} / {ALL_MODULES.length}{" "}
                           aktif
@@ -378,14 +378,14 @@ function AdminTenantsContent() {
                           <Power className="h-4 w-4" />
                         </button>
                         <Link
-                          className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                          className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-primary dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                           href={`/admin/tenants/${tenant.id}`}
                           title="Firma Modül & Etiket Ayarları"
                         >
                           <Sliders className="h-4 w-4" />
                         </Link>
                         <Link
-                          className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-blue-600 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                          className="rounded-xl border border-border bg-zinc-50 p-2 text-zinc-600 transition hover:border-blue-300 hover:bg-white hover:text-primary dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:border-blue-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                           href={`/${tenant.slug}`}
                           target="_blank"
                           title="Çalışma Alanına Git"
@@ -419,7 +419,7 @@ function AdminTenantsContent() {
           >
             <div className="flex items-center justify-between border-border border-b pb-4">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-foreground text-background shadow-sm">
                   <Building2 className="h-5 w-5" />
                 </div>
                 <div>
@@ -450,7 +450,7 @@ function AdminTenantsContent() {
                     Firma Adı *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-ring dark:text-zinc-100"
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
@@ -466,7 +466,7 @@ function AdminTenantsContent() {
                     Özel URL / Slug (Opsiyonel)
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-card p-2.5 text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-ring dark:text-zinc-100"
                     onChange={(e) =>
                       setFormData({ ...formData, slug: e.target.value })
                     }
@@ -504,7 +504,7 @@ function AdminTenantsContent() {
                     seçildi)
                   </label>
                   <button
-                    className="font-semibold text-2xs text-blue-600 dark:text-blue-400 hover:underline"
+                    className="font-semibold text-2xs text-primary  hover:underline"
                     onClick={() =>
                       setFormData({
                         ...formData,
@@ -534,7 +534,7 @@ function AdminTenantsContent() {
                         <span className="text-xs">{mod.name}</span>
                         <input
                           checked={checked}
-                          className="h-3.5 w-3.5 rounded border-border text-blue-600 dark:text-blue-400 focus:ring-0"
+                          className="h-3.5 w-3.5 rounded border-border text-primary  focus:ring-0"
                           onChange={() => {}}
                           type="checkbox"
                         />
@@ -554,7 +554,7 @@ function AdminTenantsContent() {
                   İptal
                 </button>
                 <button
-                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-600 disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-sm hover:bg-foreground disabled:opacity-50"
                   disabled={creating}
                   type="submit"
                 >
@@ -575,7 +575,7 @@ export default function AdminTenantsPage() {
     <Suspense
       fallback={
         <div className="flex h-64 items-center justify-center text-muted-foreground">
-          <Loader2 className="mr-2 h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+          <Loader2 className="mr-2 h-6 w-6 animate-spin text-primary " />
           Yükleniyor...
         </div>
       }

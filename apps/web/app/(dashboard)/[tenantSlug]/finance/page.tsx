@@ -137,7 +137,7 @@ function KpiCard({
   colorClass,
 }: KpiCardProps) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 shadow-xs">
+    <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
       <div className="flex items-center justify-between">
         <span className="font-medium text-xs text-muted-foreground">
           {label}
@@ -326,7 +326,7 @@ function AccountCard({ account, onTransfer }: AccountCardProps) {
   }, [account, onTransfer]);
 
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+    <div className="flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
       <div>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -624,7 +624,7 @@ export default function FinancePage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+            <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               Cari & Finans Yönetimi
             </h1>
             <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 font-semibold text-emerald-700 text-xs dark:bg-emerald-950/60 dark:text-emerald-300">
@@ -647,7 +647,7 @@ export default function FinancePage() {
             Fiş / Makbuz Kes
           </button>
           <button
-            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-sm text-white shadow-xs transition-all hover:bg-blue-700 active:scale-95"
+            className="inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-sm text-background shadow-xs transition-all hover:bg-foreground/90 active:scale-95"
             onClick={handleOpenCariModal}
             type="button"
           >
@@ -690,7 +690,7 @@ export default function FinancePage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "cari"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabCari}
@@ -701,7 +701,7 @@ export default function FinancePage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "accounts"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabAccounts}
@@ -712,7 +712,7 @@ export default function FinancePage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-3 font-semibold text-sm transition-all ${
             activeTab === "transactions"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={handleTabTransactions}
@@ -728,11 +728,11 @@ export default function FinancePage() {
       {/* TAB 1: Cari Kartlar */}
       {activeTab === "cari" && (
         <div className="space-y-4">
-          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-zinc-50/60 py-2 pr-3 pl-9 text-sm text-zinc-800 placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/40 dark:text-zinc-200"
                 onChange={handleCariSearchChange}
                 placeholder="Cari Ünvanı, Kodu veya Vergi No Ara..."
                 type="text"
@@ -753,7 +753,7 @@ export default function FinancePage() {
             />
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
             <div className="overflow-x-auto">
               <Table className="font-sans">
                 <TableHeader>
@@ -798,7 +798,7 @@ export default function FinancePage() {
         <div className="space-y-4">
           <div className="flex justify-end">
             <button
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-sm text-white shadow-xs hover:bg-blue-700 active:scale-95"
+              className="inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-sm text-background shadow-xs hover:bg-foreground/90 active:scale-95"
               onClick={handleOpenAccountModal}
               type="button"
             >
@@ -821,7 +821,7 @@ export default function FinancePage() {
       {/* TAB 3: Tahsilat & Ödeme Fişleri */}
       {activeTab === "transactions" && (
         <div className="space-y-4">
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
             <div className="overflow-x-auto">
               <Table className="font-sans">
                 <TableHeader>
@@ -923,7 +923,7 @@ export default function FinancePage() {
           >
             <div className="flex items-center justify-between border-border border-b p-4">
               <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <FileText className="h-5 w-5 text-primary " />
                 <SheetTitle className="font-bold text-base text-zinc-900 dark:text-zinc-100">
                   Cari Hesap Ekstresi
                 </SheetTitle>
@@ -1276,7 +1276,7 @@ function CreateCariModal({
             Vazgeç
           </button>
           <button
-            className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
+            className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90 disabled:opacity-50"
             disabled={isSubmitting}
             onClick={handleSubmit}
             type="button"
@@ -1516,7 +1516,7 @@ function CreateAccountModal({
             Vazgeç
           </button>
           <button
-            className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
+            className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90 disabled:opacity-50"
             disabled={isSubmitting}
             onClick={handleSubmit}
             type="button"
@@ -2001,7 +2001,7 @@ function TransferModal({
             Vazgeç
           </button>
           <button
-            className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
+            className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90 disabled:opacity-50"
             disabled={isSubmitting}
             onClick={handleSubmit}
             type="button"

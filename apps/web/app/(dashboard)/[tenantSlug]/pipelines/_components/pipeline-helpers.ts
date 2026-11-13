@@ -5,16 +5,21 @@ export const formatCurrency = (val: number, cur = "TRY") =>
     style: "currency",
   }).format(val);
 
+/**
+ * Chip tones follow the shell spec (§3.1, §5): soft surface + ink text, no
+ * border. Keep the pairs together — a soft background without its ink is the
+ * contrast bug the standards warn about (sec.1.2.1).
+ */
 export const getPriorityBadgeClass = (priority: string) => {
   switch (priority) {
     case "Urgent":
-      return "bg-rose-500/10 text-rose-600 border-rose-500/20";
+      return "bg-danger-soft text-danger-ink";
     case "High":
-      return "bg-amber-500/10 text-amber-600 border-amber-500/20";
+      return "bg-warning-soft text-warning-ink";
     case "Medium":
-      return "bg-blue-500/10 text-blue-600 border-blue-500/20";
+      return "bg-info-soft text-info-ink";
     default:
-      return "bg-muted text-muted-foreground border-border";
+      return "bg-muted text-muted-foreground";
   }
 };
 
@@ -36,14 +41,14 @@ export const getPriorityLabel = (priority: string) => {
 export const getSourceBadgeClass = (source: string) => {
   switch (source) {
     case "LiveChat":
-      return "bg-purple-500/10 text-purple-600 border-purple-500/20";
+      return "bg-accent-soft text-accent-foreground";
     case "WebForm":
     case "Website":
-      return "bg-blue-500/10 text-blue-600 border-blue-500/20";
+      return "bg-info-soft text-info-ink";
     case "Campaign":
-      return "bg-amber-500/10 text-amber-600 border-amber-500/20";
+      return "bg-warning-soft text-warning-ink";
     default:
-      return "bg-muted text-muted-foreground border-border";
+      return "bg-muted text-muted-foreground";
   }
 };
 

@@ -364,7 +364,7 @@ export default function OrderDetailPage() {
               </div>
 
               {order.discountAmount > 0 && (
-                <div className="flex items-center justify-between font-medium text-rose-600 dark:text-rose-400">
+                <div className="flex items-center justify-between font-medium text-danger-ink">
                   <span>Toplam İndirim / İskonto:</span>
                   <span>
                     -₺
@@ -419,7 +419,7 @@ export default function OrderDetailPage() {
                 <span className="font-medium text-3xs text-muted-foreground uppercase">
                   Tahsil Edilen
                 </span>
-                <div className="font-bold text-emerald-700 dark:text-emerald-300 text-sm">
+                <div className="font-bold text-success-ink text-sm">
                   ₺
                   {order.paidAmount.toLocaleString("tr-TR", {
                     minimumFractionDigits: 2,
@@ -433,7 +433,7 @@ export default function OrderDetailPage() {
                 <div
                   className={`font-bold text-sm ${
                     order.remainingAmount > 0
-                      ? "text-rose-600 dark:text-rose-400"
+                      ? "text-danger-ink"
                       : "text-zinc-700 dark:text-zinc-300"
                   }`}
                 >
@@ -615,7 +615,7 @@ export default function OrderDetailPage() {
                         <TableCell className="px-3 py-3.5 text-center text-zinc-600 dark:text-zinc-400">
                           %{item.taxRate}
                         </TableCell>
-                        <TableCell className="px-3 py-3.5 text-center font-medium text-rose-600 dark:text-rose-400">
+                        <TableCell className="px-3 py-3.5 text-center font-medium text-danger-ink">
                           {item.discountRate > 0
                             ? `-%${item.discountRate}`
                             : "—"}
@@ -682,7 +682,7 @@ export default function OrderDetailPage() {
                       </div>
 
                       <div className="text-right">
-                        <div className="font-extrabold text-emerald-700 dark:text-emerald-300 text-sm">
+                        <div className="font-extrabold text-success-ink text-sm">
                           ₺
                           {p.amount.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
@@ -721,7 +721,7 @@ export default function OrderDetailPage() {
                         {act.activityType === "StatusChange" ? (
                           <RotateCcw className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                         ) : act.activityType === "PaymentAdded" ? (
-                          <Banknote className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-300" />
+                          <Banknote className="h-3.5 w-3.5 text-success-ink" />
                         ) : (
                           <CheckCircle2 className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />
                         )}

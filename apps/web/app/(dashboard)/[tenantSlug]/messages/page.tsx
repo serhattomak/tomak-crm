@@ -714,7 +714,7 @@ export default function MessagesPage() {
             <span>Yeni Kanal</span>
           </Button>
           <Button
-            className="h-8 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 sm:h-9"
+            className="h-8 bg-foreground font-semibold text-background text-xs shadow-xs hover:bg-foreground/90 sm:h-9"
             onClick={() => setIsNewDmModalOpen(true)}
             size="sm"
           >
@@ -735,7 +735,7 @@ export default function MessagesPage() {
             <div className="relative">
               <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-ring focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setSearchQuery(e.target.value)
                 }
@@ -773,7 +773,7 @@ export default function MessagesPage() {
                       </span>
                     </button>
                     <button
-                      className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                      className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-primary dark:hover:bg-zinc-800 dark:hover:text-blue-400"
                       onClick={() => setIsCreateChannelOpen(true)}
                       title="Yeni Kanal Oluştur"
                       type="button"
@@ -833,7 +833,7 @@ export default function MessagesPage() {
                             Henüz bir direkt mesaj yok.
                           </p>
                           <button
-                            className="mt-1.5 inline-flex items-center gap-1 font-bold text-2xs text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                            className="mt-1.5 inline-flex items-center gap-1 font-bold text-2xs text-primary hover:text-blue-700 "
                             onClick={() => setIsNewDmModalOpen(true)}
                             type="button"
                           >
@@ -934,7 +934,7 @@ export default function MessagesPage() {
                 </div>
               ) : messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center p-12 text-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
                     <MessageSquare className="h-6 w-6" />
                   </div>
                   <h3 className="mt-3 font-bold text-sm text-zinc-800 dark:text-foreground dark:text-zinc-200">
@@ -1021,7 +1021,7 @@ export default function MessagesPage() {
                                   İptal
                                 </Button>
                                 <Button
-                                  className="h-6 bg-blue-600 px-2 font-semibold text-3xs text-white shadow-xs hover:bg-blue-700"
+                                  className="h-6 bg-foreground px-2 font-semibold text-3xs text-background shadow-xs hover:bg-foreground/90"
                                   disabled={savingEdit || !editInput.trim()}
                                   onClick={() => handleSaveEdit(msg.id)}
                                   size="sm"
@@ -1131,7 +1131,7 @@ export default function MessagesPage() {
 
                               {isMe && msg.senderType !== "Customer" && (
                                 <button
-                                  className="rounded-md p-1 text-muted-foreground hover:bg-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
+                                  className="rounded-md p-1 text-muted-foreground hover:bg-zinc-100 hover:text-primary dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-muted dark:hover:bg-zinc-800"
                                   onClick={() => handleStartEdit(msg)}
                                   title="Mesajı Düzenle"
                                   type="button"
@@ -1155,7 +1155,7 @@ export default function MessagesPage() {
 
                           {/* Message Bubble */}
                           <div
-                            className={`rounded-2xl px-4 py-2.5 text-xs leading-relaxed shadow-2xs ${isMe ? "rounded-br-xs bg-blue-600 text-white" : "rounded-bl-xs border border-border bg-card text-zinc-900 dark:border-border dark:bg-card dark:text-foreground"}`}
+                            className={`rounded-xl px-4 py-2.5 text-xs leading-relaxed shadow-2xs ${isMe ? "rounded-br-xs bg-foreground text-background" : "rounded-bl-xs border border-border bg-card text-zinc-900 dark:border-border dark:bg-card dark:text-foreground"}`}
                           >
                             {isEditing ? (
                               <div className="min-w-[240px] space-y-2">
@@ -1320,13 +1320,13 @@ export default function MessagesPage() {
                 <div className="flex shrink-0 items-center gap-1">
                   {/* Entity Embed Button */}
                   <Button
-                    className="h-7 gap-1.5 px-2 text-2xs text-zinc-600 hover:text-blue-600 dark:hover:text-blue-400 sm:h-8 sm:px-3 sm:text-xs dark:text-zinc-400 dark:text-zinc-400 dark:hover:text-foreground"
+                    className="h-7 gap-1.5 px-2 text-2xs text-zinc-600 hover:text-primary dark:hover:text-blue-400 sm:h-8 sm:px-3 sm:text-xs dark:text-zinc-400 dark:text-zinc-400 dark:hover:text-foreground"
                     onClick={() => setIsEntityPickerOpen(true)}
                     size="sm"
                     type="button"
                     variant="ghost"
                   >
-                    <Plus className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                    <Plus className="h-3.5 w-3.5 text-primary " />
                     <span>CRM Kartı</span>
                   </Button>
 
@@ -1376,7 +1376,7 @@ export default function MessagesPage() {
               {/* Text Input & Send */}
               <div className="flex items-end gap-2">
                 <textarea
-                  className="max-h-32 min-h-[42px] w-full resize-none rounded-xl border border-border bg-zinc-50 p-2.5 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none sm:p-3 dark:border-border dark:bg-muted/40 dark:text-foreground"
+                  className="max-h-32 min-h-[42px] w-full resize-none rounded-xl border border-border bg-zinc-50 p-2.5 text-xs text-zinc-900 dark:text-zinc-100 focus:border-ring focus:outline-none sm:p-3 dark:border-border dark:bg-muted/40 dark:text-foreground"
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setMessageInput(e.target.value)
                   }
@@ -1396,7 +1396,7 @@ export default function MessagesPage() {
                 />
 
                 <Button
-                  className="h-10 shrink-0 bg-blue-600 px-4 font-semibold text-white shadow-xs hover:bg-blue-700 sm:h-11 sm:px-5"
+                  className="h-10 shrink-0 bg-foreground px-4 font-semibold text-background shadow-xs hover:bg-foreground/90 sm:h-11 sm:px-5"
                   disabled={sendingMessage || !messageInput.trim()}
                   onClick={() => handleSendMessage()}
                 >
@@ -1460,21 +1460,21 @@ export default function MessagesPage() {
             {/* Type Selector Tabs */}
             <div className="my-3 flex shrink-0 rounded-xl bg-muted p-1">
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Customer" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Customer" ? "bg-card text-primary  shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
                 onClick={() => setEntityType("Customer")}
                 type="button"
               >
                 Müşteriler
               </button>
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Order" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Order" ? "bg-card text-primary  shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
                 onClick={() => setEntityType("Order")}
                 type="button"
               >
                 Siparişler
               </button>
               <button
-                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Product" ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
+                className={`flex-1 rounded-lg py-1.5 font-semibold text-xs transition-all ${entityType === "Product" ? "bg-card text-primary  shadow-xs dark:bg-card" : "text-zinc-600 dark:text-zinc-400"}`}
                 onClick={() => setEntityType("Product")}
                 type="button"
               >
@@ -1486,7 +1486,7 @@ export default function MessagesPage() {
             <div className="relative my-2 shrink-0">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-1.5 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-ring focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setEntitySearch(e.target.value)
                 }
@@ -1518,7 +1518,7 @@ export default function MessagesPage() {
                     }}
                   >
                     <div className="flex min-w-0 items-center gap-2.5 pr-2">
-                      <Users2 className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                      <Users2 className="h-4 w-4 shrink-0 text-primary " />
                       <div className="min-w-0">
                         <div className="truncate font-bold text-xs text-zinc-900 dark:text-foreground">
                           {cust.name}
@@ -1529,7 +1529,7 @@ export default function MessagesPage() {
                       </div>
                     </div>
                     <Button
-                      className="h-7 shrink-0 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+                      className="h-7 shrink-0 bg-foreground font-semibold text-background text-xs shadow-xs hover:bg-foreground/90"
                       size="sm"
                     >
                       Ekle
@@ -1564,7 +1564,7 @@ export default function MessagesPage() {
                       </div>
                     </div>
                     <Button
-                      className="h-7 shrink-0 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+                      className="h-7 shrink-0 bg-foreground font-semibold text-background text-xs shadow-xs hover:bg-foreground/90"
                       size="sm"
                     >
                       Ekle
@@ -1588,7 +1588,7 @@ export default function MessagesPage() {
                     }}
                   >
                     <div className="flex min-w-0 items-center gap-2.5 pr-2">
-                      <Package className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                      <Package className="h-4 w-4 shrink-0 text-primary " />
                       <div className="min-w-0">
                         <div className="truncate font-bold text-xs text-zinc-900 dark:text-foreground">
                           {prod.name}
@@ -1599,7 +1599,7 @@ export default function MessagesPage() {
                       </div>
                     </div>
                     <Button
-                      className="h-7 shrink-0 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+                      className="h-7 shrink-0 bg-foreground font-semibold text-background text-xs shadow-xs hover:bg-foreground/90"
                       size="sm"
                     >
                       Ekle
@@ -1673,7 +1673,7 @@ export default function MessagesPage() {
                     </p>
                   </div>
                   <Button
-                    className="h-7 shrink-0 bg-blue-600 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+                    className="h-7 shrink-0 bg-foreground font-semibold text-background text-xs shadow-xs hover:bg-foreground/90"
                     size="sm"
                   >
                     Kullan
@@ -1727,7 +1727,7 @@ export default function MessagesPage() {
                   <div className="relative">
                     <Hash className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                     <input
-                      className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                      className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 dark:text-zinc-100 focus:border-ring focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                       id="channel-name"
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setNewChannelTitle(
@@ -1749,7 +1749,7 @@ export default function MessagesPage() {
                     Açıklama
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
+                    className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 focus:border-ring focus:outline-none dark:border-border dark:bg-muted/50 dark:text-foreground"
                     id="channel-desc"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setNewChannelDesc(e.target.value)
@@ -1762,7 +1762,7 @@ export default function MessagesPage() {
                 <div className="flex items-center gap-2 pt-2">
                   <input
                     checked={newChannelIsPrivate}
-                    className="rounded border-border text-blue-600 dark:text-blue-400"
+                    className="rounded border-border text-primary "
                     id="is-private"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setNewChannelIsPrivate(e.target.checked)
@@ -1788,7 +1788,7 @@ export default function MessagesPage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-blue-600 font-semibold text-white shadow-xs hover:bg-blue-700"
+                  className="bg-foreground font-semibold text-background shadow-xs hover:bg-foreground/90"
                   size="sm"
                   type="submit"
                 >
@@ -1842,7 +1842,7 @@ export default function MessagesPage() {
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
                   autoFocus
-                  className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-blue-500 focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-3 pl-9 text-xs text-zinc-900 focus:border-ring focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setDmSearchQuery(e.target.value)
                   }
@@ -1856,7 +1856,7 @@ export default function MessagesPage() {
             <div className="max-h-72 space-y-1 overflow-y-auto pr-1">
               {loadingTeamUsers ? (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <Loader2 className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+                  <Loader2 className="h-6 w-6 animate-spin text-primary " />
                   <p className="mt-2 text-xs text-muted-foreground">
                     Ekip üyeleri yükleniyor...
                   </p>
@@ -1922,7 +1922,7 @@ export default function MessagesPage() {
                       </div>
 
                       <Button
-                        className="h-7 shrink-0 bg-blue-600 px-3 font-semibold text-white text-xs opacity-0 transition-opacity hover:bg-blue-700 group-hover:opacity-100 dark:bg-blue-600"
+                        className="h-7 shrink-0 bg-foreground px-3 font-semibold text-background text-xs opacity-0 transition-opacity hover:bg-foreground/90 group-hover:opacity-100 dark:bg-foreground"
                         disabled={isStarting}
                         size="sm"
                       >

@@ -29,12 +29,12 @@ export function DashboardTabsBar({
   const [showDateDropdown, setShowDateDropdown] = useState(false);
 
   return (
-    <div className="flex flex-col justify-between gap-3 border-border/70 border-b pb-3 sm:flex-row sm:items-center print:hidden">
+    <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center print:hidden">
       {/* Pill Tabs */}
-      <div className="flex w-fit items-center gap-1 rounded-lg bg-muted/60 p-1">
+      <div className="flex w-full items-center gap-0.5 overflow-x-auto rounded-lg bg-muted p-[3px] sm:w-fit">
         {tabs.map((tab) => (
           <button
-            className={`rounded-md px-3 py-1 font-medium text-xs transition-all ${activeTab === tab.id ? "bg-card font-semibold text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground"}`}
+            className={`whitespace-nowrap rounded-md px-3 py-1 font-medium text-xs transition-colors ${activeTab === tab.id ? "bg-card font-semibold text-foreground shadow-card" : "text-muted-foreground hover:text-foreground"}`}
             key={tab.id}
             onClick={() => onSelectTab(tab.id)}
             type="button"
@@ -43,7 +43,7 @@ export function DashboardTabsBar({
           </button>
         ))}
         <button
-          className="flex items-center gap-1 rounded-md px-2.5 py-1 font-medium text-muted-foreground text-xs transition-colors hover:text-foreground"
+          className="flex items-center gap-1 whitespace-nowrap rounded-md px-2.5 py-1 font-medium text-muted-foreground text-xs transition-colors hover:text-foreground"
           onClick={onOpenCustomize}
           type="button"
         >

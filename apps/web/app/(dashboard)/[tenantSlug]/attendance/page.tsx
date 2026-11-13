@@ -908,13 +908,13 @@ export default function AttendancePage() {
   return (
     <PageContainer className="flex flex-col gap-6">
       {/* 1. Header & Live Clock Quick Bar */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-card p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:bg-card">
+      <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-card p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between dark:bg-card">
         <div className="flex items-start gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-xs dark:bg-blue-950/60 dark:text-blue-400">
             <Clock className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="font-bold text-2xl text-foreground tracking-tight">
+            <h1 className="font-semibold text-2xl text-foreground tracking-tight">
               Vardiya & PDKS Takibi
             </h1>
             <p className="text-muted-foreground text-sm">
@@ -927,7 +927,7 @@ export default function AttendancePage() {
         {/* Live Clock & Quick Action Widget */}
         <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border/60 bg-muted/40 p-3">
           <div className="flex items-center gap-2 rounded-lg border border-border/50 bg-card px-3 py-1.5 font-semibold text-sm shadow-xs dark:bg-card">
-            <Timer className="h-4 w-4 animate-pulse text-blue-600 dark:text-blue-400" />
+            <Timer className="h-4 w-4 animate-pulse text-primary " />
             <span>
               {currentTime?.toLocaleTimeString("tr-TR") ?? "--:--:--"}
             </span>
@@ -967,7 +967,7 @@ export default function AttendancePage() {
               )
             ) : (
               <Button
-                className="bg-blue-600 font-semibold text-white shadow-xs hover:bg-blue-700"
+                className="bg-foreground font-semibold text-background shadow-xs hover:bg-foreground/90"
                 disabled={actionLoading}
                 onClick={() => handlePunch("ClockIn")}
               >
@@ -1035,7 +1035,7 @@ export default function AttendancePage() {
             {activeTab === "shifts" && (
               <PermissionGate permission="Attendance.Manage">
                 <Button
-                  className="bg-blue-600 font-semibold text-white shadow-xs hover:bg-blue-700"
+                  className="bg-foreground font-semibold text-background shadow-xs hover:bg-foreground/90"
                   onClick={() => setIsAssignModalOpen(true)}
                   size="sm"
                 >
@@ -1064,7 +1064,7 @@ export default function AttendancePage() {
           <div className="mt-6 flex flex-col gap-6">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-xs dark:bg-card">
+              <div className="rounded-xl border border-border/80 bg-card p-5 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-muted-foreground text-xs">
                     Şu Anda Çalışan
@@ -1073,7 +1073,7 @@ export default function AttendancePage() {
                     <UserCheck className="h-4 w-4" />
                   </div>
                 </div>
-                <div className="mt-2 font-bold text-2xl text-foreground">
+                <div className="mt-2 font-semibold text-2xl text-foreground">
                   {liveData?.currentlyWorking ?? 0}
                 </div>
                 <p className="mt-1 text-muted-foreground text-xs">
@@ -1081,7 +1081,7 @@ export default function AttendancePage() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-xs dark:bg-card">
+              <div className="rounded-xl border border-border/80 bg-card p-5 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-muted-foreground text-xs">
                     Molada Olanlar
@@ -1090,7 +1090,7 @@ export default function AttendancePage() {
                     <Coffee className="h-4 w-4" />
                   </div>
                 </div>
-                <div className="mt-2 font-bold text-2xl text-foreground">
+                <div className="mt-2 font-semibold text-2xl text-foreground">
                   {liveData?.currentlyOnBreak ?? 0}
                 </div>
                 <p className="mt-1 text-muted-foreground text-xs">
@@ -1098,7 +1098,7 @@ export default function AttendancePage() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-xs dark:bg-card">
+              <div className="rounded-xl border border-border/80 bg-card p-5 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-muted-foreground text-xs">
                     Geç Kalanlar
@@ -1107,7 +1107,7 @@ export default function AttendancePage() {
                     <AlertCircle className="h-4 w-4" />
                   </div>
                 </div>
-                <div className="mt-2 font-bold text-2xl text-rose-600 dark:text-rose-400">
+                <div className="mt-2 font-semibold text-2xl text-rose-600 dark:text-rose-400">
                   {liveData?.lateArrivals ?? 0}
                 </div>
                 <p className="mt-1 text-muted-foreground text-xs">
@@ -1115,7 +1115,7 @@ export default function AttendancePage() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-xs dark:bg-card">
+              <div className="rounded-xl border border-border/80 bg-card p-5 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-muted-foreground text-xs">
                     Beklenen / Gelmeyen
@@ -1124,7 +1124,7 @@ export default function AttendancePage() {
                     <UserX className="h-4 w-4" />
                   </div>
                 </div>
-                <div className="mt-2 font-bold text-2xl text-foreground">
+                <div className="mt-2 font-semibold text-2xl text-foreground">
                   {liveData?.absentCount ?? 0}
                 </div>
                 <p className="mt-1 text-muted-foreground text-xs">
@@ -1134,7 +1134,7 @@ export default function AttendancePage() {
             </div>
 
             {/* Filter Bar */}
-            <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:flex-row dark:bg-card">
+            <div className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-xs sm:flex-row dark:bg-card">
               <div className="w-full flex-1">
                 <Input
                   leftIcon={<Search className="h-4 w-4" />}
@@ -1177,7 +1177,7 @@ export default function AttendancePage() {
             </div>
 
             {/* Live Table */}
-            <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs dark:bg-card">
+            <div className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-xs dark:bg-card">
               <Table className="text-sm">
                 <TableHeader className="border-border bg-muted/40 text-muted-foreground">
                   <TableRow>
@@ -1283,7 +1283,7 @@ export default function AttendancePage() {
         {activeTab === "shifts" && (
           <div className="mt-6 flex flex-col gap-6">
             {/* Top Bar: Template Pills & Date Controls */}
-            <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-xs md:flex-row md:items-center md:justify-between dark:bg-card">
+            <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-4 shadow-xs md:flex-row md:items-center md:justify-between dark:bg-card">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="mr-1 font-semibold text-muted-foreground text-xs uppercase">
                   Şablonlar:
@@ -1358,7 +1358,7 @@ export default function AttendancePage() {
             </div>
 
             {/* Weekly Interactive Grid */}
-            <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs dark:bg-card">
+            <div className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-xs dark:bg-card">
               <div className="overflow-x-auto">
                 <Table className="min-w-[800px] border-collapse text-sm">
                   <TableHeader>
@@ -1446,7 +1446,7 @@ export default function AttendancePage() {
         {activeTab === "records" && (
           <div className="mt-6 flex flex-col gap-6">
             {/* Filter Bar — kayıt aralığı tek DateRangePicker ile seçilir */}
-            <div className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs sm:grid-cols-2 md:grid-cols-3 dark:bg-card">
+            <div className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-card p-4 shadow-xs sm:grid-cols-2 md:grid-cols-3 dark:bg-card">
               <div>
                 <label className="mb-1 block font-semibold text-muted-foreground text-xs">
                   Tarih Aralığı
@@ -1479,7 +1479,7 @@ export default function AttendancePage() {
               </div>
               <div className="flex items-end">
                 <Button
-                  className="w-full bg-blue-600 font-semibold text-white hover:bg-blue-700"
+                  className="w-full bg-foreground font-semibold text-background hover:bg-foreground/90"
                   onClick={loadData}
                 >
                   <Filter className="mr-2 h-4 w-4" />
@@ -1489,7 +1489,7 @@ export default function AttendancePage() {
             </div>
 
             {/* Records Table */}
-            <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs dark:bg-card">
+            <div className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-xs dark:bg-card">
               <Table className="text-sm">
                 <TableHeader className="border-border bg-muted/40 text-muted-foreground">
                   <TableRow>
@@ -1593,7 +1593,7 @@ export default function AttendancePage() {
                 </p>
               </div>
               <Button
-                className="bg-blue-600 font-semibold text-white shadow-xs hover:bg-blue-700"
+                className="bg-foreground font-semibold text-background shadow-xs hover:bg-foreground/90"
                 onClick={() => setIsCorrectionModalOpen(true)}
               >
                 <Plus className="mr-1.5 h-4 w-4" />
@@ -1601,7 +1601,7 @@ export default function AttendancePage() {
               </Button>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs dark:bg-card">
+            <div className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-xs dark:bg-card">
               <Table className="text-sm">
                 <TableHeader className="border-border bg-muted/40 text-muted-foreground">
                   <TableRow>
@@ -1730,7 +1730,7 @@ export default function AttendancePage() {
           <div className="mt-6 flex flex-col gap-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {/* Terminal Card 1 */}
-              <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-card p-6 shadow-xs dark:bg-card">
+              <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-card p-6 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
@@ -1766,7 +1766,7 @@ export default function AttendancePage() {
               </div>
 
               {/* Terminal Card 2 */}
-              <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-card p-6 shadow-xs dark:bg-card">
+              <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-card p-6 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
@@ -1802,7 +1802,7 @@ export default function AttendancePage() {
               </div>
 
               {/* Geofencing Card */}
-              <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-card p-6 shadow-xs dark:bg-card">
+              <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-card p-6 shadow-xs dark:bg-card">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400">
@@ -2148,7 +2148,7 @@ export default function AttendancePage() {
                 </div>
                 <input
                   checked={templateForm.isNightShift}
-                  className="h-4 w-4 rounded border-border text-blue-600 dark:text-blue-400 focus:ring-blue-500"
+                  className="h-4 w-4 rounded border-border text-primary  focus:ring-blue-500"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setTemplateForm({
                       ...templateForm,
@@ -2180,7 +2180,7 @@ export default function AttendancePage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="bg-foreground font-semibold text-background hover:bg-foreground/90 disabled:opacity-50"
                   disabled={
                     actionLoading ||
                     templateCompliance.validationResult.hasHardBlock ||
@@ -2346,7 +2346,7 @@ export default function AttendancePage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="bg-foreground font-semibold text-background hover:bg-foreground/90 disabled:opacity-50"
                   disabled={
                     actionLoading ||
                     Boolean(assignCompliance?.validationResult.hasHardBlock) ||
@@ -2503,7 +2503,7 @@ export default function AttendancePage() {
                   İptal
                 </Button>
                 <Button
-                  className="bg-blue-600 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="bg-foreground font-semibold text-background hover:bg-foreground/90 disabled:opacity-50"
                   disabled={
                     actionLoading ||
                     Boolean(

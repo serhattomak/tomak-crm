@@ -53,7 +53,7 @@ export function InvoiceDocument({ invoice }: { invoice: InvoiceDetailDto }) {
     <div className="space-y-6 text-zinc-800 dark:text-zinc-200">
       <div className="flex items-start justify-between border-border border-b pb-6">
         <div>
-          <span className="font-extrabold text-blue-600 text-xl tracking-tight dark:text-blue-400">
+          <span className="font-extrabold text-primary text-xl tracking-tight ">
             {invoice.type === "Sales" ? "SATIŞ FATURASI" : "ALIŞ FATURASI"}
           </span>
           <div className="mt-1 font-bold font-mono text-base text-zinc-900 dark:text-zinc-100">
@@ -222,7 +222,7 @@ export function InvoiceDocument({ invoice }: { invoice: InvoiceDetailDto }) {
           ) : null}
           <div className="flex justify-between border-border border-t pt-2 font-bold text-sm text-zinc-900 dark:text-zinc-100">
             <span>Genel Toplam:</span>
-            <span className="font-mono text-blue-600 dark:text-blue-400">
+            <span className="font-mono text-primary ">
               {invoice.grandTotal.toLocaleString("tr-TR", {
                 minimumFractionDigits: 2,
               })}{" "}

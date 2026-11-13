@@ -348,11 +348,11 @@ export default function TicketsDashboardPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-blue-500/20 shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-soft text-accent-foreground shadow-md">
               <LifeBuoy className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+              <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 Destek Masası & Talepler
               </h1>
               <p className="text-xs text-muted-foreground sm:text-sm">
@@ -396,7 +396,7 @@ export default function TicketsDashboardPage() {
           </Button>
 
           <Button
-            className="gap-2 rounded-xl bg-blue-600 font-medium text-white shadow-sm hover:bg-blue-700"
+            className="gap-2 rounded-xl bg-foreground font-medium text-background shadow-sm hover:bg-foreground/90"
             onClick={() => setIsCreateModalOpen(true)}
           >
             <Plus className="h-4 w-4" />
@@ -407,7 +407,7 @@ export default function TicketsDashboardPage() {
 
       {/* 2. Executive KPI Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-xs text-muted-foreground">
               Toplam Açık Talep
@@ -417,7 +417,7 @@ export default function TicketsDashboardPage() {
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+            <span className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {stats?.totalOpenTickets ?? 0}
             </span>
             <span className="text-xs text-muted-foreground">
@@ -426,7 +426,7 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-xs text-muted-foreground">
               Yanıt Bekleyenler
@@ -436,7 +436,7 @@ export default function TicketsDashboardPage() {
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-amber-700 dark:text-amber-400 tracking-tight">
+            <span className="font-semibold text-2xl text-amber-700 dark:text-amber-400 tracking-tight">
               {stats?.pendingCustomerTickets ?? 0}
             </span>
             <span className="text-amber-700 dark:text-amber-400 text-xs">
@@ -445,7 +445,7 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-xs text-muted-foreground">
               SLA Aşımı / Risk
@@ -455,7 +455,7 @@ export default function TicketsDashboardPage() {
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-red-600 dark:text-red-400 tracking-tight">
+            <span className="font-semibold text-2xl text-red-600 dark:text-red-400 tracking-tight">
               {stats?.slaBreachedTickets ?? 0}
             </span>
             <span className="text-red-600 dark:text-red-400 text-xs">
@@ -464,7 +464,7 @@ export default function TicketsDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-xs transition hover:shadow-sm">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-xs text-muted-foreground">
               SLA Başarı Oranı
@@ -474,7 +474,7 @@ export default function TicketsDashboardPage() {
             </div>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-emerald-700 dark:text-emerald-300 tracking-tight">
+            <span className="font-semibold text-2xl text-emerald-700 dark:text-emerald-300 tracking-tight">
               %{stats?.slaComplianceRate ?? 98.5}
             </span>
             <span className="text-emerald-700 dark:text-emerald-400 text-xs">
@@ -507,7 +507,7 @@ export default function TicketsDashboardPage() {
             <button
               className={`flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-1.5 font-medium transition-all ${
                 activeQueue === q.id
-                  ? "bg-zinc-900 text-white shadow-2xs"
+                  ? "bg-foreground text-background shadow-2xs"
                   : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200/70 hover:text-zinc-900 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:text-zinc-100"
               }`}
               key={q.id}
@@ -531,7 +531,7 @@ export default function TicketsDashboardPage() {
           <div className="relative flex-1">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
-              className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-xs shadow-2xs focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 text-xs shadow-2xs focus:border-ring focus:outline-none"
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Bilet no (#TICK-1001), müşteri adı veya konu ara..."
               value={searchQuery}
@@ -598,15 +598,15 @@ export default function TicketsDashboardPage() {
 
       {/* 4. Main View (Table vs. Kanban) */}
       {isLoading ? (
-        <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-8">
-          <RefreshCw className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+        <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-xl border border-border bg-card p-8">
+          <RefreshCw className="h-8 w-8 animate-spin text-primary " />
           <span className="font-medium text-sm text-muted-foreground">
             Destek biletleri yükleniyor...
           </span>
         </div>
       ) : tickets.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-border border-dashed bg-card p-12 text-center">
-          <div className="rounded-2xl bg-blue-50 dark:bg-blue-950/60 p-4 text-blue-600 dark:text-blue-400">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-border border-dashed bg-card p-12 text-center">
+          <div className="rounded-xl bg-blue-50 dark:bg-blue-950/60 p-4 text-blue-600 dark:text-blue-400">
             <LifeBuoy className="h-8 w-8" />
           </div>
           <h3 className="mt-4 font-semibold text-base text-zinc-900 dark:text-zinc-100">
@@ -617,7 +617,7 @@ export default function TicketsDashboardPage() {
             oluşturabilir veya filtreleri temizleyebilirsiniz.
           </p>
           <Button
-            className="mt-4 gap-2 rounded-xl bg-blue-600 text-white text-xs"
+            className="mt-4 gap-2 rounded-xl bg-foreground text-background text-xs"
             onClick={() => setIsCreateModalOpen(true)}
           >
             <Plus className="h-3.5 w-3.5" />
@@ -626,7 +626,7 @@ export default function TicketsDashboardPage() {
         </div>
       ) : viewMode === "table" ? (
         /* TABLE VIEW */
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader className="border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-400">
@@ -659,7 +659,7 @@ export default function TicketsDashboardPage() {
                     <TableCell className="px-4 py-3.5">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-blue-600 dark:text-blue-400 text-xs group-hover:underline">
+                          <span className="font-bold text-primary  text-xs group-hover:underline">
                             #{t.ticketNumber}
                           </span>
                           <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 font-medium text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
@@ -777,7 +777,7 @@ export default function TicketsDashboardPage() {
 
             return (
               <div
-                className={`flex flex-col rounded-2xl border border-border ${col.bg} min-h-[500px] p-3.5 shadow-2xs`}
+                className={`flex flex-col rounded-xl border border-border ${col.bg} min-h-[500px] p-3.5 shadow-2xs`}
                 key={col.id}
               >
                 {/* Column Header */}
@@ -808,13 +808,13 @@ export default function TicketsDashboardPage() {
                         }
                       >
                         <div className="flex items-start justify-between gap-2">
-                          <span className="font-bold text-blue-600 dark:text-blue-400 text-xs">
+                          <span className="font-bold text-primary  text-xs">
                             #{ticket.ticketNumber}
                           </span>
                           {getPriorityBadge(ticket.priority)}
                         </div>
 
-                        <h4 className="mt-1.5 line-clamp-2 font-semibold text-xs text-zinc-900 group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100">
+                        <h4 className="mt-1.5 line-clamp-2 font-semibold text-xs text-zinc-900 group-hover:text-primary dark:group-hover:text-blue-400 dark:text-zinc-100">
                           {ticket.subject}
                         </h4>
 
@@ -917,7 +917,7 @@ export default function TicketsDashboardPage() {
                   Talep Konusu <span className="text-red-500">*</span>
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-card p-2.5 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-border bg-card p-2.5 text-xs focus:border-ring focus:outline-none"
                   onChange={(e) =>
                     setNewTicket((prev) => ({
                       ...prev,
@@ -1122,7 +1122,7 @@ export default function TicketsDashboardPage() {
                   Açıklama / İlk Mesaj
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border p-2.5 text-xs focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-border p-2.5 text-xs focus:border-ring focus:outline-none"
                   onChange={(e) =>
                     setNewTicket((prev) => ({
                       ...prev,
@@ -1146,7 +1146,7 @@ export default function TicketsDashboardPage() {
                   İptal
                 </Button>
                 <Button
-                  className="gap-2 rounded-xl bg-blue-600 font-medium text-white text-xs shadow-sm hover:bg-blue-700"
+                  className="gap-2 rounded-xl bg-foreground font-medium text-background text-xs shadow-sm hover:bg-foreground/90"
                   disabled={isSubmitting}
                   type="submit"
                 >

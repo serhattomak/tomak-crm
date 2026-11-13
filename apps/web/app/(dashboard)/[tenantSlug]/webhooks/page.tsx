@@ -513,7 +513,7 @@ export default function WebhooksPage() {
               <Webhook className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="flex items-center gap-2 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+              <h1 className="flex items-center gap-2 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 Webhook & Entegrasyonlar
                 <span className="rounded-full border border-border bg-zinc-50 px-2 py-0.5 font-medium text-2xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                   HMAC-SHA256
@@ -529,7 +529,7 @@ export default function WebhooksPage() {
 
         <div className="flex items-center gap-2.5">
           <Link
-            className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-sm text-white shadow-sm transition-all duration-150 hover:bg-zinc-800 active:scale-[0.98] dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
+            className="inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-medium text-sm text-background shadow-sm transition-all duration-150 hover:bg-foreground/90 active:scale-[0.98] dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
             href={`/${tenantSlug}/webhooks/new`}
           >
             <Link2 className="h-4 w-4" />
@@ -540,7 +540,7 @@ export default function WebhooksPage() {
 
       {/* KPI Cards - Bento Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
+        <div className="rounded-xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
           <div className="mb-2 flex items-center justify-between font-medium text-2xs text-muted-foreground uppercase tracking-wide">
             <span>Aktif Endpoint</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-400">
@@ -548,7 +548,7 @@ export default function WebhooksPage() {
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+            <span className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {displayActiveCount}
             </span>
             <span className="text-xs text-muted-foreground">
@@ -561,7 +561,7 @@ export default function WebhooksPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
+        <div className="rounded-xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
           <div className="mb-2 flex items-center justify-between font-medium text-2xs text-muted-foreground uppercase tracking-wide">
             <span>Toplam Teslimat</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
@@ -569,7 +569,7 @@ export default function WebhooksPage() {
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+            <span className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {deliveriesTotal}
             </span>
             <span className="text-xs text-muted-foreground">deneme</span>
@@ -584,7 +584,7 @@ export default function WebhooksPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
+        <div className="rounded-xl border border-border bg-white/90 p-4 shadow-xs backdrop-blur-sm transition-all duration-150 hover:shadow-sm dark:bg-zinc-900/90">
           <div className="mb-2 flex items-center justify-between font-medium text-2xs text-muted-foreground uppercase tracking-wide">
             <span>Başarı Oranı</span>
             <span className="flex h-7 w-7 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
@@ -592,7 +592,7 @@ export default function WebhooksPage() {
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+            <span className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               %{displaySuccessRate}
             </span>
             <span className="text-xs text-muted-foreground">
@@ -620,7 +620,7 @@ export default function WebhooksPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-white/90 p-2 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:bg-zinc-900/90">
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-white/90 p-2 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:bg-zinc-900/90">
         <div className="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/80">
           <button
             className={`rounded-lg px-3.5 py-1.5 font-medium text-sm transition-all duration-150 ${activeTab === "endpoints" ? "bg-card font-semibold text-zinc-900 shadow-xs dark:text-zinc-100" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
@@ -666,7 +666,7 @@ export default function WebhooksPage() {
       {activeTab === "endpoints" && (
         <div className="space-y-4">
           {/* Filters */}
-          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-white/90 p-3 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:bg-zinc-900/90">
+          <div className="flex flex-col gap-3 rounded-xl border border-border bg-white/90 p-3 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:bg-zinc-900/90">
             <div className="flex flex-1 flex-col gap-2.5 md:flex-row md:items-center">
               <div className="relative min-w-[220px] flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
@@ -735,7 +735,7 @@ export default function WebhooksPage() {
           </div>
 
           {/* Table */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-white/90 shadow-xs backdrop-blur-sm dark:bg-zinc-900/90">
+          <div className="overflow-hidden rounded-xl border border-border bg-white/90 shadow-xs backdrop-blur-sm dark:bg-zinc-900/90">
             {isLoadingEndpoints ? (
               <div className="flex h-48 items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin text-zinc-900 dark:text-zinc-100" />
@@ -762,7 +762,7 @@ export default function WebhooksPage() {
               </div>
             ) : endpoints.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                   <Webhook className="h-6 w-6" />
                 </div>
                 <h3 className="mt-4 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
@@ -773,7 +773,7 @@ export default function WebhooksPage() {
                   girin, HMAC imzasıyla güvenli teslimatlar alın.
                 </p>
                 <Link
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 font-medium text-sm text-white shadow-sm transition-all duration-150 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-medium text-sm text-background shadow-sm transition-all duration-150 hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900"
                   href={`/${tenantSlug}/webhooks/new`}
                 >
                   <Link2 className="h-4 w-4" />
@@ -947,7 +947,7 @@ export default function WebhooksPage() {
       {activeTab === "deliveries" && (
         <div className="space-y-4">
           {/* Deliveries Filters */}
-          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-white/90 p-3 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:bg-zinc-900/90">
+          <div className="flex flex-col gap-3 rounded-xl border border-border bg-white/90 p-3 shadow-xs backdrop-blur-sm md:flex-row md:items-center md:justify-between dark:bg-zinc-900/90">
             <div className="flex flex-1 flex-col gap-2.5 md:flex-row md:items-center">
               <Combobox
                 aria-label="Endpoint filtresi"
@@ -1019,7 +1019,7 @@ export default function WebhooksPage() {
           </div>
 
           {/* Deliveries Table */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-white/90 shadow-xs backdrop-blur-sm dark:bg-zinc-900/90">
+          <div className="overflow-hidden rounded-xl border border-border bg-white/90 shadow-xs backdrop-blur-sm dark:bg-zinc-900/90">
             {isLoadingDeliveries ? (
               <div className="flex h-48 items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin text-zinc-900 dark:text-zinc-100" />
@@ -1027,7 +1027,7 @@ export default function WebhooksPage() {
               </div>
             ) : deliveries.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                   <Activity className="h-6 w-6" />
                 </div>
                 <h3 className="mt-4 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1299,7 +1299,7 @@ export default function WebhooksPage() {
 
             <div className="mt-5 flex justify-end">
               <button
-                className="rounded-xl bg-zinc-900 px-4 py-2 font-medium text-sm text-white transition-colors duration-150 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
+                className="rounded-xl bg-foreground px-4 py-2 font-medium text-sm text-background transition-colors duration-150 hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
                 onClick={() => setTestResult(null)}
                 type="button"
               >
