@@ -428,13 +428,14 @@ Fikstür kullanıcısı ile ölçüm, aynı `X-Tenant-Id` değerinin **iki farkl
 | A8 | Analytics: sabit 6 ay/funnel fallback/+%18.4 kaldırıldı; son 50 siparişten gerçek 6 ay | tip kontrolü + build |
 | #12 | MailKit **5.0.0**, AutoMapper **17.0.0** | `dotnet list --vulnerable`: **0**; build **0 uyarı / 0 hata** |
 | C3 | AGENTS.md **5569/347**, roadmap **56 sayfa / #33** | `npm run check` ölçümü |
+| B20 | Anonim istekler tenantsız geçebiliyor (yetkilendirme kararı veriyor); contracts public lookup'ı `IgnoreQueryFilters` | anon `/health` **200**, anon public contract **200**, korumalı anon **401** |
 
 **B6 Pass 1 (önceki oturumun "doğrulanmadı" kaydı) KAPANDI:** fixture kullanıcısı (yalnız `Products.View`, `Quotes.View`) → `GET /api/activities` **403** (`Missing required permission: 'Activities.View'`). Önceki tutarsızlık yeniden üretilmedi; header tenant'ı permission filtresine doğru geçiyor.
 
 **Yeni/ölçülen açıklar (bilinçli kapsam dışı):**
 - **B6 kalanı:** fixture kullanıcısı `GET /api/invoicing/invoices` → **200**. Invoicing/Finance/Cari 21 endpoint'te `RequirePermission` yok.
 - **B7 cookie yarısı:** `@supabase/ssr` cookie'si `httpOnly` değil; `httpOnly: true` browser client'ı kıracağı için yapılmadı. XSS vektörü sunucu sanitizasyonuyla kapandı.
-- **Yeni B20 (Development):** `Tenancy:DefaultTenantId` fallback'i public token rotalarında da tenant set ediyor → `IgnoreQueryFilters` kullanmayan public lookup'lar (contracts/quotes/portal) dev'de 404 dönüyor. Üretimde fallback yok; ayrı madde.
+- **B20 (bu turda kapandı):** middleware tenant çözemeyen **anonim** isteği de 401'liyordu; üretimde `/health` ve public token rotaları bu yüzden erişilemezdi. Artık anonim istekler tenantsız geçiyor (kararı yetkilendirme veriyor); tenant'sız `.Value` erişimi 500 üretmesin diye contracts public lookup'ları `IgnoreQueryFilters` kullanıyor — public quotes ve recruitment apply zaten öyleydi. `Tenancy:DefaultTenantId` fallback'i artık yalnız **kimliği doğrulanmış** isteklerde devreye giriyor.
 
 **Çürüyen iddialar (kayıt düzeltmesi):**
 - **A3 yanlış pozitif:** canlı DB'de izinsiz permission **0** (`permissions LEFT JOIN role_permissions`). 5 modülün grant'i mevcut.

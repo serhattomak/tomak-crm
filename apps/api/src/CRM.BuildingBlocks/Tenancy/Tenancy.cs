@@ -133,9 +133,13 @@ public class TenantContextMiddleware(
 
             currentTenant.SetTenant(resolvedTenantId.Value, candidateSlug);
         }
-        else if (env.IsDevelopment())
+        else if (env.IsDevelopment() && currentUser.IsAuthenticated)
         {
-            // Development fallback: use configured default tenant
+            // Development fallback: use configured default tenant, but only for an
+            // authenticated caller. Public token routes (quotes, contracts, portal)
+            // and webhooks are anonymous and name their tenant through the token or
+            // payload; giving them a default tenant made every lookup filter to a
+            // tenant that does not own the row (404 in dev, working in production).
             var fallbackId = configuration["Tenancy:DefaultTenantId"];
             if (!string.IsNullOrEmpty(fallbackId) && Guid.TryParse(fallbackId, out var devTenantId))
             {
@@ -150,9 +154,10 @@ public class TenantContextMiddleware(
                 return;
             }
         }
-        else
+        else if (currentUser.IsAuthenticated)
         {
-            // Production: tenant resolution is mandatory
+            // An authenticated caller with no tenant would run every query without a
+            // tenant filter (cross-tenant read), so refuse instead of guessing.
             context.Response.StatusCode = 401;
             await context.Response.WriteAsJsonAsync(
                 new { error = "Tenant could not be resolved." },
@@ -160,6 +165,9 @@ public class TenantContextMiddleware(
             return;
         }
 
+        // Anonymous requests keep no tenant on purpose: public token routes and
+        // webhooks name their tenant through the token/payload, and the fallback
+        // authorization policy already rejects them on every other endpoint.
         await next(context);
     }
 }

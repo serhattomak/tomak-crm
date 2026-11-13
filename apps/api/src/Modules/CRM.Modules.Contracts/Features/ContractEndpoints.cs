@@ -268,7 +268,9 @@ public class ContractEndpoints : IEndpoint
 
         publicGroup.MapGet("/{token}", async (string token, ContractsDbContext db, CancellationToken ct) =>
         {
-            var c = await db.Contracts.AsNoTracking().FirstOrDefaultAsync(x => x.PublicToken == token, ct);
+            // The token is the credential, so the tenant filter is bypassed for this
+            // lookup; the row then carries the tenant it belongs to.
+            var c = await db.Contracts.IgnoreQueryFilters().AsNoTracking().FirstOrDefaultAsync(x => x.PublicToken == token, ct);
             if (c == null) return Results.NotFound("Sözleşme bulunamadı veya link geçersiz.");
 
             return Results.Ok(new
@@ -295,7 +297,7 @@ public class ContractEndpoints : IEndpoint
             HttpContext httpContext,
             CancellationToken ct) =>
         {
-            var c = await db.Contracts.FirstOrDefaultAsync(x => x.PublicToken == token, ct);
+            var c = await db.Contracts.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.PublicToken == token, ct);
             if (c == null) return Results.NotFound("Sözleşme bulunamadı.");
             if (c.Status == "Signed" || c.Status == "Active")
                 return Results.BadRequest("Bu sözleşme daha önce imzalanmıştır.");
