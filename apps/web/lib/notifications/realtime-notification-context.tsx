@@ -17,6 +17,7 @@ import {
 } from "react";
 import { toast } from "sonner";
 import { ApiClient, type NotificationDto } from "@/lib/api-client";
+import { createClient } from "@/lib/supabase/client";
 import { playNotificationChime } from "./audio-chime";
 
 export interface RealtimeNotification {
@@ -246,7 +247,15 @@ export function RealtimeNotificationProvider({
     }`;
 
     const connection = new HubConnectionBuilder()
-      .withUrl(hubUrl)
+      .withUrl(hubUrl, {
+        // The hub now requires an authenticated caller. A WebSocket handshake cannot carry
+        // an Authorization header, so the token travels as a query parameter and the server
+        // accepts it only under /hubs.
+        accessTokenFactory: async () => {
+          const { data } = await createClient().auth.getSession();
+          return data.session?.access_token ?? "";
+        },
+      })
       .withAutomaticReconnect([0, 2000, 5000, 10_000, 30_000])
       .configureLogging(LogLevel.None)
       .build();

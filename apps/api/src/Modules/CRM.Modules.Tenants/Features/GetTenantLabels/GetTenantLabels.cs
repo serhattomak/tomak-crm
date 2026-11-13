@@ -3,6 +3,7 @@ using CRM.BuildingBlocks.Caching;
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Security;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Tenants.Data;
 using Microsoft.AspNetCore.Builder;
@@ -23,10 +24,20 @@ public record GetTenantLabelsQuery(Guid TenantId) : IQuery<TenantLabelsDto>;
 
 public class GetTenantLabelsHandler(
     TenantsDbContext dbContext,
-    ICacheService cacheService) : IQueryHandler<GetTenantLabelsQuery, TenantLabelsDto>
+    ICacheService cacheService,
+    ICurrentUser currentUser,
+    ITenantAccessGuard tenantAccessGuard) : IQueryHandler<GetTenantLabelsQuery, TenantLabelsDto>
 {
     public async Task<Result<TenantLabelsDto>> Handle(GetTenantLabelsQuery request, CancellationToken cancellationToken)
     {
+        // The tenant id comes from the route, not from the X-Tenant-Id header the middleware
+        // validates, so membership has to be checked here.
+        if (currentUser.Id is not { } userId ||
+            !await tenantAccessGuard.IsMemberOrSuperAdminAsync(userId, request.TenantId, cancellationToken))
+        {
+            throw new ForbiddenException("You are not a member of this tenant.");
+        }
+
         var cacheKey = $"tenant:{request.TenantId}:labels";
 
         return await cacheService.GetOrCreateAsync(

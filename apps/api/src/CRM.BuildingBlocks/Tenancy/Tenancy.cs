@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Data;
 using System.Data.Common;
+using CRM.BuildingBlocks.Security;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
@@ -44,7 +45,11 @@ public class TenantContextMiddleware(
 {
     private static readonly ConcurrentDictionary<string, Guid> TenantSlugCache = new();
 
-    public async Task InvokeAsync(HttpContext context, ICurrentTenant currentTenant)
+    public async Task InvokeAsync(
+        HttpContext context,
+        ICurrentTenant currentTenant,
+        ICurrentUser currentUser,
+        ITenantAccessGuard tenantAccessGuard)
     {
         Guid? resolvedTenantId = null;
         string? candidateSlug = null;
@@ -110,6 +115,22 @@ public class TenantContextMiddleware(
         // 4. Set resolved tenant or reject
         if (resolvedTenantId.HasValue)
         {
+            // The tenant above came from caller-supplied input (X-Tenant-Id header, subdomain, or
+            // X-Tenant-Slug). Trusting it unverified lets any authenticated user read another
+            // tenant's data by changing one value, so membership is now required.
+            // Super admins are exempt: platform administration legitimately targets tenants they
+            // are not a member of (the tenant modules and labels screens do exactly this).
+            if (currentUser.IsAuthenticated &&
+                currentUser.Id is { } userId &&
+                !await tenantAccessGuard.IsMemberOrSuperAdminAsync(userId, resolvedTenantId.Value, context.RequestAborted))
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsJsonAsync(
+                    new { error = "You are not a member of this tenant." },
+                    context.RequestAborted);
+                return;
+            }
+
             currentTenant.SetTenant(resolvedTenantId.Value, candidateSlug);
         }
         else if (env.IsDevelopment())

@@ -1,6 +1,7 @@
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Security;
 using CRM.BuildingBlocks.Tenancy;
 using CRM.Modules.Tenants.Data;
 using CRM.Modules.Tenants.Entities;
@@ -31,10 +32,20 @@ public class ToggleTenantModuleValidator : AbstractValidator<ToggleTenantModuleC
 
 public class ToggleTenantModuleHandler(
     TenantsDbContext dbContext,
-    IModuleAccessService moduleAccessService) : ICommandHandler<ToggleTenantModuleCommand, TenantModuleDto>
+    IModuleAccessService moduleAccessService,
+    ICurrentUser currentUser,
+    IPermissionService permissionService) : ICommandHandler<ToggleTenantModuleCommand, TenantModuleDto>
 {
     public async Task<Result<TenantModuleDto>> Handle(ToggleTenantModuleCommand request, CancellationToken cancellationToken)
     {
+        // Permission is evaluated against the tenant in the route, not the X-Tenant-Id header,
+        // which the client controls and which may point at a different tenant entirely.
+        if (currentUser.Id is not { } userId ||
+            !await permissionService.HasPermissionAsync(userId, request.TenantId, "Tenants.Update", cancellationToken))
+        {
+            throw new ForbiddenException("You do not have permission to change this tenant's modules.");
+        }
+
         var definition = ModuleRegistry.GetByKey(request.ModuleKey)
             ?? throw new BadRequestException($"Unknown module key: '{request.ModuleKey}'.");
 

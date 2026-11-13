@@ -2,6 +2,7 @@ using CRM.BuildingBlocks.Caching;
 using CRM.BuildingBlocks.CQRS;
 using CRM.BuildingBlocks.Endpoints;
 using CRM.BuildingBlocks.Exceptions;
+using CRM.BuildingBlocks.Security;
 using CRM.Modules.Tenants.Data;
 using CRM.Modules.Tenants.Entities;
 using CRM.Modules.Tenants.Features.GetTenantLabels;
@@ -36,10 +37,20 @@ public class UpdateTenantLabelsValidator : AbstractValidator<UpdateTenantLabelsC
 public class UpdateTenantLabelsHandler(
     TenantsDbContext dbContext,
     ICacheService cacheService,
-    MediatR.ISender sender) : ICommandHandler<UpdateTenantLabelsCommand, TenantLabelsDto>
+    MediatR.ISender sender,
+    ICurrentUser currentUser,
+    IPermissionService permissionService) : ICommandHandler<UpdateTenantLabelsCommand, TenantLabelsDto>
 {
     public async Task<Result<TenantLabelsDto>> Handle(UpdateTenantLabelsCommand request, CancellationToken cancellationToken)
     {
+        // Permission is evaluated against the tenant in the route, not the X-Tenant-Id header,
+        // which the client controls and which may point at a different tenant entirely.
+        if (currentUser.Id is not { } userId ||
+            !await permissionService.HasPermissionAsync(userId, request.TenantId, "Tenants.Update", cancellationToken))
+        {
+            throw new ForbiddenException("You do not have permission to change this tenant's labels.");
+        }
+
         var tenant = await dbContext.Tenants
             .Include(t => t.LabelOverrides)
             .FirstOrDefaultAsync(t => t.Id == request.TenantId, cancellationToken);

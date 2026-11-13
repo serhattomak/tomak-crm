@@ -35,6 +35,11 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 0. Refuse to boot outside Development with the checked-in demo credentials.
+CRM.BuildingBlocks.Extensions.ServiceCollectionExtensions.EnsureProductionSecretsAreOverridden(
+    builder.Configuration,
+    builder.Environment);
+
 // 1. Serilog Logging Configuration
 builder.Host.UseSerilog((context, services, configuration) =>
 {
@@ -167,13 +172,14 @@ app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    // Development-only docs. The fallback authorization policy would otherwise require a token.
+    app.MapOpenApi().AllowAnonymous();
     app.MapScalarApiReference(options =>
     {
         options.WithTitle("CRM API Reference")
                .WithTheme(ScalarTheme.Moon)
                .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-    });
+    }).AllowAnonymous();
 }
 
 app.UseCors("AllowFrontend");
@@ -188,14 +194,15 @@ app.MapEndpoints();
 app.MapVehiclesModuleEndpoints();
 app.MapEmailEndpoints();
 app.MapFieldServiceEndpoints();
-app.MapHub<CrmHub>("/hubs/crm");
+app.MapHub<CrmHub>("/hubs/crm").RequireAuthorization();
 
 // 9. Map HealthChecks
+// Health probes are called by orchestrators that hold no token.
 app.MapHealthChecks("/health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+}).AllowAnonymous();
 
-app.MapGet("/", () => Results.Redirect("/scalar/v1"));
+app.MapGet("/", () => Results.Redirect("/scalar/v1")).AllowAnonymous();
 
 app.Run();

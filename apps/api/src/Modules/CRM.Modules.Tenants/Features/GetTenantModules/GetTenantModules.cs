@@ -25,15 +25,31 @@ public record GetTenantModulesQuery(Guid TenantId) : IQuery<TenantModuleDto[]>;
 public class GetTenantModulesHandler(
     TenantsDbContext dbContext,
     ICurrentUser currentUser,
-    IPermissionService permissionService) : IQueryHandler<GetTenantModulesQuery, TenantModuleDto[]>
+    IPermissionService permissionService,
+    ITenantAccessGuard tenantAccessGuard) : IQueryHandler<GetTenantModulesQuery, TenantModuleDto[]>
 {
     public async Task<Result<TenantModuleDto[]>> Handle(GetTenantModulesQuery request, CancellationToken cancellationToken)
     {
+        // The tenant id comes from the route, not from the X-Tenant-Id header the middleware
+        // validates, so membership has to be checked here.
+        if (currentUser.Id is not { } userId ||
+            !await tenantAccessGuard.IsMemberOrSuperAdminAsync(userId, request.TenantId, cancellationToken))
+        {
+            throw new ForbiddenException("You are not a member of this tenant.");
+        }
+
         var tenantModules = await dbContext.TenantModules
             .Where(m => m.TenantId == request.TenantId)
             .ToListAsync(cancellationToken);
 
-        var isSuperAdmin = currentUser.Id.HasValue && await permissionService.IsSuperAdminAsync(currentUser.Id.Value, cancellationToken);
+        // A tenant created by the signup trigger has no tenant_modules rows at all, whereas one
+        // created through the API is seeded with the registry defaults. Treating "no rows" as
+        // "never provisioned" keeps both paths identical; otherwise a fresh workspace reports
+        // every module as disabled and its navigation silently disappears.
+        var isProvisioned = tenantModules.Count > 0;
+        var defaultModuleKeys = ModuleRegistry.GetDefaultModuleKeys();
+
+        var isSuperAdmin = await permissionService.IsSuperAdminAsync(userId, cancellationToken);
 
         // Merge with registry to show all modules (even unregistered ones)
         var result = ModuleRegistry.All.Select(def =>
@@ -42,7 +58,11 @@ public class GetTenantModulesHandler(
                 m => m.ModuleKey.Equals(def.Key, StringComparison.OrdinalIgnoreCase));
 
             // Super Admin fallback: treat every registered module as enabled
-            var isEnabled = isSuperAdmin ? true : (tenantModule?.IsEnabled ?? false);
+            var isEnabled = isSuperAdmin
+                ? true
+                : isProvisioned
+                    ? (tenantModule?.IsEnabled ?? false)
+                    : defaultModuleKeys.Contains(def.Key);
 
             return new TenantModuleDto(
                 def.Key,
