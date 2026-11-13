@@ -68,7 +68,7 @@ export default function WorkspaceSettingsPage() {
   return (
     <PageContainer className="max-w-3xl space-y-6">
       <div>
-        <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+        <h1 className="flex items-center gap-2.5 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
           <Settings className="h-6 w-6 text-blue-500" />
           Sistem Ayarları
         </h1>
@@ -90,7 +90,7 @@ export default function WorkspaceSettingsPage() {
         </div>
       )}
 
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
+      <div className="rounded-xl border border-border bg-card p-6 shadow-xs">
         <form
           action="javascript:void(0);"
           className="space-y-4"
@@ -103,7 +103,7 @@ export default function WorkspaceSettingsPage() {
             <div className="relative">
               <Building2 className="absolute top-3 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 py-2.5 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-2.5 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                 onChange={(e) => setName(e.target.value)}
                 required
                 type="text"
@@ -133,7 +133,7 @@ export default function WorkspaceSettingsPage() {
               Logo Adresi
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-zinc-50 px-3 py-2.5 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
               onChange={(e) => setLogoUrl(e.target.value)}
               placeholder="https://example.com/logo.png"
               type="url"
@@ -162,7 +162,7 @@ export default function WorkspaceSettingsPage() {
 
       {/* Entegrasyonlar & Webhooklar — Workbench Bento link card */}
       <PermissionGate permission="Webhooks.View">
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-zinc-50 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">

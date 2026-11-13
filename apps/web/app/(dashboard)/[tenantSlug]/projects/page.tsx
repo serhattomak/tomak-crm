@@ -218,7 +218,7 @@ export default function ProjectsPage() {
     <PageContainer className="space-y-6 pb-12">
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900">
+        <div className="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-xl border border-zinc-800 bg-foreground px-4 py-3 text-background text-xs shadow-2xl dark:border-zinc-700 dark:bg-zinc-100 dark:text-zinc-900">
           <CheckCircle2 className="h-4 w-4 text-emerald-400 dark:text-emerald-600" />
           <span>{toastMessage}</span>
         </div>
@@ -227,7 +227,7 @@ export default function ProjectsPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+          <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             Projeler & Agile Backlog
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -247,7 +247,7 @@ export default function ProjectsPage() {
           </button>
 
           <button
-            className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-95"
+            className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90 active:scale-95"
             onClick={() => setIsCreateModalOpen(true)}
             type="button"
           >
@@ -259,8 +259,8 @@ export default function ProjectsPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400">
+        <div className="flex items-center gap-3.5 rounded-xl border border-border bg-card p-4 shadow-2xs">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400">
             <Briefcase className="h-5 w-5" />
           </div>
           <div>
@@ -273,8 +273,8 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400">
+        <div className="flex items-center gap-3.5 rounded-xl border border-border bg-card p-4 shadow-2xs">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-2xs dark:bg-blue-950/60 dark:text-blue-400">
             <Layers className="h-5 w-5" />
           </div>
           <div>
@@ -287,8 +287,8 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 shadow-2xs dark:bg-amber-950/60 dark:text-amber-400">
+        <div className="flex items-center gap-3.5 rounded-xl border border-border bg-card p-4 shadow-2xs">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-700 shadow-2xs dark:bg-amber-950/60 dark:text-amber-400">
             <Clock className="h-5 w-5" />
           </div>
           <div>
@@ -301,8 +301,8 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3.5 rounded-2xl border border-border bg-card p-4 shadow-2xs">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 shadow-2xs dark:bg-emerald-950/60 dark:text-emerald-400">
+        <div className="flex items-center gap-3.5 rounded-xl border border-border bg-card p-4 shadow-2xs">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 shadow-2xs dark:bg-emerald-950/60 dark:text-emerald-400">
             <CheckCircle2 className="h-5 w-5" />
           </div>
           <div>
@@ -317,12 +317,12 @@ export default function ProjectsPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-3">
           <div className="relative flex-1">
             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
-              className="w-full rounded-xl border border-border bg-zinc-50/70 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-xl border border-border bg-zinc-50/70 py-2 pr-3 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500"
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Proje adı veya anahtarı (örn. CRM) ara..."
               type="text"
@@ -378,14 +378,14 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
-              className="h-56 animate-pulse rounded-2xl border border-border bg-zinc-100 dark:bg-zinc-800/40"
+              className="h-56 animate-pulse rounded-xl border border-border bg-zinc-100 dark:bg-zinc-800/40"
               key={i}
             />
           ))}
         </div>
       ) : projects.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card py-16 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground shadow-2xs dark:bg-zinc-800">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-border border-dashed bg-card py-16 text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-zinc-100 text-muted-foreground shadow-2xs dark:bg-zinc-800">
             <Briefcase className="h-7 w-7" />
           </div>
           <h3 className="mt-4 font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -396,7 +396,7 @@ export default function ProjectsPage() {
             tanımlayabilirsiniz.
           </p>
           <button
-            className="mt-5 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700"
+            className="mt-5 flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90"
             onClick={() => setIsCreateModalOpen(true)}
             type="button"
           >
@@ -415,7 +415,7 @@ export default function ProjectsPage() {
 
             return (
               <Link
-                className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md dark:hover:border-blue-700"
+                className="group flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-2xs transition-all hover:border-blue-300 hover:shadow-md dark:hover:border-blue-700"
                 href={`/${tenantSlug}/projects/${proj.id}`}
                 key={proj.id}
               >
@@ -426,7 +426,7 @@ export default function ProjectsPage() {
                         {proj.key}
                       </span>
                       <div>
-                        <h3 className="font-bold text-sm text-zinc-900 transition group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
+                        <h3 className="font-bold text-sm text-zinc-900 transition group-hover:text-primary dark:text-zinc-100 dark:group-hover:text-blue-400">
                           {proj.name}
                         </h3>
                         {proj.customerName && (
@@ -477,7 +477,7 @@ export default function ProjectsPage() {
                     <span>{proj.leadUserName || "Atanmamış"}</span>
                   </div>
 
-                  <div className="flex items-center gap-1 font-semibold text-blue-600 transition group-hover:translate-x-0.5 dark:text-blue-400">
+                  <div className="flex items-center gap-1 font-semibold text-primary transition group-hover:translate-x-0.5 ">
                     <span>Backlog'a Git</span>
                     <ArrowRight className="h-3 w-3" />
                   </div>
@@ -487,7 +487,7 @@ export default function ProjectsPage() {
           })}
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader className="border-border bg-zinc-50/50 text-zinc-600 dark:bg-zinc-800/50 dark:text-zinc-300">
@@ -514,7 +514,7 @@ export default function ProjectsPage() {
                     className="transition hover:bg-zinc-50/70 dark:hover:bg-zinc-800/40"
                     key={proj.id}
                   >
-                    <TableCell className="px-4 py-3 font-bold text-blue-600 dark:text-blue-400">
+                    <TableCell className="px-4 py-3 font-bold text-primary ">
                       {proj.key}
                     </TableCell>
                     <TableCell className="px-4 py-3 font-semibold text-zinc-900 dark:text-zinc-100">
@@ -551,7 +551,7 @@ export default function ProjectsPage() {
                     </TableCell>
                     <TableCell className="px-4 py-3 text-right">
                       <Link
-                        className="font-bold text-blue-600 hover:underline dark:text-blue-400"
+                        className="font-bold text-primary hover:underline "
                         href={`/${tenantSlug}/projects/${proj.id}`}
                       >
                         Aç ➜
@@ -610,7 +610,7 @@ export default function ProjectsPage() {
                     Proje Adı *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Örn. Mobil Uygulama Revizyonu"
                     required
@@ -624,7 +624,7 @@ export default function ProjectsPage() {
                     Anahtar (Key) *
                   </label>
                   <input
-                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 font-bold text-xs text-zinc-900 uppercase focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 font-bold text-xs text-zinc-900 uppercase focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                     maxLength={10}
                     onChange={(e) => setKey(e.target.value.toUpperCase())}
                     placeholder="MOB"
@@ -640,7 +640,7 @@ export default function ProjectsPage() {
                   Açıklama & Hedef
                 </label>
                 <textarea
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 p-2.5 text-xs text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800 dark:text-zinc-100"
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Projenin amacı ve kapsamı..."
                   rows={2}
@@ -744,7 +744,7 @@ export default function ProjectsPage() {
                   İptal
                 </button>
                 <button
-                  className="rounded-xl bg-blue-600 px-5 py-2 font-bold text-white shadow-xs hover:bg-blue-700 active:scale-95 disabled:opacity-50"
+                  className="rounded-xl bg-foreground px-5 py-2 font-bold text-background shadow-xs hover:bg-foreground/90 active:scale-95 disabled:opacity-50"
                   disabled={!(name.trim() && key.trim()) || submitting}
                   type="submit"
                 >

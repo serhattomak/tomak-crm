@@ -265,7 +265,7 @@ export default function AnalyticsPage() {
       <div className="flex flex-col justify-between gap-4 border-border border-b pb-5 md:flex-row md:items-center">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-xs">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-foreground text-background shadow-xs">
               <BarChart3 className="h-5 w-5" />
             </div>
             <h1 className="font-extrabold text-xl text-zinc-900 tracking-tight sm:text-2xl dark:text-zinc-100">
@@ -327,7 +327,7 @@ export default function AnalyticsPage() {
             type="button"
           >
             <RefreshCw
-              className={`h-3.5 w-3.5 ${loading ? "animate-spin text-blue-600 dark:text-blue-400" : ""}`}
+              className={`h-3.5 w-3.5 ${loading ? "animate-spin text-primary " : ""}`}
             />
           </button>
         </div>
@@ -336,17 +336,17 @@ export default function AnalyticsPage() {
       {/* 2. Primary KPI Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Card 1: Total Revenue */}
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-semibold text-xs text-muted-foreground">
                 Toplam Satış Hacmi
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
                 ₺{totalRevenue.toLocaleString("tr-TR")}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Coins className="h-5 w-5" />
             </div>
           </div>
@@ -363,41 +363,41 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 2: Average Order Value */}
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-semibold text-xs text-muted-foreground">
                 Ortalama Sipariş Tutarı
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
                 ₺{averageOrderValue.toLocaleString("tr-TR")}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <ShoppingCart className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-blue-600 dark:text-blue-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-primary ">
             <span>{totalOrders} Adet Tamamlanan Sipariş</span>
           </div>
         </div>
 
         {/* Card 3: Quote Conversion Rate */}
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-semibold text-xs text-muted-foreground">
                 Teklif Kazanma Oranı
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
                 %{quoteConversionRate}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <Zap className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-blue-600 dark:text-blue-400">
+          <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-primary ">
             <span>
               {quoteStats?.acceptedCount || 0} Onaylandı /{" "}
               {quoteStats?.totalQuotes || 0} Toplam
@@ -406,17 +406,17 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 4: Open Balance & Collection Health */}
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-2xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-semibold text-xs text-muted-foreground">
                 Açık Bakiye (Alacak)
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-rose-600 dark:text-rose-400 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-rose-600 dark:text-rose-400 tracking-tight ">
                 ₺{unpaidRevenue.toLocaleString("tr-TR")}
               </div>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400">
               <AlertCircle className="h-5 w-5" />
             </div>
           </div>
@@ -440,7 +440,7 @@ export default function AnalyticsPage() {
             <button
               className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 font-semibold text-xs transition-all ${
                 isSelected
-                  ? "bg-zinc-900 text-white shadow-xs dark:bg-zinc-100 dark:text-zinc-900"
+                  ? "bg-foreground text-background shadow-xs dark:bg-zinc-100 dark:text-zinc-900"
                   : "bg-transparent text-muted-foreground hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
               }`}
               key={tab.key}
@@ -458,7 +458,7 @@ export default function AnalyticsPage() {
       {(activeTab === "overview" || activeTab === "sales") && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Revenue Monthly Histogram */}
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs lg:col-span-2">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-2xs lg:col-span-2">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -483,9 +483,9 @@ export default function AnalyticsPage() {
                   <span className="font-bold text-3xs text-muted-foreground">
                     ₺{(m.amount / 1000).toFixed(0)}k
                   </span>
-                  <div className="relative flex h-36 w-full items-end justify-center rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/60">
+                  <div className="relative flex h-36 w-full items-end justify-center rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/60">
                     <div
-                      className="w-full rounded-xl bg-gradient-to-t from-blue-600 to-indigo-500 transition-all duration-250 hover:opacity-90"
+                      className="w-full rounded-xl bg-primary transition-all duration-250 hover:opacity-90"
                       style={{ height: `${m.percentage}%` }}
                       title={`₺${m.amount.toLocaleString("tr-TR")} (${m.orders} sipariş)`}
                     />
@@ -499,7 +499,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Conversion Funnel */}
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
             <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Satış Hunisi (Pipeline Funnel)
             </h3>
@@ -528,9 +528,9 @@ export default function AnalyticsPage() {
               ))}
             </div>
 
-            <div className="mt-6 rounded-2xl border border-blue-100 bg-blue-50/60 p-3.5 text-blue-900 text-xs dark:border-blue-900/60 dark:bg-blue-950/20 dark:text-blue-300">
+            <div className="mt-6 rounded-xl border border-blue-100 bg-blue-50/60 p-3.5 text-blue-900 text-xs dark:border-blue-900/60 dark:bg-blue-950/20 dark:text-blue-300">
               <div className="flex items-center gap-2 font-bold">
-                <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <Sparkles className="h-4 w-4 text-primary " />
                 <span>Huniyi Hızlandırma İpucu</span>
               </div>
               <p className="mt-1 text-2xs text-blue-800 leading-relaxed dark:text-blue-300/80">
@@ -547,7 +547,7 @@ export default function AnalyticsPage() {
       {(activeTab === "overview" || activeTab === "crm") && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Customer Tiers & Distribution */}
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
             <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Müşteri Segment Dağılımı
             </h3>
@@ -583,7 +583,7 @@ export default function AnalyticsPage() {
                 },
               ].map((tier) => (
                 <div
-                  className="rounded-2xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40"
+                  className="rounded-xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40"
                   key={tier.label}
                 >
                   <div className="flex items-center gap-1.5">
@@ -616,7 +616,7 @@ export default function AnalyticsPage() {
           </div>
 
           {/* High-Volume Orders or Customers based on tab */}
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
             {activeTab === "crm" ? (
               <>
                 <div className="flex items-center justify-between">
@@ -624,7 +624,7 @@ export default function AnalyticsPage() {
                     Öne Çıkan Müşteri Portföyü
                   </h3>
                   <Link
-                    className="font-semibold text-blue-600 text-xs hover:underline dark:text-blue-400"
+                    className="font-semibold text-primary text-xs hover:underline "
                     href={`/${tenantSlug}/customers`}
                   >
                     Müşteri Listesi →
@@ -662,7 +662,7 @@ export default function AnalyticsPage() {
                     Son Siparişler &amp; Durum
                   </h3>
                   <Link
-                    className="font-semibold text-blue-600 text-xs hover:underline dark:text-blue-400"
+                    className="font-semibold text-primary text-xs hover:underline "
                     href={`/${tenantSlug}/orders`}
                   >
                     Tümünü Gör →
@@ -715,7 +715,7 @@ export default function AnalyticsPage() {
 
       {/* 6. Tab Content: Inventory & Products Profitability */}
       {(activeTab === "overview" || activeTab === "inventory") && (
-        <div className="rounded-3xl border border-border bg-card p-6 shadow-2xs">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -726,7 +726,7 @@ export default function AnalyticsPage() {
               </p>
             </div>
             <Link
-              className="font-semibold text-blue-600 text-xs hover:underline dark:text-blue-400"
+              className="font-semibold text-primary text-xs hover:underline "
               href={`/${tenantSlug}/products`}
             >
               Ürün Yönetimi →
@@ -791,7 +791,7 @@ export default function AnalyticsPage() {
                             margin >= 30
                               ? "text-emerald-700 dark:text-emerald-400"
                               : margin > 10
-                                ? "text-blue-600 dark:text-blue-400"
+                                ? "text-primary "
                                 : "text-amber-700 dark:text-amber-400"
                           }`}
                         >

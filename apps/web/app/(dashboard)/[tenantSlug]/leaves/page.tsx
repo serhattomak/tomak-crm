@@ -421,7 +421,7 @@ export default function LeavesPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+            <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
               İzin & Zaman Yönetimi
             </h1>
             <span className="rounded-full bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-bold text-2xs text-blue-700 dark:text-blue-300">
@@ -438,7 +438,7 @@ export default function LeavesPage() {
         <div className="flex items-center gap-2">
           <PermissionGate permission="Leaves.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -452,13 +452,13 @@ export default function LeavesPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Pending Requests */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-muted-foreground">
                 Onay Bekleyen Talepler
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-amber-700 dark:text-amber-400 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-amber-700 dark:text-amber-400 tracking-tight ">
                 {stats?.pendingRequestsCount ?? 0}
               </div>
             </div>
@@ -472,13 +472,13 @@ export default function LeavesPage() {
         </div>
 
         {/* Today on Leave */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-muted-foreground">
                 Bugün İzinli Olanlar
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-blue-600 dark:text-blue-400 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-primary  tracking-tight ">
                 {stats?.todayOnLeaveCount ?? 0} Kişi
               </div>
             </div>
@@ -492,13 +492,13 @@ export default function LeavesPage() {
         </div>
 
         {/* This Month Used Days */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-muted-foreground">
                 Bu Ay Kullanılan İzin
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-purple-600 dark:text-purple-400 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-purple-600 dark:text-purple-400 tracking-tight ">
                 {stats?.thisMonthUsedDays ?? 0} Gün
               </div>
             </div>
@@ -512,13 +512,13 @@ export default function LeavesPage() {
         </div>
 
         {/* Annual Leave Balance */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-muted-foreground">
                 Yıllık İzin Bakiyem
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-emerald-700 dark:text-emerald-300 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-emerald-700 dark:text-emerald-300 tracking-tight ">
                 {myBalance?.remainingDays ?? 14} Gün
               </div>
             </div>
@@ -534,7 +534,7 @@ export default function LeavesPage() {
       </div>
 
       {/* 3. Navigation Tabs Bar */}
-      <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
+      <div className="flex flex-wrap items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
         <button
           className={`flex items-center gap-2 rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === "calendar" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
           onClick={() => setActiveTab("calendar")}
@@ -579,7 +579,7 @@ export default function LeavesPage() {
 
       {/* 4. TAB 1: INTERACTIVE MONTHLY CALENDAR */}
       {activeTab === "calendar" && (
-        <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-5 shadow-xs">
           {/* Calendar Header / Controls */}
           <div className="flex flex-col justify-between gap-3 border-border border-b pb-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
@@ -664,7 +664,7 @@ export default function LeavesPage() {
                   if (!cell.day) {
                     return (
                       <div
-                        className="h-28 rounded-2xl border border-border border-dashed bg-zinc-50/50 p-2 dark:bg-zinc-900/30"
+                        className="h-28 rounded-xl border border-border border-dashed bg-zinc-50/50 p-2 dark:bg-zinc-900/30"
                         key={idx}
                       />
                     );
@@ -681,14 +681,14 @@ export default function LeavesPage() {
 
                   return (
                     <div
-                      className={`flex h-28 flex-col justify-between rounded-2xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${isToday ? "border-blue-500 bg-blue-50/20 dark:bg-blue-950/60 ring-1 ring-blue-500" : "border-border bg-card"}`}
+                      className={`flex h-28 flex-col justify-between rounded-xl border p-2 transition-all hover:border-zinc-300 dark:border-zinc-700 ${isToday ? "border-blue-500 bg-blue-50/20 dark:bg-blue-950/60 ring-1 ring-blue-500" : "border-border bg-card"}`}
                       key={idx}
                     >
                       <div className="flex items-center justify-between">
                         <span
                           className={`flex h-6 w-6 items-center justify-center rounded-full font-bold text-xs ${
                             isToday
-                              ? "bg-blue-600 text-white"
+                              ? "bg-foreground text-background"
                               : "text-zinc-700 dark:text-zinc-300"
                           }`}
                         >
@@ -728,7 +728,7 @@ export default function LeavesPage() {
 
       {/* 5. TAB 2: PENDING APPROVALS (MANAGER WORKBENCH) */}
       {activeTab === "pending" && (
-        <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -744,7 +744,7 @@ export default function LeavesPage() {
           </div>
 
           {pendingLeaves.length === 0 ? (
-            <div className="rounded-2xl border border-border border-dashed p-12 text-center text-xs text-muted-foreground">
+            <div className="rounded-xl border border-border border-dashed p-12 text-center text-xs text-muted-foreground">
               <CheckCircle2 className="mx-auto mb-2 h-8 w-8 text-emerald-500" />
               <p className="font-bold text-zinc-700 dark:text-zinc-300">
                 Tüm talepler sonuçlandırıldı!
@@ -757,7 +757,7 @@ export default function LeavesPage() {
             <div className="space-y-3">
               {pendingLeaves.map((leave) => (
                 <div
-                  className="flex flex-col justify-between gap-4 rounded-2xl border border-border bg-zinc-50/50 p-4 sm:flex-row sm:items-center dark:bg-zinc-800/30"
+                  className="flex flex-col justify-between gap-4 rounded-xl border border-border bg-zinc-50/50 p-4 sm:flex-row sm:items-center dark:bg-zinc-800/30"
                   key={leave.id}
                 >
                   <div className="space-y-1">
@@ -841,11 +841,11 @@ export default function LeavesPage() {
       {activeTab === "all" && (
         <div className="space-y-4">
           {/* Filter Bar */}
-          <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs md:flex-row md:items-center">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-4 shadow-xs md:flex-row md:items-center">
             <div className="relative max-w-md flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
+                className="w-full rounded-xl border border-border bg-zinc-50 py-2 pr-4 pl-9 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100 dark:text-zinc-500"
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Çalışan adı, departman veya sebep ara..."
                 type="text"
@@ -886,7 +886,7 @@ export default function LeavesPage() {
           </div>
 
           {/* Table */}
-          <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader className="border-border bg-zinc-50/50 text-muted-foreground dark:bg-zinc-800/30">
@@ -1001,7 +1001,7 @@ export default function LeavesPage() {
 
       {/* 7. TAB 4: MY LEAVE REQUESTS */}
       {activeTab === "my" && (
-        <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1012,7 +1012,7 @@ export default function LeavesPage() {
               </p>
             </div>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-3.5 py-1.5 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -1021,7 +1021,7 @@ export default function LeavesPage() {
             </button>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-border">
+          <div className="overflow-x-auto rounded-xl border border-border">
             <Table>
               <TableHeader className="border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-800/50">
                 <TableRow>
@@ -1485,7 +1485,7 @@ function CreateLeaveModal({
                   <input
                     aria-label="Yarım Gün İzin"
                     checked={isHalfDay}
-                    className="rounded text-blue-600 dark:text-blue-400 focus:ring-0"
+                    className="rounded text-primary  focus:ring-0"
                     onChange={(e) => setIsHalfDay(e.target.checked)}
                     type="checkbox"
                   />
@@ -1544,7 +1544,7 @@ function CreateLeaveModal({
           </div>
 
           {/* Smart Duration & Balance Calculation Banner */}
-          <div className="flex items-center justify-between rounded-2xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40">
+          <div className="flex items-center justify-between rounded-xl border border-border bg-zinc-50/70 p-3.5 dark:bg-zinc-800/40">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400">
                 <CalendarIcon className="h-4 w-4" />
@@ -1558,7 +1558,7 @@ function CreateLeaveModal({
                 </span>
               </div>
             </div>
-            <span className="font-extrabold text-base text-blue-600 dark:text-blue-400">
+            <span className="font-extrabold text-base text-primary ">
               {calculatedDays} Gün
             </span>
           </div>
@@ -1569,7 +1569,7 @@ function CreateLeaveModal({
               İzin Sebebi / Açıklama
             </label>
             <textarea
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
               onChange={(e) => setReason(e.target.value)}
               placeholder="İzin gerekçenizi kısaca belirtin..."
               rows={2}
@@ -1582,7 +1582,7 @@ function CreateLeaveModal({
               Acil Durum İletişim Notu (Opsiyonel)
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-zinc-900 focus:border-ring focus:outline-none dark:text-zinc-100"
               onChange={(e) => setEmergencyContact(e.target.value)}
               placeholder="Örn: 0532 ... veya e-posta ile ulaşılabilir"
               type="text"
@@ -1611,7 +1611,7 @@ function CreateLeaveModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-xl bg-foreground px-5 py-2 font-semibold text-background shadow-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
               disabled={
                 submitting ||
                 leaveCompliance.validationResult.hasHardBlock ||

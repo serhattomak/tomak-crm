@@ -389,8 +389,8 @@ export default function FieldServicePage() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2.5">
-            <Wrench className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2.5">
+            <Wrench className="h-6 w-6 text-primary " />
             Saha Servis & Mobil Teknisyen Yönetimi
           </h1>
           <p className="text-sm text-muted-foreground">
@@ -416,7 +416,7 @@ export default function FieldServicePage() {
           <Button
             size="sm"
             onClick={() => setIsCreateOpen(true)}
-            className="h-9 gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs"
+            className="h-9 gap-1.5 bg-foreground hover:bg-foreground/90 text-background text-xs font-semibold shadow-xs"
           >
             <Plus className="h-4 w-4" />
             Yeni İş Emri Oluştur
@@ -512,7 +512,7 @@ export default function FieldServicePage() {
               Saha servis görevleri listeleniyor...
             </div>
           ) : jobs.length === 0 ? (
-            <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40">
+            <div className="p-12 text-center rounded-xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40">
               <Wrench className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
               <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
                 Kayıtlı Saha Servis Emri Yok
@@ -523,7 +523,7 @@ export default function FieldServicePage() {
               <Button
                 size="sm"
                 onClick={() => setIsCreateOpen(true)}
-                className="mt-4 text-xs bg-blue-600 hover:bg-blue-700 text-white"
+                className="mt-4 text-xs bg-foreground hover:bg-foreground/90 text-background"
               >
                 İş Emri Aç
               </Button>
@@ -631,11 +631,11 @@ export default function FieldServicePage() {
 
         <div className="lg:col-span-5">
           {selectedJob ? (
-            <div className="p-5 rounded-2xl border border-border bg-card shadow-sm space-y-6 sticky top-6">
+            <div className="p-5 rounded-xl border border-border bg-card shadow-sm space-y-6 sticky top-6">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">
+                    <span className="text-xs font-mono font-bold text-primary ">
                       {selectedJob.jobNumber}
                     </span>
                     <span
@@ -689,7 +689,7 @@ export default function FieldServicePage() {
                     <Phone className="h-3.5 w-3.5 text-muted-foreground" />
                     <a
                       href={`tel:${selectedJob.contactPhone}`}
-                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                      className="text-primary  hover:underline"
                     >
                       {selectedJob.contactPhone}
                     </a>
@@ -799,7 +799,7 @@ export default function FieldServicePage() {
               )}
             </div>
           ) : (
-            <div className="p-12 text-center rounded-2xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40 sticky top-6">
+            <div className="p-12 text-center rounded-xl border border-dashed border-border bg-zinc-50/50 dark:bg-zinc-900/40 sticky top-6">
               <Truck className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
               <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
                 Servis Emri Seçiniz
@@ -830,7 +830,7 @@ export default function FieldServicePage() {
           >
             <div className="flex items-center justify-between border-b border-border pb-3">
               <DialogTitle className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <Wrench className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <Wrench className="h-5 w-5 text-primary " />
                 Yeni Saha Servis Emri Aç
               </DialogTitle>
               <DialogClose asChild>
@@ -1018,7 +1018,7 @@ export default function FieldServicePage() {
                   type="submit"
                   size="sm"
                   disabled={submitting}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                  className="bg-foreground hover:bg-foreground/90 text-background font-semibold"
                 >
                   {submitting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

@@ -532,7 +532,7 @@ export default function WebhookBuilderPage() {
           )}
 
           <button
-            className="flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-colors hover:bg-foreground/90 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             disabled={isSaving || (hasAttemptedSave && !isFormValid)}
             onClick={() => {
               void handleSave();
@@ -550,7 +550,7 @@ export default function WebhookBuilderPage() {
       </div>
 
       {isNew && secretOnce && (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800/60 dark:bg-amber-950/30">
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800/60 dark:bg-amber-950/30">
           <div className="flex items-start gap-2.5">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
             <div className="flex-1">
@@ -571,9 +571,9 @@ export default function WebhookBuilderPage() {
         {/* Left: Main Form - spans 2 */}
         <div className="space-y-6 lg:col-span-2">
           {/* Endpoint Details */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <div className="mb-4 flex items-center gap-2">
-              <div className="rounded-lg bg-zinc-900 p-1.5 text-white dark:bg-zinc-100 dark:text-zinc-900">
+              <div className="rounded-lg bg-foreground p-1.5 text-background dark:bg-zinc-100 dark:text-zinc-900">
                 <Globe className="h-4 w-4" />
               </div>
               <div>
@@ -678,10 +678,10 @@ export default function WebhookBuilderPage() {
           </div>
 
           {/* Events Selector */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="rounded-lg bg-zinc-900 p-1.5 text-white dark:bg-zinc-100 dark:text-zinc-900">
+                <div className="rounded-lg bg-foreground p-1.5 text-background dark:bg-zinc-100 dark:text-zinc-900">
                   <Shield className="h-4 w-4" />
                 </div>
                 <div>
@@ -748,7 +748,7 @@ export default function WebhookBuilderPage() {
         {/* Right: Secret + HMAC + Test */}
         <div className="space-y-6">
           {/* Secret Section */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               Gizli Anahtar
             </h3>
@@ -784,7 +784,7 @@ export default function WebhookBuilderPage() {
                     </code>
                     <div className="mt-2 flex items-center gap-1.5">
                       <button
-                        className="inline-flex items-center gap-1 rounded-lg bg-zinc-900 px-2.5 py-1 font-medium text-white text-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900"
+                        className="inline-flex items-center gap-1 rounded-lg bg-foreground px-2.5 py-1 font-medium text-background text-xs hover:bg-foreground/90 dark:bg-zinc-100 dark:text-zinc-900"
                         onClick={() => {
                           void handleCopySecret(secretOnce);
                         }}
@@ -866,7 +866,7 @@ export default function WebhookBuilderPage() {
           </div>
 
           {/* HMAC Preview */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               HMAC İmzası Önizleme
             </h3>
@@ -915,7 +915,7 @@ export default function WebhookBuilderPage() {
           </div>
 
           {/* Test Send Card */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-xs backdrop-blur-sm">
             <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
               Test Gönderimi
             </h3>
@@ -923,7 +923,7 @@ export default function WebhookBuilderPage() {
               Dry-run modunda gerçek teslimat oluşturmadan simüle eder.
             </p>
             <button
-              className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl bg-zinc-900 py-2 font-semibold text-white text-xs hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
+              className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl bg-foreground py-2 font-semibold text-background text-xs hover:bg-foreground/90 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
               disabled={isNew}
               onClick={handleOpenTestModal}
               type="button"
@@ -942,7 +942,7 @@ export default function WebhookBuilderPage() {
 
       {/* Delivery History Mini-Table */}
       {!isNew && (
-        <div className="rounded-2xl border border-border bg-card shadow-xs backdrop-blur-sm">
+        <div className="rounded-xl border border-border bg-card shadow-xs backdrop-blur-sm">
           <div className="flex items-center justify-between border-border border-b p-4">
             <div>
               <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
@@ -1067,7 +1067,7 @@ export default function WebhookBuilderPage() {
           >
             <div className="flex items-center justify-between border-border border-b pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="rounded-xl bg-zinc-900 p-2 text-white dark:bg-zinc-100 dark:text-zinc-900">
+                <div className="rounded-xl bg-foreground p-2 text-background dark:bg-zinc-100 dark:text-zinc-900">
                   <Send className="h-4 w-4" />
                 </div>
                 <div>
@@ -1166,7 +1166,7 @@ export default function WebhookBuilderPage() {
                 Kapat
               </button>
               <button
-                className="flex items-center gap-1.5 rounded-xl bg-zinc-900 px-4 py-2 font-semibold text-sm text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
+                className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-sm text-background hover:bg-foreground/90 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
                 disabled={isTesting}
                 onClick={() => {
                   void handleTestSend();
@@ -1188,7 +1188,7 @@ export default function WebhookBuilderPage() {
       {/* Mobile sticky save bar */}
       <div className="sticky bottom-4 flex justify-end lg:hidden">
         <button
-          className="flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-3 font-semibold text-sm text-white shadow-lg hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
+          className="flex items-center gap-2 rounded-full bg-foreground px-5 py-3 font-semibold text-sm text-background shadow-lg hover:bg-foreground/90 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
           disabled={isSaving || (hasAttemptedSave && !isFormValid)}
           onClick={() => {
             void handleSave();

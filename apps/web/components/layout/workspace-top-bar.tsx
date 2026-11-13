@@ -31,12 +31,11 @@ export function WorkspaceTopBar({
   const router = useRouter();
 
   const activeItem = items.find((item) => {
+    const href = item.href.split("?")[0] ?? item.href;
     if (item.exact) {
-      return pathname === item.href;
+      return pathname === href;
     }
-    return (
-      pathname === item.href || Boolean(pathname?.startsWith(`${item.href}/`))
-    );
+    return pathname === href || Boolean(pathname?.startsWith(`${href}/`));
   });
 
   const ActiveIcon = activeItem?.icon;

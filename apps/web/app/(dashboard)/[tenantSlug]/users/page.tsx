@@ -125,7 +125,7 @@ export default function UsersManagementPage() {
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+          <h1 className="flex items-center gap-2.5 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             <Users className="h-6 w-6 text-blue-500" />
             Kullanıcı Yönetimi
           </h1>
@@ -161,7 +161,7 @@ export default function UsersManagementPage() {
       )}
 
       {/* Users Table */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
         {isLoading ? (
           <div className="flex items-center justify-center gap-2 p-8 text-center text-xs text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
@@ -323,7 +323,7 @@ export default function UsersManagementPage() {
                   Vazgeç
                 </button>
                 <button
-                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
                   disabled={isSubmitting}
                   type="submit"
                 >
