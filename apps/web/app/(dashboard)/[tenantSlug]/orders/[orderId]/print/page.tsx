@@ -75,7 +75,7 @@ export default function OrderPrintPage() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -87,7 +87,7 @@ export default function OrderPrintPage() {
           {error || "Sipariş bulunamadı."}
         </p>
         <Link
-          className="mt-4 inline-flex text-blue-600 dark:text-blue-400 text-xs underline"
+          className="mt-4 inline-flex text-primary  text-xs underline"
           href={`/${tenantSlug}/orders`}
         >
           Siparişlere Dön
@@ -126,7 +126,7 @@ export default function OrderPrintPage() {
             Siparişe Dön
           </Link>
           <button
-            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs hover:bg-blue-700"
+            className="inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs hover:bg-foreground/90"
             onClick={handlePrint}
             type="button"
           >
@@ -145,7 +145,7 @@ export default function OrderPrintPage() {
                 src={activeTenant.logoUrl}
               />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 font-black text-sm text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-foreground font-black text-sm text-background">
                 {activeTenant?.name?.charAt(0).toUpperCase() || "C"}
               </div>
             )}
@@ -237,7 +237,7 @@ export default function OrderPrintPage() {
         {/* Items table */}
         <table className="mt-4 w-full border-collapse border border-border text-xs">
           <thead>
-            <tr className="bg-zinc-900 text-white">
+            <tr className="bg-foreground text-background">
               <th className="px-2 py-2 text-left">#</th>
               <th className="px-2 py-2 text-left">Ürün / Hizmet</th>
               <th className="px-2 py-2 text-center">SKU</th>

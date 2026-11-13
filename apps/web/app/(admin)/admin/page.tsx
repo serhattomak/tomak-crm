@@ -72,7 +72,7 @@ export default function AdminDashboardPage() {
             <h1 className="font-extrabold text-2xl text-zinc-900 tracking-tight md:text-3xl">
               Merkezi Yönetim Konsolu
             </h1>
-            <span className="rounded-md border border-blue-200/60 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 font-bold text-blue-600 dark:text-blue-400 text-xs">
+            <span className="rounded-md border bg-accent-soft px-2 py-0.5 font-bold text-accent-foreground text-xs">
               Super Admin
             </span>
           </div>
@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
 
         <div className="flex items-center gap-2.5">
           <Link
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 font-semibold text-white text-xs shadow-sm transition hover:bg-blue-600 active:scale-95"
+            className="flex items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 font-semibold text-background text-xs shadow-sm transition hover:bg-foreground active:scale-95"
             href="/admin/tenants?create=true"
           >
             <Plus className="h-4 w-4" />
@@ -103,12 +103,12 @@ export default function AdminDashboardPage() {
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Tenants */}
-        <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-muted-foreground text-xs uppercase tracking-wider">
               Kayıtlı Firma
             </span>
-            <div className="rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50 dark:bg-blue-950/60 p-2 text-blue-600 dark:text-blue-400">
+            <div className="rounded-xl bg-accent-soft p-2 text-accent-foreground">
               <Building2 className="h-4.5 w-4.5" />
             </div>
           </div>
@@ -116,14 +116,12 @@ export default function AdminDashboardPage() {
             <span className="font-extrabold text-3xl text-zinc-900">
               {loading ? "-" : (stats?.totalTenants ?? 0)}
             </span>
-            <span className="font-medium text-blue-600 dark:text-blue-400 text-xs">
-              Tenant
-            </span>
+            <span className="font-medium text-primary  text-xs">Tenant</span>
           </div>
         </div>
 
         {/* Active Companies */}
-        <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-muted-foreground text-xs uppercase tracking-wider">
               Aktif Abonelik
@@ -143,7 +141,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Total Members */}
-        <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-muted-foreground text-xs uppercase tracking-wider">
               Kullanıcı Havuzu
@@ -163,7 +161,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Sektör Şablonları */}
-        <div className="rounded-2xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
+        <div className="rounded-xl border border-border bg-muted/50 p-5 shadow-2xs transition-all hover:border-zinc-300">
           <div className="flex items-center justify-between">
             <span className="font-bold text-muted-foreground text-xs uppercase tracking-wider">
               Sektör Şablonu
@@ -184,7 +182,7 @@ export default function AdminDashboardPage() {
       {/* Main Row: Recent Tenants & Industry Distribution */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Recent Tenants Table (2 Columns) */}
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs lg:col-span-2">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-2xs lg:col-span-2">
           <div className="flex items-center justify-between border-border border-b pb-4">
             <div>
               <h2 className="font-bold text-base text-zinc-900">
@@ -195,7 +193,7 @@ export default function AdminDashboardPage() {
               </p>
             </div>
             <Link
-              className="flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400 text-xs hover:text-blue-700"
+              className="flex items-center gap-1 font-semibold text-primary  text-xs hover:text-blue-700"
               href="/admin/tenants"
             >
               <span>Tümünü Gör</span>
@@ -215,13 +213,13 @@ export default function AdminDashboardPage() {
                   key={tenant.id}
                 >
                   <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50 dark:bg-blue-950/60 font-bold text-blue-600 dark:text-blue-400 text-xs">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft font-bold text-accent-foreground text-xs">
                       {tenant.name.substring(0, 2).toUpperCase()}
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <Link
-                          className="truncate font-semibold text-zinc-900 text-sm hover:text-blue-600 dark:hover:text-blue-400"
+                          className="truncate font-semibold text-zinc-900 text-sm hover:text-primary dark:hover:text-blue-400"
                           href={`/admin/tenants/${tenant.id}`}
                         >
                           {tenant.name}
@@ -272,7 +270,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Industry Distribution Widget (1 Column) */}
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
           <h2 className="font-bold text-base text-zinc-900">Sektör Dağılımı</h2>
           <p className="mt-0.5 text-muted-foreground text-xs">
             Firmaların sektörel şablon dağılımı
@@ -298,7 +296,7 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full rounded-full bg-blue-600 transition-all duration-250"
+                        className="h-full rounded-full bg-primary transition-all duration-250"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
@@ -312,7 +310,7 @@ export default function AdminDashboardPage() {
             )}
           </div>
 
-          <div className="mt-8 rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/50 dark:bg-blue-950/60 p-4 text-zinc-700 dark:text-zinc-300 text-xs">
+          <div className="mt-8 rounded-xl bg-accent-soft p-4 text-muted-foreground text-xs">
             <div className="mb-1 flex items-center gap-2 font-bold text-blue-700">
               <Shield className="h-4 w-4" />
               <span>Modüler Satış Prensibi</span>

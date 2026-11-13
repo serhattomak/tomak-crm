@@ -62,7 +62,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-zinc-950 p-3 sm:p-6">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-foreground p-3 sm:p-6">
       {/* Ambient background fluid glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-40 mix-blend-screen">
         <Image
@@ -112,10 +112,10 @@ export default function RegisterPage() {
         </div>
 
         {/* Right Side: Form Container */}
-        <div className="flex flex-col justify-between bg-card px-6 py-8 text-zinc-900 sm:px-12 sm:py-10 lg:col-span-6">
+        <div className="flex flex-col justify-between bg-card px-6 py-8 text-foreground sm:px-12 sm:py-10 lg:col-span-6">
           {/* Brand Logo Header */}
           <div className="mb-6 flex items-center justify-center gap-2 sm:mb-8">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 text-white shadow-sm">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-background shadow-sm">
               <svg
                 className="h-3.5 w-3.5"
                 fill="none"
@@ -127,7 +127,7 @@ export default function RegisterPage() {
                 <path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5Z" />
               </svg>
             </div>
-            <span className="font-semibold text-base text-zinc-900 tracking-tight">
+            <span className="font-semibold text-base text-foreground tracking-tight">
               Cogie
             </span>
           </div>
@@ -135,7 +135,7 @@ export default function RegisterPage() {
           {/* Form Content */}
           <div className="mx-auto w-full max-w-sm space-y-5">
             <div className="space-y-1.5 text-center">
-              <h1 className="font-normal font-serif text-3xl text-zinc-900 tracking-tight sm:text-4xl">
+              <h1 className="font-normal font-serif text-3xl text-foreground tracking-tight sm:text-4xl">
                 Hesap Oluştur
               </h1>
               <p className="font-normal text-muted-foreground text-xs">
@@ -156,7 +156,7 @@ export default function RegisterPage() {
             >
               <div>
                 <label
-                  className="mb-1.5 block font-semibold text-zinc-800 text-xs"
+                  className="mb-1.5 block font-semibold text-foreground text-xs"
                   htmlFor="register-full-name"
                 >
                   Ad Soyad
@@ -174,7 +174,7 @@ export default function RegisterPage() {
 
               <div>
                 <label
-                  className="mb-1.5 block font-semibold text-zinc-800 text-xs"
+                  className="mb-1.5 block font-semibold text-foreground text-xs"
                   htmlFor="register-email"
                 >
                   E-posta
@@ -192,7 +192,7 @@ export default function RegisterPage() {
 
               <div>
                 <label
-                  className="mb-1.5 block font-semibold text-zinc-800 text-xs"
+                  className="mb-1.5 block font-semibold text-foreground text-xs"
                   htmlFor="register-password"
                 >
                   Şifre
@@ -208,7 +208,7 @@ export default function RegisterPage() {
                     value={password}
                   />
                   <button
-                    className="absolute top-3.5 right-3 text-muted-foreground hover:text-zinc-600"
+                    className="absolute top-3.5 right-3 text-muted-foreground hover:text-muted-foreground"
                     onClick={() => setShowPassword(!showPassword)}
                     type="button"
                   >
@@ -232,7 +232,7 @@ export default function RegisterPage() {
                 </button>
 
                 <button
-                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-border bg-card py-3 font-medium text-zinc-700 text-xs shadow-sm transition-all hover:bg-zinc-50 sm:text-sm"
+                  className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-border bg-card py-3 font-medium text-foreground text-xs shadow-sm transition-all hover:bg-muted sm:text-sm"
                   onClick={handleGoogleLogin}
                   type="button"
                 >
@@ -264,7 +264,7 @@ export default function RegisterPage() {
           <div className="mt-8 text-center text-muted-foreground text-xs">
             Already have an account?{" "}
             <Link
-              className="font-semibold text-zinc-900 hover:underline"
+              className="font-semibold text-foreground hover:underline"
               href="/login"
             >
               Giriş Yap
