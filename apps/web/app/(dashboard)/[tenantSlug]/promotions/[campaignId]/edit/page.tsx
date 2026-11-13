@@ -240,7 +240,7 @@ export default function EditCampaignPage() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary " />
       </div>
     );
   }
@@ -274,9 +274,9 @@ export default function EditCampaignPage() {
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Basic Section */}
-        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Tag className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Tag className="h-4 w-4 text-primary " />
             Genel Bilgiler & Zamanlama
           </h2>
 
@@ -286,7 +286,7 @@ export default function EditCampaignPage() {
                 Kampanya Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-ring focus:outline-none dark:text-zinc-200"
                 onChange={(e) => setName(e.target.value)}
                 required
                 type="text"
@@ -300,7 +300,7 @@ export default function EditCampaignPage() {
                   Dahili Takip Kodu
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-ring focus:outline-none dark:text-zinc-200"
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   type="text"
                   value={code}
@@ -326,7 +326,7 @@ export default function EditCampaignPage() {
                 Açıklama
               </label>
               <textarea
-                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-ring focus:outline-none dark:text-zinc-200"
                 onChange={(e) => setDescription(e.target.value)}
                 rows={2}
                 value={description}
@@ -383,9 +383,9 @@ export default function EditCampaignPage() {
         </div>
 
         {/* Discount & Targets */}
-        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Coins className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Coins className="h-4 w-4 text-primary " />
             İndirim Değeri & Kapsam
           </h2>
 
@@ -490,7 +490,7 @@ export default function EditCampaignPage() {
             İptal
           </Link>
           <button
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2 font-bold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-foreground px-6 py-2 font-bold text-background text-xs shadow-xs hover:bg-foreground/90 disabled:opacity-50"
             disabled={saving}
             type="submit"
           >

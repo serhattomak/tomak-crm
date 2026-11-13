@@ -18,7 +18,6 @@ import {
   BarChart3,
   Calendar,
   Check,
-  ChevronRight,
   Coins,
   Copy,
   Flame,
@@ -382,19 +381,12 @@ export default function PromotionsPage() {
   };
 
   return (
-    <PageContainer className="space-y-6 pb-12">
+    <PageContainer className="space-y-5 pb-12">
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 border-border border-b pb-5 sm:flex-row sm:items-center">
         <div>
-          <div className="flex items-center gap-2 font-medium text-xs text-muted-foreground">
-            <span>Satış CRM</span>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-zinc-900 dark:text-zinc-100">
-              Kampanyalar & Kuponlar
-            </span>
-          </div>
-          <h1 className="mt-1 flex items-center gap-2.5 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-50">
-            <Tag className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          <h1 className="flex items-center gap-2.5 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-50">
+            <Tag className="h-6 w-6 text-primary " />
             Kampanya & Promosyon Yönetimi
           </h1>
           <p className="mt-0.5 text-xs text-muted-foreground">
@@ -406,18 +398,18 @@ export default function PromotionsPage() {
         <div className="flex items-center gap-2.5">
           <PermissionGate permission="Promotions.GenerateCoupons">
             <button
-              className="flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 font-semibold text-xs text-zinc-700 shadow-card transition-all hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
               onClick={() => setIsBulkModalOpen(true)}
               type="button"
             >
-              <Ticket className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <Ticket className="h-4 w-4 text-primary " />
               Kupon Üret
             </button>
           </PermissionGate>
 
           <PermissionGate permission="Promotions.Create">
             <button
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-sm transition-all hover:bg-blue-700"
+              className="flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-card transition-all hover:bg-foreground/90"
               onClick={() => {
                 setEditingCampaignId(null);
                 setIsCampaignModalOpen(true);
@@ -433,14 +425,14 @@ export default function PromotionsPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-card transition-all hover:shadow">
           <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-medium text-xs">Aktif Kampanyalar</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <Flame className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+          <div className="mt-2 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             {stats?.activeCampaigns ?? 0}
             <span className="ml-1 font-normal text-xs text-muted-foreground">
               / {stats?.totalCampaigns ?? 0} toplam
@@ -448,19 +440,19 @@ export default function PromotionsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-card transition-all hover:shadow">
           <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-medium text-xs">Toplam Kupon Sayısı</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
               <Ticket className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+          <div className="mt-2 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             {stats?.totalCoupons ?? 0}
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-card transition-all hover:shadow">
           <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-medium text-xs">
               Toplam Dağıtılan İndirim
@@ -469,7 +461,7 @@ export default function PromotionsPage() {
               <Coins className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-emerald-700 tracking-tight dark:text-emerald-400">
+          <div className="mt-2 font-semibold text-2xl text-emerald-700 tracking-tight dark:text-emerald-400">
             ₺
             {(stats?.totalDiscountDistributed ?? 0).toLocaleString("tr-TR", {
               minimumFractionDigits: 2,
@@ -477,14 +469,14 @@ export default function PromotionsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-card transition-all hover:shadow">
           <div className="flex items-center justify-between text-muted-foreground">
             <span className="font-medium text-xs">Kampanyalı Ciro</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
+          <div className="mt-2 font-semibold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
             ₺
             {(stats?.totalRevenueInfluenced ?? 0).toLocaleString("tr-TR", {
               minimumFractionDigits: 2,
@@ -498,7 +490,7 @@ export default function PromotionsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "campaigns"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("campaigns")}
@@ -510,7 +502,7 @@ export default function PromotionsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "coupons"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("coupons")}
@@ -522,7 +514,7 @@ export default function PromotionsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-semibold text-xs transition-all ${
             activeTab === "simulator"
-              ? "border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+              ? "border-primary text-primary dark:border-blue-400 "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("simulator")}
@@ -537,12 +529,12 @@ export default function PromotionsPage() {
       {activeTab === "campaigns" && (
         <div className="space-y-4">
           {/* Filters Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card p-3.5 shadow-card">
             <div className="flex flex-1 flex-wrap items-center gap-2.5">
               <div className="relative min-w-[240px] flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Kampanya adı veya kod ile ara..."
                   type="text"
@@ -550,44 +542,50 @@ export default function PromotionsPage() {
                 />
               </div>
 
-              <SelectField
-                aria-label="İndirim tipi filtresi"
-                onChange={setTypeFilter}
-                options={[
-                  { label: "Yüzde İndirimi (%)", value: "Percentage" },
-                  { label: "Sabit Tutar (₺)", value: "FixedAmount" },
-                  { label: "Sepet Barajı", value: "CartThreshold" },
-                  { label: "X Al Y Öde", value: "BuyXGetY" },
-                  { label: "Ücretsiz Kargo", value: "FreeShipping" },
-                ]}
-                placeholder="Tüm İndirim Tipleri"
-                triggerClassName="h-8 px-3"
-                value={typeFilter}
-              />
+              <div className="w-44">
+                <SelectField
+                  aria-label="İndirim tipi filtresi"
+                  onChange={setTypeFilter}
+                  options={[
+                    { label: "Yüzde İndirimi (%)", value: "Percentage" },
+                    { label: "Sabit Tutar (₺)", value: "FixedAmount" },
+                    { label: "Sepet Barajı", value: "CartThreshold" },
+                    { label: "X Al Y Öde", value: "BuyXGetY" },
+                    { label: "Ücretsiz Kargo", value: "FreeShipping" },
+                  ]}
+                  placeholder="Tüm İndirim Tipleri"
+                  triggerClassName="h-8 px-3"
+                  value={typeFilter}
+                />
+              </div>
 
-              <SelectField
-                aria-label="Tetikleyici filtresi"
-                onChange={setTriggerFilter}
-                options={[
-                  { label: "Otomatik Kural", value: "Automatic" },
-                  { label: "Kupon Kodu Gerektiren", value: "CouponCode" },
-                ]}
-                placeholder="Tüm Tetikleyiciler"
-                triggerClassName="h-8 px-3"
-                value={triggerFilter}
-              />
+              <div className="w-44">
+                <SelectField
+                  aria-label="Tetikleyici filtresi"
+                  onChange={setTriggerFilter}
+                  options={[
+                    { label: "Otomatik Kural", value: "Automatic" },
+                    { label: "Kupon Kodu Gerektiren", value: "CouponCode" },
+                  ]}
+                  placeholder="Tüm Tetikleyiciler"
+                  triggerClassName="h-8 px-3"
+                  value={triggerFilter}
+                />
+              </div>
 
-              <SelectField
-                aria-label="Aktiflik filtresi"
-                onChange={setActiveFilter}
-                options={[
-                  { label: "Sadece Aktif", value: "true" },
-                  { label: "Sadece Pasif", value: "false" },
-                ]}
-                placeholder="Tüm Durumlar"
-                triggerClassName="h-8 px-3"
-                value={activeFilter}
-              />
+              <div className="w-40">
+                <SelectField
+                  aria-label="Aktiflik filtresi"
+                  onChange={setActiveFilter}
+                  options={[
+                    { label: "Sadece Aktif", value: "true" },
+                    { label: "Sadece Pasif", value: "false" },
+                  ]}
+                  placeholder="Tüm Durumlar"
+                  triggerClassName="h-8 px-3"
+                  value={activeFilter}
+                />
+              </div>
             </div>
 
             <button
@@ -603,14 +601,14 @@ export default function PromotionsPage() {
           </div>
 
           {/* Campaigns Table */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
             {loading ? (
               <div className="flex h-64 items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+                <Loader2 className="h-6 w-6 animate-spin text-primary " />
               </div>
             ) : campaigns.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
                   <Tag className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <h3 className="mt-3 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
@@ -621,7 +619,7 @@ export default function PromotionsPage() {
                   cazip teklifler sunmaya başlayın.
                 </p>
                 <button
-                  className="mt-4 flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-blue-700"
+                  className="mt-4 flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-medium text-background text-xs shadow-card hover:bg-foreground/90"
                   onClick={() => {
                     setEditingCampaignId(null);
                     setIsCampaignModalOpen(true);
@@ -805,12 +803,12 @@ export default function PromotionsPage() {
       {activeTab === "coupons" && (
         <div className="space-y-4">
           {/* Coupon Filters */}
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card p-3.5 shadow-card">
             <div className="flex flex-1 flex-wrap items-center gap-2.5">
               <div className="relative min-w-[240px] flex-1">
                 <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                 <input
-                  className="w-full rounded-xl border border-border bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-zinc-50/70 py-1.5 pr-3 pl-9 text-xs text-zinc-800 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-950 dark:text-zinc-200"
                   onChange={(e) => setCouponSearch(e.target.value)}
                   placeholder="Kupon kodu ile ara..."
                   type="text"
@@ -832,7 +830,7 @@ export default function PromotionsPage() {
             </div>
 
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs hover:bg-blue-700"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-3.5 py-1.5 font-semibold text-background text-xs hover:bg-foreground/90"
               onClick={() => setIsBulkModalOpen(true)}
               type="button"
             >
@@ -842,14 +840,14 @@ export default function PromotionsPage() {
           </div>
 
           {/* Coupons Table */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
             {loading ? (
               <div className="flex h-64 items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+                <Loader2 className="h-6 w-6 animate-spin text-primary " />
               </div>
             ) : coupons.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800">
                   <Ticket className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <h3 className="mt-3 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
@@ -860,7 +858,7 @@ export default function PromotionsPage() {
                   pazarlama faaliyetlerinizi hızlandırın.
                 </p>
                 <button
-                  className="mt-4 flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-medium text-white text-xs shadow-sm hover:bg-blue-700"
+                  className="mt-4 flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-medium text-background text-xs shadow-card hover:bg-foreground/90"
                   onClick={() => setIsBulkModalOpen(true)}
                   type="button"
                 >
@@ -977,9 +975,9 @@ export default function PromotionsPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Left Column: Cart Builder */}
           <div className="space-y-4 lg:col-span-7">
-            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div className="rounded-xl border border-border bg-card p-5 shadow-card">
               <h3 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                <ShoppingCart className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <ShoppingCart className="h-4 w-4 text-primary " />
                 Örnek Sepet Oluştur
               </h3>
               <p className="mt-1 text-xs text-muted-foreground">
@@ -1000,7 +998,7 @@ export default function PromotionsPage() {
                       onClick={() => addSimItem(p)}
                       type="button"
                     >
-                      <Plus className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                      <Plus className="h-3 w-3 text-primary " />
                       <span>{p.name}</span>
                       <span className="font-semibold text-muted-foreground">
                         ₺{p.sellingPrice}
@@ -1079,7 +1077,7 @@ export default function PromotionsPage() {
                 <div className="relative flex-1">
                   <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
-                    className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 font-mono text-xs text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                    className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 font-mono text-xs text-zinc-800 uppercase focus:border-ring focus:outline-none dark:text-zinc-200"
                     onChange={(e) =>
                       setSimCouponCode(e.target.value.toUpperCase())
                     }
@@ -1089,7 +1087,7 @@ export default function PromotionsPage() {
                   />
                 </div>
                 <button
-                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-sm hover:bg-blue-700 disabled:opacity-50"
+                  className="flex items-center gap-2 rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-card hover:bg-foreground/90 disabled:opacity-50"
                   disabled={simLoading || simCartItems.length === 0}
                   onClick={runSimulation}
                   type="button"
@@ -1107,7 +1105,7 @@ export default function PromotionsPage() {
 
           {/* Right Column: Simulation Result */}
           <div className="space-y-4 lg:col-span-5">
-            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div className="rounded-xl border border-border bg-card p-5 shadow-card">
               <h3 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
                 <BarChart3 className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
                 İndirim Motoru Sonuç Özeti
@@ -1152,7 +1150,7 @@ export default function PromotionsPage() {
                               <div className="font-semibold text-blue-950 dark:text-blue-200">
                                 {p.campaignName}
                               </div>
-                              <div className="text-2xs text-blue-600 dark:text-blue-400">
+                              <div className="text-2xs text-primary ">
                                 {p.description}
                               </div>
                             </div>
@@ -1202,7 +1200,7 @@ export default function PromotionsPage() {
                     </div>
                     <div className="flex justify-between border-border border-t pt-2 font-bold text-sm text-zinc-900 dark:text-zinc-100">
                       <span>Net Ödenecek Tutar:</span>
-                      <span className="text-blue-600 dark:text-blue-400">
+                      <span className="text-primary ">
                         ₺
                         {(
                           simResult.netTotal + simResult.shippingFee

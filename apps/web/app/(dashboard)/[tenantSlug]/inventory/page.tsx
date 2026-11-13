@@ -400,12 +400,12 @@ export default function InventoryPage() {
   }, [activeCountDetail, handleOpenCountDetail]);
 
   return (
-    <PageContainer className="space-y-6">
+    <PageContainer className="space-y-5">
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 border-border border-b pb-5 md:flex-row md:items-center">
         <div>
-          <h1 className="flex items-center gap-3 bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground bg-clip-text font-bold text-2xl text-transparent tracking-tight md:text-3xl">
-            <WarehouseIcon className="h-8 w-8 text-primary" />
+          <h1 className="flex items-center gap-3 font-semibold text-2xl text-foreground tracking-tight">
+            <WarehouseIcon className="size-7 text-primary" />
             Depo & Envanter Yönetimi
           </h1>
           <p className="mt-1 text-muted-foreground text-sm">
@@ -465,7 +465,7 @@ export default function InventoryPage() {
 
       {/* Bento KPI Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border border-border/60 bg-card/60 p-5 shadow-sm backdrop-blur transition hover:shadow-md">
+        <div className="rounded-xl border border-border/60 bg-card/60 p-5 shadow-card backdrop-blur transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-muted-foreground text-xs uppercase tracking-wider">
               Aktif Depolar
@@ -475,7 +475,7 @@ export default function InventoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-bold text-2xl md:text-3xl">
+            <span className="font-semibold text-2xl md:text-3xl">
               {totalWarehousesCount}
             </span>
             <span className="text-muted-foreground text-xs">lokasyon</span>
@@ -485,7 +485,7 @@ export default function InventoryPage() {
           </p>
         </div>
 
-        <div className="rounded-xl border border-border/60 bg-card/60 p-5 shadow-sm backdrop-blur transition hover:shadow-md">
+        <div className="rounded-xl border border-border/60 bg-card/60 p-5 shadow-card backdrop-blur transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-muted-foreground text-xs uppercase tracking-wider">
               Toplam Stok Miktarı
@@ -495,7 +495,7 @@ export default function InventoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-bold text-2xl md:text-3xl">
+            <span className="font-semibold text-2xl md:text-3xl">
               {Number(totalStockSum).toLocaleString("tr-TR")}
             </span>
             <span className="text-muted-foreground text-xs">adet</span>
@@ -505,7 +505,7 @@ export default function InventoryPage() {
           </p>
         </div>
 
-        <div className="rounded-xl border border-border/60 bg-card/60 p-5 shadow-sm backdrop-blur transition hover:shadow-md">
+        <div className="rounded-xl border border-border/60 bg-card/60 p-5 shadow-card backdrop-blur transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-muted-foreground text-xs uppercase tracking-wider">
               Yoldaki Transferler
@@ -515,7 +515,7 @@ export default function InventoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-bold text-2xl md:text-3xl">
+            <span className="font-semibold text-2xl md:text-3xl">
               {inTransitTransfersCount}
             </span>
             <span className="text-muted-foreground text-xs">sevk fişi</span>
@@ -525,7 +525,7 @@ export default function InventoryPage() {
           </p>
         </div>
 
-        <div className="rounded-xl border border-border/60 bg-card/60 p-5 shadow-sm backdrop-blur transition hover:shadow-md">
+        <div className="rounded-xl border border-border/60 bg-card/60 p-5 shadow-card backdrop-blur transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <span className="font-semibold text-muted-foreground text-xs uppercase tracking-wider">
               Devam Eden Sayımlar
@@ -535,7 +535,7 @@ export default function InventoryPage() {
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-bold text-2xl md:text-3xl">
+            <span className="font-semibold text-2xl md:text-3xl">
               {activeCountsCount}
             </span>
             <span className="text-muted-foreground text-xs">sayım fişi</span>
@@ -729,7 +729,7 @@ function WarehouseTabContent({
         ))}
       </div>
 
-      <div className="space-y-4 rounded-2xl border border-border bg-card p-5 lg:col-span-3">
+      <div className="space-y-4 rounded-xl border border-border bg-card p-5 lg:col-span-3">
         <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
           <div>
             <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
@@ -817,7 +817,7 @@ function TransferTabContent({
   onOpenDetail: (id: string) => void;
 }) {
   return (
-    <div className="space-y-4 rounded-2xl border border-border bg-card p-5">
+    <div className="space-y-4 rounded-xl border border-border bg-card p-5">
       <div>
         <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
           <ArrowRightLeft className="h-5 w-5 text-primary" />
@@ -881,7 +881,7 @@ function CountTabContent({
   onOpenDetail: (id: string) => void;
 }) {
   return (
-    <div className="space-y-4 rounded-2xl border border-border bg-card p-5">
+    <div className="space-y-4 rounded-xl border border-border bg-card p-5">
       <div>
         <h2 className="flex items-center gap-2 font-semibold text-lg text-zinc-900 dark:text-zinc-100">
           <FileCheck2 className="h-5 w-5 text-primary" />
@@ -946,7 +946,7 @@ function WarehouseItemCard({
 
   return (
     <button
-      className={`flex w-full flex-col gap-2 rounded-xl border p-4 text-left transition ${isSelected ? "border-primary/60 bg-primary/5 shadow-sm" : "border-border bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"}`}
+      className={`flex w-full flex-col gap-2 rounded-xl border p-4 text-left transition ${isSelected ? "border-primary/60 bg-primary/5 shadow-card" : "border-border bg-card hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40"}`}
       onClick={handleClick}
       type="button"
     >

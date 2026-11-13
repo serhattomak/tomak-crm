@@ -224,7 +224,7 @@ export function BulkCouponModal({
                   adet):
                 </span>
                 <button
-                  className="flex items-center gap-1 font-medium text-blue-600 hover:underline dark:text-blue-400"
+                  className="flex items-center gap-1 font-medium text-primary hover:underline "
                   onClick={handleCopyCodes}
                   type="button"
                 >
@@ -260,7 +260,7 @@ export function BulkCouponModal({
                 CSV İndir
               </button>
               <button
-                className="rounded-xl bg-blue-600 px-5 py-2 font-medium text-sm text-white shadow-xs hover:bg-blue-700"
+                className="rounded-xl bg-foreground px-5 py-2 font-medium text-sm text-background shadow-xs hover:bg-foreground/90"
                 onClick={() => {
                   setGeneratedResult(null);
                   onClose();
@@ -320,7 +320,7 @@ export function BulkCouponModal({
                 <div className="relative">
                   <Ticket className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
                   <input
-                    className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 font-mono text-sm text-zinc-800 uppercase tracking-wider focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                    className="w-full rounded-xl border border-border bg-card py-2 pr-3 pl-9 font-mono text-sm text-zinc-800 uppercase tracking-wider focus:border-ring focus:outline-none dark:text-zinc-200"
                     onChange={(e) =>
                       setCustomCode(e.target.value.toUpperCase())
                     }
@@ -353,7 +353,7 @@ export function BulkCouponModal({
                       Kod Ön Ek (Prefix)
                     </label>
                     <input
-                      className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                      className="w-full rounded-xl border border-border bg-card px-3 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-ring focus:outline-none dark:text-zinc-200"
                       onChange={(e) => setPrefix(e.target.value.toUpperCase())}
                       placeholder="Örn: CRM, YAZ"
                       type="text"
@@ -412,7 +412,7 @@ export function BulkCouponModal({
                 İptal
               </button>
               <button
-                className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-medium text-sm text-white shadow-xs hover:bg-blue-700 disabled:opacity-50"
+                className="flex items-center gap-2 rounded-xl bg-foreground px-5 py-2 font-medium text-sm text-background shadow-xs hover:bg-foreground/90 disabled:opacity-50"
                 disabled={loading}
                 type="submit"
               >

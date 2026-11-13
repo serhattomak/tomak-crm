@@ -284,7 +284,7 @@ export default function NewCampaignPage() {
           const isCurrent = currentStep === s.num;
           return (
             <div
-              className={`rounded-xl border p-2.5 text-center transition-all ${isCurrent ? "border-blue-600 bg-blue-50/70 text-blue-700 shadow-xs dark:border-blue-500 dark:bg-blue-950/40 dark:text-blue-300" : isDone ? "border-emerald-200 bg-emerald-50/50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-400" : "border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-900/50"}`}
+              className={`rounded-xl border p-2.5 text-center transition-all ${isCurrent ? "border-primary bg-blue-50/70 text-blue-700 shadow-xs dark:border-blue-500 dark:bg-blue-950/40 dark:text-blue-300" : isDone ? "border-emerald-200 bg-emerald-50/50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/20 dark:text-emerald-400" : "border-border bg-zinc-50 text-muted-foreground dark:bg-zinc-900/50"}`}
               key={s.num}
             >
               <div className="flex items-center justify-center gap-1.5 font-semibold text-xs">
@@ -309,9 +309,9 @@ export default function NewCampaignPage() {
 
       {/* STEP 1: BASIC INFO */}
       {currentStep === 1 && (
-        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Tag className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Tag className="h-4 w-4 text-primary " />
             Adım 1: Temel Bilgiler & Zamanlama
           </h2>
 
@@ -321,7 +321,7 @@ export default function NewCampaignPage() {
                 Kampanya Başlığı / Adı *
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-ring focus:outline-none dark:text-zinc-200"
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Örn: Yaz Sezonu %20 İndirimi, 1000 TL Üzeri Kargo Bedava"
                 required
@@ -336,7 +336,7 @@ export default function NewCampaignPage() {
                   Dahili Takip Kodu (Opsiyonel)
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-ring focus:outline-none dark:text-zinc-200"
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
                   placeholder="Örn: CAMP-SUMMER-2026"
                   type="text"
@@ -366,7 +366,7 @@ export default function NewCampaignPage() {
                 Açıklama & Kampanya Detayları
               </label>
               <textarea
-                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-zinc-800 focus:border-ring focus:outline-none dark:text-zinc-200"
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Kampanya şartları ve müşteriye görünecek detaylar..."
                 rows={2}
@@ -431,9 +431,9 @@ export default function NewCampaignPage() {
 
       {/* STEP 2: DISCOUNT TYPE */}
       {currentStep === 2 && (
-        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Coins className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Coins className="h-4 w-4 text-primary " />
             Adım 2: İndirim Türü ve Mekanizması
           </h2>
 
@@ -475,13 +475,13 @@ export default function NewCampaignPage() {
               const isSelected = type === t.id;
               return (
                 <button
-                  className={`flex flex-col items-start rounded-xl border p-4 text-left transition-all ${isSelected ? "border-blue-600 bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card hover:border-zinc-300"}`}
+                  className={`flex flex-col items-start rounded-xl border p-4 text-left transition-all ${isSelected ? "border-primary bg-blue-50/70 shadow-xs dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card hover:border-zinc-300"}`}
                   key={t.id}
                   onClick={() => setType(t.id)}
                   type="button"
                 >
                   <div
-                    className={`flex h-8 w-8 items-center justify-center rounded-lg ${isSelected ? "bg-blue-600 text-white" : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"}`}
+                    className={`flex h-8 w-8 items-center justify-center rounded-lg ${isSelected ? "bg-foreground text-background" : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"}`}
                   >
                     <Icon className="h-4 w-4" />
                   </div>
@@ -655,15 +655,15 @@ export default function NewCampaignPage() {
 
       {/* STEP 3: SCOPE & TARGETS */}
       {currentStep === 3 && (
-        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Package className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Package className="h-4 w-4 text-primary " />
             Adım 3: Hedefleme & Kapsam Kısıtlamaları
           </h2>
 
           <div className="grid grid-cols-2 gap-3">
             <button
-              className={`rounded-xl border p-4 text-left transition-all ${scopeMode === "all" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
+              className={`rounded-xl border p-4 text-left transition-all ${scopeMode === "all" ? "border-primary bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
               onClick={() => setScopeMode("all")}
               type="button"
             >
@@ -676,7 +676,7 @@ export default function NewCampaignPage() {
             </button>
 
             <button
-              className={`rounded-xl border p-4 text-left transition-all ${scopeMode === "custom" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
+              className={`rounded-xl border p-4 text-left transition-all ${scopeMode === "custom" ? "border-primary bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
               onClick={() => setScopeMode("custom")}
               type="button"
             >
@@ -794,15 +794,15 @@ export default function NewCampaignPage() {
 
       {/* STEP 4: TRIGGERS & COUPONS */}
       {currentStep === 4 && (
-        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Ticket className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Ticket className="h-4 w-4 text-primary " />
             Adım 4: Tetikleyici & Kupon Kotaları
           </h2>
 
           <div className="grid grid-cols-2 gap-3">
             <button
-              className={`rounded-xl border p-4 text-left transition-all ${triggerType === "Automatic" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
+              className={`rounded-xl border p-4 text-left transition-all ${triggerType === "Automatic" ? "border-primary bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
               onClick={() => setTriggerType("Automatic")}
               type="button"
             >
@@ -817,12 +817,12 @@ export default function NewCampaignPage() {
             </button>
 
             <button
-              className={`rounded-xl border p-4 text-left transition-all ${triggerType === "CouponCode" ? "border-blue-600 bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
+              className={`rounded-xl border p-4 text-left transition-all ${triggerType === "CouponCode" ? "border-primary bg-blue-50/70 dark:border-blue-500 dark:bg-blue-950/40" : "border-border bg-card"}`}
               onClick={() => setTriggerType("CouponCode")}
               type="button"
             >
               <div className="flex items-center gap-1.5 font-semibold text-xs text-zinc-900 dark:text-zinc-100">
-                <Ticket className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <Ticket className="h-4 w-4 text-primary " />
                 Kupon Kodu Gerektiren
               </div>
               <p className="mt-1 text-2xs text-muted-foreground">
@@ -839,7 +839,7 @@ export default function NewCampaignPage() {
                   Birincil Kupon Kodu *
                 </label>
                 <input
-                  className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-blue-500 focus:outline-none dark:text-zinc-200"
+                  className="w-full rounded-xl border border-border bg-card px-3.5 py-2 font-mono text-sm text-zinc-800 uppercase focus:border-ring focus:outline-none dark:text-zinc-200"
                   onChange={(e) =>
                     setInitialCouponCode(e.target.value.toUpperCase())
                   }
@@ -891,9 +891,9 @@ export default function NewCampaignPage() {
 
       {/* STEP 5: REVIEW & CONFIRM */}
       {currentStep === 5 && (
-        <div className="space-y-4 rounded-2xl border border-border bg-card p-6 shadow-xs">
+        <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-xs">
           <h2 className="flex items-center gap-2 font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-            <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Sparkles className="h-4 w-4 text-primary " />
             Adım 5: Kampanya Özeti & Onay
           </h2>
 
@@ -935,7 +935,7 @@ export default function NewCampaignPage() {
               <span className="font-semibold text-zinc-600 dark:text-zinc-400">
                 İndirim & Tetikleyici:
               </span>
-              <div className="font-bold text-sm text-blue-600 dark:text-blue-400">
+              <div className="font-bold text-sm text-primary ">
                 {type === "Percentage" && `%${discountValue} Yüzde İndirimi`}
                 {type === "FixedAmount" &&
                   `₺${discountValue} Sabit Tutar İndirimi`}
@@ -978,7 +978,7 @@ export default function NewCampaignPage() {
 
         {currentStep < 5 ? (
           <button
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+            className="flex items-center gap-2 rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90"
             onClick={handleNext}
             type="button"
           >

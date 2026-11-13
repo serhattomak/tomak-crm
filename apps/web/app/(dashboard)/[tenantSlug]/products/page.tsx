@@ -425,7 +425,7 @@ export default function ProductsPage() {
     <PageContainer className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl">
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-xl bg-foreground px-4 py-3 text-background text-xs shadow-2xl">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
@@ -435,7 +435,7 @@ export default function ProductsPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+            <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
               Ürün & Hizmetler
             </h1>
             <span className="rounded-full bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-bold text-2xs text-blue-700 dark:text-blue-300">
@@ -470,7 +470,7 @@ export default function ProductsPage() {
 
           <PermissionGate permission="Products.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -484,13 +484,13 @@ export default function ProductsPage() {
       {/* 2. KPI Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Products */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-muted-foreground">
                 Toplam Katalog
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
                 {stats?.totalProducts ?? 0}
               </div>
             </div>
@@ -508,13 +508,13 @@ export default function ProductsPage() {
         </div>
 
         {/* Total Inventory Valuation */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-muted-foreground">
                 Toplam Envanter Değeri (Maliyet)
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
                 ₺
                 {(stats?.totalInventoryValue ?? 0).toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
@@ -536,13 +536,13 @@ export default function ProductsPage() {
         </div>
 
         {/* Low Stock Alerts */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-muted-foreground">
                 Kritik Stok Uyarısı
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-amber-700 dark:text-amber-400 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-amber-700 dark:text-amber-400 tracking-tight ">
                 {stats?.lowStockCount ?? 0}
               </div>
             </div>
@@ -556,13 +556,13 @@ export default function ProductsPage() {
         </div>
 
         {/* Active Services & Subscriptions */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
               <span className="font-medium text-xs text-muted-foreground">
                 Hizmet & Abonelikler
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-purple-600 dark:text-purple-400 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-purple-600 dark:text-purple-400 tracking-tight ">
                 {(stats?.servicesCount ?? 0) + (stats?.subscriptionsCount ?? 0)}
               </div>
             </div>
@@ -577,7 +577,7 @@ export default function ProductsPage() {
       </div>
 
       {/* 3. Filters & View Switcher Bar */}
-      <div className="flex flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-4 shadow-xs md:flex-row md:items-center">
+      <div className="flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-4 shadow-xs md:flex-row md:items-center">
         {/* Search */}
         <div className="max-w-md flex-1">
           <Input
@@ -743,7 +743,7 @@ export default function ProductsPage() {
       {loading ? (
         <div className="flex h-64 items-center justify-center rounded-3xl border border-border bg-card shadow-xs">
           <div className="flex flex-col items-center gap-2">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             <span className="font-medium text-xs text-muted-foreground">
               Ürün ve hizmetler yükleniyor...
             </span>
@@ -751,7 +751,7 @@ export default function ProductsPage() {
         </div>
       ) : displayedProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-3xl border border-border border-dashed bg-card p-12 text-center shadow-xs">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-100 text-muted-foreground dark:bg-zinc-800">
             <Package className="h-6 w-6" />
           </div>
           <h3 className="mt-3 font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -763,7 +763,7 @@ export default function ProductsPage() {
           </p>
           <PermissionGate permission="Products.Create">
             <button
-              className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="mt-4 flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -839,7 +839,7 @@ export default function ProductsPage() {
                         />
                         <div>
                           <Link
-                            className="block font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100"
+                            className="block font-bold text-zinc-900 transition-colors group-hover:text-primary dark:group-hover:text-blue-400 dark:text-zinc-100"
                             href={`/${tenantSlug}/products/${p.id}`}
                           >
                             {p.name}
@@ -855,7 +855,7 @@ export default function ProductsPage() {
                             {p.variantsCount > 0 && (
                               <>
                                 <span>•</span>
-                                <span className="text-blue-600 dark:text-blue-400">
+                                <span className="text-primary ">
                                   {p.variantsCount} Varyant
                                 </span>
                               </>
@@ -972,7 +972,7 @@ export default function ProductsPage() {
                               title="Stok Hareketi Ekle"
                               type="button"
                             >
-                              <History className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                              <History className="h-3 w-3 text-primary " />
                               <span>Stok</span>
                             </button>
                           </PermissionGate>
@@ -1018,7 +1018,7 @@ export default function ProductsPage() {
                 <div className="mt-3 flex items-start justify-between gap-2">
                   <div>
                     <Link
-                      className="block font-bold text-sm text-zinc-900 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400 dark:text-zinc-100"
+                      className="block font-bold text-sm text-zinc-900 transition-colors group-hover:text-primary dark:group-hover:text-blue-400 dark:text-zinc-100"
                       href={`/${tenantSlug}/products/${p.id}`}
                     >
                       {p.name}
@@ -1039,7 +1039,7 @@ export default function ProductsPage() {
                 </div>
 
                 {/* Stock & Price Strip */}
-                <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
+                <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50">
                   <div>
                     <span className="font-medium text-3xs text-muted-foreground">
                       Satış Fiyatı
@@ -1085,7 +1085,7 @@ export default function ProductsPage() {
                 </span>
 
                 <Link
-                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-2xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+                  className="flex items-center gap-1 rounded-xl bg-foreground px-3 py-1.5 font-semibold text-background text-xs shadow-2xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
                   href={`/${tenantSlug}/products/${p.id}`}
                 >
                   <span>Detay</span>
@@ -1283,9 +1283,9 @@ function ProductTableThumb({
     return (
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 font-bold text-xs text-zinc-600 shadow-2xs dark:bg-zinc-800 dark:text-zinc-400">
         {product.type === "Physical" ? (
-          <Package className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <Package className="h-5 w-5 text-primary " />
         ) : product.type === "Service" ? (
-          <Zap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <Zap className="h-5 w-5 text-primary " />
         ) : (
           <Box className="h-5 w-5 text-emerald-700 dark:text-emerald-300" />
         )}
@@ -1331,7 +1331,7 @@ function ProductGridCover({
     return (
       <div
         aria-label={`${product.name} için görsel yok`}
-        className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-2 rounded-2xl border border-border border-dashed bg-zinc-50 dark:bg-zinc-800/50"
+        className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-2 rounded-xl border border-border border-dashed bg-zinc-50 dark:bg-zinc-800/50"
         role="img"
       >
         <Package
@@ -1347,7 +1347,7 @@ function ProductGridCover({
   return (
     <button
       aria-label={`${product.name} görsellerini büyüt`}
-      className="group/cover relative block aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-2xl border border-border bg-zinc-100 focus-visible:outline-2 focus-visible:outline-blue-600 dark:bg-zinc-800"
+      className="group/cover relative block aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-xl border border-border bg-zinc-100 focus-visible:outline-2 focus-visible:outline-blue-600 dark:bg-zinc-800"
       onClick={onPreview}
       title="Görselleri büyüt"
       type="button"
@@ -1551,7 +1551,7 @@ function CreateProductModal({
           )}
 
           {/* Type Switcher */}
-          <div className="grid grid-cols-2 gap-2 rounded-2xl bg-zinc-100 p-1 sm:grid-cols-4 dark:bg-zinc-800">
+          <div className="grid grid-cols-2 gap-2 rounded-xl bg-zinc-100 p-1 sm:grid-cols-4 dark:bg-zinc-800">
             <button
               className={`rounded-xl py-2 font-semibold transition-all ${formData.type === "Physical" ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
               onClick={() =>
@@ -1705,7 +1705,7 @@ function CreateProductModal({
                 </div>
                 <button
                   aria-label="SKU oto-üret"
-                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-primary dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, sku: generateSku() })
                   }
@@ -1731,7 +1731,7 @@ function CreateProductModal({
                 </div>
                 <button
                   aria-label="Barkod oto-üret"
-                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-primary dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, barcode: generateBarcode() })
                   }
@@ -1745,7 +1745,7 @@ function CreateProductModal({
           </div>
 
           {/* Pricing & Tax Strip */}
-          <div className="space-y-3 rounded-2xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
+          <div className="space-y-3 rounded-xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
             <div className="flex items-center justify-between">
               <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                 Fiyatlandırma & Vergi
@@ -1826,7 +1826,7 @@ function CreateProductModal({
 
           {/* Inventory Settings (Only for Physical) */}
           {formData.type === "Physical" && (
-            <div className="space-y-3 rounded-2xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
+            <div className="space-y-3 rounded-xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
               <div className="flex items-center justify-between">
                 <h4 className="font-bold text-zinc-900 dark:text-zinc-100">
                   Stok & Envanter Ayarları
@@ -1904,7 +1904,7 @@ function CreateProductModal({
           )}
 
           {/* Images / Tags / Attributes — F1-6 wiring */}
-          <div className="space-y-4 rounded-2xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
+          <div className="space-y-4 rounded-xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
             <ProductImagesField
               images={images}
               onChange={setImages}
@@ -1929,7 +1929,7 @@ function CreateProductModal({
               Açıklama / Detaylar
             </label>
             <textarea
-              className="w-full rounded-xl border border-border bg-zinc-50 px-3.5 py-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-zinc-50 px-3.5 py-2 text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
@@ -1949,7 +1949,7 @@ function CreateProductModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+              className="rounded-xl bg-foreground px-5 py-2 font-semibold text-background shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -2054,7 +2054,7 @@ function QuickStockAdjustModal({
         </div>
 
         {/* Current Stock Banner */}
-        <div className="mb-4 flex items-center justify-between rounded-2xl bg-blue-50/70 dark:bg-blue-950/60 p-3">
+        <div className="mb-4 flex items-center justify-between rounded-xl bg-blue-50/70 dark:bg-blue-950/60 p-3">
           <span className="font-semibold text-blue-900">Mevcut Stok:</span>
           <span className="font-extrabold text-blue-700 text-sm">
             {product.currentStock} {product.unit}
@@ -2159,7 +2159,7 @@ function QuickStockAdjustModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background shadow-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -2318,7 +2318,7 @@ function CategoryManagerModal({
 
           <div className="flex items-center justify-end">
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background shadow-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
               disabled={submitting || !newCatName.trim()}
               type="submit"
             >
@@ -2339,9 +2339,9 @@ function CategoryManagerModal({
               return (
                 <div className="space-y-1.5" key={root.id}>
                   {/* Root Category Row */}
-                  <div className="flex items-center justify-between rounded-2xl border border-border bg-zinc-50/80 p-3 dark:bg-zinc-800/50">
+                  <div className="flex items-center justify-between rounded-xl border border-border bg-zinc-50/80 p-3 dark:bg-zinc-800/50">
                     <div className="flex items-center gap-2">
-                      <FolderTree className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                      <FolderTree className="h-4 w-4 text-primary " />
                       <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
                         {root.name}
                       </span>
@@ -2362,7 +2362,7 @@ function CategoryManagerModal({
                   {/* Subcategories */}
                   {subs.map((sub) => (
                     <div
-                      className="ml-5 flex items-center justify-between rounded-2xl border border-border bg-card p-2.5 shadow-2xs"
+                      className="ml-5 flex items-center justify-between rounded-xl border border-border bg-card p-2.5 shadow-2xs"
                       key={sub.id}
                     >
                       <div className="flex items-center gap-2">

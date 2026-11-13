@@ -113,7 +113,7 @@ export function CariStatement({
           <span className="block font-medium text-2xs text-muted-foreground uppercase tracking-wider">
             Güncel Bakiye
           </span>
-          <span className="font-bold font-mono text-lg text-blue-600 dark:text-blue-400">
+          <span className="font-bold font-mono text-lg text-primary ">
             {cari?.balance.toLocaleString("tr-TR", {
               minimumFractionDigits: 2,
             })}{" "}

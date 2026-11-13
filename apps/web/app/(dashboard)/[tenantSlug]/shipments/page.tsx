@@ -433,7 +433,7 @@ export default function ShipmentsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-foreground text-background shadow-card">
               <Truck className="h-5 w-5" />
             </div>
             <div>
@@ -470,7 +470,7 @@ export default function ShipmentsPage() {
           </button>
 
           <button
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-colors hover:bg-blue-700"
+            className="flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-colors hover:bg-foreground/90"
             onClick={() => setIsCreateShipmentModalOpen(true)}
             type="button"
           >
@@ -482,14 +482,14 @@ export default function ShipmentsPage() {
 
       {/* 2. Top Summary KPI Cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Toplam Sevkiyat</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
               <Package className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-zinc-900 dark:text-zinc-100">
+          <div className="mt-2 font-semibold text-2xl text-zinc-900 dark:text-zinc-100">
             {stats?.totalShipments ?? 0}
           </div>
           <div className="mt-1 text-2xs text-muted-foreground">
@@ -497,14 +497,14 @@ export default function ShipmentsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Hazırlanıyor</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400">
               <Clock className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-amber-700 dark:text-amber-400">
+          <div className="mt-2 font-semibold text-2xl text-amber-700 dark:text-amber-400">
             {stats?.preparingCount ?? 0}
           </div>
           <div className="mt-1 text-2xs text-muted-foreground">
@@ -512,14 +512,14 @@ export default function ShipmentsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Dağıtımda / Yolda</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400">
               <Truck className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-indigo-600 dark:text-indigo-400">
+          <div className="mt-2 font-semibold text-2xl text-indigo-600 dark:text-indigo-400">
             {stats?.inTransitCount ?? 0}
           </div>
           <div className="mt-1 text-2xs text-muted-foreground">
@@ -527,14 +527,14 @@ export default function ShipmentsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-2xs">
           <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Bugün Teslim</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
               <CheckCircle2 className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-emerald-700 dark:text-emerald-400">
+          <div className="mt-2 font-semibold text-2xl text-emerald-700 dark:text-emerald-400">
             {stats?.deliveredTodayCount ?? 0}
           </div>
           <div className="mt-1 text-2xs text-muted-foreground">
@@ -542,14 +542,14 @@ export default function ShipmentsPage() {
           </div>
         </div>
 
-        <div className="col-span-2 rounded-2xl border border-border bg-card p-4 shadow-2xs sm:col-span-1">
+        <div className="col-span-2 rounded-xl border border-border bg-card p-4 shadow-2xs sm:col-span-1">
           <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-muted-foreground">
             <span>Teslimat Başarısı</span>
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-2 font-bold text-2xl text-teal-700 dark:text-teal-400">
+          <div className="mt-2 font-semibold text-2xl text-teal-700 dark:text-teal-400">
             %{stats?.deliverySuccessRatePercentage ?? 100}
           </div>
           <div className="mt-1 text-2xs text-muted-foreground">
@@ -563,7 +563,7 @@ export default function ShipmentsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "outbound"
-              ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
+              ? "border-primary font-semibold text-primary "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => {
@@ -582,7 +582,7 @@ export default function ShipmentsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "returns"
-              ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
+              ? "border-primary font-semibold text-primary "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => {
@@ -601,7 +601,7 @@ export default function ShipmentsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "carriers"
-              ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
+              ? "border-primary font-semibold text-primary "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("carriers")}
@@ -617,7 +617,7 @@ export default function ShipmentsPage() {
         <button
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 font-medium text-xs transition-colors ${
             activeTab === "analytics"
-              ? "border-blue-600 font-semibold text-blue-600 dark:text-blue-400"
+              ? "border-primary font-semibold text-primary "
               : "border-transparent text-muted-foreground hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
           }`}
           onClick={() => setActiveTab("analytics")}
@@ -634,11 +634,11 @@ export default function ShipmentsPage() {
       {activeTab === "outbound" && (
         <div className="space-y-4">
           {/* Filters Bar */}
-          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:focus:bg-zinc-900"
+                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:focus:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Gönderi no, takip no, sipariş, müşteri veya alıcı ara..."
                 type="text"
@@ -697,7 +697,7 @@ export default function ShipmentsPage() {
           </div>
 
           {/* Shipments Table */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
@@ -731,7 +731,7 @@ export default function ShipmentsPage() {
                         colSpan={7}
                       >
                         <div className="flex flex-col items-center justify-center gap-2">
-                          <RefreshCw className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+                          <RefreshCw className="h-6 w-6 animate-spin text-primary " />
                           <span>Kargo gönderileri yükleniyor...</span>
                         </div>
                       </TableCell>
@@ -792,7 +792,7 @@ export default function ShipmentsPage() {
                                 {s.customerName}
                               </span>
                               {s.orderNumber ? (
-                                <span className="font-mono text-2xs text-blue-600 dark:text-blue-400">
+                                <span className="font-mono text-2xs text-primary ">
                                   {s.orderNumber}
                                 </span>
                               ) : (
@@ -829,7 +829,7 @@ export default function ShipmentsPage() {
                                   </button>
                                   {s.trackingUrl && (
                                     <a
-                                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                                      className="text-primary  hover:underline"
                                       href={s.trackingUrl}
                                       rel="noopener noreferrer"
                                       target="_blank"
@@ -956,11 +956,11 @@ export default function ShipmentsPage() {
       {/* --- TAB 2: İADE KARGOLAR (RETURNS) --- */}
       {activeTab === "returns" && (
         <div className="space-y-4">
-          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3.5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
             <div className="relative flex-1">
               <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-blue-500 focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:focus:bg-zinc-900"
+                className="w-full rounded-xl border border-border bg-zinc-50/50 py-2 pr-4 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-ring focus:bg-white focus:outline-hidden dark:bg-zinc-900 dark:focus:bg-zinc-900"
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="İade kodu, müşteri veya iade sebebi ara..."
                 type="text"
@@ -1001,7 +1001,7 @@ export default function ShipmentsPage() {
           </div>
 
           {/* Returns Table */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-2xs">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
@@ -1034,7 +1034,7 @@ export default function ShipmentsPage() {
                         className="py-12 text-center text-muted-foreground"
                         colSpan={7}
                       >
-                        <RefreshCw className="mx-auto h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+                        <RefreshCw className="mx-auto h-6 w-6 animate-spin text-primary " />
                       </TableCell>
                     </TableRow>
                   ) : filteredReturns.length === 0 ? (
@@ -1164,7 +1164,7 @@ export default function ShipmentsPage() {
               entegrasyon şablonları.
             </p>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-3.5 py-2 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90"
               onClick={() => setIsCreateCarrierModalOpen(true)}
               type="button"
             >
@@ -1176,7 +1176,7 @@ export default function ShipmentsPage() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {carriers.map((c) => (
               <div
-                className="relative flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-2xs transition-all hover:border-blue-200"
+                className="relative flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-2xs transition-all hover:border-blue-200"
                 key={c.id}
               >
                 <div>
@@ -1252,7 +1252,7 @@ export default function ShipmentsPage() {
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             {/* Delivery Success Metric */}
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Zamanında Teslimat Başarısı
               </h2>
@@ -1278,7 +1278,7 @@ export default function ShipmentsPage() {
             </div>
 
             {/* Carrier Distribution */}
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 Taşıyıcı Bazlı Kargo Dağılımı
               </h2>
@@ -1310,7 +1310,7 @@ export default function ShipmentsPage() {
             </div>
 
             {/* Return Rate Metric */}
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-2xs">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-2xs">
               <h2 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                 İade & Tersine Lojistik Oranı
               </h2>
@@ -1720,7 +1720,7 @@ function CreateShipmentModal({
                 Açık Adres
               </Label>
               <textarea
-                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:outline-hidden dark:text-zinc-100"
                 id="new-shipment-recipient-address"
                 onChange={(e) => setRecipientAddress(e.target.value)}
                 placeholder="Mahalle, Cadde, Sokak, No, Daire..."
@@ -1759,7 +1759,7 @@ function CreateShipmentModal({
                 Paket İçeriği (Ürün Kalemleri)
               </h3>
               <button
-                className="flex items-center gap-1 font-semibold text-2xs text-blue-600 hover:underline dark:text-blue-400"
+                className="flex items-center gap-1 font-semibold text-2xs text-primary hover:underline "
                 onClick={addItemRow}
                 type="button"
               >
@@ -1826,7 +1826,7 @@ function CreateShipmentModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2002,7 +2002,7 @@ function UpdateStatusModal({
               Açıklama / Durum Notu
             </Label>
             <textarea
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:outline-hidden dark:text-zinc-100"
               id="update-status-description"
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Örn: Kurye dağıtıma çıktı, tahmini teslim 14:00..."
@@ -2020,7 +2020,7 @@ function UpdateStatusModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-1.5 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2073,14 +2073,14 @@ function PrintLabelModal({
         {/* Header (No print) */}
         <div className="flex items-center justify-between border-border border-b px-6 py-4">
           <div className="flex items-center gap-2">
-            <Printer className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Printer className="h-4 w-4 text-primary " />
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Kargo Sevk Etiketi & Barkod Önizleme
             </DialogTitle>
           </div>
           <div className="flex items-center gap-2">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-3.5 py-1.5 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90"
               onClick={handlePrint}
               type="button"
             >
@@ -2171,7 +2171,7 @@ function ShipmentDetailDrawer({
         {/* Content */}
         <div className="flex-1 space-y-5 overflow-y-auto p-6 text-xs">
           {/* Quick Info Grid */}
-          <div className="grid grid-cols-2 gap-3 rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50 dark:bg-zinc-900/60">
+          <div className="grid grid-cols-2 gap-3 rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/50 dark:bg-zinc-900/60">
             <div>
               <span className="text-2xs text-muted-foreground">Müşteri</span>
               <span className="block font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2186,7 +2186,7 @@ function ShipmentDetailDrawer({
             </div>
             <div>
               <span className="text-2xs text-muted-foreground">Takip No</span>
-              <span className="block font-mono font-semibold text-blue-600 dark:text-blue-400">
+              <span className="block font-mono font-semibold text-primary ">
                 {shipment.trackingNumber || "Yok"}
               </span>
             </div>
@@ -2201,9 +2201,9 @@ function ShipmentDetailDrawer({
           </div>
 
           {/* Delivery Address */}
-          <div className="space-y-1.5 rounded-2xl border border-border p-4">
+          <div className="space-y-1.5 rounded-xl border border-border p-4">
             <h3 className="flex items-center gap-1.5 font-bold text-xs text-zinc-900 dark:text-zinc-100">
-              <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+              <MapPin className="h-3.5 w-3.5 text-primary " />
               <span>Teslimat Adresi & Alıcı</span>
             </h3>
             <p className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2223,7 +2223,7 @@ function ShipmentDetailDrawer({
             <h3 className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
               Paket İçeriği ({shipment.items?.length || 0} Kalem)
             </h3>
-            <div className="divide-y divide-zinc-100 rounded-2xl border border-border dark:divide-zinc-800">
+            <div className="divide-y divide-zinc-100 rounded-xl border border-border dark:divide-zinc-800">
               {shipment.items?.map((it) => (
                 <div
                   className="flex items-center justify-between p-3"
@@ -2297,7 +2297,7 @@ function ShipmentDetailDrawer({
             </button>
           )}
           <button
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-foreground py-2.5 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90"
             onClick={onPrintLabel}
             type="button"
           >
@@ -2605,7 +2605,7 @@ function UpdateReturnStatusModal({
               Kalite Kontrol Notları & Açıklama
             </Label>
             <textarea
-              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-blue-500 focus:outline-hidden dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-card px-3 py-2 text-xs text-zinc-900 placeholder:text-muted-foreground focus:border-ring focus:outline-hidden dark:text-zinc-100"
               id="update-return-inspection-notes"
               onChange={(e) => setInspectionNotes(e.target.value)}
               placeholder="Ürün ambalajı incelendi, hasar tespit edilmedi, stoka alındı..."
@@ -2709,7 +2709,7 @@ function CreateCarrierModal({
       >
         <div className="flex items-center justify-between border-border border-b pb-3">
           <div className="flex items-center gap-2">
-            <Building2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <Building2 className="h-4 w-4 text-primary " />
             <DialogTitle className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
               Yeni Taşıyıcı Kargo Firması Ekle
             </DialogTitle>
@@ -2801,7 +2801,7 @@ function CreateCarrierModal({
           <div className="flex items-center gap-2">
             <input
               checked={isDefault}
-              className="h-4 w-4 rounded-sm text-blue-600 dark:text-blue-400"
+              className="h-4 w-4 rounded-sm text-primary "
               id="create-carrier-default-checkbox"
               onChange={(e) => setIsDefault(e.target.checked)}
               type="checkbox"
@@ -2823,7 +2823,7 @@ function CreateCarrierModal({
               İptal
             </button>
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-1.5 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90 disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >

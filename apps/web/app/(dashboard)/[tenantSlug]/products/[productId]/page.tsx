@@ -376,7 +376,7 @@ export default function ProductDetailPage() {
     return (
       <div className="flex h-96 items-center justify-center rounded-3xl border border-border bg-card shadow-xs">
         <div className="flex flex-col items-center gap-2">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           <span className="font-medium text-xs text-muted-foreground">
             Ürün detayları yükleniyor...
           </span>
@@ -430,9 +430,7 @@ export default function ProductDetailPage() {
           <ArrowUpRight className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />
         );
       case "Adjustment":
-        return (
-          <RotateCcw className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-        );
+        return <RotateCcw className="h-3.5 w-3.5 text-primary " />;
       default:
         return (
           <History className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />
@@ -462,7 +460,7 @@ export default function ProductDetailPage() {
     <PageContainer className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-2xl bg-zinc-900 px-4 py-3 text-white text-xs shadow-2xl">
+        <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-xl bg-foreground px-4 py-3 text-background text-xs shadow-2xl">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
           <span className="font-semibold">{toastMessage}</span>
         </div>
@@ -480,7 +478,7 @@ export default function ProductDetailPage() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-100 font-bold text-base text-blue-600 dark:text-blue-400 shadow-xs dark:bg-zinc-800">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-100 font-bold text-base text-primary  shadow-xs dark:bg-zinc-800">
               {product.type === "Physical" ? (
                 <Package className="h-6 w-6" />
               ) : (
@@ -534,7 +532,7 @@ export default function ProductDetailPage() {
                 onClick={() => setIsStockAdjustModalOpen(true)}
                 type="button"
               >
-                <History className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                <History className="h-3.5 w-3.5 text-primary " />
                 <span>Stok Hareketi İşle</span>
               </button>
             </PermissionGate>
@@ -542,7 +540,7 @@ export default function ProductDetailPage() {
 
           <PermissionGate permission="Products.Update">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
               onClick={() => setIsEditModalOpen(true)}
               type="button"
             >
@@ -598,12 +596,12 @@ export default function ProductDetailPage() {
               >
                 {uploadingImages ? (
                   <>
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-600 dark:text-blue-400" />
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-primary " />
                     <span>Yükleniyor...</span>
                   </>
                 ) : (
                   <>
-                    <ImagePlus className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                    <ImagePlus className="h-3.5 w-3.5 text-primary " />
                     <span>Görsel Yükle (JPG/PNG/WebP, 5MB)</span>
                   </>
                 )}
@@ -690,8 +688,8 @@ export default function ProductDetailPage() {
               </h3>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="rounded-2xl bg-blue-50/60 dark:bg-blue-950/60 p-3">
-                  <span className="font-semibold text-3xs text-blue-600 dark:text-blue-400 uppercase">
+                <div className="rounded-xl bg-blue-50/60 dark:bg-blue-950/60 p-3">
+                  <span className="font-semibold text-3xs text-primary  uppercase">
                     Mevcut Stok
                   </span>
                   <div className="mt-1 font-extrabold text-blue-950 text-lg">
@@ -699,7 +697,7 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                <div className="rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
                   <span className="font-semibold text-3xs text-muted-foreground uppercase">
                     Kullanılabilir
                   </span>
@@ -708,7 +706,7 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                <div className="rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
                   <span className="font-semibold text-3xs text-muted-foreground uppercase">
                     Rezerve
                   </span>
@@ -717,7 +715,7 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                <div className="rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
                   <span className="font-semibold text-3xs text-muted-foreground uppercase">
                     Kritik Eşik
                   </span>
@@ -776,7 +774,7 @@ export default function ProductDetailPage() {
         {/* Right Column: Tabbed Views (8 Cols) */}
         <div className="space-y-6 lg:col-span-8">
           {/* Pill Tabs */}
-          <div className="flex flex-wrap items-center gap-1 rounded-2xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
+          <div className="flex flex-wrap items-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-zinc-800/90">
             {tabs.map((tab) => (
               <button
                 className={`rounded-xl px-4 py-2 font-semibold text-xs transition-all ${activeTab === tab.id ? "bg-card text-zinc-900 shadow-xs dark:text-zinc-100" : "text-muted-foreground hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"}`}
@@ -803,7 +801,7 @@ export default function ProductDetailPage() {
                   </span>
                 </div>
                 {(product.seoTitle || product.seoDescription) && (
-                  <div className="space-y-1 rounded-2xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                  <div className="space-y-1 rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
                     {product.seoTitle && (
                       <p className="font-bold text-blue-700 dark:text-blue-300">
                         {product.seoTitle}
@@ -876,7 +874,7 @@ export default function ProductDetailPage() {
 
                     <div className="flex justify-end">
                       <button
-                        className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+                        className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98] disabled:opacity-50"
                         disabled={submittingAdj || quickAdjQty <= 0}
                         type="submit"
                       >
@@ -894,7 +892,7 @@ export default function ProductDetailPage() {
                     Son Stok Hareketleri
                   </h4>
                   <button
-                    className="font-semibold text-blue-600 dark:text-blue-400 text-xs hover:underline"
+                    className="font-semibold text-primary  text-xs hover:underline"
                     onClick={() => setActiveTab("movements")}
                     type="button"
                   >
@@ -910,7 +908,7 @@ export default function ProductDetailPage() {
                   <div className="space-y-2.5">
                     {product.stockMovements.slice(0, 5).map((mov) => (
                       <div
-                        className="flex items-center justify-between rounded-2xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50"
+                        className="flex items-center justify-between rounded-xl bg-zinc-50 p-3 text-xs dark:bg-zinc-800/50"
                         key={mov.id}
                       >
                         <div className="flex items-center gap-3">
@@ -955,7 +953,7 @@ export default function ProductDetailPage() {
                   Ürün Varyantları (Renk, Beden, Model)
                 </h4>
                 <button
-                  className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+                  className="flex items-center gap-1 rounded-xl bg-foreground px-3.5 py-1.5 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
                   onClick={() => setIsAddVariantModalOpen(true)}
                   type="button"
                 >
@@ -1037,7 +1035,7 @@ export default function ProductDetailPage() {
                             <TableCell className="py-3.5 pr-4 pl-2 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
-                                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-500 dark:hover:bg-zinc-800"
+                                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-primary dark:hover:text-blue-400 dark:text-zinc-500 dark:hover:bg-zinc-800"
                                   onClick={() => setEditingVariant(v)}
                                   title="Varyantı Düzenle"
                                   type="button"
@@ -1073,7 +1071,7 @@ export default function ProductDetailPage() {
                 </h4>
                 {product.trackInventory && (
                   <button
-                    className="flex items-center gap-1 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+                    className="flex items-center gap-1 rounded-xl bg-foreground px-3.5 py-1.5 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
                     onClick={() => setIsStockAdjustModalOpen(true)}
                     type="button"
                   >
@@ -1098,7 +1096,7 @@ export default function ProductDetailPage() {
                         {getMovementIcon(mov.movementType)}
                       </div>
 
-                      <div className="flex-1 rounded-2xl border border-border bg-card p-4 shadow-xs">
+                      <div className="flex-1 rounded-xl border border-border bg-card p-4 shadow-xs">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-zinc-900 dark:text-zinc-100">
                             {getMovementLabel(mov.movementType)} (
@@ -1152,7 +1150,7 @@ export default function ProductDetailPage() {
                   Fiyat & Karlılık Simülasyonu
                 </h4>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
+                  <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
                     <span className="font-medium text-2xs text-muted-foreground">
                       Maliyet (Alış)
                     </span>
@@ -1164,11 +1162,11 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
+                  <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
                     <span className="font-medium text-2xs text-muted-foreground">
                       Satış Fiyatı
                     </span>
-                    <div className="mt-1 font-extrabold text-blue-600 dark:text-blue-400 text-lg">
+                    <div className="mt-1 font-extrabold text-primary  text-lg">
                       ₺
                       {product.sellingPrice.toLocaleString("tr-TR", {
                         minimumFractionDigits: 2,
@@ -1176,7 +1174,7 @@ export default function ProductDetailPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/60 p-4">
+                  <div className="rounded-xl bg-emerald-50/70 dark:bg-emerald-950/60 p-4">
                     <span className="font-medium text-2xs text-emerald-800">
                       Net Brüt Kar
                     </span>
@@ -1225,7 +1223,7 @@ export default function ProductDetailPage() {
 
                     return (
                       <div
-                        className="rounded-2xl border border-border bg-card p-4 text-xs shadow-xs transition-all"
+                        className="rounded-xl border border-border bg-card p-4 text-xs shadow-xs transition-all"
                         key={hist.id}
                       >
                         <div className="flex items-center justify-between border-border border-b pb-2.5">
@@ -1590,7 +1588,7 @@ function StockAdjustModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+              className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1694,7 +1692,7 @@ function AddVariantModal({
               Varyant Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -1744,7 +1742,7 @@ function AddVariantModal({
                 Varyant SKU
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, sku: e.target.value })
                 }
@@ -1758,7 +1756,7 @@ function AddVariantModal({
                 Barkod
               </label>
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:bg-zinc-900 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, barcode: e.target.value })
                 }
@@ -1777,7 +1775,7 @@ function AddVariantModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+              className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -1887,7 +1885,7 @@ function EditVariantModal({
               Varyant Adı *
             </label>
             <input
-              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -1934,7 +1932,7 @@ function EditVariantModal({
             <div>
               <Label className="mb-1">SKU</Label>
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, sku: e.target.value })
                 }
@@ -1946,7 +1944,7 @@ function EditVariantModal({
             <div>
               <Label className="mb-1">Barkod</Label>
               <input
-                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
+                className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
                 onChange={(e) =>
                   setFormData({ ...formData, barcode: e.target.value })
                 }
@@ -1960,7 +1958,7 @@ function EditVariantModal({
           <div>
             <Label className="mb-1">Varyant Görsel URL'si (Opsiyonel)</Label>
             <input
-              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-blue-500 focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
+              className="w-full rounded-xl border border-border bg-zinc-50 p-2 text-zinc-900 focus:border-ring focus:bg-white focus:outline-none dark:bg-zinc-800/50 dark:text-zinc-100"
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="https://... (boşsa ana ürün görseli kullanılır)"
               type="url"
@@ -1977,7 +1975,7 @@ function EditVariantModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+              className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
@@ -2194,7 +2192,7 @@ function EditProductModal({
                 </div>
                 <button
                   aria-label="SKU oto-üret"
-                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-primary dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, sku: generateSku() })
                   }
@@ -2219,7 +2217,7 @@ function EditProductModal({
                 </div>
                 <button
                   aria-label="Barkod oto-üret"
-                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                  className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-zinc-50 hover:text-primary dark:hover:text-blue-400 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
                   onClick={() =>
                     setFormData({ ...formData, barcode: generateBarcode() })
                   }
@@ -2314,7 +2312,7 @@ function EditProductModal({
           </div>
 
           {/* Images / Tags / Attributes — F1-6 wiring */}
-          <div className="space-y-4 rounded-2xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
+          <div className="space-y-4 rounded-xl border border-border bg-zinc-50/50 p-4 dark:bg-zinc-800/30">
             <ProductImagesField
               images={images}
               onChange={setImages}
@@ -2350,7 +2348,7 @@ function EditProductModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+              className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98] disabled:opacity-50"
               disabled={submitting}
               type="submit"
             >
