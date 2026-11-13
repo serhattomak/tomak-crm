@@ -4,11 +4,11 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: [
-    "*.trycloudflare.com",
-    "localhost:3000",
-    "127.0.0.1:3000",
-  ],
+  // Next matches these against the request's hostname only (no port, no scheme) —
+  // see next/dist/server/lib/router-utils/block-cross-site-dev.js:105. `localhost`
+  // is already allowed by default, so only 127.0.0.1 needs to be listed here.
+  // Port-suffixed entries never match and silently disable the entry.
+  allowedDevOrigins: ["*.trycloudflare.com", "127.0.0.1"],
   async headers() {
     return [
       {
