@@ -597,7 +597,12 @@ Start-Process -FilePath "$dir\CRM.Api.exe" -WorkingDirectory $dir
 The two environment variables are **not optional**: the exe started bare answers `/health`
 with **401**, because `launchSettings.json` carries `ASPNETCORE_ENVIRONMENT=Development` and a
 `dotnet run` that nobody remembers using. `ASPNETCORE_URLS` is needed too — launchSettings
-points at `:5187` while the app, `next.config.ts` and every doc here assume `:5000`.
+used to point at `:5187` while the app, `next.config.ts` and every doc here assume `:5000`.
+**Fixed 2026-11-13:** launchSettings now points at `:5000`, so a plain `dotnet run` matches
+the Next proxy. The old failure shape was silent: login talks to Supabase directly and works,
+then the first API call — creating a workspace, for example — returns **500** from the Next
+proxy because nothing is listening on `:5000`. `npm run dev:api` always passed `--urls`;
+plain `dotnet run` did not.
 Verify with `/health` returning 200 and a `masstransit-bus` block.
   content.**
 
