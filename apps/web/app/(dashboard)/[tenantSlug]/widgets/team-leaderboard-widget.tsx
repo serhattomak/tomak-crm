@@ -258,7 +258,7 @@ export function TeamLeaderboardWidget() {
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <Trophy className="h-4 w-4" />
             </div>
             <div>
@@ -273,7 +273,7 @@ export function TeamLeaderboardWidget() {
 
           {members.length > 0 && (
             <Badge className="gap-1 text-3xs" variant="warning">
-              <Flame className="h-3 w-3 text-amber-500" />
+              <Flame className="h-3 w-3 text-warning" />
               Yarış Sürüyor
             </Badge>
           )}
@@ -311,7 +311,7 @@ export function TeamLeaderboardWidget() {
                     : 0;
                 return (
                   <div
-                    className="group rounded-lg border border-border/70 p-2.5 transition-all hover:border-border hover:bg-muted/40"
+                    className="group rounded-lg border border-border p-2.5 transition-all hover:border-border hover:bg-muted/60"
                     key={member.id}
                   >
                     <div className="flex items-center justify-between">
@@ -354,9 +354,7 @@ export function TeamLeaderboardWidget() {
                       </div>
                       <span
                         className={`font-semibold text-3xs ${
-                          pct >= 100
-                            ? "text-emerald-500"
-                            : "text-muted-foreground"
+                          pct >= 100 ? "text-success" : "text-muted-foreground"
                         }`}
                       >
                         %{pct}
@@ -371,7 +369,7 @@ export function TeamLeaderboardWidget() {
       </div>
 
       {members.length > 0 && (
-        <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
+        <CardFooter className="justify-center border-border border-t pt-2 pb-3">
           <Link
             className="font-semibold text-primary text-xs transition hover:underline"
             href={`/${activeTenant?.slug || "workspace"}/orders`}

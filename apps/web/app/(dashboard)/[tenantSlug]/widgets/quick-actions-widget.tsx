@@ -52,7 +52,7 @@ interface QuickActionDef {
 const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   {
     actionType: "lead",
-    color: "from-blue-600 to-indigo-600 text-white",
+    color: "bg-accent-soft text-accent-foreground",
     defaultEnabled: true,
     description: "Müşteri adayı kaydı oluştur",
     icon: UserPlus,
@@ -61,7 +61,7 @@ const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   },
   {
     actionType: "deal",
-    color: "from-blue-600 to-cyan-600 text-white",
+    color: "bg-info-soft text-info-ink",
     defaultEnabled: true,
     description: "Pipeline'a yeni anlaşma ekle",
     icon: Briefcase,
@@ -70,7 +70,7 @@ const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   },
   {
     actionType: "task",
-    color: "from-emerald-600 to-teal-600 text-white",
+    color: "bg-success-soft text-success-ink",
     defaultEnabled: true,
     description: "Kendine veya ekibe iş ata",
     icon: CheckSquare,
@@ -79,7 +79,7 @@ const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   },
   {
     actionType: "proposal",
-    color: "from-blue-600 to-pink-600 text-white",
+    color: "bg-warning-soft text-warning-ink",
     defaultEnabled: true,
     description: "PDF şablonuyla teklif oluştur",
     icon: FileSpreadsheet,
@@ -88,7 +88,7 @@ const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   },
   {
     actionType: "customer",
-    color: "from-amber-500 to-orange-600 text-white",
+    color: "bg-warning-soft text-warning-ink",
     defaultEnabled: false,
     description: "Kurumsal veya bireysel müşteri",
     icon: Users,
@@ -97,7 +97,7 @@ const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   },
   {
     actionType: "order",
-    color: "from-indigo-600 to-purple-600 text-white",
+    color: "bg-accent-soft text-accent-foreground",
     defaultEnabled: false,
     description: "Yeni satış siparişi gir",
     icon: ShoppingCart,
@@ -106,7 +106,7 @@ const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   },
   {
     actionType: "meeting",
-    color: "from-sky-600 to-blue-600 text-white",
+    color: "bg-info-soft text-info-ink",
     defaultEnabled: false,
     description: "Müşteri randevusu planla",
     icon: Calendar,
@@ -115,7 +115,7 @@ const ALL_QUICK_ACTIONS: QuickActionDef[] = [
   },
   {
     actionType: "leave",
-    color: "from-rose-600 to-pink-600 text-white",
+    color: "bg-danger-soft text-danger-ink",
     defaultEnabled: false,
     description: "Yıllık veya mazeret izni",
     icon: UserCheck,
@@ -207,7 +207,7 @@ export function QuickActionsWidget({
       {/* Header */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
             <Zap className="h-4 w-4" />
           </div>
           <div>
@@ -280,13 +280,13 @@ export function QuickActionsWidget({
               const Icon = act.icon;
               return (
                 <button
-                  className="group flex items-center gap-3 rounded-lg border border-border/80 bg-card p-3 text-left transition-all duration-150 hover:border-border hover:bg-muted/40 active:scale-[0.98]"
+                  className="group flex items-center gap-3 rounded-lg border border-border bg-card p-3 text-left transition-all duration-150 hover:border-border hover:bg-muted/60 active:scale-[0.98]"
                   key={act.id}
                   onClick={() => onOpenQuickCreate(act.actionType)}
                   type="button"
                 >
                   <div
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${act.color} text-white shadow-2xs`}
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${act.color}`}
                   >
                     <Icon className="h-4 w-4" />
                   </div>
@@ -322,7 +322,7 @@ export function QuickActionsWidget({
         >
           <div className="flex items-center justify-between border-border border-b pb-3">
             <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <div className="flex size-7 items-center justify-center rounded-md bg-muted text-muted-foreground">
                 <Settings2 className="h-4 w-4" />
               </div>
               <div>
@@ -354,8 +354,8 @@ export function QuickActionsWidget({
                 <button
                   className={`flex w-full items-center justify-between rounded-lg border p-2.5 text-left transition-all ${
                     isSelected
-                      ? "border-primary/50 bg-primary/10"
-                      : "border-border/80 bg-muted/30 opacity-70 hover:border-border"
+                      ? "border-ring/50 bg-accent-soft"
+                      : "border-border bg-muted/30 opacity-70 hover:border-border"
                   }`}
                   key={act.id}
                   onClick={() => handleToggleAction(act.id)}
@@ -363,7 +363,7 @@ export function QuickActionsWidget({
                 >
                   <div className="flex items-center gap-2.5">
                     <div
-                      className={`flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br ${act.color} text-white shadow-2xs`}
+                      className={`flex h-7 w-7 items-center justify-center rounded-lg ${act.color}`}
                     >
                       <Icon className="h-3.5 w-3.5" />
                     </div>
@@ -378,7 +378,7 @@ export function QuickActionsWidget({
                   </div>
 
                   <div
-                    className={`flex h-5 w-5 items-center justify-center rounded-md border transition-all ${isSelected ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background"}`}
+                    className={`flex h-5 w-5 items-center justify-center rounded-md border transition-all ${isSelected ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card"}`}
                   >
                     {isSelected && <Check className="h-3 w-3 stroke-[3]" />}
                   </div>

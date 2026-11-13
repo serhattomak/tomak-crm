@@ -86,15 +86,11 @@ export function CustomizeWidgetsModal({
   const getWidgetIcon = (iconName: string) => {
     switch (iconName) {
       case "TrendingUp":
-        return (
-          <TrendingUp className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
-        );
+        return <TrendingUp className="h-4 w-4 text-success-ink" />;
       case "BarChart3":
-        return (
-          <BarChart3 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-        );
+        return <BarChart3 className="h-4 w-4 text-info-ink" />;
       case "Gauge":
-        return <Gauge className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
+        return <Gauge className="h-4 w-4 text-info-ink" />;
       case "Filter":
         return (
           <Filter className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
@@ -104,29 +100,19 @@ export function CustomizeWidgetsModal({
           <Briefcase className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
         );
       case "PieChart":
-        return (
-          <PieChart className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-        );
+        return <PieChart className="h-4 w-4 text-accent-foreground" />;
       case "CheckSquare":
-        return (
-          <CheckSquare className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
-        );
+        return <CheckSquare className="h-4 w-4 text-success-ink" />;
       case "Calendar":
-        return (
-          <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-        );
+        return <Calendar className="h-4 w-4 text-info-ink" />;
       case "Clock":
-        return <Clock className="h-4 w-4 text-amber-700 dark:text-amber-400" />;
+        return <Clock className="h-4 w-4 text-warning-ink" />;
       case "Trophy":
-        return (
-          <Trophy className="h-4 w-4 text-amber-700 dark:text-amber-400" />
-        );
+        return <Trophy className="h-4 w-4 text-warning-ink" />;
       case "FileSpreadsheet":
-        return (
-          <FileSpreadsheet className="h-4 w-4 text-amber-700 dark:text-amber-400" />
-        );
+        return <FileSpreadsheet className="h-4 w-4 text-warning-ink" />;
       case "Zap":
-        return <Zap className="h-4 w-4 text-amber-500 dark:text-amber-400" />;
+        return <Zap className="h-4 w-4 text-warning" />;
       default:
         return (
           <SlidersHorizontal className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
@@ -174,7 +160,7 @@ export function CustomizeWidgetsModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-border/80 border-b p-4 sm:p-5">
+        <div className="flex shrink-0 items-center justify-between border-border border-b p-4 sm:p-5">
           <div className="flex min-w-0 items-center gap-2.5">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
               <SlidersHorizontal className="h-4 w-4" />
@@ -206,7 +192,7 @@ export function CustomizeWidgetsModal({
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="space-y-2.5 border-border/80 border-b bg-muted/30 p-4">
+        <div className="space-y-2.5 border-border border-b bg-muted/30 p-4">
           <div className="relative">
             <Search className="absolute top-2.5 left-3 h-3.5 w-3.5 text-muted-foreground" />
             <Input
@@ -245,7 +231,7 @@ export function CustomizeWidgetsModal({
 
             return (
               <div
-                className={`flex items-center justify-between gap-3 rounded-lg border p-3 transition-colors ${isActive ? "border-primary/40 bg-primary/5" : "border-border/70 bg-card hover:border-border"}`}
+                className={`flex items-center justify-between gap-3 rounded-lg border p-3 transition-colors ${isActive ? "border-primary/40 bg-primary/5" : "border-border bg-card hover:border-border"}`}
                 key={widget.id}
               >
                 <div className="flex min-w-0 items-start gap-2.5">
@@ -282,7 +268,7 @@ export function CustomizeWidgetsModal({
                     <div className="w-4" />
                   )}
 
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-background">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border bg-card">
                     {getWidgetIcon(widget.iconName)}
                   </div>
                   <div className="min-w-0">
@@ -310,7 +296,7 @@ export function CustomizeWidgetsModal({
                     type="button"
                   >
                     <div
-                      className={`h-4 w-4 transform rounded-full bg-background shadow-xs transition-transform duration-200 ${
+                      className={`h-4 w-4 transform rounded-full bg-card shadow-xs transition-transform duration-200 ${
                         isActive ? "translate-x-4" : "translate-x-0"
                       }`}
                     />
@@ -322,7 +308,7 @@ export function CustomizeWidgetsModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-border/80 border-t p-4">
+        <div className="flex items-center justify-between border-border border-t p-4">
           <Button
             className="gap-1.5 text-muted-foreground"
             onClick={onResetDefaults}

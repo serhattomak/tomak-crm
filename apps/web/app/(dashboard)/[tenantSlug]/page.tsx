@@ -72,7 +72,7 @@ export default function WorkspaceOverviewPage() {
   } = useDashboardLayout(tenantSlug, activeTab, showToast);
 
   return (
-    <PageContainer className="space-y-6 overflow-x-clip">
+    <PageContainer className="space-y-5 overflow-x-clip">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="slide-in-from-top-4 fixed top-6 right-6 z-50 flex animate-in items-center gap-2 rounded-lg border border-border bg-popover px-4 py-3 text-popover-foreground text-xs shadow-xl">

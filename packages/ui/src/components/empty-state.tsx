@@ -20,14 +20,14 @@ function EmptyState({
   return (
     <div
       className={cn(
-        "flex min-h-[260px] flex-col items-center justify-center rounded-lg border border-border/80 border-dashed bg-card/40 p-8 text-center transition-colors",
+        "flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-border border-dashed bg-muted/30 p-8 text-center transition-colors",
         className
       )}
       data-slot="empty-state"
       {...props}
     >
       {Icon ? (
-        <div className="flex size-10 items-center justify-center rounded-lg border border-border/80 bg-muted/60 text-muted-foreground shadow-2xs">
+        <div className="flex size-10 items-center justify-center rounded-lg bg-muted text-muted-foreground">
           <Icon className="size-5" />
         </div>
       ) : null}

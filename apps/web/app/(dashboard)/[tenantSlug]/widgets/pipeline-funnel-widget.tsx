@@ -40,13 +40,15 @@ export function PipelineFunnelWidget({
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Stage colour is a stored hex (roadmap #25: a data contract, not a design
+  // token). It can only be rendered through `style`; the old `bg-[${color}]`
+  // class never reached the stylesheet, so the funnel had no colour at all.
   const stageColors = [
-    "bg-blue-500",
-    "bg-indigo-500",
-    "bg-blue-500",
-    "bg-blue-500",
-    "bg-emerald-500",
-    "bg-amber-500",
+    "var(--chart-1)",
+    "var(--chart-2)",
+    "var(--chart-3)",
+    "var(--chart-4)",
+    "var(--chart-5)",
   ];
 
   const fetchPipelineStages = useCallback(async () => {
@@ -77,9 +79,10 @@ export function PipelineFunnelWidget({
             sumCount += count;
             const pct = Math.max(10, Math.round((count / maxDeals) * 100));
             return {
-              color: s.color
-                ? `bg-[${s.color}]`
-                : stageColors[idx % stageColors.length] || "bg-indigo-500",
+              color:
+                s.color ||
+                stageColors[idx % stageColors.length] ||
+                "var(--chart-1)",
               conversion: `${pct}%`,
               count,
               id: s.id,
@@ -111,7 +114,7 @@ export function PipelineFunnelWidget({
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <Filter className="h-4 w-4" />
             </div>
             <div>
@@ -146,13 +149,14 @@ export function PipelineFunnelWidget({
             <div className="space-y-2 pt-1">
               {stages.map((stage) => (
                 <div
-                  className="group rounded-lg p-2 transition-colors hover:bg-muted/40"
+                  className="group rounded-lg p-2 transition-colors hover:bg-muted/60"
                   key={stage.id}
                 >
                   <div className="mb-1 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
                       <span
-                        className={`h-2.5 w-2.5 rounded-full ${stage.color} flex-none`}
+                        className="size-2.5 flex-none rounded-full"
+                        style={{ backgroundColor: stage.color }}
                       />
                       <span className="font-semibold text-foreground">
                         {stage.name}
@@ -174,8 +178,11 @@ export function PipelineFunnelWidget({
                   {/* Progress bar representing funnel width */}
                   <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
                     <div
-                      className={`h-full rounded-full ${stage.color} transition-all duration-250`}
-                      style={{ width: stage.conversion }}
+                      className="h-full rounded-full"
+                      style={{
+                        backgroundColor: stage.color,
+                        width: stage.conversion,
+                      }}
                     />
                   </div>
                 </div>
@@ -201,7 +208,7 @@ export function PipelineFunnelWidget({
       </div>
 
       {hasData && (
-        <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
+        <CardFooter className="justify-center border-border border-t pt-2 pb-3">
           <Link
             className="flex items-center justify-center gap-1 font-semibold text-primary text-xs transition hover:underline"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}

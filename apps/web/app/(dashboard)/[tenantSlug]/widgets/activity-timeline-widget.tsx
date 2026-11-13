@@ -204,21 +204,13 @@ export function ActivityTimelineWidget() {
   const getActionIcon = (type: ActivityItem["type"]) => {
     switch (type) {
       case "deal":
-        return (
-          <DollarSign className="h-3 w-3 text-emerald-700 dark:text-emerald-400" />
-        );
+        return <DollarSign className="h-3 w-3 text-success-ink" />;
       case "call":
-        return (
-          <PhoneCall className="h-3 w-3 text-blue-600 dark:text-blue-400" />
-        );
+        return <PhoneCall className="h-3 w-3 text-info-ink" />;
       case "lead":
-        return (
-          <UserPlus className="h-3 w-3 text-blue-600 dark:text-blue-400" />
-        );
+        return <UserPlus className="h-3 w-3 text-info-ink" />;
       case "task":
-        return (
-          <FileSpreadsheet className="h-3 w-3 text-amber-700 dark:text-amber-400" />
-        );
+        return <FileSpreadsheet className="h-3 w-3 text-warning-ink" />;
       default:
         return <Clock className="h-3 w-3 text-muted-foreground" />;
     }
@@ -229,7 +221,7 @@ export function ActivityTimelineWidget() {
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <Clock className="h-4 w-4" />
             </div>
             <div>
@@ -287,7 +279,7 @@ export function ActivityTimelineWidget() {
                     </AvatarFallback>
                   </Avatar>
 
-                  <div className="flex-1 rounded-lg border border-border/70 bg-card p-2.5 transition-colors hover:bg-muted/40">
+                  <div className="flex-1 rounded-lg border border-border bg-card p-2.5 transition-colors hover:bg-muted/60">
                     <div className="flex items-center justify-between gap-1">
                       <div className="flex items-center gap-1.5 font-semibold text-foreground">
                         {getActionIcon(act.type)}
@@ -312,7 +304,7 @@ export function ActivityTimelineWidget() {
       </div>
 
       {activities.length > 0 && (
-        <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
+        <CardFooter className="justify-center border-border border-t pt-2 pb-3">
           <Link
             className="font-semibold text-primary text-xs transition hover:underline"
             href={`/${activeTenant?.slug || "workspace"}/pipelines`}

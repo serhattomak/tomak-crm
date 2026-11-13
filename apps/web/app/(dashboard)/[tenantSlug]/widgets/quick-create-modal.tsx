@@ -200,9 +200,9 @@ export function QuickCreateModal({
         showCloseButton={false}
       >
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-border/80 border-b p-4 sm:p-5">
+        <div className="flex shrink-0 items-center justify-between border-border border-b p-4 sm:p-5">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
               {type === "lead" && <UserPlus className="h-4.5 w-4.5" />}
               {type === "deal" && <Briefcase className="h-4.5 w-4.5" />}
               {type === "task" && <CheckSquare className="h-4.5 w-4.5" />}
@@ -370,7 +370,7 @@ export function QuickCreateModal({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-2 border-border/80 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
             <Button onClick={onClose} size="sm" type="button" variant="outline">
               Vazgeç
             </Button>

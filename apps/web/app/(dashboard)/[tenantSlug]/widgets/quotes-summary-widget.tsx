@@ -122,7 +122,7 @@ export function QuotesSummaryWidget() {
       <div>
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <FileSpreadsheet className="h-4 w-4" />
             </div>
             <div>
@@ -149,7 +149,7 @@ export function QuotesSummaryWidget() {
         <CardContent>
           {/* Quick Stats Pills */}
           <div className="mb-3.5 grid grid-cols-3 gap-2">
-            <div className="rounded-lg border border-border/80 bg-muted/40 p-2 text-center">
+            <div className="rounded-lg bg-muted/60 p-2 text-center">
               <span className="block font-medium text-3xs text-muted-foreground uppercase">
                 Onay Bekleyen
               </span>
@@ -157,7 +157,7 @@ export function QuotesSummaryWidget() {
                 {quoteStats?.pendingApprovalCount ?? 0}
               </span>
             </div>
-            <div className="rounded-lg border border-border/80 bg-muted/40 p-2 text-center">
+            <div className="rounded-lg bg-muted/60 p-2 text-center">
               <span className="block font-medium text-3xs text-muted-foreground uppercase">
                 Müşteride
               </span>
@@ -165,11 +165,11 @@ export function QuotesSummaryWidget() {
                 {quoteStats?.sentCount ?? 0}
               </span>
             </div>
-            <div className="rounded-lg border border-border/80 bg-muted/40 p-2 text-center">
+            <div className="rounded-lg bg-muted/60 p-2 text-center">
               <span className="block font-medium text-3xs text-muted-foreground uppercase">
                 Kabul Edilen
               </span>
-              <span className="font-bold text-emerald-700 text-xs dark:text-emerald-300">
+              <span className="font-bold text-success-ink text-xs tabular-nums">
                 {quoteStats?.acceptedCount ?? 0}
               </span>
             </div>
@@ -199,7 +199,7 @@ export function QuotesSummaryWidget() {
             <div className="space-y-1.5">
               {quotes.map((q) => (
                 <div
-                  className="flex items-center justify-between rounded-lg border border-border/80 bg-card p-2.5 transition-colors hover:bg-muted/40"
+                  className="flex items-center justify-between rounded-lg border border-border bg-card p-2.5 transition-colors hover:bg-muted/60"
                   key={q.id}
                 >
                   <div className="truncate pr-2">
@@ -235,7 +235,7 @@ export function QuotesSummaryWidget() {
         </CardContent>
       </div>
 
-      <CardFooter className="justify-center border-border/80 border-t pt-2 pb-3">
+      <CardFooter className="justify-center border-border border-t pt-2 pb-3">
         <Link
           className="inline-flex items-center gap-1.5 font-semibold text-primary text-xs transition hover:underline"
           href={`/${activeTenant?.slug || "workspace"}/quotes`}
