@@ -471,7 +471,7 @@ export function NotificationCenter({
             {unreadCount > 0 ? (
               <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-600 ring-2 ring-white dark:ring-zinc-900" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-card" />
               </span>
             ) : null}
           </button>

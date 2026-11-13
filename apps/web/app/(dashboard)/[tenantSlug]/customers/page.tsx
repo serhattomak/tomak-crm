@@ -232,7 +232,7 @@ export default function CustomersPage() {
   };
 
   return (
-    <PageContainer className="space-y-6">
+    <PageContainer className="space-y-5">
       {/* 1. Header */}
       <PageHeader
         actions={

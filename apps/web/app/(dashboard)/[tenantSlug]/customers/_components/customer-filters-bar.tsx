@@ -32,6 +32,10 @@ interface CustomerFiltersBarProps {
   viewMode: "table" | "grid";
 }
 
+/**
+ * Customer toolbar — no card wrapper. The table below is the single surface;
+ * the toolbar sits on the shell like a tool row (spec §5, Tabs).
+ */
 export function CustomerFiltersBar({
   search,
   onSearchChange,
@@ -51,43 +55,40 @@ export function CustomerFiltersBar({
   );
 
   return (
-    <div className="flex flex-col justify-between gap-3 rounded-lg border border-border/80 bg-card p-3 shadow-2xs md:flex-row md:items-center">
-      {/* Search Input */}
-      <div className="max-w-md flex-1">
+    <div className="flex flex-col justify-between gap-2.5 md:flex-row md:items-center">
+      <div className="w-full md:max-w-xs">
         <Input
-          leftIcon={<Search className="h-4 w-4" />}
+          className="h-8"
+          leftIcon={<Search className="size-3.5" />}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Müşteri adı, e-posta, telefon veya şehir ara..."
+          placeholder="Müşteri, e-posta, telefon veya şehir ara…"
           value={search}
         />
       </div>
 
-      {/* Filter Dropdowns & View Mode */}
       <div className="flex flex-wrap items-center gap-2">
-        {/* Type Filter */}
-        <div className="w-32 sm:w-36">
+        <div className="w-40">
           <Select
             onValueChange={onTypeFilterChange}
             value={typeFilter || "all"}
           >
-            <SelectTrigger className="h-9 text-xs">
+            <SelectTrigger className="h-8 text-xs">
               <SelectValue placeholder="Tüm Tipler" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tüm Tipler</SelectItem>
-              <SelectItem value="Company">Kurumsal (Şirket)</SelectItem>
-              <SelectItem value="Individual">Bireysel (Şahıs)</SelectItem>
+              <SelectItem value="Company">Kurumsal</SelectItem>
+              <SelectItem value="Individual">Bireysel</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        {/* Status Filter */}
-        <div className="w-32 sm:w-36">
+        <div className="w-40">
           <Select
             onValueChange={onStatusFilterChange}
             value={statusFilter || "all"}
           >
-            <SelectTrigger className="h-9 text-xs">
+            <SelectTrigger className="h-8 text-xs">
               <SelectValue placeholder="Tüm Durumlar" />
             </SelectTrigger>
             <SelectContent>
@@ -100,69 +101,75 @@ export function CustomerFiltersBar({
           </Select>
         </div>
 
-        {/* Tier Filter */}
-        <div className="w-32 sm:w-36">
+        <div className="w-40">
           <Select
             onValueChange={onTierFilterChange}
             value={tierFilter || "all"}
           >
-            <SelectTrigger className="h-9 text-xs">
+            <SelectTrigger className="h-8 text-xs">
               <SelectValue placeholder="Tüm Segmentler" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tüm Segmentler</SelectItem>
               <SelectItem value="VIP">VIP</SelectItem>
               <SelectItem value="Enterprise">Enterprise</SelectItem>
-              <SelectItem value="SME">KOBİ (SME)</SelectItem>
+              <SelectItem value="SME">KOBİ</SelectItem>
               <SelectItem value="Standard">Standart</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        {/* Reset Filters */}
-        {hasActiveFilters && (
+        {hasActiveFilters ? (
           <Button
-            className="gap-1 text-destructive hover:bg-destructive/10 hover:text-destructive"
+            className="gap-1 text-danger-ink hover:bg-danger-soft hover:text-danger-ink"
             onClick={onResetFilters}
             size="sm"
             type="button"
-            variant="outline"
+            variant="ghost"
           >
-            <RotateCcw className="h-3 w-3" />
+            <RotateCcw className="size-3" />
             <span>Sıfırla</span>
           </Button>
-        )}
+        ) : null}
 
-        {/* Export CSV */}
         <Button
-          className="gap-1 text-xs"
+          className="gap-1.5"
           onClick={onExport}
           size="sm"
-          title="CSV Olarak İndir"
+          title="CSV olarak indir"
           type="button"
           variant="outline"
         >
-          <Download className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">Dışa Aktar</span>
+          <Download className="size-3.5" />
+          <span className="hidden sm:inline">Dışa aktar</span>
         </Button>
 
-        {/* View Mode Toggle */}
-        <div className="flex items-center rounded-md border border-border/80 bg-muted/60 p-0.5">
+        <div className="flex items-center rounded-lg bg-muted p-[3px]">
           <button
-            className={`rounded p-1 transition-all ${viewMode === "table" ? "bg-card text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground"}`}
+            aria-pressed={viewMode === "table"}
+            className={`flex size-6 items-center justify-center rounded-md transition-colors ${
+              viewMode === "table"
+                ? "bg-card text-foreground shadow-card"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
             onClick={() => onViewModeChange("table")}
-            title="Tablo Görünümü"
+            title="Tablo görünümü"
             type="button"
           >
-            <TableIcon className="h-3.5 w-3.5" />
+            <TableIcon className="size-3.5" />
           </button>
           <button
-            className={`rounded p-1 transition-all ${viewMode === "grid" ? "bg-card text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground"}`}
+            aria-pressed={viewMode === "grid"}
+            className={`flex size-6 items-center justify-center rounded-md transition-colors ${
+              viewMode === "grid"
+                ? "bg-card text-foreground shadow-card"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
             onClick={() => onViewModeChange("grid")}
-            title="Kart Görünümü"
+            title="Kart görünümü"
             type="button"
           >
-            <LayoutGrid className="h-3.5 w-3.5" />
+            <LayoutGrid className="size-3.5" />
           </button>
         </div>
       </div>

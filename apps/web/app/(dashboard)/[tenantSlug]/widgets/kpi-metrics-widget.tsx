@@ -160,33 +160,33 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
         const Icon = m.icon;
         return (
           <Card
-            className="group relative flex flex-col justify-between p-4 transition-all duration-150 hover:border-border hover:shadow-xs"
+            className="group relative flex flex-col justify-between p-4"
             key={m.id}
           >
             <div className="flex items-start justify-between gap-2">
-              <div className="space-y-1">
-                <span className="font-medium text-muted-foreground text-xs">
+              <div className="min-w-0 space-y-1.5">
+                <span className="block truncate font-semibold text-3xs text-muted-foreground uppercase tracking-wider">
                   {m.title}
                 </span>
-                <div className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
-                  {isLoading ? <Skeleton className="h-8 w-28" /> : m.value}
+                <div className="font-semibold text-2xl text-foreground tracking-tight tabular-nums">
+                  {isLoading ? <Skeleton className="h-7 w-28" /> : m.value}
                 </div>
               </div>
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/50 text-foreground shadow-2xs">
-                <Icon className="h-4 w-4" />
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                <Icon className="size-3.5" />
               </div>
             </div>
 
-            <div className="mt-3.5 flex items-center justify-between border-border/60 border-t pt-2.5">
+            <div className="mt-3 flex items-center justify-between border-border border-t pt-2.5">
               <div className="flex min-w-0 items-center gap-1.5">
                 <Badge
                   className="px-1.5 py-0.5 text-3xs"
                   variant={m.isPositive ? "success" : "warning"}
                 >
                   {m.isPositive ? (
-                    <ArrowUpRight className="h-3 w-3" />
+                    <ArrowUpRight className="size-3" />
                   ) : (
-                    <ArrowDownRight className="h-3 w-3" />
+                    <ArrowDownRight className="size-3" />
                   )}
                   {m.change}
                 </Badge>
@@ -195,13 +195,13 @@ export function KpiMetricsWidget({ dateRange }: KpiMetricsWidgetProps) {
                 </span>
               </div>
 
-              {/* Linear-style Sparkline Visualizer */}
-              <div className="flex h-4.5 shrink-0 items-end gap-0.5 pl-2">
+              {/* Sparkline */}
+              <div className="flex h-4 shrink-0 items-end gap-0.5 pl-2">
                 {m.sparkline.map((val, idx) => {
                   const heightPct = Math.max(20, Math.min(100, val));
                   return (
                     <div
-                      className="w-1 rounded-xs bg-primary/40 transition-all group-hover:bg-primary/80"
+                      className="w-1 rounded-xs bg-primary/40"
                       key={idx}
                       style={{ height: `${heightPct}%` }}
                     />

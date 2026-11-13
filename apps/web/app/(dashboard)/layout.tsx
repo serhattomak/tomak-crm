@@ -1,6 +1,7 @@
-/* Dashboard workspace shell — dual-rail navigation + canonical content viewport.
-   Padding is owned by `PageContainer`; this layout provides the scroll viewport
-   and the mobile bottom-nav clearance only. System: docs/crm-ui-standards.md (ADR-0004). */
+/* Dashboard workspace shell — one floating card: 232px sidebar + top bar +
+   scroll viewport. System: .scratch/ui-refresh-2026-11/spec.md (shell §4).
+   Padding is owned by `PageContainer`; this layout only provides the shell and
+   the mobile bottom-nav clearance. */
 "use client";
 
 import { Toaster } from "@workspace/ui/components/sonner";
@@ -16,17 +17,18 @@ import {
 } from "react";
 import { CommandPalette } from "@/components/command-palette";
 import { DashboardHeader } from "@/components/layout/dashboard-header";
-import { HubRail } from "@/components/layout/hub-rail";
 import { KeyboardShortcutsListener } from "@/components/layout/keyboard-shortcuts-listener";
 import { MobileBottomNav, MobileDrawer } from "@/components/layout/mobile-nav";
 import {
   type NavigationHub,
   getActiveHubFromPathname,
+  getHubNavItems,
   getNavigationHubs,
 } from "@/components/layout/nav-config";
-import { SubNavRail } from "@/components/layout/sub-nav-rail";
+import { Sidebar } from "@/components/layout/sidebar";
+import { WorkspaceTopBar } from "@/components/layout/workspace-top-bar";
 import { ShortcutsHelpModal } from "@/components/shortcuts-help-modal";
-import { LabelProvider } from "@/lib/labels/label-context";
+import { LabelProvider, useLabels } from "@/lib/labels/label-context";
 import { RealtimeNotificationProvider } from "@/lib/notifications/realtime-notification-context";
 import { PermissionProvider } from "@/lib/permissions/permission-context";
 
@@ -101,9 +103,23 @@ function DashboardLayoutInner({
   }, [pathname, tenantSlug]);
 
   const tHubs = useTranslations("hubs");
+  const tNav = useTranslations("navigation");
+  const { getModuleDisplayName, isModuleEnabled } = useLabels();
   const navigationHubs = useMemo(() => getNavigationHubs(tHubs), [tHubs]);
   const currentHubMeta =
-    navigationHubs.find((h) => h.id === activeHub) || navigationHubs[0]!;
+    navigationHubs.find((hub) => hub.id === activeHub) || navigationHubs[0]!;
+
+  const items = useMemo(
+    () =>
+      getHubNavItems(
+        activeHub,
+        tenantSlug,
+        tNav,
+        getModuleDisplayName,
+        isModuleEnabled
+      ),
+    [activeHub, getModuleDisplayName, isModuleEnabled, tenantSlug, tNav]
+  );
 
   const handleOpenCommandPalette = useCallback(() => {
     setIsCommandPaletteOpen(true);
@@ -129,10 +145,6 @@ function DashboardLayoutInner({
     setIsMobileDrawerOpen(false);
   }, []);
 
-  const handleExpandSidebar = useCallback(() => {
-    setSidebarCollapsedState(false);
-  }, [setSidebarCollapsedState]);
-
   const handleToggleCollapse = useCallback(() => {
     setSidebarCollapsedState(!isSidebarCollapsed);
   }, [isSidebarCollapsed, setSidebarCollapsedState]);
@@ -149,7 +161,7 @@ function DashboardLayoutInner({
 
   return (
     <RealtimeNotificationProvider tenantSlug={tenantSlug}>
-      <div className="flex h-screen w-full flex-col overflow-hidden bg-muted/40 font-sans text-foreground antialiased md:flex-row md:gap-3 md:p-3 print:m-0 print:block print:h-auto print:overflow-visible print:bg-background print:p-0">
+      <div className="flex h-screen w-full flex-col overflow-hidden bg-background font-sans text-foreground antialiased md:p-2.5 print:m-0 print:block print:h-auto print:overflow-visible print:bg-background print:p-0">
         {/* Mobile Header Bar */}
         <DashboardHeader
           mounted={mounted}
@@ -168,35 +180,35 @@ function DashboardLayoutInner({
           tenantSlug={tenantSlug}
         />
 
-        {/* Desktop Left Collapsible Dual-Rail Workspace Navigation */}
-        <aside className="relative z-30 hidden shrink-0 rounded-lg border border-border/80 bg-card shadow-2xs md:flex print:hidden">
-          {/* Primary Left Hub Rail (w-16 / 64px) */}
-          <HubRail
+        {/* One floating shell: sidebar + top bar + content */}
+        <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden bg-card md:rounded-2xl md:border md:border-border md:shadow-shell print:block print:h-auto print:overflow-visible print:rounded-none print:border-0 print:shadow-none">
+          <Sidebar
             activeHub={activeHub}
-            hubs={navigationHubs}
-            isSidebarCollapsed={isSidebarCollapsed}
-            mounted={mounted}
-            onExpandSidebar={handleExpandSidebar}
-            onSelectHub={handleSelectHub}
-            tenantSlug={tenantSlug}
-          />
-
-          {/* Secondary Sub-Navigation Rail (Collapsible) */}
-          <SubNavRail
-            activeHub={activeHub}
+            collapsed={isSidebarCollapsed}
             currentHubMeta={currentHubMeta}
-            isSidebarCollapsed={isSidebarCollapsed}
-            onOpenCommandPalette={handleOpenCommandPalette}
+            hubs={navigationHubs}
+            items={items}
             onOpenShortcutsHelp={handleOpenShortcutsHelp}
+            onSelectHub={handleSelectHub}
             onToggleCollapse={handleToggleCollapse}
             tenantSlug={tenantSlug}
           />
-        </aside>
 
-        {/* Main Content Viewport Canvas */}
-        <main className="flex min-w-0 flex-1 flex-col overflow-y-auto rounded-none border-0 border-border/80 bg-card shadow-none md:rounded-lg md:border md:shadow-2xs print:block print:h-auto print:overflow-visible print:rounded-none print:border-none print:p-0 print:shadow-none">
-          <div className="flex-1 pb-24 md:pb-0 print:p-0">{children}</div>
-        </main>
+          <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
+            <WorkspaceTopBar
+              collapsed={isSidebarCollapsed}
+              hubName={currentHubMeta.name}
+              items={items}
+              onOpenCommandPalette={handleOpenCommandPalette}
+              onOpenShortcutsHelp={handleOpenShortcutsHelp}
+              onToggleCollapse={handleToggleCollapse}
+            />
+
+            <div className="min-h-0 flex-1 overflow-y-auto pb-24 md:pb-0 print:overflow-visible print:pb-0">
+              {children}
+            </div>
+          </main>
+        </div>
 
         {/* Mobile Bottom Navigation */}
         <MobileBottomNav
