@@ -131,7 +131,7 @@ function QuoteExpiryBadge({ validUntil }: { validUntil?: string }) {
   }
   if (isExpiringSoon) {
     return (
-      <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-3xs text-amber-700 dark:text-amber-400 dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
+      <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2 py-0.5 font-bold text-3xs text-warning-ink dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
         <Clock className="h-3 w-3" />
         Son 3 gün
       </span>
@@ -374,7 +374,7 @@ export default function QuotesPage() {
 
           <PermissionGate permission="Quotes.Create">
             <button
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-[0.99]"
+              className="inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90 active:scale-[0.99]"
               onClick={() => setIsCreateOpen(true)}
               type="button"
             >
@@ -422,7 +422,7 @@ export default function QuotesPage() {
               <span className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
                 %{stats?.conversionRate || 0}
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-bold text-3xs text-emerald-700 dark:text-emerald-300">
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 font-bold text-3xs text-success-ink">
                 <TrendingUp className="h-3 w-3" />
                 {stats?.acceptedCount || 0} Sipariş
               </span>
@@ -447,7 +447,7 @@ export default function QuotesPage() {
             <div className="font-extrabold text-2xl text-zinc-900 tracking-tight dark:text-zinc-100">
               {stats?.pendingApprovalCount || 0}
             </div>
-            <p className="mt-1 font-medium text-2xs text-amber-700 dark:text-amber-400">
+            <p className="mt-1 font-medium text-2xs text-warning-ink">
               İskonto / limit eşiği aşan teklifler
             </p>
           </div>
@@ -501,7 +501,7 @@ export default function QuotesPage() {
               <button
                 className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-1.5 font-semibold text-xs transition-all ${
                   isSelected
-                    ? "bg-blue-600 text-white shadow-xs"
+                    ? "bg-foreground text-background shadow-xs"
                     : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:bg-zinc-800/50 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 }`}
                 key={tab.key}
@@ -512,7 +512,7 @@ export default function QuotesPage() {
                 <span
                   className={`rounded-full px-1.5 py-0.2 font-bold text-3xs ${
                     isSelected
-                      ? "bg-blue-600 text-white"
+                      ? "bg-foreground text-background"
                       : "bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200"
                   }`}
                 >
@@ -559,7 +559,7 @@ export default function QuotesPage() {
             </p>
             <PermissionGate permission="Quotes.Create">
               <button
-                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700"
+                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90"
                 onClick={() => setIsCreateOpen(true)}
                 type="button"
               >
@@ -627,7 +627,7 @@ export default function QuotesPage() {
                             }
                             if (isExpiringSoon) {
                               return (
-                                <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-1.5 py-0.5 font-bold text-3xs text-amber-700 dark:text-amber-400 dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
+                                <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-1.5 py-0.5 font-bold text-3xs text-warning-ink dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
                                   <Clock className="h-3 w-3" />
                                   Son 3 gün
                                 </span>
@@ -775,7 +775,7 @@ export default function QuotesPage() {
                             {formatCurrency(quote.totalAmount, quote.currency)}
                           </span>
                           {quote.discountAmount > 0 && (
-                            <span className="block font-semibold text-3xs text-rose-600 dark:text-rose-400">
+                            <span className="block font-semibold text-3xs text-danger-ink">
                               -%{quote.discountRate} İskonto (
                               {formatCurrency(
                                 quote.discountAmount,
@@ -983,8 +983,8 @@ function QuoteStatusBadge({ status }: { status: string }) {
   switch (status) {
     case "RevisionRequested":
       return (
-        <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 bg-amber-50 px-2.5 py-0.5 font-bold text-3xs text-amber-700 dark:text-amber-400 shadow-2xs dark:border-amber-700/60 dark:bg-amber-950/60 dark:text-amber-300">
-          <RefreshCw className="h-3 w-3 text-amber-700 dark:text-amber-400" />
+        <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-300 bg-amber-50 px-2.5 py-0.5 font-bold text-3xs text-warning-ink shadow-2xs dark:border-amber-700/60 dark:bg-amber-950/60 dark:text-amber-300">
+          <RefreshCw className="h-3 w-3 text-warning-ink" />
           Revizyon İstendi
         </span>
       );
@@ -996,7 +996,7 @@ function QuoteStatusBadge({ status }: { status: string }) {
       );
     case "PendingApproval":
       return (
-        <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-0.5 font-bold text-3xs text-amber-700 dark:text-amber-400 dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
+        <span className="inline-flex items-center gap-1 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-0.5 font-bold text-3xs text-warning-ink dark:border-amber-800/60 dark:bg-amber-950/60 dark:text-amber-300">
           <AlertCircle className="h-3 w-3" />
           Onay Bekliyor
         </span>
@@ -1898,12 +1898,12 @@ function CreateQuoteModal({
 
               {calculations.requiresApproval && (
                 <div className="flex items-start gap-3 rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50/80 dark:bg-amber-950/60 p-3.5">
-                  <AlertCircle className="mt-0.5 h-5 w-5 flex-none text-amber-700 dark:text-amber-400" />
+                  <AlertCircle className="mt-0.5 h-5 w-5 flex-none text-warning-ink" />
                   <div className="text-xs">
                     <h5 className="font-bold text-amber-900">
                       Yönetici Onayı Gerekli
                     </h5>
-                    <p className="mt-0.5 text-amber-700 dark:text-amber-400">
+                    <p className="mt-0.5 text-warning-ink">
                       Uygulanan iskonto oranı (%15 üzeri) yetki eşiğini aştığı
                       için bu teklif oluşturulduğunda otomatik olarak{" "}
                       <b>Yönetici Onayı Bekliyor</b> durumuna alınacaktır.
@@ -1923,7 +1923,7 @@ function CreateQuoteModal({
               </div>
 
               {calculations.totalDiscount > 0 && (
-                <div className="flex justify-between font-medium text-rose-600 dark:text-rose-400 text-xs">
+                <div className="flex justify-between font-medium text-danger-ink text-xs">
                   <span>Toplam İndirim & İskonto:</span>
                   <span className="font-bold">
                     -{formatCurrency(calculations.totalDiscount, currency)}
@@ -2101,7 +2101,7 @@ function CreateQuoteModal({
             </button>
 
             <button
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-[0.99] disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90 active:scale-[0.99] disabled:opacity-50"
               disabled={isSubmitting}
               type="submit"
             >
@@ -2610,7 +2610,7 @@ function QuoteDetailDrawer({
                     <div className="rounded-xl border border-amber-300/80 bg-white/90 p-3.5 text-xs text-zinc-800 shadow-2xs dark:border-amber-800/60 dark:bg-zinc-900/90 dark:text-zinc-200">
                       <div className="mb-1.5 flex items-center justify-between">
                         <span className="flex items-center gap-1.5 font-bold text-2xs text-amber-900 uppercase tracking-wider dark:text-amber-300">
-                          <FileText className="h-3.5 w-3.5 text-amber-700 dark:text-amber-400" />
+                          <FileText className="h-3.5 w-3.5 text-warning-ink" />
                           Müşterinin İlettiği Talep Notu:
                         </span>
                         <span className="text-3xs text-muted-foreground">
@@ -2635,14 +2635,14 @@ function QuoteDetailDrawer({
             {quote.status === "PendingApproval" && (
               <div className="flex items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50/80 p-4 shadow-2xs dark:border-amber-800/60 dark:bg-amber-950/40">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:text-amber-400 dark:bg-amber-900/50 dark:text-amber-300">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-warning-ink dark:bg-amber-900/50 dark:text-amber-300">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
                     <h4 className="font-bold text-amber-900 text-xs dark:text-amber-200">
                       Yönetici İskonto / Limit Onayı Bekliyor
                     </h4>
-                    <p className="text-2xs text-amber-700 dark:text-amber-400 dark:text-amber-300/80">
+                    <p className="text-2xs text-warning-ink dark:text-amber-300/80">
                       Bu teklif iskonto eşiğini aştığı için yönetici onayı
                       gerektirir.
                     </p>
@@ -2669,7 +2669,7 @@ function QuoteDetailDrawer({
                     <h4 className="font-bold text-emerald-900 text-xs dark:text-emerald-200">
                       Teklif Kabul Edildi & Siparişe Dönüştü
                     </h4>
-                    <p className="text-2xs text-emerald-700 dark:text-emerald-300/80">
+                    <p className="text-2xs text-success-ink/80">
                       Sipariş No:{" "}
                       <b>{quote.convertedOrderNumber || "Aktif Sipariş"}</b>
                     </p>
@@ -2710,7 +2710,7 @@ function QuoteDetailDrawer({
 
               {(quote.status === "Draft" || quote.status === "Approved") && (
                 <button
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-3.5 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90"
                   disabled={isActionLoading}
                   onClick={() => {
                     if (onEmailQuote) {
@@ -2797,7 +2797,7 @@ function QuoteDetailDrawer({
                 <span className="font-semibold text-3xs text-muted-foreground uppercase">
                   İskonto
                 </span>
-                <p className="mt-0.5 font-bold text-rose-600 dark:text-rose-400 text-xs">
+                <p className="mt-0.5 font-bold text-danger-ink text-xs">
                   %{quote.discountRate} (
                   {formatCurrency(quote.discountAmount, quote.currency)})
                 </p>
@@ -2902,7 +2902,7 @@ function QuoteDetailDrawer({
                           <TableCell className="px-2 py-2.5 text-right font-medium">
                             {formatCurrency(item.unitPrice, quote.currency)}
                           </TableCell>
-                          <TableCell className="px-2 py-2.5 text-center font-bold text-rose-600 dark:text-rose-400">
+                          <TableCell className="px-2 py-2.5 text-center font-bold text-danger-ink">
                             {item.discountRate > 0
                               ? `%${item.discountRate}`
                               : "-"}
@@ -2929,7 +2929,7 @@ function QuoteDetailDrawer({
                       </span>
                     </div>
                     {quote.discountAmount > 0 && (
-                      <div className="flex justify-between font-medium text-rose-600 dark:text-rose-400">
+                      <div className="flex justify-between font-medium text-danger-ink">
                         <span>İskonto:</span>
                         <span className="font-bold">
                           -
@@ -3037,7 +3037,7 @@ function QuoteDetailDrawer({
                       key={rev.id}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="rounded-md bg-blue-600 px-2 py-0.5 font-bold font-mono text-white text-xs">
+                        <span className="rounded-md bg-foreground px-2 py-0.5 font-bold font-mono text-background text-xs">
                           R{rev.revisionNumber}
                         </span>
                         <div>
@@ -3269,7 +3269,7 @@ function QuoteDetailDrawer({
                 Vazgeç
               </button>
               <button
-                className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 disabled:opacity-50"
+                className="rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90 disabled:opacity-50"
                 disabled={isActionLoading}
                 onClick={handleCreateRevision}
                 type="button"
@@ -4019,7 +4019,7 @@ function QuoteTemplatesModal({
                           {t.name}
                         </span>
                         {t.isDefault ? (
-                          <span className="rounded-full bg-blue-600 px-1.5 py-0.5 font-bold text-3xs text-white">
+                          <span className="rounded-full bg-foreground px-1.5 py-0.5 font-bold text-3xs text-background">
                             Varsayılan
                           </span>
                         ) : null}
@@ -4235,7 +4235,7 @@ function QuoteTemplatesModal({
                           Sıfırla
                         </button>
                         <button
-                          className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+                          className="rounded-xl bg-foreground px-5 py-2 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90 active:scale-[0.98] disabled:opacity-50"
                           disabled={isSaving}
                           type="submit"
                         >
@@ -4255,7 +4255,7 @@ function QuoteTemplatesModal({
               <div className="flex flex-col overflow-hidden bg-zinc-50/50 p-4 sm:p-5 dark:bg-zinc-800/20">
                 <div className="mb-3 flex items-center justify-between gap-2">
                   <button
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-1.5 font-semibold text-white text-xs shadow-xs transition hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-3.5 py-1.5 font-semibold text-background text-xs shadow-xs transition hover:bg-foreground/90 active:scale-[0.98] disabled:opacity-50"
                     disabled={!editingId}
                     onClick={() => setIsTestSendOpen(true)}
                     type="button"
@@ -4460,7 +4460,7 @@ function QuotePrintModal({
         </div>
 
         {/* Modal Scrollable Canvas Body */}
-        <div className="flex flex-1 items-start justify-center overflow-x-auto overflow-y-auto bg-muted/40 p-4 sm:p-6 dark:bg-zinc-950/80">
+        <div className="flex flex-1 items-start justify-center overflow-x-auto overflow-y-auto bg-muted/60 p-4 sm:p-6 dark:bg-zinc-950/80">
           {isLoading || !quote ? (
             <div className="flex flex-col items-center justify-center py-24 text-muted-foreground">
               <RefreshCw className="mb-3 h-8 w-8 animate-spin text-primary" />

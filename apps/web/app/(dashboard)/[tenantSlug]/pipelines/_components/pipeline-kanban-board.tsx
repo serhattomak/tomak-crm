@@ -30,7 +30,7 @@ export function PipelineKanbanBoard({
   onClaimDeal,
 }: PipelineKanbanBoardProps) {
   return (
-    <div className="custom-scrollbar flex gap-4 overflow-x-auto pb-4">
+    <div className="custom-scrollbar flex gap-3 overflow-x-auto pb-4">
       {stages.map((stage) => {
         const stageDeals = dealsByStage[stage.id] || [];
         const stageTotal = stageDeals.reduce((sum, d) => sum + d.value, 0);
@@ -38,10 +38,10 @@ export function PipelineKanbanBoard({
 
         return (
           <div
-            className={`flex w-80 shrink-0 flex-col rounded-lg border p-3 shadow-2xs transition-colors duration-150 ${
+            className={`flex w-80 shrink-0 flex-col rounded-xl border p-2.5 transition-colors duration-150 ${
               isDragOver
-                ? "border-primary/60 bg-primary/5 ring-1 ring-primary/20"
-                : "border-border/80 bg-muted/30"
+                ? "border-ring/60 bg-accent-soft/60 ring-1 ring-ring/20"
+                : "border-border bg-muted/60"
             }`}
             key={stage.id}
             onDragLeave={onDragLeave}
@@ -49,33 +49,33 @@ export function PipelineKanbanBoard({
             onDrop={(e) => onDrop(e, stage.id)}
           >
             {/* Column Header */}
-            <div className="mb-2.5 flex items-center justify-between border-border/70 border-b px-1 pb-2.5">
+            <div className="mb-2 flex items-center justify-between border-border border-b px-1 pb-2">
               <div className="flex min-w-0 items-center gap-2">
                 <div
-                  className="h-2.5 w-2.5 flex-none rounded-full shadow-xs"
-                  style={{ backgroundColor: stage.color || "#3B82F6" }}
+                  className="size-2.5 flex-none rounded-full"
+                  style={{ backgroundColor: stage.color || "var(--chart-1)" }}
                 />
                 <span className="truncate font-semibold text-foreground text-xs">
                   {stage.name}
                 </span>
-                <span className="rounded-md bg-muted px-1.5 py-0.5 font-semibold text-3xs text-muted-foreground">
+                <span className="rounded bg-card px-1.5 py-0.5 font-semibold text-3xs text-muted-foreground tabular-nums">
                   {stageDeals.length}
                 </span>
               </div>
 
-              <div className="font-semibold text-foreground text-xs">
+              <div className="font-semibold text-foreground text-xs tabular-nums">
                 {formatCurrency(stageTotal)}
               </div>
             </div>
 
             {/* Stage Probability & SLA Sub-header */}
-            <div className="mb-3 flex items-center justify-between rounded-md border border-border/80 bg-card px-2.5 py-1 text-3xs text-muted-foreground shadow-2xs">
+            <div className="mb-2.5 flex items-center justify-between rounded-md bg-card px-2.5 py-1 text-3xs text-muted-foreground">
               <span className="flex items-center gap-1 font-medium">
                 <Award className="h-3 w-3 text-primary" />
                 Kazanma: %{stage.probability}
               </span>
               {stage.slaHours ? (
-                <span className="flex items-center gap-1 font-medium text-amber-700 dark:text-amber-400">
+                <span className="flex items-center gap-1 font-medium text-warning-ink">
                   <Clock className="h-3 w-3" />
                   SLA: {stage.slaHours} saat
                 </span>
@@ -85,7 +85,7 @@ export function PipelineKanbanBoard({
             </div>
 
             {/* Card Drop List */}
-            <div className="custom-scrollbar max-h-[calc(100vh-320px)] flex-1 space-y-2.5 overflow-y-auto pr-0.5">
+            <div className="custom-scrollbar max-h-[calc(100vh-320px)] flex-1 space-y-2 overflow-y-auto pr-0.5">
               {stageDeals.map((deal) => (
                 <PipelineDealCard
                   deal={deal}
@@ -97,8 +97,8 @@ export function PipelineKanbanBoard({
               ))}
 
               {stageDeals.length === 0 && (
-                <div className="flex flex-col items-center justify-center rounded-lg border border-border/80 border-dashed bg-card/60 p-6 text-center">
-                  <Kanban className="mb-1.5 h-5 w-5 text-muted-foreground" />
+                <div className="flex flex-col items-center justify-center rounded-lg border border-border border-dashed bg-muted/30 p-6 text-center">
+                  <Kanban className="mb-1.5 size-5 text-muted-foreground" />
                   <p className="font-medium text-muted-foreground text-xs">
                     Bu aşamada kart yok
                   </p>

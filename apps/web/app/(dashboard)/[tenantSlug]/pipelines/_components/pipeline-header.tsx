@@ -40,7 +40,7 @@ export function PipelineHeader({
     <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
       <div>
         <div className="flex items-center gap-3">
-          <h1 className="font-bold text-2xl text-foreground tracking-tight sm:text-3xl">
+          <h1 className="font-semibold text-2xl text-foreground tracking-tight">
             Pipeline & Satış Hunisi
           </h1>
 
@@ -93,9 +93,9 @@ export function PipelineHeader({
         </Button>
 
         {/* View Mode Switcher */}
-        <div className="flex items-center rounded-lg border border-border/80 bg-muted/60 p-0.5">
+        <div className="flex items-center rounded-lg bg-muted p-[3px]">
           <button
-            className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 font-medium text-xs transition-colors ${viewMode === "kanban" ? "bg-card font-semibold text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground"}`}
+            className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 font-medium text-xs transition-colors ${viewMode === "kanban" ? "bg-card font-semibold text-foreground shadow-card" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => onChangeViewMode("kanban")}
             type="button"
           >
@@ -103,7 +103,7 @@ export function PipelineHeader({
             <span>Pano</span>
           </button>
           <button
-            className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 font-medium text-xs transition-colors ${viewMode === "table" ? "bg-card font-semibold text-foreground shadow-2xs" : "text-muted-foreground hover:text-foreground"}`}
+            className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 font-medium text-xs transition-colors ${viewMode === "table" ? "bg-card font-semibold text-foreground shadow-card" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => onChangeViewMode("table")}
             type="button"
           >

@@ -373,7 +373,7 @@ export default function OrdersPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+            <h1 className="font-semibold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
               Sipariş & Satış Yönetimi
             </h1>
             <span className="rounded-full bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 font-bold text-2xs text-blue-700 dark:text-blue-300">
@@ -401,7 +401,7 @@ export default function OrdersPage() {
 
           <PermissionGate permission="Orders.Create">
             <button
-              className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -421,7 +421,7 @@ export default function OrdersPage() {
               <span className="font-medium text-xs text-muted-foreground">
                 Toplam Satış Cirosu
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight sm:text-3xl dark:text-zinc-100">
+              <div className="mt-1 font-extrabold text-2xl text-zinc-900 tracking-tight  dark:text-zinc-100">
                 ₺
                 {(stats?.totalRevenue ?? 0).toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
@@ -444,7 +444,7 @@ export default function OrdersPage() {
               <span className="font-medium text-xs text-muted-foreground">
                 Tahsil Edilen Tutar
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-emerald-700 dark:text-emerald-300 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-success-ink tracking-tight ">
                 ₺
                 {(stats?.paidRevenue ?? 0).toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
@@ -472,7 +472,7 @@ export default function OrdersPage() {
               <span className="font-medium text-xs text-muted-foreground">
                 Bekleyen & Hazırlanan
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-amber-700 dark:text-amber-400 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-warning-ink tracking-tight ">
                 {(stats?.pendingOrders ?? 0) + (stats?.processingOrders ?? 0)}
               </div>
             </div>
@@ -495,7 +495,7 @@ export default function OrdersPage() {
               <span className="font-medium text-xs text-muted-foreground">
                 Bekleyen Tahsilat (Açık Bakiye)
               </span>
-              <div className="mt-1 font-extrabold text-2xl text-rose-600 dark:text-rose-400 tracking-tight sm:text-3xl">
+              <div className="mt-1 font-extrabold text-2xl text-danger-ink tracking-tight ">
                 ₺
                 {(stats?.unpaidRevenue ?? 0).toLocaleString("tr-TR", {
                   minimumFractionDigits: 2,
@@ -624,7 +624,7 @@ export default function OrdersPage() {
           </p>
           <PermissionGate permission="Orders.Create">
             <button
-              className="mt-4 flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white text-xs shadow-xs transition-all hover:bg-blue-700 active:scale-[0.98]"
+              className="mt-4 flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 font-semibold text-background text-xs shadow-xs transition-all hover:bg-foreground/90 active:scale-[0.98]"
               onClick={() => setIsCreateModalOpen(true)}
               type="button"
             >
@@ -748,14 +748,14 @@ export default function OrdersPage() {
                     </TableCell>
 
                     <TableCell className="px-4 py-4 text-right">
-                      <div className="font-bold text-emerald-700 dark:text-emerald-300 text-xs">
+                      <div className="font-bold text-success-ink text-xs">
                         ₺
                         {o.paidAmount.toLocaleString("tr-TR", {
                           minimumFractionDigits: 2,
                         })}
                       </div>
                       {o.remainingAmount > 0 && (
-                        <div className="font-medium text-3xs text-rose-500">
+                        <div className="font-medium text-3xs text-danger">
                           Kalan: ₺
                           {o.remainingAmount.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
@@ -1326,7 +1326,7 @@ function CreateOrderWizardModal({
               </div>
 
               <button
-                className="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+                className="rounded-lg bg-foreground px-4 py-2 font-semibold text-background shadow-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
                 disabled={!pickerProdId}
                 onClick={handleAddProductToCart}
                 type="button"
@@ -1548,7 +1548,7 @@ function CreateOrderWizardModal({
                     />
                   </div>
                   <button
-                    className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3 py-1.5 font-semibold text-white text-xs shadow-xs hover:bg-blue-700 disabled:opacity-50"
+                    className="flex items-center gap-1.5 rounded-xl bg-foreground px-3 py-1.5 font-semibold text-background text-xs shadow-xs hover:bg-foreground/90 disabled:opacity-50"
                     disabled={promoLoading || items.length === 0}
                     onClick={handleApplyPromotion}
                     type="button"
@@ -1564,7 +1564,7 @@ function CreateOrderWizardModal({
 
                 {promoMessage && (
                   <p
-                    className={`mt-1.5 font-medium text-2xs ${promoMessage.isSuccess ? "text-emerald-700 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}
+                    className={`mt-1.5 font-medium text-2xs ${promoMessage.isSuccess ? "text-success-ink" : "text-danger-ink"}`}
                   >
                     {promoMessage.text}
                   </p>
@@ -1581,7 +1581,7 @@ function CreateOrderWizardModal({
                           <Tag className="h-3 w-3 text-blue-500" />
                           {p.name} ({p.desc})
                         </span>
-                        <span className="font-bold text-emerald-700 dark:text-emerald-300">
+                        <span className="font-bold text-success-ink">
                           -₺
                           {p.discount.toLocaleString("tr-TR", {
                             minimumFractionDigits: 2,
@@ -1642,7 +1642,7 @@ function CreateOrderWizardModal({
                 </div>
 
                 {generalDiscount > 0 && (
-                  <div className="flex items-center justify-between font-medium text-rose-600 dark:text-rose-400">
+                  <div className="flex items-center justify-between font-medium text-danger-ink">
                     <span>Genel İskonto:</span>
                     <span>
                       -₺
@@ -1710,7 +1710,7 @@ function CreateOrderWizardModal({
               Vazgeç
             </button>
             <button
-              className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-xl bg-foreground px-5 py-2 font-semibold text-background shadow-xs transition-colors hover:bg-foreground/90 disabled:opacity-50"
               disabled={submitting || items.length === 0}
               type="submit"
             >

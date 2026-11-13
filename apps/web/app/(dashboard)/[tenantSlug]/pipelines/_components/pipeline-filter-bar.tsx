@@ -39,7 +39,7 @@ export function PipelineFilterBar({
   employees,
 }: PipelineFilterBarProps) {
   return (
-    <div className="rounded-lg border border-border/80 bg-card p-3 shadow-xs">
+    <div>
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         {/* Quick Filter Buttons */}
         <div className="flex flex-wrap items-center gap-1.5">
@@ -82,15 +82,15 @@ export function PipelineFilterBar({
             type="button"
             variant={filterType === "sla" ? "destructive" : "outline"}
           >
-            <Flame className="h-3.5 w-3.5 text-rose-500" />
+            <Flame className="h-3.5 w-3.5 text-danger" />
             SLA Aşanlar ({slaBreachedCount})
           </Button>
         </div>
 
         {/* Search and Dropdown Filters */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 lg:flex-nowrap">
           {/* Search Input */}
-          <div className="relative min-w-[220px]">
+          <div className="relative w-full sm:w-56">
             <Search className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="h-8 pl-8 text-xs"
@@ -112,36 +112,40 @@ export function PipelineFilterBar({
           </div>
 
           {/* Priority filter */}
-          <SelectField
-            aria-label="Öncelik filtresi"
-            onChange={onChangePriorityFilter}
-            options={[
-              { label: "Öncelik: Tümü", value: "all" },
-              { label: "Acil", value: "Urgent" },
-              { label: "Yüksek", value: "High" },
-              { label: "Orta", value: "Medium" },
-              { label: "Düşük", value: "Low" },
-            ]}
-            placeholder="Öncelik: Tümü"
-            triggerClassName="h-8 px-2.5 font-medium"
-            value={priorityFilter}
-          />
+          <div className="w-40">
+            <SelectField
+              aria-label="Öncelik filtresi"
+              onChange={onChangePriorityFilter}
+              options={[
+                { label: "Öncelik: Tümü", value: "all" },
+                { label: "Acil", value: "Urgent" },
+                { label: "Yüksek", value: "High" },
+                { label: "Orta", value: "Medium" },
+                { label: "Düşük", value: "Low" },
+              ]}
+              placeholder="Öncelik: Tümü"
+              triggerClassName="h-8 px-2.5 font-medium"
+              value={priorityFilter}
+            />
+          </div>
 
           {/* User filter */}
-          <Combobox
-            aria-label="Temsilci filtresi"
-            onChange={onChangeUserFilter}
-            options={[
-              { label: "Temsilci: Tümü", value: "all" },
-              ...employees.map((emp) => ({
-                label: emp.fullName,
-                value: emp.userId || emp.id,
-              })),
-            ]}
-            placeholder="Temsilci: Tümü"
-            triggerClassName="h-8 px-2.5 font-medium"
-            value={userFilter}
-          />
+          <div className="w-44">
+            <Combobox
+              aria-label="Temsilci filtresi"
+              onChange={onChangeUserFilter}
+              options={[
+                { label: "Temsilci: Tümü", value: "all" },
+                ...employees.map((emp) => ({
+                  label: emp.fullName,
+                  value: emp.userId || emp.id,
+                })),
+              ]}
+              placeholder="Temsilci: Tümü"
+              triggerClassName="h-8 px-2.5 font-medium"
+              value={userFilter}
+            />
+          </div>
         </div>
       </div>
     </div>

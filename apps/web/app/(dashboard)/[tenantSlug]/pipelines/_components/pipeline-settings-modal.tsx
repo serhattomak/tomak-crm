@@ -131,9 +131,9 @@ export function PipelineSettingsModal({
         className="flex max-h-[90vh] w-full max-w-2xl flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
         showCloseButton={false}
       >
-        <div className="flex items-center justify-between border-border/80 border-b bg-muted/30 p-4 sm:p-5">
+        <div className="flex items-center justify-between border-border border-b bg-muted/30 p-4 sm:p-5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
               <Settings className="h-4 w-4" />
             </div>
             <DialogTitle className="font-semibold text-foreground text-sm sm:text-base">
@@ -207,7 +207,7 @@ export function PipelineSettingsModal({
           </div>
 
           {/* Stages Configuration */}
-          <div className="space-y-3 border-border/80 border-t pt-4">
+          <div className="space-y-3 border-border border-t pt-4">
             <div className="flex items-center justify-between">
               <h4 className="flex items-center gap-1.5 font-semibold text-foreground text-xs">
                 <Layers className="h-3.5 w-3.5 text-primary" />
@@ -228,7 +228,7 @@ export function PipelineSettingsModal({
             <div className="space-y-2">
               {stages.map((stage, idx) => (
                 <div
-                  className="flex flex-wrap items-center gap-2.5 rounded-lg border border-border/80 bg-muted/30 p-2.5 shadow-2xs sm:flex-nowrap"
+                  className="flex flex-wrap items-center gap-2.5 rounded-lg border border-border bg-muted/30 p-2.5 shadow-2xs sm:flex-nowrap"
                   key={idx}
                 >
                   <span className="w-4 font-semibold text-muted-foreground text-xs">
@@ -333,7 +333,7 @@ export function PipelineSettingsModal({
           </div>
 
           {/* Save Button */}
-          <div className="flex items-center justify-end gap-2 border-border/80 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-border border-t pt-4">
             <Button onClick={onClose} size="sm" type="button" variant="outline">
               Vazgeç
             </Button>
