@@ -3626,8 +3626,8 @@ function CreateEditVehicleModal({
                   </div>
 
                   {/* Sağ Kolon: CANLI KART ÖNİZLEMESİ (Live Mini Preview) */}
-                  <div className="flex flex-col rounded-xl border border-blue-200 bg-primary p-5 shadow-xs dark:border-blue-900/40 dark: dark: dark:">
-                    <div className="flex items-center justify-between border-blue-100 border-b pb-3 dark:border-blue-900/30">
+                  <div className="flex flex-col rounded-xl border border-border bg-card p-5 dark:border-border">
+                    <div className="flex items-center justify-between border-border border-b pb-3 dark:border-border">
                       <span className="font-bold text-primary text-xs uppercase tracking-wider ">
                         ✦ Canlı Katalog Kartı Önizlemesi
                       </span>

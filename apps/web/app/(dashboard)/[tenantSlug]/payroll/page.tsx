@@ -2001,8 +2001,8 @@ export default function PayrollPage() {
               <div className="space-y-4">
                 {/* Highlight Cards */}
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-xl border border-emerald-200/80 dark:border-emerald-800 bg-primary p-5 shadow-2xs dark: dark:">
-                    <div className="font-bold text-emerald-800 text-xs uppercase tracking-wider">
+                  <div className="rounded-xl border border-transparent bg-success-soft p-5">
+                    <div className="font-bold text-success-ink text-xs uppercase tracking-wider">
                       ÖDENECEK NET MAAŞ
                     </div>
                     <div className="mt-2 font-black text-2xl text-emerald-700">
@@ -2013,8 +2013,8 @@ export default function PayrollPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-purple-200/80 dark:border-purple-800 bg-primary p-5 shadow-2xs dark: dark:">
-                    <div className="font-bold text-purple-800 text-xs uppercase tracking-wider">
+                  <div className="rounded-xl border border-transparent bg-accent-soft p-5">
+                    <div className="font-bold text-accent-foreground text-xs uppercase tracking-wider">
                       TOPLAM İŞVEREN MALİYETİ
                     </div>
                     <div className="mt-2 font-black text-2xl text-purple-700">

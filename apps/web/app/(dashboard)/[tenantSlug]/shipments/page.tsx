@@ -918,7 +918,7 @@ export default function ShipmentsPage() {
 
                               {/* Advance Status */}
                               <button
-                                className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 font-semibold text-2xs text-blue-700 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-950/60"
+                                className="flex items-center gap-1 rounded-lg bg-accent-soft px-2.5 py-1.5 font-semibold text-2xs text-accent-foreground hover:bg-accent-soft/80"
                                 onClick={() => {
                                   setSelectedShipmentForStatus(s);
                                   setIsUpdateStatusModalOpen(true);
@@ -931,7 +931,7 @@ export default function ShipmentsPage() {
 
                               {/* Delete Shipment */}
                               <button
-                                className="rounded-lg border border-border bg-card p-1.5 text-rose-500 shadow-2xs hover:bg-rose-50 hover:text-rose-700 dark:text-rose-400 dark:hover:bg-rose-950/40"
+                                className="rounded-lg border border-border bg-card p-1.5 text-danger-ink shadow-2xs hover:bg-danger-soft"
                                 onClick={() =>
                                   handleDeleteShipment(s.id, s.shipmentNumber)
                                 }
@@ -1133,7 +1133,7 @@ export default function ShipmentsPage() {
                               </button>
 
                               <button
-                                className="rounded-lg border border-border bg-card p-1.5 text-rose-500 shadow-2xs hover:bg-rose-50 hover:text-rose-700 dark:text-rose-400 dark:hover:bg-rose-950/40"
+                                className="rounded-lg border border-border bg-card p-1.5 text-danger-ink shadow-2xs hover:bg-danger-soft"
                                 onClick={() =>
                                   handleDeleteReturn(r.id, r.returnCode)
                                 }

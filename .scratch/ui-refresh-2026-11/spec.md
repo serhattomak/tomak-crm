@@ -1,6 +1,6 @@
 # Spec: CRM UI Yenilemesi v2 — "Yüzen Kabuk" dili
 
-Status: ready-for-approval
+Status: landed — faz 0–6 uygulandı (2026-11-14)
 Tarih: 2026-11-13
 Referans: kullanıcı tarafından onaylanan mockup (Genel Bakış + Müşteriler)
 Kanonik standart: `docs/crm-ui-standards.md` — bu dosya onaylanana kadar **öneridir**, kanonik değildir.

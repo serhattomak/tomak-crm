@@ -468,15 +468,15 @@ export default function CompliancePage() {
         </div>
 
         {/* Financial Risk Exposure */}
-        <div className="rounded-xl border border-border bg-card p-5 shadow-xs dark: dark: dark:">
-          <div className="mb-1 flex items-center justify-between font-semibold text-red-600 dark:text-red-400 text-xs">
-            <span className="font-bold text-2xs text-red-500 uppercase tracking-wider">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-card">
+          <div className="mb-1 flex items-center justify-between font-semibold text-danger-ink text-xs">
+            <span className="font-bold text-2xs text-danger-ink uppercase tracking-wider">
               CEZA RİSK MARUZİYETİ
             </span>
             <Banknote className="h-4 w-4 text-red-500" />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="font-extrabold text-2xl text-red-900">
+            <span className="font-extrabold text-2xl text-danger-ink">
               {(scoreData?.estimatedPenaltyExposureTl ?? 0).toLocaleString(
                 "tr-TR"
               )}

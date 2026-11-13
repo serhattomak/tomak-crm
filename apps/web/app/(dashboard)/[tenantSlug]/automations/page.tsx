@@ -446,18 +446,20 @@ export default function AutomationsPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-4 shadow-xs dark: dark: dark:">
-          <div className="mb-2 flex items-center justify-between font-semibold text-indigo-700 text-xs">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-card">
+          <div className="mb-2 flex items-center justify-between font-semibold text-foreground text-xs">
             <span>TASARRUF EDİLEN SÜRE</span>
-            <Clock className="h-4 w-4 text-indigo-500" />
+            <Clock className="h-4 w-4 text-muted-foreground" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-semibold text-2xl text-indigo-900">
+            <span className="font-semibold text-2xl text-foreground">
               ~{stats?.estimatedHoursSaved ?? 0}
             </span>
-            <span className="font-medium text-indigo-600 text-xs">Saat/Ay</span>
+            <span className="font-medium text-muted-foreground text-xs">
+              Saat/Ay
+            </span>
           </div>
-          <div className="mt-2 flex items-center gap-1 font-medium text-indigo-600 text-xs">
+          <div className="mt-2 flex items-center gap-1 font-medium text-muted-foreground text-xs">
             <Sparkles className="h-3.5 w-3.5" />
             <span>Manuel iş gücü tasarrufu</span>
           </div>

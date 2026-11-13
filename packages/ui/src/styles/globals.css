@@ -97,12 +97,12 @@
   --card-foreground: oklch(0.21 0.006 265);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.21 0.006 265);
-  --primary: oklch(0.567 0.204 283); /* #6D5BE8 periwinkle accent */
+  --primary: oklch(0.556 0.2 283); /* #6D5BE8 family — 4.5:1 on white */
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.967 0.003 250);
   --secondary-foreground: oklch(0.25 0.008 265);
   --muted: oklch(0.967 0.003 250);
-  --muted-foreground: oklch(0.55 0.012 250); /* #6F7683 */
+  --muted-foreground: oklch(0.53 0.012 250); /* #68707d — 4.5:1 on white */
   --accent: oklch(0.955 0.02 285);
   --accent-foreground: oklch(0.52 0.19 283);
   --accent-soft: oklch(0.955 0.02 285); /* #F1EFFF */
