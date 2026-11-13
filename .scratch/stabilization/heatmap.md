@@ -409,6 +409,39 @@ Fikstür kullanıcısı ile ölçüm, aynı `X-Tenant-Id` değerinin **iki farkl
 
 **Durum:** Pass 1 kodu yerinde ve derleniyor, ancak **doğrulanmadı**. Sonraki adım: middleware'e geçici bir teşhis logu ekleyip (`X-Tenant-Id` var mı + çözülen tenant) tek istekle kesinleştirmek. Bu geçici ve geri alınabilir bir değişiklik.
 
+## 2026-11-13 — Doğrulanmış düzeltme turu (13 madde)
+
+**Kapsam:** kullanıcı onayıyla 13 madde; her biri kod + canlı ölçümle doğrulandı.
+
+| # | Değişiklik | Doğrulama |
+|---|---|---|
+| B14 | `20261113000001_fix_tenant_members_rls_recursion.sql` — `current_user_tenant_ids()` SECURITY DEFINER + policy | anon `tenants`: **500 42P17 → 200 []**; fixture kullanıcı yalnız kendi kiracısını ve kendi üyeliğini gördü |
+| B3 | Araç doküman upload: uzantı allowlist'i (svg/html/js yok) + 25 MB | `.svg` **400**, `.pdf` **200** |
+| B12 | Storage upload: MIME+uzantı allowlist, 25 MB, public bucket yalnız görsel; `20261113000002` bucket limitleri | `.svg` **400**, `.txt` + `text/html` **400** |
+| B9 | WhatsApp webhook: verify token eşleşmesi + `X-Hub-Signature-256` HMAC; secret yoksa 503; tenant `phone_number_id`'den çözülüyor | yanlış token **403**, doğru **200**, imzasız **401**, geçerli imza **200** |
+| A6 | WhatsApp settings GET/PUT (`Chat.Manage`), access token maskeli; send ayar yoksa **400** (sahte "Sent" yok) | uçlar eklendi; build |
+| B11 | CORS exact origin + `.trycloudflare.com` suffix (Development) | `evil.example` **ACAO yok**, `localhost:3000` **ACAO var** |
+| B17 | `/health` düz durum; `/health/detailed` super admin | anon `/health` **200 `{"status":"Healthy"}`**, detail **401** |
+| B7 | `HtmlSanitizer` 11.0.26 — yazma + okuma + imza anında | `<script>`, `onerror`, `javascript:` **silindi**, `<p>` korundu |
+| A4 | `/integration` nav + komut paleti girdisi kaldırıldı (sayfa yok) | tip kontrolü + build |
+| A5 | `compliance` HRM menüsüne eklendi (`Compliance.View`) | tip kontrolü + build |
+| A8 | Analytics: sabit 6 ay/funnel fallback/+%18.4 kaldırıldı; son 50 siparişten gerçek 6 ay | tip kontrolü + build |
+| #12 | MailKit **5.0.0**, AutoMapper **17.0.0** | `dotnet list --vulnerable`: **0**; build **0 uyarı / 0 hata** |
+| C3 | AGENTS.md **5569/347**, roadmap **56 sayfa / #33** | `npm run check` ölçümü |
+
+**B6 Pass 1 (önceki oturumun "doğrulanmadı" kaydı) KAPANDI:** fixture kullanıcısı (yalnız `Products.View`, `Quotes.View`) → `GET /api/activities` **403** (`Missing required permission: 'Activities.View'`). Önceki tutarsızlık yeniden üretilmedi; header tenant'ı permission filtresine doğru geçiyor.
+
+**Yeni/ölçülen açıklar (bilinçli kapsam dışı):**
+- **B6 kalanı:** fixture kullanıcısı `GET /api/invoicing/invoices` → **200**. Invoicing/Finance/Cari 21 endpoint'te `RequirePermission` yok.
+- **B7 cookie yarısı:** `@supabase/ssr` cookie'si `httpOnly` değil; `httpOnly: true` browser client'ı kıracağı için yapılmadı. XSS vektörü sunucu sanitizasyonuyla kapandı.
+- **Yeni B20 (Development):** `Tenancy:DefaultTenantId` fallback'i public token rotalarında da tenant set ediyor → `IgnoreQueryFilters` kullanmayan public lookup'lar (contracts/quotes/portal) dev'de 404 dönüyor. Üretimde fallback yok; ayrı madde.
+
+**Çürüyen iddialar (kayıt düzeltmesi):**
+- **A3 yanlış pozitif:** canlı DB'de izinsiz permission **0** (`permissions LEFT JOIN role_permissions`). 5 modülün grant'i mevcut.
+- **B13 `ALLOWALL` hata değil:** public başvuru formu iframe'e gömülmek üzere tasarlanmış (`PublicApplyFeatures.cs:26` yorumu). Rate-limit spoof'u ayrı madde olarak kalıyor.
+
+**Araç kapıları:** `typecheck` 2/2 (force) · `lint` 0 error / 347 warning · `guard:crm-ui` 0 error / 204 dosya PASS · `npm run build` 2/2 · `dotnet build --no-incremental` **0 uyarı / 0 hata** · `npm run format` no-op.
+
 
 
 

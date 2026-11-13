@@ -27,11 +27,13 @@ using CRM.Modules.FieldService;
 using CRM.Modules.FieldService.Features;
 using CRM.Api.Jobs;
 using CRM.BuildingBlocks.Realtime;
+using CRM.BuildingBlocks.Security;
 using Quartz;
-using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 using Serilog;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -153,11 +155,54 @@ builder.Services.AddHealthChecks()
     }, name: "rabbitmq", tags: ["messaging", "ready"]);
 
 // 6. CORS Policy for Frontend (Next.js & Tunnel)
+// The browser normally calls the API through the Next proxy, so this policy exists
+// for direct dev/tunnel origins. Credentials are allowed, which is exactly why the
+// origin must be an explicit list: "any origin + credentials" lets any site read
+// authenticated responses.
+var configuredOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>()?
+    .Where(origin => !string.IsNullOrWhiteSpace(origin))
+    .Select(origin => origin.Trim().TrimEnd('/'))
+    .ToArray() ?? [];
+
+var allowedOrigins = configuredOrigins.Length > 0
+    ? configuredOrigins
+    :
+    [
+        "http://localhost:3000", "http://127.0.0.1:3000",
+        "http://localhost:3210", "http://127.0.0.1:3210",
+    ];
+
+// Suffixes are matched on the host with a leading dot, so ".trycloudflare.com"
+// cannot match "eviltrycloudflare.com". Development only unless configured.
+var configuredSuffixes = builder.Configuration
+    .GetSection("Cors:AllowedOriginSuffixes")
+    .Get<string[]>()?
+    .Where(suffix => !string.IsNullOrWhiteSpace(suffix))
+    .Select(suffix => suffix.Trim())
+    .ToArray() ?? [];
+
+var allowedSuffixes = configuredSuffixes.Length > 0
+    ? configuredSuffixes
+    : builder.Environment.IsDevelopment() ? [".trycloudflare.com"] : [];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.SetIsOriginAllowed(_ => true)
+        policy.SetIsOriginAllowed(origin =>
+              {
+                  if (!Uri.TryCreate(origin, UriKind.Absolute, out var uri))
+                  {
+                      return false;
+                  }
+
+                  var normalized = $"{uri.Scheme}://{uri.Authority}";
+                  return allowedOrigins.Contains(normalized, StringComparer.OrdinalIgnoreCase)
+                      || allowedSuffixes.Any(suffix =>
+                          uri.Host.EndsWith(suffix, StringComparison.OrdinalIgnoreCase));
+              })
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -196,12 +241,44 @@ app.MapEmailEndpoints();
 app.MapFieldServiceEndpoints();
 app.MapHub<CrmHub>("/hubs/crm").RequireAuthorization();
 
-// 9. Map HealthChecks
-// Health probes are called by orchestrators that hold no token.
+// 9. Health Checks
+// The anonymous probe answers liveness only. The dependency report names internal
+// services (Postgres, Redis, RabbitMQ) and is a platform-admin surface.
 app.MapHealthChecks("/health", new HealthCheckOptions
 {
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    ResponseWriter = (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        return context.Response.WriteAsync(JsonSerializer.Serialize(new { status = report.Status.ToString() }));
+    }
 }).AllowAnonymous();
+
+app.MapGet("/health/detailed", async (
+    ICurrentUser currentUser,
+    IPermissionService permissionService,
+    HealthCheckService healthCheckService,
+    CancellationToken ct) =>
+{
+    if (currentUser.Id is not { } userId
+        || !await permissionService.IsSuperAdminAsync(userId, ct))
+    {
+        return Results.StatusCode(StatusCodes.Status403Forbidden);
+    }
+
+    var report = await healthCheckService.CheckHealthAsync(ct);
+    return Results.Ok(new
+    {
+        status = report.Status.ToString(),
+        entries = report.Entries.ToDictionary(
+            entry => entry.Key,
+            entry => new
+            {
+                status = entry.Value.Status.ToString(),
+                duration = entry.Value.Duration,
+                description = entry.Value.Description,
+            }),
+    });
+}).RequireAuthorization();
 
 app.MapGet("/", () => Results.Redirect("/scalar/v1")).AllowAnonymous();
 

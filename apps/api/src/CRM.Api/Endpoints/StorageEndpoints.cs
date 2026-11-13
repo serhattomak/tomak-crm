@@ -21,6 +21,30 @@ public record StorageUploadResponse(
 
 public class StorageEndpoints : IEndpoint
 {
+    private const long MaxUploadBytes = 25 * 1024 * 1024;
+
+    // The bucket serves whatever content type it was given, from the Supabase
+    // origin. Script-capable types (.svg, .html, .js) are refused by extension,
+    // and the declared content type must agree with a known safe family.
+    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".pdf", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".csv", ".txt",
+        ".doc", ".docx", ".xls", ".xlsx", ".zip", ".rar", ".7z",
+    };
+
+    private static readonly HashSet<string> AllowedContentTypes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "application/pdf",
+        "image/png", "image/jpeg", "image/webp", "image/gif",
+        "text/csv", "text/plain",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/zip", "application/x-zip-compressed",
+        "application/x-rar-compressed", "application/x-7z-compressed",
+    };
+
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/storage")
@@ -48,6 +72,29 @@ public class StorageEndpoints : IEndpoint
                 return Results.BadRequest(ApiResponse<StorageUploadResponse>.Fail("Storage.FileRequired", "Yüklenecek dosya seçilmedi."));
             }
 
+            if (file.Length > MaxUploadBytes)
+            {
+                return Results.BadRequest(ApiResponse<StorageUploadResponse>.Fail(
+                    "Storage.FileTooLarge",
+                    $"Dosya boyutu en fazla {MaxUploadBytes / (1024 * 1024)} MB olabilir."));
+            }
+
+            var extension = Path.GetExtension(file.FileName);
+            var contentType = (file.ContentType ?? string.Empty).Split(';')[0].Trim();
+            if (!AllowedExtensions.Contains(extension) || !AllowedContentTypes.Contains(contentType))
+            {
+                return Results.BadRequest(ApiResponse<StorageUploadResponse>.Fail(
+                    "Storage.FileTypeNotAllowed",
+                    "Desteklenmeyen dosya türü. PDF, görsel, Office, CSV, metin veya arşiv yükleyin."));
+            }
+
+            if (isPublic == true && !contentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+            {
+                return Results.BadRequest(ApiResponse<StorageUploadResponse>.Fail(
+                    "Storage.PublicImagesOnly",
+                    "Herkese açık bucket yalnız görsel kabul eder."));
+            }
+
             var cleanFolder = string.IsNullOrWhiteSpace(folder) ? "general" : Regex.Replace(folder.Trim().ToLower(), @"[^a-z0-9_-]", "");
             var cleanFileName = Regex.Replace(Path.GetFileName(file.FileName), @"[^a-zA-Z0-9_.-]", "_");
             var uniquePath = $"{tenantId.Value}/{cleanFolder}/{Guid.NewGuid():N}_{cleanFileName}";
@@ -56,14 +103,14 @@ public class StorageEndpoints : IEndpoint
             var targetBucket = (isPublic == true) ? opt.PublicBucket : opt.PrivateBucket;
 
             await using var stream = file.OpenReadStream();
-            var url = await storageService.UploadAsync(targetBucket, uniquePath, stream, file.ContentType, ct);
+            var url = await storageService.UploadAsync(targetBucket, uniquePath, stream, contentType, ct);
 
             var response = new StorageUploadResponse(
                 FileKey: uniquePath,
                 Bucket: targetBucket,
                 Url: url,
                 FileName: file.FileName,
-                ContentType: file.ContentType,
+                ContentType: contentType,
                 Size: file.Length);
 
             return Results.Ok(ApiResponse<StorageUploadResponse>.Ok(response));

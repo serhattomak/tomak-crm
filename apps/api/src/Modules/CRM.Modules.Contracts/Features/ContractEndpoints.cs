@@ -168,7 +168,7 @@ public class ContractEndpoints : IEndpoint
                 c.Status,
                 c.TotalAmount,
                 c.Currency,
-                c.ContentHtml,
+                ContractHtmlSanitizer.Sanitize(c.ContentHtml),
                 c.TemplateId,
                 c.ValidFrom,
                 c.ValidUntil,
@@ -209,7 +209,7 @@ public class ContractEndpoints : IEndpoint
                 Status = "Draft",
                 TotalAmount = req.TotalAmount,
                 Currency = string.IsNullOrWhiteSpace(req.Currency) ? "TRY" : req.Currency,
-                ContentHtml = req.ContentHtml,
+                ContentHtml = ContractHtmlSanitizer.Sanitize(req.ContentHtml),
                 TemplateId = req.TemplateId,
                 ValidFrom = req.ValidFrom,
                 ValidUntil = req.ValidUntil,
@@ -238,7 +238,7 @@ public class ContractEndpoints : IEndpoint
             c.Status = req.Status;
             c.TotalAmount = req.TotalAmount;
             c.Currency = req.Currency;
-            c.ContentHtml = req.ContentHtml;
+            c.ContentHtml = ContractHtmlSanitizer.Sanitize(req.ContentHtml);
             c.ValidFrom = req.ValidFrom;
             c.ValidUntil = req.ValidUntil;
             c.AutoRenew = req.AutoRenew;
@@ -280,7 +280,7 @@ public class ContractEndpoints : IEndpoint
                 c.Status,
                 c.TotalAmount,
                 c.Currency,
-                c.ContentHtml,
+                ContentHtml = ContractHtmlSanitizer.Sanitize(c.ContentHtml),
                 c.ValidFrom,
                 c.ValidUntil,
                 c.SignedAt,
@@ -303,6 +303,9 @@ public class ContractEndpoints : IEndpoint
             var ipAddress = httpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
             var userAgent = httpContext.Request.Headers.UserAgent.ToString();
             var now = DateTime.UtcNow;
+
+            // Hash exactly what the signer was shown, which is the sanitized body.
+            c.ContentHtml = ContractHtmlSanitizer.Sanitize(c.ContentHtml);
 
             // Compute SHA-256 Audit Hash of Contract Content + Signature
             var rawAuditData = $"{c.Id}:{c.ContractNumber}:{c.ContentHtml}:{req.SignedByName}:{req.SignedByEmail}:{now:O}:{ipAddress}";

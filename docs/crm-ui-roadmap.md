@@ -2,7 +2,7 @@
 
 > **Durum:** Aktif program
 > **Karar kaydı:** [`ADR-0004`](adr/0004-crm-design-system-enforcement.md) · **Kanonik standart:** [`crm-ui-standards.md`](crm-ui-standards.md)
-> **Kapsam:** `apps/web` içindeki **52 sayfa**, 3 layout, auth/admin/portal yüzeyleri, tüm state'ler ve modallar.
+> **Kapsam:** `apps/web` içindeki **56 sayfa**, 3 layout, auth/admin/portal yüzeyleri, tüm state'ler ve modallar.
 
 Bu dosya **yaşayan bir kontrol listesidir**. Bir faz tamamlandığında kutulanır; ertelenen işler "Gelecek Adımlar" bölümünde kalır.
 
@@ -15,7 +15,7 @@ Bu dosya **yaşayan bir kontrol listesidir**. Bir faz tamamlandığında kutulan
 > Günlüğü'nün) özetidir. Devam etmek için günlüğe inmene gerek yok.
 
 **Program A (Faz 0–7) TAMAMEN KAPANDI** — sekiz fazın hepsi `[x]`. **Program B** iptal edildi,
-**Program C** ertelendi. Açık iş yalnız **Gelecek Adımlar** listesindedir (#1–#32).
+**Program C** ertelendi. Açık iş yalnız **Gelecek Adımlar** listesindedir (#1–#33).
 
 ### 🟢 PUSH EDİLDİ
 `origin/master` = `58859ec`. Bu bölümün 2026-09-16'daki hali **"push edilmedi"** diyordu

@@ -16,4 +16,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="HtmlSanitizer" Version="11.0.26" />
+  </ItemGroup>
+
 </Project>

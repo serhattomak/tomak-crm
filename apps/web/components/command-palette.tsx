@@ -8,7 +8,6 @@ import {
 import {
   Banknote,
   BarChart3,
-  Boxes,
   Briefcase,
   Building2,
   Calendar,
@@ -462,17 +461,6 @@ export function CommandPalette({
         },
         subtitle: "Detaylı satış, personel ve gelir raporları",
         title: "Raporlar & Analitik",
-      },
-      {
-        category: "navigation",
-        icon: Boxes,
-        id: "nav-integration",
-        onSelect: () => {
-          router.push(`/${tenantSlug}/integration`);
-          onClose();
-        },
-        subtitle: "Pazaryeri, kargo ve ERP üçüncü parti entegrasyonları",
-        title: "Entegrasyonlar & API",
       },
 
       // 5. Sistem & Yönetim (SYS)

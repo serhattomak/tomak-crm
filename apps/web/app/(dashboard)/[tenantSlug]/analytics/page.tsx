@@ -12,7 +12,6 @@ import {
 } from "@workspace/ui/components/table";
 import {
   AlertCircle,
-  ArrowUpRight,
   BarChart3,
   Coins,
   Download,
@@ -162,33 +161,48 @@ export default function AnalyticsPage() {
     );
   }, [customerStats]);
 
-  // Monthly Revenue Distribution Mockup based on recent orders
+  // Monthly revenue from the orders actually loaded for this page (the list endpoint
+  // returns the 50 most recent). No bucket is invented: a month with no order is zero.
   const revenueTrend = useMemo(() => {
-    const months = [
-      { amount: 145_000, name: "Oca", orders: 12 },
-      { amount: 182_000, name: "Şub", orders: 15 },
-      { amount: 215_000, name: "Mar", orders: 19 },
-      { amount: 198_000, name: "Nis", orders: 16 },
-      { amount: 264_000, name: "May", orders: 23 },
-      {
-        amount: totalRevenue > 0 ? Math.min(totalRevenue, 340_000) : 310_000,
-        name: "Haz",
-        orders: totalOrders || 28,
-      },
-    ];
-    const max = Math.max(...months.map((m) => m.amount), 1);
-    return months.map((m) => ({
-      ...m,
-      percentage: Math.round((m.amount / max) * 100),
+    const now = new Date();
+    const months = Array.from({ length: 6 }, (_, index) => {
+      const date = new Date(now.getFullYear(), now.getMonth() - (5 - index), 1);
+      return {
+        amount: 0,
+        key: `${date.getFullYear()}-${date.getMonth()}`,
+        name: date.toLocaleDateString("tr-TR", { month: "short" }),
+        orders: 0,
+      };
+    });
+
+    const byKey = new Map(months.map((month) => [month.key, month]));
+    for (const order of recentOrders) {
+      const orderedAt = new Date(order.orderDate);
+      if (Number.isNaN(orderedAt.getTime())) {
+        continue;
+      }
+      const bucket = byKey.get(
+        `${orderedAt.getFullYear()}-${orderedAt.getMonth()}`
+      );
+      if (bucket) {
+        bucket.amount += order.totalAmount;
+        bucket.orders += 1;
+      }
+    }
+
+    const max = Math.max(...months.map((month) => month.amount), 1);
+    return months.map((month) => ({
+      ...month,
+      percentage: Math.round((month.amount / max) * 100),
     }));
-  }, [totalRevenue, totalOrders]);
+  }, [recentOrders]);
 
   // Pipeline Funnel Calculation
   const funnelStages = useMemo(() => {
-    const totalQ = quoteStats?.totalQuotes || 20;
-    const sent = quoteStats?.sentCount || 14;
-    const accepted = quoteStats?.acceptedCount || 9;
-    const converted = totalOrders || 7;
+    const totalQ = quoteStats?.totalQuotes ?? 0;
+    const sent = quoteStats?.sentCount ?? 0;
+    const accepted = quoteStats?.acceptedCount ?? 0;
+    const converted = totalOrders;
 
     return [
       {
@@ -202,19 +216,19 @@ export default function AnalyticsPage() {
         count: sent + accepted,
         label: "2. Müşteriye Sunulan",
         percentage:
-          totalQ > 0 ? Math.round(((sent + accepted) / totalQ) * 100) : 75,
+          totalQ > 0 ? Math.round(((sent + accepted) / totalQ) * 100) : 0,
       },
       {
         color: "bg-amber-500",
         count: accepted,
         label: "3. Kabul Edilen Teklifler",
-        percentage: totalQ > 0 ? Math.round((accepted / totalQ) * 100) : 45,
+        percentage: totalQ > 0 ? Math.round((accepted / totalQ) * 100) : 0,
       },
       {
         color: "bg-emerald-500",
         count: converted,
         label: "4. Kesinleşen Siparişler",
-        percentage: totalQ > 0 ? Math.round((converted / totalQ) * 100) : 35,
+        percentage: totalQ > 0 ? Math.round((converted / totalQ) * 100) : 0,
       },
     ];
   }, [quoteStats, totalOrders]);
@@ -337,8 +351,14 @@ export default function AnalyticsPage() {
             </div>
           </div>
           <div className="mt-3 flex items-center gap-1.5 border-border border-t pt-2.5 font-medium text-2xs text-emerald-700 dark:text-emerald-400">
-            <ArrowUpRight className="h-3.5 w-3.5" />
-            <span>Geçen döneme göre +%18.4 artış</span>
+            <BarChart3 className="h-3.5 w-3.5" />
+            <span>
+              Son 6 ayda{" "}
+              {revenueTrend
+                .reduce((sum, month) => sum + month.amount, 0)
+                .toLocaleString("tr-TR")}{" "}
+              ₺
+            </span>
           </div>
         </div>
 
@@ -445,11 +465,11 @@ export default function AnalyticsPage() {
                   Dönemsel Gelir &amp; Satış Trendi
                 </h3>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Aylık faturalandırılan ve tahsil edilen sipariş hacimleri
+                  Son 6 ay, yüklenen son 50 siparişten hesaplanır
                 </p>
               </div>
               <span className="rounded-xl border border-border bg-zinc-50 px-2.5 py-1 font-bold text-3xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
-                2026 TRY Hacim
+                {new Date().getFullYear()} TRY Hacim
               </span>
             </div>
 

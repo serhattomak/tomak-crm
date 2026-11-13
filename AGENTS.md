@@ -31,12 +31,12 @@ it said `semi: false` while `apps/web` is written with semicolons — and `apps/
 the tree. `format` is now a single root script that runs where `biome.jsonc` is; **do not**
 run Biome from a package directory, where it finds no config and silently uses its defaults.
 
-> **Known gap (roadmap #31):** `npm run check` reports **5554** findings and they are
+> **Known gap (roadmap #31):** `npm run check` reports **5569** findings and they are
 > **lint rules, not formatting** — the formatter is clean (`npm run format` is a no-op).
 > The largest are `noJsxPropsBind` (1693, adopting it rewrites how every handler is passed)
 > and `useSortedClasses` (1317, mechanical). ~470 are a11y. Ultracite is still NOT part of
 > any CI gate; `npm run lint` is ESLint via Turbo, and the ESLint baseline is 0 errors with
-> 343 warnings. Wiring Ultracite in is a per-rule triage, not a one-time diff.
+> 347 warnings. Wiring Ultracite in is a per-rule triage, not a one-time diff.
 
 ## Repository layout
 

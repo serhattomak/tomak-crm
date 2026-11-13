@@ -1,7 +1,6 @@
 import {
   Banknote,
   BarChart3,
-  Boxes,
   Briefcase,
   Calendar,
   CalendarDays,
@@ -20,6 +19,7 @@ import {
   ReceiptText,
   Settings,
   Shield,
+  ShieldCheck,
   ShoppingCart,
   Tag,
   Truck,
@@ -139,7 +139,6 @@ export function getActiveHubFromPathname(
     pathname.includes(`/${tenantSlug}/email`) ||
     pathname.includes(`/${tenantSlug}/automations`) ||
     pathname.includes(`/${tenantSlug}/analytics`) ||
-    pathname.includes(`/${tenantSlug}/integration`) ||
     pathname.includes(`/${tenantSlug}/webhooks`)
   ) {
     return "comm";
@@ -289,6 +288,13 @@ export function getHubNavItems(
           permission: "Leaves.View",
         },
         {
+          href: `/${tenantSlug}/compliance`,
+          icon: ShieldCheck,
+          moduleKey: "compliance",
+          name: getModuleDisplayName("compliance", tNav("compliance")),
+          permission: "Compliance.View",
+        },
+        {
           href: `/${tenantSlug}/payroll`,
           icon: Banknote,
           moduleKey: "payroll",
@@ -342,11 +348,6 @@ export function getHubNavItems(
           href: `/${tenantSlug}/analytics`,
           icon: BarChart3,
           name: tNav("analytics"),
-        },
-        {
-          href: `/${tenantSlug}/integration`,
-          icon: Boxes,
-          name: "Entegrasyonlar",
         },
         {
           href: `/${tenantSlug}/webhooks`,

@@ -176,6 +176,8 @@ public class DeleteVehicleDocumentHandler(VehiclesDbContext db) : IRequestHandle
 // --- Endpoints ---
 public static class VehicleDocEndpoints
 {
+    private const long MaxUploadBytes = 25 * 1024 * 1024;
+
     public static void MapVehicleDocEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/vehicles/documents")
@@ -209,6 +211,10 @@ public static class VehicleDocEndpoints
                 return Results.BadRequest(ApiResponse<string>.Fail("EMPTY_FILE", "Lütfen geçerli bir dosya seçin."));
             }
 
+            // Uploads are written under wwwroot and served from this origin, so the
+            // extension decides the response Content-Type. Script-capable types (.svg,
+            // .html, .js) would be stored XSS; anything unknown is refused rather than
+            // guessed into "Diğer".
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
             var docType = extension switch
             {
@@ -216,11 +222,25 @@ public static class VehicleDocEndpoints
                 ".dwg" or ".dxf" or ".step" or ".stp" or ".iges" or ".igs" or ".cad" => "CAD",
                 ".xlsx" or ".xls" or ".csv" => "Excel",
                 ".docx" or ".doc" => "Word",
-                ".png" or ".jpg" or ".jpeg" or ".webp" or ".svg" => "Görsel",
+                ".png" or ".jpg" or ".jpeg" or ".webp" => "Görsel",
                 ".zip" or ".rar" or ".7z" or ".tar" => "Arşiv",
                 ".mp4" or ".mov" or ".avi" => "Video",
-                _ => "Diğer"
+                _ => null
             };
+
+            if (docType is null)
+            {
+                return Results.BadRequest(ApiResponse<string>.Fail(
+                    "UNSUPPORTED_FILE_TYPE",
+                    "Desteklenmeyen dosya türü. PDF, CAD, Excel, Word, görsel, arşiv veya video yükleyin."));
+            }
+
+            if (file.Length > MaxUploadBytes)
+            {
+                return Results.BadRequest(ApiResponse<string>.Fail(
+                    "FILE_TOO_LARGE",
+                    $"Dosya boyutu en fazla {MaxUploadBytes / (1024 * 1024)} MB olabilir."));
+            }
 
             var sizeStr = file.Length >= 1048576
                 ? $"{(file.Length / 1048576.0):0.#} MB"
