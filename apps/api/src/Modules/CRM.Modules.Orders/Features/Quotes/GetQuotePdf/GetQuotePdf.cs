@@ -66,7 +66,7 @@ public class GetQuotePdfEndpoint : IEndpoint
             return Results.File(result.Value.Bytes, "application/pdf", result.Value.FileName);
         })
         .RequireAuthorization()
-        .RequirePermission("Quotes.Read")
+        .RequirePermission("Quotes.View")
         .WithName("GetQuotePdf")
         .WithTags("Quotes");
     }

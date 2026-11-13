@@ -175,7 +175,7 @@ public class TestSendQuoteTemplateEndpoint : IEndpoint
             return Results.Ok(ApiResponse<TestSendQuoteTemplateResponse>.Ok(result.Value));
         })
         .RequireAuthorization()
-        .RequirePermission("Quotes.Manage")
+        .RequirePermission("Quotes.Templates")
         .WithName("TestSendQuoteTemplate")
         .WithTags("Quotes");
 

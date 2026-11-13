@@ -150,7 +150,8 @@ public class ContractEndpoints : IEndpoint
                 pageSize,
                 totalCount
             }));
-        });
+        })
+        .RequirePermission("Contracts.View");
 
         group.MapGet("/{id:guid}", async (Guid id, ContractsDbContext db, CancellationToken ct) =>
         {
@@ -181,7 +182,8 @@ public class ContractEndpoints : IEndpoint
                 c.PublicToken,
                 c.Notes,
                 c.CreatedAt)));
-        });
+        })
+        .RequirePermission("Contracts.View");
 
         group.MapPost("/", async (
             CreateContractRequest req,
@@ -220,7 +222,8 @@ public class ContractEndpoints : IEndpoint
             await db.SaveChangesAsync(ct);
 
             return Results.Created($"/api/v1/contracts/{contract.Id}", ApiResponse<object>.Ok(new { id = contract.Id, contractNumber, publicToken }, "Sözleşme başarıyla oluşturuldu."));
-        });
+        })
+        .RequirePermission("Contracts.Create");
 
         group.MapPut("/{id:guid}", async (
             Guid id,
@@ -244,7 +247,8 @@ public class ContractEndpoints : IEndpoint
 
             await db.SaveChangesAsync(ct);
             return Results.Ok(ApiResponse<bool>.Ok(true, "Sözleşme güncellendi."));
-        });
+        })
+        .RequirePermission("Contracts.Manage");
 
         group.MapDelete("/{id:guid}", async (Guid id, ContractsDbContext db, CancellationToken ct) =>
         {
@@ -254,7 +258,8 @@ public class ContractEndpoints : IEndpoint
             db.Contracts.Remove(c);
             await db.SaveChangesAsync(ct);
             return Results.Ok(ApiResponse<bool>.Ok(true, "Sözleşme silindi."));
-        });
+        })
+        .RequirePermission("Contracts.Delete");
 
         // Public E-Signature API (Agnostic of Auth)
         var publicGroup = app.MapGroup("/api/public/contracts")

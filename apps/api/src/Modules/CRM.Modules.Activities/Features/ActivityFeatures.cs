@@ -495,6 +495,7 @@ public class ActivityEndpoints : IEndpoint
             return Results.Ok(ApiResponse<List<ActivityDto>>.Ok(result.Value));
         })
         .RequireAuthorization()
+        .RequirePermission("Activities.View")
         .WithName("GetActivities");
 
         group.MapGet("/{id:guid}", async (
@@ -506,6 +507,7 @@ public class ActivityEndpoints : IEndpoint
             return Results.Ok(ApiResponse<ActivityDto>.Ok(result.Value));
         })
         .RequireAuthorization()
+        .RequirePermission("Activities.View")
         .WithName("GetActivityById");
 
         group.MapPost("/", async (
@@ -542,6 +544,7 @@ public class ActivityEndpoints : IEndpoint
             return Results.Created($"/api/activities/{result.Value}", ApiResponse<Guid>.Ok(result.Value));
         })
         .RequireAuthorization()
+        .RequirePermission("Activities.Create")
         .WithName("CreateActivity");
 
         group.MapPut("/{id:guid}", async (
@@ -580,6 +583,7 @@ public class ActivityEndpoints : IEndpoint
             return Results.Ok(ApiResponse<bool>.Ok(result.Value));
         })
         .RequireAuthorization()
+        .RequirePermission("Activities.Manage")
         .WithName("UpdateActivity");
 
         group.MapPost("/{id:guid}/complete", async (
@@ -599,6 +603,7 @@ public class ActivityEndpoints : IEndpoint
             return Results.Ok(ApiResponse<Guid?>.Ok(result.Value));
         })
         .RequireAuthorization()
+        .RequirePermission("Activities.Manage")
         .WithName("CompleteActivity");
 
         group.MapDelete("/{id:guid}", async (
@@ -610,6 +615,7 @@ public class ActivityEndpoints : IEndpoint
             return Results.Ok(ApiResponse<bool>.Ok(result.Value));
         })
         .RequireAuthorization()
+        .RequirePermission("Activities.Delete")
         .WithName("DeleteActivity");
 
         // Single RFC 5545 .ics download
@@ -650,6 +656,7 @@ public class ActivityEndpoints : IEndpoint
             return Results.File(bytes, "text/calendar", $"{SanitizeFileName(a.Title)}.ics");
         })
         .RequireAuthorization()
+        .RequirePermission("Activities.View")
         .WithName("ExportActivityIcs");
 
         // Live Calendar Feed (.ics)
@@ -698,6 +705,7 @@ public class ActivityEndpoints : IEndpoint
             return Results.File(bytes, "text/calendar; charset=utf-8");
         })
         .RequireAuthorization()
+        .RequirePermission("Activities.View")
         .WithName("GetCalendarFeed");
     }
 
